@@ -4,4 +4,6 @@ body > .govuk-width-container {
 }
 
 main .govuk-pagination {
+    display: flex;
+    justify-content: center
 }
