@@ -22,10 +22,20 @@
 
 @(navigation: PageNavigation, tableHeader: Seq[String], tableData: Seq[Seq[String]])(implicit request: Request[_], messages: Messages)
 
+@colHead(name: String) = {
+  <span>
+        @name
+        <span class="table-header-controls">
+            <a href="#"><img fetchpriority="high" src="assets/icons/filter.svg"></a>
+            <a href="#"><img fetchpriority="high" src="assets/icons/sort.svg"></a>
+        </span>
+  </span>
+}
+
 @layout(navigation) {
  @govukTable(Table(
  rows = tableData.map{row=>row.map{cell=>TableRow(content = HtmlContent(s"""<nobr>$cell</nobr>"""))}},
- head = Some(tableHeader.map{s=>HeadCell(content = HtmlContent(s"""<span style="display: flex; white-space: nowrap">$s<img fetchpriority="high" src="assets/sort.svg" style="height: 1em; flex: 1; text-align: right"></span>"""))}),
+ head = Some(tableHeader.map{s=>HeadCell(content = HtmlContent(colHead(s)))}),
  caption = Some("Daily Appeal Evidence Submissions"),
  captionClasses = "govuk-table__caption--m",
  firstCellIsHeader = true,
@@ -41,7 +51,7 @@
       PaginationItem(ellipsis = Some(true)),
       PaginationItem(href = "#",  number = Some("42"))
     )),
-//    previous = Some(PaginationLink(href = "#")),
+    previous = Some(PaginationLink(href = "#")),
     next = Some(PaginationLink(href = "#"))
   ))
 }

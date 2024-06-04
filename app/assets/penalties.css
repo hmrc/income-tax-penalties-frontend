@@ -4,6 +4,26 @@ body > .govuk-width-container {
 }
 
 main .govuk-pagination {
-    display: flex;
-    justify-content: center
+  display: flex;
+  justify-content: center
+}
+
+th.govuk-table__header > span {
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap
+}
+
+.table-header-controls {
+    align-self: flex-end;
+    padding-left: 1ex;
+    background-color: white
+}
+
+.table-header-controls img {
+    height: 1em;
+    vertical-align: middle;
+    padding: 2px;
+    background-color: white;
+    filter: invert(0)
 }
