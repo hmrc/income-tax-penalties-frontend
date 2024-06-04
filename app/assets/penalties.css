@@ -1,0 +1,7 @@
+body > .govuk-width-container {
+  max-width: min-content;
+  min-width: 960px
+}
+
+main .govuk-pagination {
+}

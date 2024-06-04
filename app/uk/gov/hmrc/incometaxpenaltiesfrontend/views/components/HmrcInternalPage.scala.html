@@ -34,8 +34,7 @@
   govukTable : GovukTable,
   hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
   hmrcScripts: HmrcScripts,
-  defaultMainContent: TwoThirdsMainContent,
-  internalPageLayout: InternalPageLayout,
+  fixedWidthPageLayout: FixedWidthPageLayout,
   govukFooter: GovukFooter
 )
 
@@ -72,9 +71,9 @@
   scriptsBlock = Some(hmrcScripts()),
   beforeContentBlock = Some(beforeContent),
   footerBlock = Some(footerBlock),
-  mainContentLayout = Some(defaultMainContent(_)),
+  mainContentLayout = None,
   assetPath = None,
-  pageLayout = Some(internalPageLayout(_))
+  pageLayout = Some(fixedWidthPageLayout(_))
 ) {
   <h1 class="govuk-heading-xl">@{navigation.pageTitle}</h1>
 
