@@ -1,0 +1,46 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.incometaxpenaltiesfrontend._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+
+@this(layout: HmrcInternalPage, govukTable: GovukTable, govukPagination : GovukPagination)
+
+@(navigation: PageNavigation, tableHeader: Seq[String], tableData: Seq[Seq[String]])(implicit request: Request[_], messages: Messages)
+
+@layout(navigation) {
+ @govukTable(Table(
+ rows = tableData.map{row=>row.map{cell=>TableRow(content = HtmlContent(s"""<nobr>$cell</nobr>"""))}},
+ head = Some(tableHeader.map{s=>HeadCell(content = HtmlContent(s"""<span style="display: flex; white-space: nowrap">$s<img fetchpriority="high" src="assets/sort.svg" style="height: 1em; flex: 1; text-align: right"></span>"""))}),
+ caption = Some("Daily Appeal Evidence Submissions"),
+ captionClasses = "govuk-table__caption--m",
+ firstCellIsHeader = true,
+ classes = "govuk-table--small-text-until-tablet"
+ ))
+ @govukPagination(Pagination(
+    items = Some(Seq(
+      PaginationItem(href = "#", number = Some("1")),
+      PaginationItem(ellipsis = Some(true)),
+      PaginationItem(href = "#", number = Some("6")),
+      PaginationItem(href = "#", number = Some("7"), current = Some(true)),
+      PaginationItem(href = "#", number = Some("8")),
+      PaginationItem(ellipsis = Some(true)),
+      PaginationItem(href = "#",  number = Some("42"))
+    )),
+//    previous = Some(PaginationLink(href = "#")),
+    next = Some(PaginationLink(href = "#"))
+  ))
+}

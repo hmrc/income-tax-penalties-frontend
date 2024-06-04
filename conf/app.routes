@@ -1,5 +1,7 @@
 # microservice specific routes
 
 ->         /hmrc-frontend           hmrcfrontend.Routes
-GET        /                        uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.HelloWorldController.helloWorld
+GET        /                        uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AdminController.index
+GET        /submission/:reference   uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AdminController.submission(reference: String)
+GET        /hello                   uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.HelloWorldController.helloWorld
 GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)
