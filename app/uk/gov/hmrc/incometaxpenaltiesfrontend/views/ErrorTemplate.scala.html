@@ -14,13 +14,14 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.incometaxpenaltiesfrontend._
 @import uk.gov.hmrc.govukfrontend.views.html.components.Text
 
-@this(layout: Layout)
+@this(layout: HmrcInternalPage)
 
-@(pageTitle: String, heading: String, message: String)(implicit request: Request[_], messages: Messages)
-@layout(pageTitle = Some(pageTitle)) {
-    <h1 class="govuk-heading-xl">@{Text(heading).asHtml}</h1>
+@(navigation: PageNavigation, message: String)(implicit request: Request[_], messages: Messages)
+
+@layout(navigation) {
     <p class="govuk-body">@{Text(message).asHtml}</p>
 }
 

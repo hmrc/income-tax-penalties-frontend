@@ -16,36 +16,17 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import org.apache.commons.lang3.RandomStringUtils
-import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
-import play.api.i18n.MessagesApi
-import play.api.mvc
-import play.api.mvc.Security.AuthenticatedRequest
-import play.api.mvc.{Action, ActionBuilder, AnyContent, BodyParser, EssentialAction, MessagesBaseController, MessagesControllerComponents, MessagesRequest, MessagesRequestHeader, PreferredMessagesProvider, Request, Result, WrappedRequest}
+import play.api.mvc._
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxpenaltiesfrontend.PageNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.internalauth.client.{AuthenticatedRequest, AuthorizationToken, FrontendAuthComponents, IAAction, Resource, ResourceLocation, ResourceType, Retrieval}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.{FrontendBaseController, FrontendController}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
 import uk.gov.hmrc.internalauth.client.Predicate.Permission
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
-
-import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
+import uk.gov.hmrc.internalauth.client._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import play.api.routing.Router
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.incometaxpenaltiesfrontend._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 
-import java.time.LocalDate.ofYearDay
-import java.time.{LocalDate, LocalDateTime}
-import java.util.Date
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
-import scala.util.Random
+import scala.concurrent.{ExecutionContext, Future}
 
 //class MessagesRequest2[+A,R](
 //  request: Request[A],
@@ -72,7 +53,7 @@ class AdminController @Inject()(
   private def authorised(location: String, action: IAAction)/*(implicit request: Request[_])*/: ActionBuilder[MessagesRequest, AnyContent] = {
     messagesControllerComponents.messagesActionBuilder.compose(
       auth.authorizedAction(
-        continueUrl = routes.HelloWorldController.helloWorld,
+        continueUrl = routes.AdminController.index,
         predicate = Permission(
           Resource(
             ResourceType(appName),
@@ -109,7 +90,7 @@ class AdminController @Inject()(
   }
 
   def submission(reference: String): Action[AnyContent] = Action.async { implicit request =>
-    val route = routes.HelloWorldController.helloWorld
+    val route = routes.AdminController.index
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
     submissions.find(_.reference==reference) match {
       case Some(data) =>
