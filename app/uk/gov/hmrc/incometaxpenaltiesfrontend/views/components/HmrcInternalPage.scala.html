@@ -27,7 +27,7 @@
 
 @this(
   appConfig: AppConfig,
-  hmrcHead: HmrcHead,
+  hmrcHead: HmrcInternalHead,
   govukLayout: GovukLayout,
   hmrcInternalHeader : HmrcInternalHeader,
   govukBreadcrumbs : GovukBreadcrumbs,
@@ -40,6 +40,11 @@
 )
 
 @(navigation: PageNavigation)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+
+@headBlock = {
+  @hmrcHead()
+  <link href="/income-tax-penalties-frontend/assets/penalties.css" media="all" rel="stylesheet" type="text/css">
+}
 
 @headerBlock = {
   @hmrcInternalHeader(InternalHeader(
@@ -61,7 +66,7 @@
 }
 
 @govukLayout(
-  headBlock = Some(hmrcHead()),
+  headBlock = Some(headBlock),
   pageTitle = Some("Hello World"),
   headerBlock = Some(headerBlock),
   scriptsBlock = Some(hmrcScripts()),
