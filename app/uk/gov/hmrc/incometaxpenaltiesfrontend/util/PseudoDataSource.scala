@@ -16,18 +16,19 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.util
 
+import play.api.libs.json.{JsArray, Json}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource.status
 
 import java.time.LocalDateTime
 import scala.util.Random
 
 object PseudoDataSource {
-  val random = new Random(0)
+  private val random = new Random(0)
 
   private val hexChars = "abcdef0123456789"
-  def hex: LazyList[Char] = LazyList continually (hexChars charAt (random nextInt hexChars.length))
+  private def hex: LazyList[Char] = LazyList continually (hexChars charAt (random nextInt hexChars.length))
 
-  def reference: LazyList[String] = LazyList continually Seq(8,4,4,4,12).map(hex.take(_).mkString).mkString("-")
+  private def reference: LazyList[String] = LazyList continually Seq(8,4,4,4,12).map(hex.take(_).mkString).mkString("-")
 
   val statii = Seq(
     "PENDING",
@@ -40,21 +41,53 @@ object PseudoDataSource {
     "PERMANENT_FAILURE"
   )
 
-  def status: LazyList[String] = LazyList continually statii(random nextInt statii.length)
+  private def status: LazyList[String] = LazyList continually statii(random nextInt statii.length)
 
   //def dateTime: LazyList[LocalDateTime] = LazyList continually LocalDateTime. (random.between(ofYearDay(2023, 1).toEpochDay, ofYearDay(2024, 1).toEpochDay))
 
-  case class Submission(
-    reference: String = PseudoDataSource.reference.head,
-    status: String = PseudoDataSource.status.head,
-    retryCount: Int = random.nextInt(100),
-    createdAt: String = "2023-01-01 00:00:00",
-    updatedAt: String = "2023-01-01 00:00:00",
-    nextAttemptAt: String = "2023-01-01 00:00:00"
-  ) {
-    def toSeq: Seq[String] = Seq(s"<a href=submission/${reference}>${reference}</a>", status, retryCount.toString, createdAt, updatedAt, nextAttemptAt)
-  }
+//  case class Submission(
+//    reference: String = PseudoDataSource.reference.head,
+//    status: String = PseudoDataSource.status.head,
+//    retryCount: Int = random.nextInt(100),
+//    createdAt: String = "2023-01-01 00:00:00",
+//    updatedAt: String = "2023-01-01 00:00:00",
+//    nextAttemptAt: String = "2023-01-01 00:00:00"
+//  ) {
+//    def toSeq: Seq[String] = Seq(s"<a href=submission/${reference}>${reference}</a>", status, retryCount.toString, createdAt, updatedAt, nextAttemptAt)
+//  }
 
-  val submissions: Seq[Submission] = (1 to 100).map { _ => new Submission }
+  private def submission = s"""{
+    |  "reference": "${reference.head}",
+    |  "status": "${status.head}",
+    |  "numberOfAttempts": ${random.nextInt(100)},
+    |  "createdAt": "2023-01-01T00:00:00Z",
+    |  "updatedAt": "2023-01-01T00:00:00Z",
+    |  "nextAttemptAt": "2023-01-01T00:00:00Z",
+    |  "notification": {
+    |    "informationType": "foo",
+    |    "file": {
+    |      "recipientOrSender": "recipient1",
+    |      "name": "file1.txt",
+    |      "location": "http://example.com/file1.txt",
+    |      "checksum": {
+    |        "algorithm": "SHA-256",
+    |        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    |      },
+    |      "size": ${random.nextInt(1000)},
+    |      "properties": [
+    |        {
+    |          "name": "name",
+    |          "value": "value"
+    |        }
+    |      ]
+    |    },
+    |    "audit": {
+    |      "correlationID": "${reference.head}"
+    |    }
+    |  }
+    |}""".stripMargin
 
+  lazy val submissions: JsArray = JsArray((1 to 100).map { _ =>
+    Json.parse(submission)
+  })
 }

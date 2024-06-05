@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import play.api.libs.json.{JsLookupResult, JsObject, JsString, JsValue}
 import play.api.mvc._
-import play.twirl.api.HtmlFormat
+import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.PageNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
@@ -43,7 +44,8 @@ class AdminController @Inject()(
    messagesControllerComponents: MessagesControllerComponents,
    appConfig: AppConfig,
    auth: FrontendAuthComponents,
-   indexPage: IndexPage, submissionPage: SubmissionPage
+   indexPage: IndexPage,
+   submissionPage: SubmissionPage
 )(implicit ec: ExecutionContext)
   extends FrontendController(messagesControllerComponents) with MessagesBaseController {
   import appConfig._
@@ -80,21 +82,55 @@ class AdminController @Inject()(
 
   import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource._
 
-  val tableHeader: Seq[String] = Seq("Reference", "Status", "Attempt #","Created At","Updated At","Next Attempt At")
-  val tableData: Seq[Seq[String]] = submissions.map { _.toSeq }
+//  def toSeq(jso: JsValue): Seq[String] = {
+//    Seq(s"<a href=submission/${jso./"reference"}>${reference}</a>", status, retryCount.toString, createdAt, updatedAt, nextAttemptAt)
+//  }
+
+  trait TblHead {
+    def name: String
+    def extract(js: JsObject): TblCellValue
+    override def toString: String = name
+  }
+  trait TblCellValue extends Comparable[TblCellValue] {
+    def html: Html
+  }
+  case class SimpleTblHead(
+     name: String,
+     lookup: JsObject => JsLookupResult,
+     format: JsValue => String
+   ) extends TblHead {
+    def extract(js: JsObject): TblCellValue = new TblCellValue{
+      private val found = lookup(js).toOption
+      override def html: Html = Html(format(found.getOrElse(JsString(""))))
+      override def compareTo(t: TblCellValue): Int = ??? //found.toString.compareTo(t.found)
+    }
+  }
+
+  val tableHeader: Seq[TblHead] = Seq(
+    SimpleTblHead("Reference", _.\("reference"), _.as[String]),
+    SimpleTblHead("Status", _.\("status"), _.as[String]),
+    SimpleTblHead("Attempt #", _.\("numberOfAttempts"), _.as[Int].toString),
+    SimpleTblHead("Created At", _.\("createdAt"), _.as[String]),
+    SimpleTblHead("Updated At", _.\("updatedAt"),_ .as[String]),
+    SimpleTblHead("Next Attempt At", _.\("nextAttemptAt"), _.as[String])
+  )
+
+  val tableData: Seq[Seq[TblCellValue]] = submissions.value.map { case jso: JsObject =>
+    tableHeader.map{_.extract(jso)}
+  }.toSeq
 
   def index[A](): EssentialAction = canonicallyAuthorised().async { implicit request =>
     val navigation: PageNavigation = service.index
-    val foo: HtmlFormat.Appendable = indexPage(navigation, tableHeader, tableData)
+    val foo: HtmlFormat.Appendable = indexPage(navigation, tableHeader.map(_.name), tableData.map(_.map(_.html.toString())))
     Future.successful(Ok(foo))
   }
 
   def submission(reference: String): Action[AnyContent] = Action.async { implicit request =>
     val route = routes.AdminController.index
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
-    submissions.find(_.reference==reference) match {
+    tableData.find(_(0).compareTo(???) == 0) match {
       case Some(data) =>
-        val foo: HtmlFormat.Appendable = submissionPage(navigation, data.toSeq)
+        val foo: HtmlFormat.Appendable = submissionPage(navigation, data.map(_.html.toString()))
         Future.successful(Ok(foo))
       case None =>
         Future.successful(NotFound)
