@@ -18,18 +18,31 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import components._
 
-@this(layout: HmrcInternalPage, govukTable: GovukTable, govukPagination : GovukPagination)
+@this(
+  layout: HmrcInternalPage,
+  govukTable: GovukTable,
+  govukPagination : GovukPagination,
+  govukInput: GovukInput
+)
 
 @(navigation: PageNavigation, tableHeader: Seq[String], tableData: Seq[Seq[String]])(implicit request: Request[_], messages: Messages)
 
 @colHead(name: String) = {
-  <span>
-        @name
-        <span class="table-header-controls">
-            <a href="#"><img fetchpriority="high" src="assets/icons/filter.svg"></a>
-            <a href="#"><img fetchpriority="high" src="assets/icons/sort.svg"></a>
-        </span>
-  </span>
+    @defining(name.toLowerCase.replaceAll("[^a-z]+","-").stripSuffix("-")) { symbolicName =>
+      <span>
+            @name
+            <span class="table-header-controls">
+                <a onclick="toggleFilter(event)"><img fetchpriority="high" src="assets/icons/filter.svg"></a>
+                <a onclick="toggleSort(event)"><img fetchpriority="high" src="assets/icons/sort.svg"></a>
+            </span>
+      </span>
+      <span class="table-header-filter" style="display:none">
+        @govukInput(Input(id = s"$symbolicName-header-filter", name = s"$symbolicName", classes = "govuk-!-width-full",
+        suffix = Some(PrefixOrSuffix(
+          content = HtmlContent("""<span onclick="filter(event)">&#x1F50D;</span>""")
+        ))))
+      </span>
+    }
 }
 
 @layout(navigation) {

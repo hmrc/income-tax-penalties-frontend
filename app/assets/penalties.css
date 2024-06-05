@@ -27,3 +27,8 @@ th.govuk-table__header > span {
     background-color: white;
     filter: invert(0)
 }
+
+th .govuk-form-group {
+    margin-top: 10px;
+    margin-bottom: 0px
+}
