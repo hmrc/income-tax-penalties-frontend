@@ -16,16 +16,21 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import org.apache.commons.lang3.CharSet
 import play.api.libs.json.{JsLookupResult, JsObject, JsString, JsValue, Reads}
 import play.api.mvc._
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.PageNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable
+import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable.TblHead
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
 import uk.gov.hmrc.internalauth.client.Predicate.Permission
 import uk.gov.hmrc.internalauth.client._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import java.net.URLDecoder
+import java.util.Comparator
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -55,7 +60,7 @@ class AdminController @Inject()(
   private def authorised(location: String, action: IAAction)/*(implicit request: Request[_])*/: ActionBuilder[MessagesRequest, AnyContent] = {
     messagesControllerComponents.messagesActionBuilder.compose(
       auth.authorizedAction(
-        continueUrl = routes.AdminController.index,
+        continueUrl = routes.AdminController.index(Seq.empty, Seq.empty, None),
         predicate = Permission(
           Resource(
             ResourceType(appName),
@@ -82,17 +87,8 @@ class AdminController @Inject()(
 
   import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource._
 
-  case class TblHead[T](
-    name: String,
-    lookup: JsObject => Option[T],
-    format: T => String = { value:T => value.toString }
-  ) {
-    final def html(js: JsObject): String = lookup(js).map(format).getOrElse("")
-    override def toString: String = name
-  }
-
   val tableHeader = (
-    TblHead("Reference", _.\("reference").asOpt[String]),
+    TblHead("Reference", _.\("reference").asOpt[String], {ref: String => s"<a href=submission/$ref>$ref</a>"}),
     TblHead("Status", _.\("status").asOpt[String]),
     TblHead("Attempt #", _.\("numberOfAttempts").asOpt[Int]),
     TblHead("Created At", _.\("createdAt").asOpt[String]),
@@ -100,30 +96,61 @@ class AdminController @Inject()(
     TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String])
   )
 
-  //TODO: convert tuple to fields
-  val tableHeaders: Seq[TblHead[_]] = Seq(
-    tableHeader._1, tableHeader._2, tableHeader._3,
-    tableHeader._4, tableHeader._5, tableHeader._6
-  )
+  val table = InternalTable(tableHeader)
 
-  def index[A](): EssentialAction = canonicallyAuthorised().async { implicit request =>
+  def index[A](sort: Seq[String], filter: Seq[String], page: Option[Int]): EssentialAction = canonicallyAuthorised().async { implicit request =>
     val navigation: PageNavigation = service.index
-    val htmlTableHeader: Seq[String] = tableHeaders.map(_.name)
-    val tableData: Seq[Seq[String]] = submissions.value.map { case js: JsObject =>
-      tableHeaders.map(_.html(js))
-    }.toSeq
-    val foo: HtmlFormat.Appendable = indexPage(navigation, htmlTableHeader, tableData)
-    Future.successful(Ok(foo))
+    val htmlTableHeader: Seq[String] = table.headers.map(_.name)
+
+    val x: Seq[(JsObject,JsObject) => Boolean] = sort.map { spec =>
+      spec.split("-", 2) match {
+        case Array(direction, fieldName) =>
+          val comparator = table.headers.find(_.symbol == fieldName).map(_.comparator)
+          (direction, comparator) match {
+            case ("asc", Some(comparator)) => { case (l,r) => comparator(l,r) > 0 }
+            case ("desc", Some(comparator)) => { case (l,r) => comparator(l,r) <= 0 }
+            case (dir, None) => throw new Exception(s"""Bad column name: $fieldName""");
+            case (dir, _) => throw new Exception(s"""Bad direction: $dir""");
+          }
+        case x => throw new Exception(s"""$spec became ${x.mkString(" ")}"""); ???
+      }
+    }
+    def xs(l: JsObject, r: JsObject): Boolean = x.foldLeft(true){ case (a,f) => a && f(l,r) }
+
+    val y: Seq[JsObject => Boolean] = filter.map { spec =>
+      URLDecoder.decode(spec, "UTF8").split("=", 2) match {
+        case Array(fieldName, filterValue) => table.headers.find(_.name == fieldName); { case i => true }
+        case Array(fieldName, filterValue) => table.headers.find(_.name == fieldName); { case i => true }
+        case x => throw new Exception(s"""$spec becamse ${x.mkString(" ")}"""); { case i => true }
+      }
+    }
+    def ys(js: JsObject): Boolean = y.foldLeft(true){ case (a,f) => a && f(js) }
+
+    val pageSize = 20
+
+    val pageData = submissions.value.map(_.as[JsObject]).filter(ys).sortWith(xs).grouped(pageSize).drop(page.getOrElse(0)).nextOption()
+
+    pageData match {
+      case Some(pageData) =>
+        val tableData: Seq[Seq[String]] = pageData.map { case js: JsObject =>
+          table.headers.map(_.html(js))
+        }.toSeq
+
+        val foo: HtmlFormat.Appendable = indexPage(navigation, htmlTableHeader, tableData)
+        Future.successful(Ok(foo))
+      case None =>
+        Future.successful(Ok("No data"))
+    }
   }
 
   def submission(reference: String): Action[AnyContent] = Action.async { implicit request =>
-    val route = routes.AdminController.index
+    val route = routes.AdminController.index(Seq.empty, Seq.empty, None)
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
     submissions.value.find { case js: JsObject =>
       tableHeader._1.lookup(js).exists(_.contains(reference))
     } match {
       case Some(data: JsObject) =>
-        val foo: HtmlFormat.Appendable = submissionPage(navigation, tableHeaders.map(_.html(data)))
+        val foo: HtmlFormat.Appendable = submissionPage(navigation, table.headers.map(_.html(data)))
         Future.successful(Ok(foo))
       case None =>
         Future.successful(NotFound)
