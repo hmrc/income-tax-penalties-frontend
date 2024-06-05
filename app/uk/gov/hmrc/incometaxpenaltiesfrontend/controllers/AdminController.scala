@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import play.api.libs.json.{JsLookupResult, JsObject, JsString, JsValue}
+import play.api.libs.json.{JsLookupResult, JsObject, JsString, JsValue, Reads}
 import play.api.mvc._
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.PageNavigation
@@ -82,82 +82,52 @@ class AdminController @Inject()(
 
   import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource._
 
-//  def toSeq(jso: JsValue): Seq[String] = {
-//    Seq(s"<a href=submission/${jso./"reference"}>${reference}</a>", status, retryCount.toString, createdAt, updatedAt, nextAttemptAt)
-//  }
-
-  trait TblHead {
-    def name: String
-    def extract(js: JsObject): TblCellValue
+  case class TblHead[T](
+    name: String,
+    lookup: JsObject => Option[T],
+    format: T => String = { value:T => value.toString }
+  ) {
+    final def html(js: JsObject): String = lookup(js).map(format).getOrElse("")
     override def toString: String = name
   }
-  trait TblCellValue extends Comparable[TblCellValue] {
-    def html: Html
-  }
-  case class SimpleTblHead(
-     name: String,
-     lookup: JsObject => JsLookupResult,
-     format: JsValue => String
-   ) extends TblHead {
-    def extract(js: JsObject): TblCellValue = new TblCellValue{
-      private val found = lookup(js).toOption
-      override def html: Html = Html(format(found.getOrElse(JsString(""))))
-      override def compareTo(t: TblCellValue): Int = ??? //found.toString.compareTo(t.found)
-    }
-  }
 
-  val tableHeader: Seq[TblHead] = Seq(
-    SimpleTblHead("Reference", _.\("reference"), _.as[String]),
-    SimpleTblHead("Status", _.\("status"), _.as[String]),
-    SimpleTblHead("Attempt #", _.\("numberOfAttempts"), _.as[Int].toString),
-    SimpleTblHead("Created At", _.\("createdAt"), _.as[String]),
-    SimpleTblHead("Updated At", _.\("updatedAt"),_ .as[String]),
-    SimpleTblHead("Next Attempt At", _.\("nextAttemptAt"), _.as[String])
+  val tableHeader = (
+    TblHead("Reference", _.\("reference").asOpt[String]),
+    TblHead("Status", _.\("status").asOpt[String]),
+    TblHead("Attempt #", _.\("numberOfAttempts").asOpt[Int]),
+    TblHead("Created At", _.\("createdAt").asOpt[String]),
+    TblHead("Updated At", _.\("updatedAt").asOpt[String]),
+    TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String])
   )
 
-  val tableData: Seq[Seq[TblCellValue]] = submissions.value.map { case jso: JsObject =>
-    tableHeader.map{_.extract(jso)}
-  }.toSeq
+  //TODO: convert tuple to fields
+  val tableHeaders: Seq[TblHead[_]] = Seq(
+    tableHeader._1, tableHeader._2, tableHeader._3,
+    tableHeader._4, tableHeader._5, tableHeader._6
+  )
 
   def index[A](): EssentialAction = canonicallyAuthorised().async { implicit request =>
     val navigation: PageNavigation = service.index
-    val foo: HtmlFormat.Appendable = indexPage(navigation, tableHeader.map(_.name), tableData.map(_.map(_.html.toString())))
+    val htmlTableHeader: Seq[String] = tableHeaders.map(_.name)
+    val tableData: Seq[Seq[String]] = submissions.value.map { case js: JsObject =>
+      tableHeaders.map(_.html(js))
+    }.toSeq
+    val foo: HtmlFormat.Appendable = indexPage(navigation, htmlTableHeader, tableData)
     Future.successful(Ok(foo))
   }
 
   def submission(reference: String): Action[AnyContent] = Action.async { implicit request =>
     val route = routes.AdminController.index
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
-    tableData.find(_(0).compareTo(???) == 0) match {
-      case Some(data) =>
-        val foo: HtmlFormat.Appendable = submissionPage(navigation, data.map(_.html.toString()))
+    submissions.value.find { case js: JsObject =>
+      tableHeader._1.lookup(js).exists(_.contains(reference))
+    } match {
+      case Some(data: JsObject) =>
+        val foo: HtmlFormat.Appendable = submissionPage(navigation, tableHeaders.map(_.html(data)))
         Future.successful(Ok(foo))
       case None =>
         Future.successful(NotFound)
     }
   }
-
-//  def index(): Action[AnyContent] = Action.async { implicit request =>
-//    val route = routes.HelloWorldController.helloWorld
-//    val navigation = service index
-//    //Future.successful(Ok(index(navigation)))
-//    Future.successful(Ok())
-//  }
-//
-//  def index(): Action[AnyContent] = Action.async { implicit request =>
-//    val route = routes.HelloWorldController.helloWorld
-//    val navigation = service called ""
-//
-//
-//    // Future.successful(Ok(hmrcInternalPage(appConfig.service)(Html(""))))
-//  }
-//
-//  def submissions(): Action[AnyContent] = Action.async { implicit request =>
-//    val route = routes.HelloWorldController.helloWorld
-//    //val navigation = appConfig.service :+ (route)
-//
-//    ???
-//    //Future.successful(Ok(helloWorldPage(appConfig.service)))
-//  }
 
 }
