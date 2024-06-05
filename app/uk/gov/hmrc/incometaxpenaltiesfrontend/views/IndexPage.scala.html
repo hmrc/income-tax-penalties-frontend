@@ -25,7 +25,7 @@
   govukInput: GovukInput
 )
 
-@(navigation: PageNavigation, tableHeader: Seq[String], tableData: Seq[Seq[String]])(implicit request: Request[_], messages: Messages)
+@(navigation: PageNavigation, tableHeader: Seq[String], tableData: Seq[Seq[Html]])(implicit request: Request[_], messages: Messages)
 
 @colHead(name: String) = {
     @defining(name.toLowerCase.replaceAll("[^a-z]+","-").stripSuffix("-")) { symbolicName =>
@@ -47,7 +47,7 @@
 
 @layout(navigation) {
  @govukTable(Table(
- rows = tableData.map{row=>row.map{cell=>TableRow(content = HtmlContent(s"""<nobr>$cell</nobr>"""))}},
+ rows = tableData.map{row=>row.map{cell=>TableRow(content = HtmlContent(cell))}},
  head = Some(tableHeader.map{s=>HeadCell(content = HtmlContent(colHead(s)))}),
  caption = Some("Daily Appeal Evidence Submissions"),
  captionClasses = "govuk-table__caption--m",

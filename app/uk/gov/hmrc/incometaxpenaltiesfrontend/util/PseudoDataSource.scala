@@ -17,9 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.util
 
 import play.api.libs.json.{JsArray, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource.status
 
-import java.time.LocalDateTime
 import scala.util.Random
 
 object PseudoDataSource {
@@ -44,17 +42,6 @@ object PseudoDataSource {
   private def status: LazyList[String] = LazyList continually statii(random nextInt statii.length)
 
   //def dateTime: LazyList[LocalDateTime] = LazyList continually LocalDateTime. (random.between(ofYearDay(2023, 1).toEpochDay, ofYearDay(2024, 1).toEpochDay))
-
-//  case class Submission(
-//    reference: String = PseudoDataSource.reference.head,
-//    status: String = PseudoDataSource.status.head,
-//    retryCount: Int = random.nextInt(100),
-//    createdAt: String = "2023-01-01 00:00:00",
-//    updatedAt: String = "2023-01-01 00:00:00",
-//    nextAttemptAt: String = "2023-01-01 00:00:00"
-//  ) {
-//    def toSeq: Seq[String] = Seq(s"<a href=submission/${reference}>${reference}</a>", status, retryCount.toString, createdAt, updatedAt, nextAttemptAt)
-//  }
 
   private def submission = s"""{
     |  "reference": "${reference.head}",

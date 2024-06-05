@@ -32,3 +32,11 @@ th .govuk-form-group {
     margin-top: 10px;
     margin-bottom: 0px
 }
+
+.govuk-table__body td {
+    white-space: nowrap;
+}
+
+.govuk-table__body th {
+    white-space: nowrap;
+}

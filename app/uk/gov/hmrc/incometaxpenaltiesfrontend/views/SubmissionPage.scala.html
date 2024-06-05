@@ -20,7 +20,7 @@
 
 @this(layout: HmrcInternalPage, govukTable: GovukTable, govukSummaryList : GovukSummaryList)
 
-@(navigation: PageNavigation, data: Seq[String])(implicit request: Request[_], messages: Messages)
+@(navigation: PageNavigation, data: Seq[Html])(implicit request: Request[_], messages: Messages)
 
 @layout(navigation) {
 
