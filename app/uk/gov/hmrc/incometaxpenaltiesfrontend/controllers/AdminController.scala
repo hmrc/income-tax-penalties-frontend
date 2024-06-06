@@ -81,9 +81,9 @@ class AdminController @Inject()(
     TblHead("Reference", _.\("reference").asOpt[String], markup = {ref: String => Html(s"<a href=submission/$ref>$ref</a>")}),
     TblHead("Status", _.\("status").asOpt[String]),
     TblHead("Attempt #", _.\("numberOfAttempts").asOpt[Int]),
-    TblHead("Created At", _.\("createdAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ")}),
-    TblHead("Updated At", _.\("updatedAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ")}),
-    TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ")})
+    TblHead("Created At", _.\("createdAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
+    TblHead("Updated At", _.\("updatedAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
+    TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)})
   )
 
   private val table = InternalTable(tableHeader)
@@ -95,9 +95,9 @@ class AdminController @Inject()(
     if (request.path.endsWith("/")) {
       val navigation: PageNavigation = service.index
       val htmlTableHeader: Seq[String] = table.headers.map(_.name)
-      val data = DemoDataSource.pageData(filter, sort, page.getOrElse(0));
-      val foo: HtmlFormat.Appendable = indexPage(navigation, htmlTableHeader, data.html)
-      Future.successful(Ok(foo))
+      DemoDataSource.pageData(filter, sort, page.getOrElse(0)) map { data =>
+        Ok(indexPage(navigation, htmlTableHeader, data.html))
+      }
     } else {
       Future.successful(Redirect(route.copy(url = route.url+"/")))
     }
@@ -106,12 +106,11 @@ class AdminController @Inject()(
   def submission(reference: String): Action[AnyContent] = canonicallyAuthorised().async { implicit request =>
     val route = routes.AdminController.index(Seq.empty, Seq.empty, None)
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
-    DemoDataSource.find(tableHeader._1.symbol, reference) match {
+    DemoDataSource.find(tableHeader._1.symbol, reference) map {
       case Some(data: JsObject) =>
-        val foo: HtmlFormat.Appendable = submissionPage(navigation, reference, table.headers.map(x=>(Html(x.name),x.html(data))))
-        Future.successful(Ok(foo))
+        Ok(submissionPage(navigation, reference, table.headers.map(x=>(Html(x.name),x.html(data)))))
       case None =>
-        Future.successful(NotFound)
+        NotFound
     }
   }
 
@@ -128,7 +127,7 @@ class AdminController @Inject()(
         case 7 => RequestTimeout
       }
     }
-    DemoDataSource.find(tableHeader._1.symbol, reference) match {
+    DemoDataSource.find(tableHeader._1.symbol, reference) flatMap {
       case Some(data: JsObject) =>
         val promise: Promise[Result] = Promise()
         new Thread() {

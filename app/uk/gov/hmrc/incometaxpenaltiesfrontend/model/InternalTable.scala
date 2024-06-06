@@ -20,7 +20,10 @@ import play.api.libs.json.JsObject
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable.TblHead
 
+import java.lang.Math.min
 import java.net.URLDecoder
+import scala.concurrent.Future
+import scala.concurrent.Future.successful
 import scala.language.postfixOps
 
 object InternalTable {
@@ -56,6 +59,14 @@ object InternalTable {
     }
   }
 
+  case class SortSpec(field: TblHead[_], descending: Boolean)
+
+  sealed trait Operation { val symbol: String; }
+  object Equals extends Operation{ override val symbol = "="; }
+  object Contains extends Operation{ override val symbol = "~"; }
+
+  case class FilterSpec(field: TblHead[_], operation: Operation, needle: String)
+
   trait DataSource[T<:Product] {
     val table: InternalTable[T]
 
@@ -63,10 +74,42 @@ object InternalTable {
       lazy val html = rows.map{ table.format }
     }
 
-    def pageData(filter: Seq[String], sort: Seq[String], page: Int, pageSize: Int = 20): Data[T]
-    def find(hdr: TblHead[_], fieldValue: String): Option[JsObject]
+    private def parseSortParam(spec: String): SortSpec  = {
+        spec.split("-", 2) match {
+          case Array(direction, fieldName) =>
+            val hdr = table.headers.find(_.symbol == fieldName)
+            (direction, hdr) match {
+              case ("asc", Some(header)) => SortSpec(header, descending = false)
+              case ("desc", Some(header)) => SortSpec(header, descending = true)
+              case (_, None) => throw new Exception(s"""Bad column name: $fieldName""");
+              case (dir, _) => throw new Exception(s"""Bad direction: $dir""");
+            }
+          case x => throw new Exception(s"""$spec became ${x.mkString(" ")}""");
+        }
+    }
 
-    final def find(fieldName: String, fieldValue: String): Option[JsObject] = {
+    private def parseFilterParam(spec: String): FilterSpec = {
+      val decoded = URLDecoder.decode(spec, "UTF8")
+      decoded.split("=", 2) match {
+        case Array(fieldName, filterValue) =>
+          table.headers.find(_.symbol == fieldName) match {
+            case Some(header) => FilterSpec(header, Equals, filterValue)
+            case None => throw new Exception(s"""Bad column name in filter spec: $decoded""");
+          }
+        case x => throw new Exception(s"""$spec becamse ${x.mkString(" ")}""")
+      }
+    }
+
+    final def pageData(filter: Seq[String], sort: Seq[String], page: Int, pageSize: Int = 20): Future[Data[T]] = {
+      val sortSpecs = sort.map { parseSortParam }
+      val filters = filter.map { parseFilterParam }
+      fetch(filters, sortSpecs, page, pageSize)
+    }
+
+    def fetch(filter: Seq[FilterSpec], sort: Seq[SortSpec], page: Int, pageSize: Int = 20): Future[Data[T]]
+    def find(hdr: TblHead[_], fieldValue: String): Future[Option[JsObject]]
+
+    final def find(fieldName: String, fieldValue: String): Future[Option[JsObject]] = {
       table.headers.find(_.symbol == fieldName) match {
         case Some(hdr: TblHead[_]) =>
           find(hdr, fieldValue)
@@ -75,43 +118,30 @@ object InternalTable {
   }
 
   case class SimpleDataSource[T<:Product](table: InternalTable[T], val factory: () => Seq[JsObject]) extends DataSource[T] {
-    def pageData(filter: Seq[String], sort: Seq[String], page: Int, pageSize: Int = 20): Data[T] = {
-      val x: Seq[(JsObject,JsObject) => Int] = sort.map { spec =>
-        spec.split("-", 2) match {
-          case Array(direction, fieldName) =>
-            val comparator = table.headers.find(_.symbol == fieldName).map(_.comparator)
-            (direction, comparator) match {
-              case ("asc", Some(comparator)) => { case (l,r) => comparator(l,r) }
-              case ("desc", Some(comparator)) => { case (l,r) => -comparator(l,r) }
-              case (_, None) => throw new Exception(s"""Bad column name: $fieldName""");
-              case (dir, _) => throw new Exception(s"""Bad direction: $dir""");
-            }
-          case x => throw new Exception(s"""$spec became ${x.mkString(" ")}""");
-        }
+    def fetch(filter: Seq[FilterSpec], sortSpecs: Seq[SortSpec], page: Int, pageSize: Int = 20): Future[Data[T]] = {
+      val comparators: Seq[(JsObject,JsObject) => Int] = sortSpecs.map {
+        case spec if spec.descending => {  case (l,r) => -spec.field.comparator(l,r) }
+        case spec                    => {  case (l,r) => spec.field.comparator(l,r) }
       }
-      val startOpt: Option[Int] = None
-      def xs(l: JsObject, r: JsObject): Boolean = x.foldLeft(startOpt){ case (a,f) => a.orElse(Some(f(l,r)).filterNot(_==0)) }.getOrElse(0) > 0
 
-      val y: Seq[JsObject => Boolean] = filter.map { spec =>
-        val decoded = URLDecoder.decode(spec, "UTF8")
-        decoded.split("=", 2) match {
-          case Array(fieldName, filterValue) =>
-            val matcher = table.headers.find(_.symbol == fieldName).map{ case hdr => x: JsObject => hdr.matcher(x, filterValue) }
-            matcher match {
-              case Some(matcher) => matcher
-              case None => throw new Exception(s"""Bad column name in filter spec: $decoded""");
-            }
-          case x => throw new Exception(s"""$spec becamse ${x.mkString(" ")}"""); { case i => true }
-        }
+      def gestaltComparator(l: JsObject, r: JsObject): Boolean = {
+        val startOpt: Option[Int] = None
+        comparators.foldLeft(startOpt){ case (a,f) => a.orElse(Some(f(l,r)).filterNot(_==0)) }.getOrElse(0) > 0
       }
-      def ys(js: JsObject): Boolean = y.foldLeft(true){ case (a,f) => a && f(js) }
 
-      val rows = factory().map(_.as[JsObject]).filter(ys).sortWith(xs).grouped(pageSize).drop(page).nextOption().getOrElse(Seq.empty)
+      val matchers: Seq[JsObject => Boolean] = filter.map {
+        case spec if spec.operation == Equals => { x: JsObject => spec.field.matcher(x, spec.needle) }
+      }
+      def gestaltMatcher(js: JsObject): Boolean = matchers.foldLeft(true){ case (a,f) => a && f(js) }
 
-      Data(0, 0, rows)
+      val rawData = factory()
+      val rows = rawData.map(_.as[JsObject]).filter(gestaltMatcher).sortWith(gestaltComparator).grouped(pageSize).drop(page).nextOption().getOrElse(Seq.empty)
+
+      val numPages = rawData.length/pageSize + min(1, rawData.length % pageSize)
+      successful(Data(numPages, page, rows))
     }
 
-    def find(hdr: TblHead[_], fieldValue: String): Option[JsObject] = {
+    def find(hdr: TblHead[_], fieldValue: String): Future[Option[JsObject]] = successful {
       factory().find { case js: JsObject =>
         val v: Option[String] = hdr.text(js)
         v.exists(_.contains(fieldValue))
