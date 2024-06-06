@@ -16,21 +16,24 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import play.api.libs.json.JsObject
+import org.apache.pekko.actor.ActorSystem
+import play.api.Logging
+import play.api.libs.json.{JsNumber, JsObject, JsString}
 import play.api.mvc._
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.PageNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable
-import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable.{DataSource, SimpleDataSource, TblHead}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable.{SimpleDataSource, TblHead}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource.submissions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
 import uk.gov.hmrc.internalauth.client.Predicate.Permission
 import uk.gov.hmrc.internalauth.client._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import java.lang.Math.abs
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future, Promise}
 
 @Singleton
 class AdminController @Inject()(
@@ -38,9 +41,10 @@ class AdminController @Inject()(
    appConfig: AppConfig,
    auth: FrontendAuthComponents,
    indexPage: IndexPage,
-   submissionPage: SubmissionPage
+   submissionPage: SubmissionPage,
+   actorSystem: ActorSystem
 )(implicit ec: ExecutionContext)
-  extends FrontendController(messagesControllerComponents) with MessagesBaseController {
+  extends FrontendController(messagesControllerComponents) with MessagesBaseController with Logging {
   import appConfig._
 
   private val read = IAAction("READ")
@@ -99,8 +103,36 @@ class AdminController @Inject()(
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
     DemoDataSource.find(tableHeader._1.symbol, reference) match {
       case Some(data: JsObject) =>
-        val foo: HtmlFormat.Appendable = submissionPage(navigation, table.headers.map(_.html(data)))
+        val foo: HtmlFormat.Appendable = submissionPage(navigation, reference, table.headers.map(x=>(Html(x.name),x.html(data))))
         Future.successful(Ok(foo))
+      case None =>
+        Future.successful(NotFound)
+    }
+  }
+
+  def checkFileUrl(reference: String): Action[AnyContent] = Action.async { implicit request =>
+    val randomResponse = {
+      abs(reference.hashCode) % 8 match {
+        case 0 => Ok(JsObject(Seq("status" -> JsNumber(200), "statusText" -> JsString("Ok"), "type" -> JsString("application/msword"), "size" -> JsNumber(256789))))
+        case 1 => Ok(JsObject(Seq("status" -> JsNumber(400), "statusText" -> JsString("Bad Request"))))
+        case 2 => Ok(JsObject(Seq("status" -> JsNumber(401), "statusText" -> JsString("Unauthorised"))))
+        case 3 => Ok(JsObject(Seq("status" -> JsNumber(403), "statusText" -> JsString("Forbidden"))))
+        case 4 => Ok(JsObject(Seq("status" -> JsNumber(404), "statusText" -> JsString("Not Found"))))
+        case 5 => Ok(JsObject(Seq("status" -> JsNumber(500), "statusText" -> JsString("Internal Server Error"))))
+        case 6 => Ok(JsObject(Seq("status" -> JsNumber(503), "statusText" -> JsString("Service Unavailable"))))
+        case 7 => RequestTimeout
+      }
+    }
+    DemoDataSource.find(tableHeader._1.symbol, reference) match {
+      case Some(data: JsObject) =>
+        val promise: Promise[Result] = Promise()
+        new Thread() {
+          override def run(): Unit = {
+            Thread.sleep(200 + abs(reference.hashCode) % 300)
+            promise.success(randomResponse)
+          }
+        }.start()
+        promise.future
       case None =>
         Future.successful(NotFound)
     }

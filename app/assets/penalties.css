@@ -40,3 +40,18 @@ th .govuk-form-group {
 .govuk-table__body th {
     white-space: nowrap;
 }
+
+.spinner {
+    animation-name: rotate;
+    animation-duration: 4000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.check-ok {
+    color: green
+}
+
+.check-fail {
+    color: red
+}

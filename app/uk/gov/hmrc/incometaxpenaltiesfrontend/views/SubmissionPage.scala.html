@@ -20,82 +20,50 @@
 
 @this(layout: HmrcInternalPage, govukTable: GovukTable, govukSummaryList : GovukSummaryList)
 
-@(navigation: PageNavigation, data: Seq[Html])(implicit request: Request[_], messages: Messages)
+@(navigation: PageNavigation, reference: String, data: Seq[(Html,Html)])(implicit request: Request[_], messages: Messages)
 
 @layout(navigation) {
 
 @govukSummaryList(SummaryList(
-    rows = Seq(
+  rows = data.map{case (k,v) => SummaryListRow(Key(HtmlContent(k)), Value(HtmlContent(v))) }
+    ++ Seq(
+
+      SummaryListRow(),
+      SummaryListRow(Key(HtmlContent("File URL check")), Value(HtmlContent("""<span id="file-check-status"><span class="spinner">&#10227</span> Checking, please wait...</span>"""))),
+      SummaryListRow(),
+
       SummaryListRow(
-        key = Key(content = Text("Name")),
-        value = Value(content = Text("Sarah Philips")),
         actions = Some(Actions(
           items = Seq(
             ActionItem(
               href = "#",
-              content = Text("Change"),
+              content = Text("Retry"),
               visuallyHiddenText = Some("name")
             )
           )
         ))
-      ),
-      SummaryListRow(
-        key = Key(
-          content = Text("Date of birth")
-        ),
-        value = Value(
-          content = Text("5 January 1978")
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              href = "#",
-              content = Text("Change"),
-              visuallyHiddenText = Some("date of birth")
-            )
-          )
-        ))
-      ),
-      SummaryListRow(
-        key = Key(
-          content = Text("Address")
-        ),
-        value = Value(
-          content = HtmlContent("""72 Guild Street<br>London<br>SE23 6FH""")
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              href = "#",
-              content = Text("Change"),
-              visuallyHiddenText = Some("address")
-            )
-          )
-        ))
-      ),
-      SummaryListRow(
-        key = Key(
-          content = Text("Contact details")
-        ),
-        value = Value(
-          content = HtmlContent("""<p class="govuk-body">07700 900457</p><p class="govuk-body">sarah.phillips@example.com</p>""")
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              href = "#",
-              content = Text("Add"),
-              visuallyHiddenText = Some("contact details")
-            ),
-            ActionItem(
-              href = "#",
-              content = Text("Change"),
-              visuallyHiddenText = Some("contact details")
-            )
-          )
-        ))
       )
+
     )
-  ))
+))
 
 }
+
+<script>
+window.onload = function() {
+  fetch('../check-file-url/@reference').then( response => {
+    var elem = document.getElementById("file-check-status")
+    if (response.status == 408) {
+        var statusChar = "<span class=check-fail>&#10008;</span>";
+        elem.innerHTML = statusChar + " " + response.statusText
+    } else if (response.status == 200) {
+        response.json().then(jsonResponse => {
+            var statusChar = jsonResponse.status == 200 ? "<span class=check-ok>&#10004;</span>" : "<span class=check-fail>&#10008;</span>";
+            elem.innerHTML = statusChar + " " + jsonResponse.statusText
+        })
+    } else {
+        elem.innerHTML = "<span>?</span> Check failed"
+    }
+  });
+}
+</script>
