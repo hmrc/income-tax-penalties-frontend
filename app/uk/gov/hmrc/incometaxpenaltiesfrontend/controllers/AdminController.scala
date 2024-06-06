@@ -91,14 +91,19 @@ class AdminController @Inject()(
   private val DemoDataSource = SimpleDataSource(table, () => submissions.value.map{_.as[JsObject]}.toSeq)
 
   def index[A](sort: Seq[String], filter: Seq[String], page: Option[Int]): EssentialAction = canonicallyAuthorised().async { implicit request =>
-    val navigation: PageNavigation = service.index
-    val htmlTableHeader: Seq[String] = table.headers.map(_.name)
-    val data = DemoDataSource.pageData(filter, sort, page.getOrElse(0));
-    val foo: HtmlFormat.Appendable = indexPage(navigation, htmlTableHeader, data.html)
-    Future.successful(Ok(foo))
+    val route = routes.AdminController.index(Seq.empty, Seq.empty, None)
+    if (request.path.endsWith("/")) {
+      val navigation: PageNavigation = service.index
+      val htmlTableHeader: Seq[String] = table.headers.map(_.name)
+      val data = DemoDataSource.pageData(filter, sort, page.getOrElse(0));
+      val foo: HtmlFormat.Appendable = indexPage(navigation, htmlTableHeader, data.html)
+      Future.successful(Ok(foo))
+    } else {
+      Future.successful(Redirect(route.copy(url = route.url+"/")))
+    }
   }
 
-  def submission(reference: String): Action[AnyContent] = Action.async { implicit request =>
+  def submission(reference: String): Action[AnyContent] = canonicallyAuthorised().async { implicit request =>
     val route = routes.AdminController.index(Seq.empty, Seq.empty, None)
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
     DemoDataSource.find(tableHeader._1.symbol, reference) match {
