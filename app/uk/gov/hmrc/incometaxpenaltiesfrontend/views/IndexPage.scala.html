@@ -49,7 +49,7 @@
  @govukTable(Table(
  rows = tableData.map{row=>row.map{cell=>TableRow(content = HtmlContent(cell))}},
  head = Some(tableHeader.map{s=>HeadCell(content = HtmlContent(colHead(s)))}),
- caption = Some("Daily Appeal Evidence Submissions"),
+ caption = Some("Penalties Appeal Evidence Submissions"),
  captionClasses = "govuk-table__caption--m",
  firstCellIsHeader = true,
  classes = "govuk-table--small-text-until-tablet"
