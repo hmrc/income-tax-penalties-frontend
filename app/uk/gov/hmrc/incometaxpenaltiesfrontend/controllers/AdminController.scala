@@ -16,20 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import org.apache.pekko.actor.ActorSystem
 import play.api.Logging
 import play.api.libs.json.{JsNumber, JsObject, JsString}
 import play.api.mvc._
-import play.twirl.api.{Html, HtmlFormat}
+import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.PageNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable
 import uk.gov.hmrc.incometaxpenaltiesfrontend.model.InternalTable.{SimpleDataSource, TblHead}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.util.ActionUtil.ActionBuilderPlus
 import uk.gov.hmrc.incometaxpenaltiesfrontend.util.PseudoDataSource.submissions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
-import uk.gov.hmrc.internalauth.client.Predicate.Permission
 import uk.gov.hmrc.internalauth.client._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import java.lang.Math.abs
 import javax.inject.{Inject, Singleton}
@@ -41,41 +39,10 @@ class AdminController @Inject()(
    appConfig: AppConfig,
    auth: FrontendAuthComponents,
    indexPage: IndexPage,
-   submissionPage: SubmissionPage,
-   actorSystem: ActorSystem
+   submissionPage: SubmissionPage
 )(implicit ec: ExecutionContext)
-  extends FrontendController(messagesControllerComponents) with MessagesBaseController with Logging {
+  extends InternalFrontendController(messagesControllerComponents, appConfig, auth) with MessagesBaseController with Logging {
   import appConfig._
-
-  private val read = IAAction("READ")
-
-  private def authorised(location: String, action: IAAction)/*(implicit request: Request[_])*/: ActionBuilder[MessagesRequest, AnyContent] = {
-    messagesControllerComponents.messagesActionBuilder.compose(
-      auth.authorizedAction(
-        continueUrl = routes.AdminController.index(Seq.empty, Seq.empty, None),
-        predicate = Permission(
-          Resource(
-            ResourceType(appName),
-            ResourceLocation(location)
-          ),
-          action
-        ),
-        retrieval = Retrieval.username
-      )
-    )
-    Action
-  }
-
-  private def canonicallyAuthorised()(implicit ec: ExecutionContext): ActionBuilder[MessagesRequest, AnyContent] = {
-    val underlyingAction = Action
-    new ActionBuilder[MessagesRequest, AnyContent]() {
-      override def parser: BodyParser[AnyContent] = underlyingAction.parser
-      override def invokeBlock[A](request: Request[A], block: MessagesRequest[A] => Future[Result]): Future[Result] = {
-        underlyingAction.invokeBlock(request, block)
-      }
-      override protected def executionContext: ExecutionContext = ec
-    }
-  }
 
   private val tableHeader = (
     TblHead("Reference", _.\("reference").asOpt[String], markup = {ref: String => Html(s"<a href=submission/$ref>$ref</a>")}),
@@ -90,20 +57,20 @@ class AdminController @Inject()(
 
   private val DemoDataSource = SimpleDataSource(table, () => submissions.value.map{_.as[JsObject]}.toSeq)
 
-  def index[A](sort: Seq[String], filter: Seq[String], page: Option[Int]): EssentialAction = canonicallyAuthorised().async { implicit request =>
-    val route = routes.AdminController.index(Seq.empty, Seq.empty, None)
-    if (request.path.endsWith("/")) {
-      val navigation: PageNavigation = service.index
-      val htmlTableHeader: Seq[String] = table.headers.map(_.name)
-      DemoDataSource.pageData(filter, sort, page.getOrElse(0)) map { data =>
-        Ok(indexPage(navigation, htmlTableHeader, data.html))
+  def index[A](sort: Seq[String], filter: Seq[String], page: Option[Int]): EssentialAction = canonicallyAuthorised().asIndex.async { implicit request =>
+    // TODO: persist filter display
+    // TODO: fix paginator
+    // TODO: add penalty appeal reference # to the orchestrator database
+    val navigation: PageNavigation = service.index
+    val htmlTableHeader: Seq[String] = table.headers.map(_.name)
+    DemoDataSource.pageData(filter, sort, page.getOrElse(0)) map { data =>
+      Ok(indexPage(navigation, htmlTableHeader, data.html))
       }
-    } else {
-      Future.successful(Redirect(route.copy(url = route.url+"/")))
-    }
   }
 
   def submission(reference: String): Action[AnyContent] = canonicallyAuthorised().async { implicit request =>
+    // TODO: make breadcrumbs more intelligible
+    // TODO: add more fields
     val route = routes.AdminController.index(Seq.empty, Seq.empty, None)
     val navigation: PageNavigation = appConfig.service :+ ("Home", route) called "Submission Log"
     DemoDataSource.find(tableHeader._1.symbol, reference) map {
