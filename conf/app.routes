@@ -2,7 +2,7 @@
 
 ->         /hmrc-frontend             hmrcfrontend.Routes
 GET        /                          AdminController.index()
-GET        /submissions/              AdminController.submissions(view: String ?= "reference", sort: Seq[String], filter: Seq[String], page: Option[Int])
+GET        /submissions/              AdminController.submissions(sort: Seq[String], filter: Seq[String], page: Option[Int])
 GET        /submissions/:reference    AdminController.submission(reference: String)
 GET        /check-file-url/:reference AdminController.checkFileUrl(reference: String)
 GET        /assets/*file              controllers.Assets.versioned(path = "/public", file: Asset)

@@ -55,19 +55,24 @@ class AdminController @Inject()(
     successful(Ok(indexPage(navigation)))
   }
 
-  def submissions[A](view: String, sort: Seq[String], filter: Seq[String], page: Option[Int]): EssentialAction = canonicallyAuthorised().asIndex.async { implicit request =>
+  def submissions[A](sort: Seq[String], filter: Seq[String], page: Option[Int]): EssentialAction = canonicallyAuthorised().asIndex.async { implicit request =>
     // TODO: persist filter display
     // TODO: fix paginator
     // TODO: add penalty appeal reference # to the orchestrator database
-    val navigation: PageNavigation = service.index
-    val demoDataSource = dataSourceFactory(InternalTable((
-      TblHead("Reference", _.\("reference").asOpt[String], markup = {ref: String => Html(s"<a href=submission/$ref>$ref</a>")}),
-      TblHead("Status", _.\("status").asOpt[String]),
-      TblHead("Attempt #", _.\("numberOfAttempts").asOpt[Int]),
-      TblHead("Created At", _.\("createdAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
-      TblHead("Updated At", _.\("updatedAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
-      TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)})
-    )))
+    val route = routes.AdminController.index()
+    val navigation: PageNavigation = service.child("Home", route) called "Submission Log"
+    val referenceField = TblHead("Reference", _.\("reference").asOpt[String], markup = {ref: String => Html(s"<a href=$ref class=govuk-link--no-visited-state>$ref</a>")})
+    val linkField = TblHead("foo\uD83D\uDD17", _.\("reference").asOpt[String], markup = {ref: String => Html(s"<a href=$ref>&#x2197;</a>")})
+    val ninoField = TblHead("NINO", { js => (js \ "notification" \ "file" \ "properties" \ 0 \ "value").asOpt[String] })
+    val appealIdField = TblHead("Appeal ID", { js => (js \ "notification" \ "file" \ "properties" \ 1 \ "value").asOpt[String] })
+    val statusField = TblHead("Status", _.\("status").asOpt[String])
+    val numberOfAttemnptsField = TblHead("Attempt #", _.\("numberOfAttempts").asOpt[Int])
+    val createdAtField = TblHead("Created At", _.\("createdAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)})
+    val updatedAtField = TblHead("Updated At", _.\("updatedAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)})
+    val nextAttemptAtField = TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)})
+    val demoDataSource = dataSourceFactory(InternalTable(
+      (referenceField, ninoField, appealIdField, statusField, numberOfAttemnptsField, createdAtField)
+    ))
     val htmlTableHeader: Seq[String] = demoDataSource.table.headers.map(_.name)
     demoDataSource.pageData(filter, sort, page.getOrElse(0)) map { data =>
       Ok(submissionsPage(navigation, htmlTableHeader, data.html))
@@ -78,14 +83,21 @@ class AdminController @Inject()(
     // TODO: make breadcrumbs more intelligible
     // TODO: add more fields
     val route = routes.AdminController.index()
-    val navigation: PageNavigation = appConfig.service.child("Home", route) called "Submission Log"
+    val route2 = routes.AdminController.submissions(Seq(), Seq(), None)
+    val navigation: PageNavigation = appConfig.service.child("Home", route).child("Submission Log", route2) called s"Submission $reference"
+    logger.warn(s"### ${route2.url} ###")
     val demoDataSource = dataSourceFactory(InternalTable((
-      TblHead("Reference", _.\("reference").asOpt[String], markup = {ref: String => Html(s"<a href=submission/$ref>$ref</a>")}),
+      TblHead("Reference", _.\("reference").asOpt[String]),
+      TblHead("Client NINO", { js => (js \ "notification" \ "file" \ "properties" \ 0 \ "value").asOpt[String] }),
+      TblHead("Appeal ID", { js => (js \ "notification" \ "file" \ "properties" \ 1 \ "value").asOpt[String] }),
       TblHead("Status", _.\("status").asOpt[String]),
       TblHead("Attempt #", _.\("numberOfAttempts").asOpt[Int]),
       TblHead("Created At", _.\("createdAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
       TblHead("Updated At", _.\("updatedAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
-      TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)})
+      TblHead("Next Attempt At", _.\("nextAttemptAt").asOpt[String], format = {ref: String => ref.replaceAll("[TZ]", " ").dropRight(4)}),
+      TblHead("File name", { js => (js \ "notification" \ "file" \ "name").asOpt[String] }),
+      TblHead("File size", { js => (js \ "notification" \ "file" \ "size").asOpt[Int] }, format = {v: Int=> f"$v%,1.0f" }, markup = {ref: String => Html(s"$ref bytes")}),
+      TblHead("Correlation ID", { js => (js \ "notification" \ "audit" \ "correlationID").asOpt[String] })
     )))
     demoDataSource.find(reference) map {
       case Some(data: JsObject) =>
@@ -108,9 +120,9 @@ class AdminController @Inject()(
         case 7 => RequestTimeout
       }
     }
-    dataSourceFactory(InternalTable((
-      TblHead("Reference", _.\("reference").asOpt[String])
-    ))).find(reference) flatMap {
+    dataSourceFactory(
+      InternalTable(Tuple1(TblHead("Reference", _.\("reference").asOpt[String])))
+    ).find(reference) flatMap {
       case Some(_: JsObject) =>
         val promise: Promise[Result] = Promise()
         new Thread() {

@@ -43,9 +43,6 @@ case class PageNavigation (
   pageTitle: String
 ) {
   def serviceName = path.pageService.serviceName
-//  def +(pageTitle: String, href: Call): PageNavigation = {
-//    this.copy(path = path :+ (pageTitle,href), pageTitle = pageTitle)
-//  }
   def breadcrumbTrail()(implicit request: RequestHeader): Seq[BreadcrumbsItem] = {
     path.breadcrumbs.map{bc=>BreadcrumbsItem(content = Text(bc._1), href = Some(bc._2.relative))}
   }

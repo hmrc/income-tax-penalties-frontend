@@ -26,7 +26,17 @@ object PseudoDataSource {
   private val hexChars = "abcdef0123456789"
   private def hex: LazyList[Char] = LazyList continually (hexChars charAt (random nextInt hexChars.length))
 
+  private val numericChars = "0123456789"
+  private def numeric: LazyList[Char] = LazyList continually (numericChars charAt (random nextInt numericChars.length))
+
+  private val alphaChars = "abcdefghijklmnopqrstuvqwxyz"
+  private def alpha: LazyList[Char] = LazyList continually (alphaChars charAt (random nextInt alphaChars.length))
+
   private def reference: LazyList[String] = LazyList continually Seq(8,4,4,4,12).map(hex.take(_).mkString).mkString("-")
+
+  private def nino: LazyList[String] = LazyList continually Seq(alpha.take(2).mkString, numeric.take(6).mkString, alpha.take(1).mkString).mkString.toUpperCase
+
+  private def appealId: LazyList[String] = LazyList continually hex.take(16).mkString.toUpperCase
 
   val statii = Seq(
     "PENDING",
@@ -43,7 +53,8 @@ object PseudoDataSource {
 
   //def dateTime: LazyList[LocalDateTime] = LazyList continually LocalDateTime. (random.between(ofYearDay(2023, 1).toEpochDay, ofYearDay(2024, 1).toEpochDay))
 
-  private def submission = s"""{
+  // NOTE: currently misusing the "properties" array to hold nino and appeal ID for demo purposes to
+  private[util] def submission = s"""{
     |  "reference": "${reference.head}",
     |  "status": "${status.head}",
     |  "numberOfAttempts": ${random.nextInt(100)},
@@ -60,12 +71,10 @@ object PseudoDataSource {
     |        "algorithm": "SHA-256",
     |        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     |      },
-    |      "size": ${random.nextInt(1000)},
+    |      "size": ${random.nextInt(100000)},
     |      "properties": [
-    |        {
-    |          "name": "name",
-    |          "value": "value"
-    |        }
+    |        { "name": "nino", "value": "${nino.head}" },
+    |        { "name": "appealId", "value": "${appealId.head}" }
     |      ]
     |    },
     |    "audit": {
