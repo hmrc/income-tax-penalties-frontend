@@ -80,12 +80,9 @@ class AdminController @Inject()(
   }
 
   def submission(reference: String): Action[AnyContent] = canonicallyAuthorised().async { implicit request =>
-    // TODO: make breadcrumbs more intelligible
-    // TODO: add more fields
     val route = routes.AdminController.index()
     val route2 = routes.AdminController.submissions(Seq(), Seq(), None)
     val navigation: PageNavigation = appConfig.service.child("Home", route).child("Submission Log", route2) called s"Submission $reference"
-    logger.warn(s"### ${route2.url} ###")
     val demoDataSource = dataSourceFactory(InternalTable((
       TblHead("Reference", _.\("reference").asOpt[String]),
       TblHead("Client NINO", { js => (js \ "notification" \ "file" \ "properties" \ 0 \ "value").asOpt[String] }),

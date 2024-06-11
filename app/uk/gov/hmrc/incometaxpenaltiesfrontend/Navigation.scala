@@ -44,6 +44,6 @@ case class PageNavigation (
 ) {
   def serviceName = path.pageService.serviceName
   def breadcrumbTrail()(implicit request: RequestHeader): Seq[BreadcrumbsItem] = {
-    path.breadcrumbs.map{bc=>BreadcrumbsItem(content = Text(bc._1), href = Some(bc._2.relative))}
+    path.breadcrumbs.map{bc=>BreadcrumbsItem(content = Text(bc._1), href = Some(bc._2.url))}
   }
 }
