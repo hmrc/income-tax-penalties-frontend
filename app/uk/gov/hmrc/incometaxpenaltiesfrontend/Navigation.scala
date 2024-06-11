@@ -21,7 +21,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.BreadcrumbsItem
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 
 case class PageService(serviceName: String, baseUrl: String) {
-  def :+(pageTitle: String, href: Call): PageNavigationPath = {
+  def child(pageTitle: String, href: Call): PageNavigationPath = {
     PageNavigationPath(this, Seq((pageTitle,href)))
   }
   def index: PageNavigation = PageNavigation(PageNavigationPath(this, Seq.empty), serviceName)
@@ -32,7 +32,7 @@ case class PageNavigationPath (
   pageService: PageService,
   breadcrumbs: Seq[(String,Call)]
 ) {
-  def :+(pageTitle: String, href: Call): PageNavigationPath = {
+  def child(pageTitle: String, href: Call): PageNavigationPath = {
     this.copy(pageService = pageService, breadcrumbs = this.breadcrumbs :+ (pageTitle,href))
   }
   def called(pageTitle: String): PageNavigation = PageNavigation(this, pageTitle)

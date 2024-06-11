@@ -24,7 +24,8 @@ class ActionUtilSpec extends AnyWordSpec with Matchers {
 
   "addTrailingSlash" should {
     "add a slash if not present in path" in {
-        addTrailingSlash("http://x.y/foo") shouldBe "http://x.y/foo/"
+      addTrailingSlash("http://x.y/foo") shouldBe "http://x.y/foo/"
+      addTrailingSlash("/foo") shouldBe "/foo/"
     }
 
     "don't change the url if already present in path" in {

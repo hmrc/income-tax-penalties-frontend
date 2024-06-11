@@ -21,3 +21,5 @@ lazy val it = project
   .dependsOn(microservice % "test->test")
   .settings(DefaultBuildSettings.itSettings())
   .settings(libraryDependencies ++= AppDependencies.it)
+
+routesImport ++= Seq("uk.gov.hmrc.incometaxpenaltiesfrontend.controllers._")

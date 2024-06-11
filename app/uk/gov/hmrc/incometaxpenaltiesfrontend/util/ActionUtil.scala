@@ -45,11 +45,19 @@ object ActionUtil extends Logging {
     if (originalURI.getRawPath.endsWith("/")) {
       uri
     } else {
-      val redirectTo = originalURI.getScheme + "://" + originalURI.getRawAuthority + originalURI.getRawPath + "/" +
-        (if (Option(originalURI.getRawQuery).nonEmpty) "?" + originalURI.getRawQuery else "") +
-        (if (Option(originalURI.getRawFragment).nonEmpty) "#" + originalURI.getRawFragment else "")
-
-      redirectTo
+      if (originalURI.isAbsolute) {
+        val redirectTo = originalURI.getScheme + "://" + originalURI.getRawAuthority + originalURI.getRawPath + "/" +
+          (if (Option(originalURI.getRawQuery).nonEmpty) "?" + originalURI.getRawQuery else "") +
+          (if (Option(originalURI.getRawFragment).nonEmpty) "#" + originalURI.getRawFragment else "")
+        logger.warn(s"### $uri => $redirectTo ###")
+        redirectTo
+      } else {
+        val redirectTo = originalURI.getRawPath + "/" +
+          (if (Option(originalURI.getRawQuery).nonEmpty) "?" + originalURI.getRawQuery else "") +
+          (if (Option(originalURI.getRawFragment).nonEmpty) "#" + originalURI.getRawFragment else "")
+        logger.warn(s"### $uri => $redirectTo ###")
+        redirectTo
+      }
     }
   }
 }

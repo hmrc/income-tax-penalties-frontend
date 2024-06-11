@@ -24,10 +24,10 @@ import java.lang.Math.min
 import java.net.URLDecoder
 import scala.concurrent.Future
 import scala.concurrent.Future.successful
-import scala.language.postfixOps
+import scala.reflect.ClassTag
 
 object InternalTable {
-  case class TblHead[T](
+  case class TblHead[T: ClassTag](
     name: String,
     lookup: JsObject => Option[T],
     markup: String => Html = Html(_),
@@ -43,7 +43,7 @@ object InternalTable {
 
     val comparator: (JsObject, JsObject)=>Int = { case (l: JsObject, r: JsObject) =>
       (lookup(l), lookup(r)) match {
-        case (Some(lV: Comparable[T]), Some(rV: T)) => lV.compareTo(rV)
+        case (Some(lV: Comparable[T] @unchecked), Some(rV: T)) => lV.compareTo(rV)
         case (Some(lV), Some(rV)) => lV.toString.compareTo(rV.toString) // fallback
         case (Some(_), None) => 1
         case (None, Some(_)) => -1
@@ -53,7 +53,7 @@ object InternalTable {
 
     val matcher: (JsObject, String)=>Boolean = { case (js: JsObject, needle: String) =>
       lookup(js) match {
-        case Some(v: T) => v.toString.contains(needle)
+        case Some(v) => v.toString.contains(needle)
         case None => false
       }
     }
@@ -70,7 +70,7 @@ object InternalTable {
   trait DataSource[T<:Product] {
     val table: InternalTable[T]
 
-    case class Data[T<:Product](numPages: Int, pageNumber: Int, val rows: Seq[JsObject]) {
+    case class Data[U<:T](numPages: Int, pageNumber: Int, val rows: Seq[JsObject]) {
       lazy val html = rows.map{ table.format }
     }
 
@@ -111,13 +111,17 @@ object InternalTable {
 
     final def find(fieldName: String, fieldValue: String): Future[Option[JsObject]] = {
       table.headers.find(_.symbol == fieldName) match {
-        case Some(hdr: TblHead[_]) =>
-          find(hdr, fieldValue)
+        case Some(hdr: TblHead[_]) => find(hdr, fieldValue)
+        case None => throw new Exception(s"No such field: $fieldName")
       }
+    }
+
+    final def find(fieldValue: String): Future[Option[JsObject]] = {
+      find(table.primaryKey, fieldValue)
     }
   }
 
-  case class SimpleDataSource[T<:Product](table: InternalTable[T], val factory: () => Seq[JsObject]) extends DataSource[T] {
+  class SimpleDataSource[T<:Product](val table: InternalTable[T])(val factory: () => Seq[JsObject]) extends DataSource[T] {
     def fetch(filter: Seq[FilterSpec], sortSpecs: Seq[SortSpec], page: Int, pageSize: Int = 20): Future[Data[T]] = {
       val comparators: Seq[(JsObject,JsObject) => Int] = sortSpecs.map {
         case spec if spec.descending => {  case (l,r) => -spec.field.comparator(l,r) }
@@ -131,6 +135,7 @@ object InternalTable {
 
       val matchers: Seq[JsObject => Boolean] = filter.map {
         case spec if spec.operation == Equals => { x: JsObject => spec.field.matcher(x, spec.needle) }
+        case spec => throw new Exception(s"Unsupported operation: $spec")
       }
       def gestaltMatcher(js: JsObject): Boolean = matchers.foldLeft(true){ case (a,f) => a && f(js) }
 
@@ -152,6 +157,9 @@ object InternalTable {
 
 case class InternalTable[T<:Product](header: T) {
   val headers: Seq[TblHead[_]] = header.productIterator.toSeq.asInstanceOf[Seq[TblHead[Any]]]
+
+  /** override this if the first field is not the primary key */
+  val primaryKey: TblHead[_] = headers.head
 
   def format(js: JsObject): Seq[Html] = headers.map(_.html(js))
 }

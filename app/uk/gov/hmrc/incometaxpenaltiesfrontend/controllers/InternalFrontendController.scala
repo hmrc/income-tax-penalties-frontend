@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.Logging
 import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.internalauth.client.Predicate.Permission
 import uk.gov.hmrc.internalauth.client._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
@@ -33,26 +32,25 @@ abstract class InternalFrontendController @Inject()(
                                  auth: FrontendAuthComponents,
                                )(implicit ec: ExecutionContext)
   extends FrontendController(messagesControllerComponents) with MessagesBaseController with Logging {
-  import appConfig._
 
   protected val read = IAAction("READ")
 
-  protected def authorised(location: String, action: IAAction)/*(implicit request: Request[_])*/: ActionBuilder[MessagesRequest, AnyContent] = {
-    messagesControllerComponents.messagesActionBuilder.compose(
-      auth.authorizedAction(
-        continueUrl = routes.AdminController.index(Seq.empty, Seq.empty, None),
-        predicate = Permission(
-          Resource(
-            ResourceType(appName),
-            ResourceLocation(location)
-          ),
-          action
-        ),
-        retrieval = Retrieval.username
-      )
-    )
-    Action
-  }
+//  protected def authorised(location: String, action: IAAction)/*(implicit request: Request[_])*/: ActionBuilder[MessagesRequest, AnyContent] = {
+//    messagesControllerComponents.messagesActionBuilder.compose(
+//      auth.authorizedAction(
+//        continueUrl = routes.AdminController.index(Seq.empty, Seq.empty, None),
+//        predicate = Permission(
+//          Resource(
+//            ResourceType(appName),
+//            ResourceLocation(location)
+//          ),
+//          action
+//        ),
+//        retrieval = Retrieval.username
+//      )
+//    )
+//    Action
+//  }
 
   protected def canonicallyAuthorised()/*(implicit ec: ExecutionContext)*/: ActionBuilder[MessagesRequest, AnyContent] = {
     val underlyingAction = Action

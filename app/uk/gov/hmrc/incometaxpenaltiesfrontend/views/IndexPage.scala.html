@@ -21,50 +21,11 @@
 @this(
   layout: HmrcInternalPage,
   govukTable: GovukTable,
-  govukPagination : GovukPagination,
   govukInput: GovukInput
 )
 
-@(navigation: PageNavigation, tableHeader: Seq[String], tableData: Seq[Seq[Html]])(implicit request: Request[_], messages: Messages)
-
-@colHead(name: String) = {
-    @defining(name.toLowerCase.replaceAll("[^a-z]+","-").stripSuffix("-")) { symbolicName =>
-      <span>
-            @name
-            <span class="table-header-controls">
-                <a onclick="toggleFilter(event)"><img fetchpriority="high" src="assets/icons/filter.svg"></a>
-                <a onclick="toggleSort(event)"><img fetchpriority="high" src="assets/icons/sort.svg"></a>
-            </span>
-      </span>
-      <span class="table-header-filter" style="display:none">
-        @govukInput(Input(id = s"$symbolicName-header-filter", name = s"$symbolicName", classes = "govuk-!-width-full",
-        suffix = Some(PrefixOrSuffix(
-          content = HtmlContent("""<span onclick="filter(event)">&#x1F50D;</span>""")
-        ))))
-      </span>
-    }
-}
+@(navigation: PageNavigation)(implicit request: Request[_], messages: Messages)
 
 @layout(navigation) {
- @govukTable(Table(
- rows = tableData.map{row=>row.map{cell=>TableRow(content = HtmlContent(cell))}},
- head = Some(tableHeader.map{s=>HeadCell(content = HtmlContent(colHead(s)))}),
- caption = Some("Penalties Appeal Evidence Submissions"),
- captionClasses = "govuk-table__caption--m",
- firstCellIsHeader = true,
- classes = "govuk-table--small-text-until-tablet"
- ))
- @govukPagination(Pagination(
-    items = Some(Seq(
-      PaginationItem(href = "#", number = Some("1")),
-      PaginationItem(ellipsis = Some(true)),
-      PaginationItem(href = "#", number = Some("6")),
-      PaginationItem(href = "#", number = Some("7"), current = Some(true)),
-      PaginationItem(href = "#", number = Some("8")),
-      PaginationItem(ellipsis = Some(true)),
-      PaginationItem(href = "#",  number = Some("42"))
-    )),
-    previous = Some(PaginationLink(href = "#")),
-    next = Some(PaginationLink(href = "#"))
-  ))
+FOO!
 }
