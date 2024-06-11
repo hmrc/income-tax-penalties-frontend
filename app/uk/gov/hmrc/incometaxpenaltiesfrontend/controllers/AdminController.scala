@@ -73,9 +73,8 @@ class AdminController @Inject()(
     val demoDataSource = dataSourceFactory(InternalTable(
       (referenceField, ninoField, appealIdField, statusField, numberOfAttemnptsField, createdAtField)
     ))
-    val htmlTableHeader: Seq[String] = demoDataSource.table.headers.map(_.name)
     demoDataSource.pageData(filter, sort, page.getOrElse(0)) map { data =>
-      Ok(submissionsPage(navigation, htmlTableHeader, data.html))
+      Ok(submissionsPage(navigation, data))
     }
   }
 

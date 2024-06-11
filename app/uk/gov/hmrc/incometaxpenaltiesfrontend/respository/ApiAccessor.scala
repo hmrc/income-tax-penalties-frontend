@@ -37,7 +37,7 @@ class ApiAccessor @Inject()(ws: WSClient)(implicit ec:ExecutionContext) {
       ).get().map { response =>
         val totalSize = locateTotalSize(response.json)
         val numPages = totalSize/pageSize + min(1, totalSize % pageSize)
-        Data(numPages, page, locateRows(response.json).toSeq)
+        Data(filter, numPages, page, locateRows(response.json).toSeq)
       }
     }
 

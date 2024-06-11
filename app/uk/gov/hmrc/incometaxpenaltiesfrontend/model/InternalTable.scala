@@ -67,11 +67,21 @@ object InternalTable {
 
   case class FilterSpec(field: TblHead[_], operation: Operation, needle: String)
 
+  trait TableData {
+    val filters: Seq[FilterSpec]
+    val numPages: Int
+    val pageNumber: Int
+    val rows: Seq[JsObject]
+    val htmlHeader: Seq[String]
+    val htmlBody: Seq[Seq[Html]]
+  }
+
   trait DataSource[T<:Product] {
     val table: InternalTable[T]
 
-    case class Data[U<:T](numPages: Int, pageNumber: Int, val rows: Seq[JsObject]) {
-      lazy val html = rows.map{ table.format }
+    case class Data[U<:T](filters: Seq[FilterSpec], numPages: Int, pageNumber: Int, val rows: Seq[JsObject]) extends TableData {
+      lazy val htmlHeader: Seq[String] = table.headers.map(_.name)
+      lazy val htmlBody: Seq[Seq[Html]] = rows.map{ table.format }
     }
 
     private def parseSortParam(spec: String): SortSpec  = {
@@ -143,7 +153,7 @@ object InternalTable {
       val rows = rawData.map(_.as[JsObject]).filter(gestaltMatcher).sortWith(gestaltComparator).grouped(pageSize).drop(page).nextOption().getOrElse(Seq.empty)
 
       val numPages = rawData.length/pageSize + min(1, rawData.length % pageSize)
-      successful(Data(numPages, page, rows))
+      successful(Data(filter, numPages, page, rows))
     }
 
     def find(hdr: TblHead[_], fieldValue: String): Future[Option[JsObject]] = successful {
