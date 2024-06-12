@@ -23,18 +23,15 @@ import scala.util.Random
 object PseudoDataSource {
   private val random = new Random(0)
 
-  private val hexChars = "abcdef0123456789"
-  private def hex: LazyList[Char] = LazyList continually (hexChars charAt (random nextInt hexChars.length))
+  private def from(chars: String): LazyList[Char] = LazyList continually (chars.charAt(random nextInt chars.length))
 
-  private val numericChars = "0123456789"
-  private def numeric: LazyList[Char] = LazyList continually (numericChars charAt (random nextInt numericChars.length))
-
-  private val alphaChars = "abcdefghijklmnopqrstuvqwxyz"
-  private def alpha: LazyList[Char] = LazyList continually (alphaChars charAt (random nextInt alphaChars.length))
+  private def hex: LazyList[Char] = from("abcdef0123456789")
+  private def numeric: LazyList[Char] = from("0123456789")
+  private def alpha: LazyList[Char] = from("abcdefghijklmnopqrstuvqwxyz")
 
   private def reference: LazyList[String] = LazyList continually Seq(8,4,4,4,12).map(hex.take(_).mkString).mkString("-")
 
-  private def nino: LazyList[String] = LazyList continually Seq(alpha.take(2).mkString, numeric.take(6).mkString, alpha.take(1).mkString).mkString.toUpperCase
+  private def nino: LazyList[String] = LazyList continually Seq(from("ABCEGHJKLMNOPRSTWXYZ").take(1).mkString, from("ABCEGHJKLMNPRSTWXYZ").take(1).mkString, numeric.take(6).mkString, from("ABCD").take(1).mkString).mkString
 
   private def appealId: LazyList[String] = LazyList continually hex.take(16).mkString.toUpperCase
 
@@ -58,9 +55,9 @@ object PseudoDataSource {
     |  "reference": "${reference.head}",
     |  "status": "${status.head}",
     |  "numberOfAttempts": ${random.nextInt(100)},
-    |  "createdAt": "2023-01-01T00:00:00Z",
-    |  "updatedAt": "2023-01-01T00:00:00Z",
-    |  "nextAttemptAt": "2023-01-01T00:00:00Z",
+    |  "createdAt": "2024-06-11T12:00:00Z",
+    |  "updatedAt": "2024-06-12T00:00:00Z",
+    |  "nextAttemptAt": "2024-06-12T12:00:00Z",
     |  "notification": {
     |    "informationType": "foo",
     |    "file": {
