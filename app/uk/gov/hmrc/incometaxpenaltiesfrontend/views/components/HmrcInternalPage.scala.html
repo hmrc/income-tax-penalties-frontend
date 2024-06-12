@@ -60,9 +60,17 @@
 }
 
 @footerBlock = {
-  @govukFooter(GfFooter(
-    contentLicence = Some(ContentLicence(HtmlContent("All content is <b>OFFICIAL</b>, except where otherwise stated"))),
-  ))
+    <footer class="govuk-footer" role="contentinfo">
+        <div class="govuk-width-container">
+            <div class="govuk-footer__meta">
+                <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+                    <span class="govuk-footer__licence-description">
+                        All content is <b>OFFICIAL</b>, except where otherwise stated.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
 }
 
 @govukLayout(
