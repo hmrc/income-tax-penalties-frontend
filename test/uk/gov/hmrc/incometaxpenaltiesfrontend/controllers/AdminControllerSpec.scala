@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.config
+package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.ActorMaterializer
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
+import play.api.http.Status
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import play.api.inject.guice.GuiceApplicationBuilder
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -23,10 +33,7 @@ import play.api.Application
 import play.api.test.FakeRequest
 import play.api.inject.guice.GuiceApplicationBuilder
 
-class ErrorHandlerSpec extends AnyWordSpec
-  with Matchers
-  with GuiceOneAppPerSuite {
-
+class AdminControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
       .configure(
@@ -37,13 +44,19 @@ class ErrorHandlerSpec extends AnyWordSpec
 
   private val fakeRequest = FakeRequest("GET", "/")
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
+  private implicit val as = app.injector.instanceOf[ActorSystem]
+  private val controller = app.injector.instanceOf[AdminController]
 
-  "standardErrorTemplate" should {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest)
-      html.contentType shouldBe "text/html"
+  "GET /" should {
+    "return 200" in {
+      val result = controller.index()(fakeRequest)
+      status(result) shouldBe Status.OK
+    }
+
+    "return HTML" in {
+      val result = controller.index()(fakeRequest)
+      contentType(result) shouldBe Some("text/html")
+      charset(result)     shouldBe Some("utf-8")
     }
   }
-
 }
