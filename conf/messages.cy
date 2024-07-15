@@ -1,2 +1,20 @@
+## Service related ##
+
 service.name = income-tax-penalties-frontend
-service.text = Dyma'ch gwasanaeth newydd
+
+## Late submission penalty ##                   #TODO: Add Welsh
+
+penalties.lsp.heading1                                    = Self Assessment penalties and appeals
+penalties.lsp.heading2                                    = Overview
+penalties.lsp.paragraph1                                  = Your account has:
+penalties.lsp.bullet-point                                = {0} late submission penalty {1}
+penalties.lsp.heading3                                    = Penalty and appeal details
+penalties.lsp.tabs.heading1                               = Late submission penalties
+penalties.lsp.tabs.heading2                               = Late payment penalties
+penalties.lsp.first-tab.heading1                          = Late submission penalties
+penalties.lsp.first-tab.paragraph1                        = Penalty points total:
+penalties.lsp.first-tab.points                            = {0}
+penalties.lsp.first-tab.paragraph2                        = You have {0} penalty {1} for sending a late update.
+penalties.lsp.first-tab.paragraph3                        = You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.
+penalties.lsp.first-tab.paragraph2                        = If you reach 4 points you’ll have to pay a £200 penalty.
+penalties.lsp.first-tab.link                              = Read the guidance about late submission penalties (opens in a new tab)
