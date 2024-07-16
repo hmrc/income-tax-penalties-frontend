@@ -1,4 +1,4 @@
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
+package controllers
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController

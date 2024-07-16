@@ -14,12 +14,8 @@
 * limitations under the License.
 */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
+package controllers
 
-import javax.inject.Inject
+class PenaltiesControllerSpec {
 
-class LateSubmissionPenaltyController @Inject()()(){
-  def onPageLoad = {
-
-  }
 }

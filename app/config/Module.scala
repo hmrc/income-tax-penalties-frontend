@@ -1,4 +1,4 @@
-package uk.gov.hmrc.incometaxpenaltiesfrontend.config
+package config
 
 import com.google.inject.AbstractModule
 
