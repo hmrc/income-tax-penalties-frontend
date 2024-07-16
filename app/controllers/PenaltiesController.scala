@@ -16,10 +16,15 @@
 
 package controllers
 
+import views.html.Penalties
+import play.api.mvc.{Action, AnyContent, Result}
+
 import javax.inject.Inject
 
-class PenaltiesController @Inject()()(){
-  def onPageLoad = {
+class PenaltiesController @Inject()(val view: Penalties)(){
 
+  def onPageLoad: Action[AnyContent] = {
+    Ok(view())
   }
+
 }
