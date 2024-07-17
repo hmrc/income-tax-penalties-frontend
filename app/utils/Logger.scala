@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package config
+package utils
 
-import com.google.inject.AbstractModule
-
-class Module extends AbstractModule {
-
-  override def configure(): Unit = {
-
-    bind(classOf[AppConfig]).asEagerSingleton()
-  }
+object Logger {
+  val logger: play.api.Logger = play.api.Logger("penaltiesBackendLogger")
 }
