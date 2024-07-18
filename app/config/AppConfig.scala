@@ -16,11 +16,27 @@
 
 package config
 
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import play.api.i18n.Lang
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
+
+import java.net.URLEncoder
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfig @Inject()(config: Configuration) {
   val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
+
+  def languageMap: Map[String, Lang] = Map("en" -> Lang("en"), "cy" -> Lang("cy"))
+
+  lazy val signInContinueBaseUrl: String = config.get[String]("signIn.continueBaseUrl")
+
+  lazy val signInContinueUrl: String = URLEncoder.encode(RedirectUrl(signInContinueBaseUrl + controllers.routes.PenaltiesController.onPageLoad.url).unsafeValue, "UTF-8")
+
+  lazy val signOutUrlUnauthorised: String = config.get[String]("signOut.url") + signInContinueUrl
+
+  lazy val feedbackUrl: String = config.get[String]("urls.feedback")
+
+  lazy val signOutUrl: String = config.get[String]("signOut.url") + feedbackUrl
 
 }

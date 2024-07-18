@@ -16,7 +16,7 @@
 
 package controllers
 
-import config.{AppConfig, FeatureSwitching}
+import config.AppConfig
 import play.api.Configuration
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results._
@@ -28,9 +28,12 @@ import scala.concurrent.ExecutionContext
 
 class PenaltiesController @Inject()(val messagesApi: MessagesApi,
                                     val view: Penalties,
-                                    val cc: ControllerComponents)(implicit val ec: ExecutionContext, val config: Configuration, val appConfig: AppConfig) extends I18nSupport with FeatureSwitching{
+                                    val cc: ControllerComponents
+                                   )(implicit val ec: ExecutionContext,
+                                     val config: Configuration,
+                                     val appConfig: AppConfig) extends I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action.async { implicit request =>
+  def onPageLoad: Action[AnyContent] = {
     Ok(view("test"))
   }
 
