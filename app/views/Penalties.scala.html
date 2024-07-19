@@ -14,12 +14,16 @@
  * limitations under the License.
  *@
 
-@this(
+@import views.html.layouts.Layout
 
+@this(
+      layout: Layout
 )
 
-@(word: String)
+@(pageTitle: String)(implicit request: Request[_], messages: Messages)
 
+@layout(pageTitle = Some(pageTitle),
 
+)
 
 

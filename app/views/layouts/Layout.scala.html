@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
 @import config.AppConfig
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.ServiceURLs
 
 @this(
         appConfig: AppConfig,
@@ -27,6 +28,10 @@
 
 @hmrcStandardPage(
     HmrcStandardPageParams(
+        serviceURLs = ServiceURLs(
+            serviceUrl = Some(routes.PenaltiesController.onPageLoad.url),
+            signOutUrl = Some(routes.SignOutController.signOut.url)
+        ),
         pageTitle = pageTitle,
         isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
     )

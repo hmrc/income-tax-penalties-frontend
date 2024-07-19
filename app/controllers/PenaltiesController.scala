@@ -20,6 +20,7 @@ import config.AppConfig
 import play.api.Configuration
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.PenaltiesService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.Penalties
 
@@ -27,6 +28,7 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class PenaltiesController @Inject()(val view: Penalties,
+                                    val penaltiesService: PenaltiesService,
                                     val mcc: MessagesControllerComponents
                                    )(implicit val ec: ExecutionContext,
                                      val config: Configuration,
