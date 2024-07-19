@@ -39,4 +39,10 @@ class AppConfig @Inject()(config: Configuration) {
 
   lazy val signOutUrl: String = config.get[String]("signOut.url") + feedbackUrl
 
+  lazy val timeoutPeriod: Int = config.get[Int]("timeout.period")
+
+  lazy val timeoutCountdown: Int = config.get[Int]("timeout.countDown")
+
+  lazy val signInUrl: String = config.get[String]("signIn.url")
+
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
-@import config.AppConfig
+package controllers.agent
 
-@this(
-        appConfig: AppConfig,
-        hmrcStandardPage: HmrcStandardPage
-)
+object SessionKeys {
 
-@(pageTitle: Option[String])(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+  val clientNino: String = "ClientNino"
+  val clientMTDID: String = "ClientMTDID"
+  val clientUTR: String = "ClientUTR"
+  val clientFirstName: String = "ClientFirstName"
+  val clientLastName: String = "ClientLastName"
 
-@hmrcStandardPage(
-    HmrcStandardPageParams(
-        pageTitle = pageTitle,
-        isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-    )
-)(contentBlock)
+  val confirmedClient: String = "ConfirmedClient"
 
-
+}

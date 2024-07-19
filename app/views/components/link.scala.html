@@ -14,22 +14,17 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
-@import config.AppConfig
+@this()
 
-@this(
-        appConfig: AppConfig,
-        hmrcStandardPage: HmrcStandardPage
-)
+@(
+        link: String,
+        messageKey: String,
+        id: Option[String] = None,
+        isExternal: Boolean = false,
+        button: Boolean = false,
+        classes: String = "govuk-link",
+        hiddenContent: Option[String] = None
+)(implicit messages: Messages)
 
-@(pageTitle: Option[String])(contentBlock: Html)(implicit request: Request[_], messages: Messages)
-
-@hmrcStandardPage(
-    HmrcStandardPageParams(
-        pageTitle = pageTitle,
-        isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-    )
-)(contentBlock)
-
-
+<a href="@link" class="@classes" @id.map(x => s"id=$x") @if(isExternal){target="_blank"} @if(button){role="button" data-module="govuk-button"}>
+    @messages(messageKey)@if(isExternal)(" " + messages("site.opensInNewTab"))@hiddenContent.map{content=> <span class="govuk-visually-hidden"> @content</span>}</a>

@@ -18,22 +18,21 @@ package controllers
 
 import config.AppConfig
 import play.api.Configuration
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results._
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.Penalties
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class PenaltiesController @Inject()(val messagesApi: MessagesApi,
-                                    val view: Penalties,
-                                    val cc: ControllerComponents
+class PenaltiesController @Inject()(val view: Penalties,
+                                    val mcc: MessagesControllerComponents
                                    )(implicit val ec: ExecutionContext,
                                      val config: Configuration,
-                                     val appConfig: AppConfig) extends I18nSupport {
+                                     val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = {
+  def onPageLoad: Action[AnyContent] = Action {
     Ok(view("test"))
   }
 

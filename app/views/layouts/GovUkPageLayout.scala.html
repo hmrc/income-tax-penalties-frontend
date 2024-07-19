@@ -21,18 +21,19 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcReportTechnicalIssueHelper
 @import config.AppConfig
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.footer.FooterItem
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardFooter
 
 @this(
         govukTemplate: GovukTemplate,
         hmrcHeader:  HmrcHeader,
         govukFooter: GovukFooter,
-        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        footerLinks: HmrcStandardFooter,
 )
 
 @(
         pageTitle: Option[String] = None,
         headBlock: Option[Html] = None,
-        headerBlock: Option[Html] = None,
         beforeContentBlock: Option[Html] = None,
         footerBlock: Option[Html] = None,
         footerItems: Seq[FooterItem] = Seq.empty,
@@ -41,8 +42,7 @@
         isFullWidth: Boolean = false,
         isPageCustomLayout: Boolean = false,
         isError: Boolean = false,
-        isTimeout: Boolean = false,
-        language: Language = En
+        isTimeout: Boolean = false
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @headerDefault = @{
@@ -54,3 +54,45 @@
       signOutHref = Some(controllers.routes.SignOutController.signOut().url)
    ))
 }
+
+@bodyEndDefault = {
+    @bodyEndBlock
+    @scriptsBlock
+}
+
+@mainContentDefault = {
+    @if(isPageCustomLayout) {
+        @contentBlock
+    } else {
+        <div class="govuk-grid-row">
+            <div class='@{
+                if(isFullWidth) {
+                    "govuk-grid-column-full"
+                } else {
+                    "govuk-grid-column-two-thirds"
+                }
+            }'>
+            @contentBlock
+            </div>
+        </div>
+    }
+
+    @if(!isError && !isTimeout) {
+        <p class="govuk-!-padding-top-4 govuk-body-s" id="feedback-link">
+            <a href="@{appConfig.feedbackUrl}" class="govuk-link">@messages("common.feedbackLink.1").trim</a> @messages("common.feedbackLink.2")
+        </p>
+    }
+
+    @hmrcReportTechnicalIssueHelper()
+}
+
+@govukTemplate(
+    htmlLang = Some(messages.lang.code),
+    pageTitle = pageTitle,
+    headBlock = headBlock,
+    headerBlock = headerDefault,
+    beforeContentBlock = beforeContentBlock,
+    footerBlock = footerLinks(),
+    mainClasses = Some("govuk-main-wrapper--auto-spacing"),
+    bodyEndBlock = Some(bodyEndDefault)
+)(contentBlock)

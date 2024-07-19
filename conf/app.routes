@@ -11,6 +11,16 @@ GET        /language/:lang              controllers.LanguageSwitchController.swi
 
 GET         /sign-out                   controllers.SignOutController.signOut(isAuthorised: Boolean = true)
 
+#Timeout route
+
+#GET        /timeout                     controllers.TimeoutController.onPageLoad
+
 #Service routes
 
 GET        /penalties/income-tax        controllers.PenaltiesController.onPageLoad
+
+#Timeout routes
+#GET         /session-timeout                                              controllers.timeout.SessionTimeoutController.timeout
+
+#Sign In Routes
+#GET         /sign-in                                                      controllers.SignInController.signIn

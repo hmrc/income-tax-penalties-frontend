@@ -14,22 +14,18 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
-@import config.AppConfig
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukButton
+@import uk.gov.hmrc.govukfrontend.views.Aliases.Button
+@import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 
-@this(
-        appConfig: AppConfig,
-        hmrcStandardPage: HmrcStandardPage
-)
+@this(govukButton: GovukButton)
 
-@(pageTitle: Option[String])(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(msg: String, idForButton: String = "button-1")(implicit messages: Messages)
 
-@hmrcStandardPage(
-    HmrcStandardPageParams(
-        pageTitle = pageTitle,
-        isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-    )
-)(contentBlock)
-
-
+@govukButton(Button(
+    attributes = Map("id" -> idForButton),
+    content = {
+        Text(messages(msg))
+    },
+    preventDoubleClick = Some(true)
+))
