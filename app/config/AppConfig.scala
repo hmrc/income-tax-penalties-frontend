@@ -18,31 +18,57 @@ package config
 
 import play.api.Configuration
 import play.api.i18n.Lang
-import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
+import play.api.mvc.RequestHeader
 
-import java.net.URLEncoder
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject()(config: Configuration) {
-  val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
+class AppConfig @Inject()(configuration: Configuration) {
 
-  def languageMap: Map[String, Lang] = Map("en" -> Lang("en"), "cy" -> Lang("cy"))
+  val host: String    = configuration.get[String]("host")
+  val appName: String = configuration.get[String]("appName")
 
-  lazy val signInContinueBaseUrl: String = config.get[String]("signIn.continueBaseUrl")
+  private val contactHost = configuration.get[String]("contact-frontend.host")
+  private val contactFormServiceIdentifier = "penalties-admin-frontend"
 
-  lazy val signInContinueUrl: String = URLEncoder.encode(RedirectUrl(signInContinueBaseUrl + controllers.routes.PenaltiesController.onPageLoad.url).unsafeValue, "UTF-8")
+  def feedbackUrl(implicit request: RequestHeader): String =
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
-  lazy val signOutUrlUnauthorised: String = config.get[String]("signOut.url") + signInContinueUrl
+  val loginUrl: String         = configuration.get[String]("urls.login")
+  val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
+  val signOutUrl: String       = configuration.get[String]("urls.signOut")
 
-  lazy val feedbackUrl: String = config.get[String]("urls.feedback")
+  private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
+  val exitSurveyUrl: String             = s"$exitSurveyBaseUrl/feedback/penalties-admin-frontend"
 
-  lazy val signOutUrl: String = config.get[String]("signOut.url") + feedbackUrl
+  val languageTranslationEnabled: Boolean =
+    configuration.get[Boolean]("features.welsh-translation")
 
-  lazy val timeoutPeriod: Int = config.get[Int]("timeout.period")
+  def languageMap: Map[String, Lang] = Map(
+    "en" -> Lang("en"),
+    "cy" -> Lang("cy")
+  )
 
-  lazy val timeoutCountdown: Int = config.get[Int]("timeout.countDown")
 
-  lazy val signInUrl: String = config.get[String]("signIn.url")
+
+//  val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
+
+//  def languageMap: Map[String, Lang] = Map("en" -> Lang("en"), "cy" -> Lang("cy"))
+
+//  lazy val signInContinueBaseUrl: String = config.get[String]("signIn.continueBaseUrl")
+
+//  lazy val signInContinueUrl: String = URLEncoder.encode(RedirectUrl(signInContinueBaseUrl + controllers.routes.PenaltiesController.onPageLoad.url).unsafeValue, "UTF-8")
+
+//  lazy val signOutUrlUnauthorised: String = config.get[String]("signOut.url") + signInContinueUrl
+
+//  lazy val feedbackUrl: String = config.get[String]("urls.feedback")
+
+//  lazy val signOutUrl: String = config.get[String]("signOut.url") + feedbackUrl
+
+//  lazy val timeoutPeriod: Int = config.get[Int]("timeout.period")
+
+//  lazy val timeoutCountdown: Int = config.get[Int]("timeout.countDown")
+
+//  lazy val signInUrl: String = config.get[String]("signIn.url")
 
 }

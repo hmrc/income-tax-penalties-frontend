@@ -1,26 +1,15 @@
 # microservice specific routes
 
 ->         /hmrc-frontend               hmrcfrontend.Routes
-GET        /assets/*file                controllers.Assets.versioned(path = "/public", file: Asset)
 
-#Language route
+GET        /                            controllers.PenaltiesController.onPageLoad
+
+GET        /assets/*file                controllers.Assets.versioned(path = "/public", file: Asset)
 
 GET        /language/:lang              controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
-#Sing Out routes
+GET         /account/sign-out-survey    controllers.auth.AuthController.signOut()
+GET         /account/sign-out           controllers.auth.AuthController.signOutNoSurvey()
+GET         /account/signed-out         controllers.auth.SignedOutController.onPageLoad()
 
-GET         /sign-out                   controllers.SignOutController.signOut(isAuthorised: Boolean = true)
-
-#Timeout route
-
-#GET        /timeout                     controllers.TimeoutController.onPageLoad
-
-#Service routes
-
-GET        /penalties/income-tax        controllers.PenaltiesController.onPageLoad
-
-#Timeout routes
-#GET         /session-timeout                                              controllers.timeout.SessionTimeoutController.timeout
-
-#Sign In Routes
-#GET         /sign-in                                                      controllers.SignInController.signIn
+GET         /unauthorised               controllers.UnauthorisedController.onPageLoad()

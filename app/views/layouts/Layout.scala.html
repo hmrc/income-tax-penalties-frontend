@@ -20,21 +20,21 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.ServiceURLs
 
 @this(
-        appConfig: AppConfig,
-        hmrcStandardPage: HmrcStandardPage
+  appConfig: AppConfig,
+  hmrcStandardPage: HmrcStandardPage
 )
 
-@(pageTitle: Option[String])(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(pageTitle: String,
+  showSignOut: Boolean = true
+)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @hmrcStandardPage(
-    HmrcStandardPageParams(
-        serviceURLs = ServiceURLs(
-            serviceUrl = Some(routes.PenaltiesController.onPageLoad.url),
-            signOutUrl = Some(routes.SignOutController.signOut.url)
-        ),
-        pageTitle = pageTitle,
-        isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-    )
+  HmrcStandardPageParams(
+    serviceURLs = ServiceURLs(
+      serviceUrl = Some(routes.PenaltiesController.onPageLoad.url),
+      signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut().url) else None
+    ),
+    pageTitle = Some(pageTitle),
+    isWelshTranslationAvailable = appConfig.languageTranslationEnabled
+  )
 )(contentBlock)
-
-

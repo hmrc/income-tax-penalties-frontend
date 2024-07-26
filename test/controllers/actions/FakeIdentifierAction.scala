@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.actions
 
-import com.google.inject.Inject
-import config.AppConfig
-import play.api.i18n.Lang
+import models.requests.IdentifierRequest
 import play.api.mvc._
-import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
 
-import javax.inject.Singleton
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
-class LanguageSwitchController @Inject()(appConfig: AppConfig,
-                                   languageUtils: LanguageUtils,
-                                   cc: ControllerComponents) extends LanguageController(languageUtils, cc) {
+class FakeIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends IdentifierAction {
 
-  override def fallbackURL: String = routes.PenaltiesController.onPageLoad.url
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
+    block(IdentifierRequest(request, "id"))
 
-  override def languageMap: Map[String, Lang] = appConfig.languageMap
+  override def parser: BodyParser[AnyContent] =
+    bodyParsers.default
 
+  override protected def executionContext: ExecutionContext =
+    scala.concurrent.ExecutionContext.Implicits.global
 }
