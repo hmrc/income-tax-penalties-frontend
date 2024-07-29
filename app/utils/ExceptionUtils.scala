@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-package models.requests
+package utils
 
-import play.api.mvc.{Request, WrappedRequest}
+import scala.concurrent.Future
+import scala.concurrent.Future.failed
+import scala.util.{Failure, Success, Try}
 
-case class IdentifierRequest[A](request: Request[A], clientMtdItId: String, clientNino: String) extends WrappedRequest[A](request)
+object ExceptionUtils {
+  implicit class ThrowableImplicits(th: Throwable) {
+    def summary: String = Option(th).map { th =>
+      th.getClass.getSimpleName + Option(th.getMessage).filterNot(_.isBlank).map(_.prependedAll(": ")).getOrElse("")
+    }.getOrElse("null")
+  }
+
+  implicit class FutureBodyFunctionImplicits[T](t: => Future[T]) {
+    def delayFailure: Future[T] = Try(t) match {
+      case Success(aFuture) => aFuture
+      case Failure(th) => failed(th)
+    }
+  }
+}

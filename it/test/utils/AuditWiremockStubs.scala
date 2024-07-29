@@ -20,7 +20,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status
 
-trait DatastreamWiremock {
+trait AuditWiremockStubs {
   def mockMergedAuditResponse(): StubMapping = {
     stubFor(post(urlPathEqualTo(s"/write/audit/merged"))
       .willReturn(

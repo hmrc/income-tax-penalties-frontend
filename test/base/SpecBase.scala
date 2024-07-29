@@ -16,6 +16,9 @@
 
 package base
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Level.INFO
+import ch.qos.logback.classic.spi.ILoggingEvent
 import controllers.actions._
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
@@ -26,6 +29,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 trait SpecBase
   extends AnyFreeSpec
@@ -33,7 +37,8 @@ trait SpecBase
     with TryValues
     with OptionValues
     with ScalaFutures
-    with IntegrationPatience {
+    with IntegrationPatience
+    with LogCapturing {
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
@@ -47,4 +52,7 @@ trait SpecBase
     def deNonce: String = s.replaceAll("""nonce="[^"]*"""", "")
   }
 
+  implicit class LogEventEx(log: Seq[ILoggingEvent]) {
+    def messages: Seq[(Level, String)] = log.filter(_.getLevel.isGreaterOrEqual(INFO)).map(m => (m.getLevel -> m.getMessage))
+  }
 }
