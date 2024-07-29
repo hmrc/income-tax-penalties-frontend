@@ -34,13 +34,13 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthActionSpec extends SpecBase {
 
   class Harness(authAction: IdentifierAction) {
-    def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
+    def onPageLoad(): Action[AnyContent] = authAction { request =>
+      Results.Ok(s"${request.clientMtdItId} - ${request.clientNino}")
+    }
   }
 
   "Auth Action" - {
-
     "when the user hasn't logged in" - {
-
       "must redirect the user to log in " in {
 
         val application = applicationBuilder().build()
@@ -60,9 +60,7 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user's session has expired" - {
-
       "must redirect the user to log in " in {
-
         val application = applicationBuilder().build()
 
         running(application) {
@@ -80,9 +78,7 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user doesn't have sufficient enrolments" - {
-
       "must redirect the user to the unauthorised page" in {
-
         val application = applicationBuilder().build()
 
         running(application) {
@@ -100,9 +96,7 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user doesn't have sufficient confidence level" - {
-
       "must redirect the user to the unauthorised page" in {
-
         val application = applicationBuilder().build()
 
         running(application) {
@@ -120,9 +114,7 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user used an unaccepted auth provider" - {
-
       "must redirect the user to the unauthorised page" in {
-
         val application = applicationBuilder().build()
 
         running(application) {
@@ -140,9 +132,7 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user has an unsupported affinity group" - {
-
       "must redirect the user to the unauthorised page" in {
-
         val application = applicationBuilder().build()
 
         running(application) {
@@ -160,9 +150,7 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user has an unsupported credential role" - {
-
       "must redirect the user to the unauthorised page" in {
-
         val application = applicationBuilder().build()
 
         running(application) {
@@ -178,12 +166,56 @@ class AuthActionSpec extends SpecBase {
         }
       }
     }
+
+    "the user has MTDITID and a NINO" - {
+      "should work" in {
+        val application = applicationBuilder().build()
+
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[AppConfig]
+
+          val authAction = new AuthenticatedIdentifierAction(new FakeSuccessfulAuthConnector(), appConfig, bodyParsers)
+          val controller = new Harness(authAction)
+          val result = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustBe OK
+          contentAsString(result) mustBe "foo - bar"
+        }
+      }
+    }
+
+    "the user has MTDITID but no NINO" - {
+      "should fail with internal server error" in {
+        val application = applicationBuilder().build()
+
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[AppConfig]
+
+          val authAction = new AuthenticatedIdentifierAction(new FakeSuccessfulAuthConnector(nino = None), appConfig, bodyParsers)
+          val controller = new Harness(authAction)
+          val result = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustBe INTERNAL_SERVER_ERROR
+        }
+      }
+    }
+
   }
 }
 
 class FakeFailingAuthConnector @Inject()(exceptionToReturn: Throwable) extends AuthConnector {
-  val serviceUrl: String = ""
-
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] =
     Future.failed(exceptionToReturn)
+}
+
+class FakeSuccessfulAuthConnector @Inject()(mtdItId: Option[String] = Some("foo"), nino: Option[String] = Some("bar")) extends AuthConnector {
+  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
+    import uk.gov.hmrc.auth.core.retrieve._
+    val enrolment = mtdItId.map { id => Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", id) }
+    val enrolments = Enrolments(enrolment.toSet)
+    val x = new ~(enrolments, nino)
+    Future.successful( x.asInstanceOf[A] )
+  }
 }

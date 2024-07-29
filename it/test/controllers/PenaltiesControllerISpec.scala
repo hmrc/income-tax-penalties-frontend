@@ -16,44 +16,59 @@
 
 package controllers
 
-import config.AppConfig
 import org.apache.pekko.util.Timeout
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{await, status}
-import uk.gov.hmrc.http.SessionKeys
-import utils.IntegrationSpecCommonBase
+import play.api.test.Helpers._
+import uk.gov.hmrc.http.SessionKeys.authToken
+import utils.{AuthWiremockStubs, IntegrationSpecCommonBase}
 
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 
-class PenaltiesControllerISpec extends IntegrationSpecCommonBase {
+//class MockComponent extends AuthConnector {
+//  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
+//    successful(Some("").asInstanceOf[A])
+//  }
+//}
 
-//  val controller: PenaltiesController = injector.instanceOf[PenaltiesController]
+class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremockStubs {
 
-  val appConfig: AppConfig = injector.instanceOf[AppConfig]
+//
+//  class ComponentModule extends Module {
+//    def bindings(env: Environment, conf: Configuration): Seq[Binding[_]] = Seq(
+//      bind[AuthConnector].to[MockComponent]
+//    )
+//  }
 
-//  val controller: IndexController = injector.instanceOf[IndexController]
-  val fakeAgentRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/").withSession(
-//    SessionKeys.agentSessionVrn -> "123456789",
-//    authToken -> "12345",
-//    SessionKeys.pocAchievementDate -> "2022-01-01",
-//    SessionKeys.regimeThreshold -> "5"
+//  override def fakeApplication(): Application = new GuiceApplicationBuilder()
+////    .overrides(bind[AuthConnector].to[MockComponent])
+//    .build()
+
+  val fakeClientRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/")).withSession(
+    authToken -> "12345"
   )
-  val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/").withSession(
-//    authToken -> "12345",
-//    SessionKeys.pocAchievementDate -> "2022-01-01",
-//    SessionKeys.regimeThreshold -> "5"
-  )
+
+  val fakeAnonymousRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/"))
+
   implicit val timeout: Timeout = org.apache.pekko.util.Timeout(10 seconds)
 
   "GET /" should {
+    "redirect to the login page when the user is not logged in" in {
+      mockUnauthorisedResponse()
+      val response = route(app, fakeAnonymousRequest).get
+      redirectLocation(response)(timeout) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in?continue=http%3A%2F%2Flocalhost%3A9000%2Fincome-tax-penalties-frontend")
+    }
+
     "return 200 (OK) when the user is authorised" in {
+      mockEnroledResponse()
       //      getPenaltyDetailsStub()
       //      complianceDataStub()
-      val response = await(buildClientForRequestToApp(uri = "/").get)
-      response.status shouldBe Status.OK
+//      val response = await(buildClientForRequestToApp(uri = "/").get)(timeout)
+      //wireMockServer.addStubMapping()
+      val response = await(route(app, fakeClientRequest).get)(timeout)
+      response.header.status shouldBe Status.OK
     }
 
 

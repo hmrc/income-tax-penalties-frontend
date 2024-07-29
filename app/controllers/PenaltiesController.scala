@@ -17,6 +17,7 @@
 package controllers
 
 import config.AppConfig
+import controllers.actions.IdentifierAction
 import play.api.Configuration
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -29,12 +30,14 @@ import scala.concurrent.ExecutionContext
 
 class PenaltiesController @Inject()(val view: Penalties,
                                     val penaltiesService: PenaltiesService,
+                                    identify: IdentifierAction,
                                     val mcc: MessagesControllerComponents
                                    )(implicit val ec: ExecutionContext,
                                      val config: Configuration,
                                      val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action { implicit request =>
+  def onPageLoad: Action[AnyContent] = identify { implicit request =>
+
     Ok(view("test"))
   }
 

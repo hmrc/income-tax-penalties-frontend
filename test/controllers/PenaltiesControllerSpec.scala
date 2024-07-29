@@ -16,19 +16,38 @@
 
 package controllers
 
+import controllers.actions.{FakeIdentifierAction, IdentifierAction}
 import org.apache.pekko.util.Timeout
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.http.Status
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.await
+import uk.gov.hmrc.auth.core.AuthConnector
+import uk.gov.hmrc.auth.core.authorise.Predicate
+import uk.gov.hmrc.auth.core.retrieve.{CompositeRetrieval, Retrieval, SimpleRetrieval}
+import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.Future.{failed, successful}
 import scala.concurrent.duration.DurationInt
+import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
+
+class MockComponent extends AuthConnector {
+  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
+    retrieval match {
+      case CompositeRetrieval(a: SimpleRetrieval[Any], b: SimpleRetrieval[Any]) =>
+        successful(Some("").asInstanceOf[A])
+      case _ =>
+        failed(new RuntimeException(s"retrieval ${retrieval.getClass.getName}: $retrieval"))
+    }
+  }
+}
 
 class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
   override def fakeApplication(): Application =
@@ -36,6 +55,10 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
       .configure(
         "metrics.jvm"     -> false,
         "metrics.enabled" -> false
+      )
+      .overrides(
+        bind[IdentifierAction].to[FakeIdentifierAction]
+ //       bind[AuthConnector].to[MockComponent]
       )
       .build()
 
@@ -47,12 +70,12 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
 
   "GET /" should {
     "return 200" in {
-      val result: Result = await(controller.onPageLoad(fakeRequest))
+      val result: Result = await(controller.onPageLoad(fakeRequest))(timeout)
       result.header.status shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = await(controller.onPageLoad(fakeRequest))
+      val result = await(controller.onPageLoad(fakeRequest))(timeout)
       result.body.contentType shouldBe Some("text/html; charset=utf-8")
     }
   }
