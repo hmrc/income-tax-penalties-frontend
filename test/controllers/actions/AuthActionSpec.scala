@@ -17,9 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
-import ch.qos.logback.classic.Level
-import ch.qos.logback.classic.Level.{ERROR, INFO}
-import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.classic.Level.ERROR
 import com.google.inject.Inject
 import config.AppConfig
 import controllers.routes

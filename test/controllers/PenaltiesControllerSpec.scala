@@ -58,7 +58,6 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
       )
       .overrides(
         bind[IdentifierAction].to[FakeIdentifierAction]
- //       bind[AuthConnector].to[MockComponent]
       )
       .build()
 
@@ -70,12 +69,12 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
 
   "GET /" should {
     "return 200" in {
-      val result: Result = await(controller.onPageLoad(fakeRequest))(timeout)
+      val result: Result = await(controller.onPageLoad(fakeRequest))
       result.header.status shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = await(controller.onPageLoad(fakeRequest))(timeout)
+      val result = await(controller.onPageLoad(fakeRequest))
       result.body.contentType shouldBe Some("text/html; charset=utf-8")
     }
   }

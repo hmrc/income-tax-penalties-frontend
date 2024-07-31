@@ -17,12 +17,79 @@
 @import views.html.layouts.Layout
 
 @this(
-      layout: Layout
+  layout: Layout,
+  govukTabs : components.GovukTabsEx
 )
 
 @(pageTitle: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = pageTitle) {
+@lspTabContent = {
+  <h3>Late submission penalties</h3>
+  <p>You have 1 penalty point for sending a late update.</p>
+  <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
+  <p>If you reach 4 points you’ll have to pay a £200 penalty.</p>
+  <p><a>Read the guidance about late submission penalties (opens in a new tab)</a></p>
+  <section class="app-summary-card">
+    <header class="app-summary-card__header">
+      <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point 1</h4>
+      <div class="app-summary-card__tag"><strong class="govuk-tag">ACTIVE</strong></div>
+    </header>
+    <div class="app-summary-card__body">
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Income source</dt>
+          <dd class="govuk-summary-list__value">JB Painting and Decorating</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Quarter</dt>
+          <dd class="govuk-summary-list__value">6&nbsp;April&nbsp;2027 to 5&nbsp;July&nbsp;2027</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Update due</dt>
+          <dd class="govuk-summary-list__value">5&nbsp;August&nbsp;2027</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Update submitted</dt>
+          <dd class="govuk-summary-list__value">10&nbsp;August&nbsp;2027</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Point due to expire</dt>
+          <dd class="govuk-summary-list__value">September 2029</dd>
+        </div>
+      </dl>
+    </div>
+    <footer class="app-summary-card__footer">
+      <div class="app-summary-card__link">
+        <a class="govuk-link" href="#">Appeal penalty point 1</a>
+      </div>
+    </footer>
+  </section>
 }
 
-
+@layout(pageTitle = pageTitle) {
+  <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
+  <div id="overview">
+    <h2 class="govuk-heading-m">Overview</h2>
+    <p>Your account has:</p>
+    <ul id="your-account-has" class="govuk-list govuk-list--bullet">
+      <li>1 late submission penalty point</li>
+    </ul>
+  </div>
+  @govukTabs(Tabs(
+    id = Some("penalty-and-appeal-details"),
+    title = Some("Penalty and appeal details"),
+    items = Seq(
+      TabItem(
+        id = Some("lsp-tab"),
+        label = "Late submission penalties",
+        panel = TabPanel(content = HtmlContent(lspTabContent))
+      ) /*,
+      TabItem(
+        id = Some("lpp-tab"),
+        label = "Late payment penalties",
+        panel = TabPanel(content = HtmlContent(""))
+      )*/
+    )
+  ))
+  </div>
+}
