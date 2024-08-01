@@ -22,19 +22,25 @@ import java.time.{LocalDate, LocalDateTime}
 
 object DisplayFormats {
 
-  implicit class LocalDateEx(date: LocalDate)(implicit messages: Messages) {
-    implicit def displayDayMonthYear: String =
-      s"${date.getDayOfMonth}\u00A0${messages(s"month.${date.getMonthValue}")}\u00A0${date.getYear}"
+  def displayDayMonthYear(date: LocalDate)(implicit messages: Messages): String =
+    s"${date.getDayOfMonth}\u00A0${messages(s"month.${date.getMonthValue}")}\u00A0${date.getYear}"
 
-    implicit def displayMonthYear: String =
-      s"${messages(s"month.${date.getMonthValue}")}\u00A0${date.getYear}"
+  def displayMonthYear(date: LocalDate)(implicit messages: Messages): String =
+    s"${messages(s"month.${date.getMonthValue}")}\u00A0${date.getYear}"
+
+  implicit class LocalDateEx(o: Option[LocalDate])(implicit messages: Messages) {
+    implicit def toDayMonthYear: String = o.map(displayDayMonthYear).getOrElse("")
+    implicit def toMonthYear: String = o.map(displayMonthYear).getOrElse("")
   }
 
-  implicit class LocalDateTimeEx(dateTime: LocalDateTime)(implicit messages: Messages) {
-    implicit def displayDayMonthYear: String =
-      s"${dateTime.getDayOfMonth}\u00A0${messages(s"month.${dateTime.getMonthValue}")}\u00A0${dateTime.getYear}"
+  def displayDayMonthYear(dateTime: LocalDateTime)(implicit messages: Messages): String =
+    s"${dateTime.getDayOfMonth}\u00A0${messages(s"month.${dateTime.getMonthValue}")}\u00A0${dateTime.getYear}"
 
-    implicit def displayMonthYear: String =
-      s"${messages(s"month.${dateTime.getMonthValue}")}\u00A0${dateTime.getYear}"
+  def displayMonthYear(dateTime: LocalDateTime)(implicit messages: Messages): String =
+    s"${messages(s"month.${dateTime.getMonthValue}")}\u00A0${dateTime.getYear}"
+
+  implicit class LocalDateTimeEx(o: Option[LocalDateTime])(implicit messages: Messages) {
+    implicit def toDayMonthYear: String = o.map(displayDayMonthYear).getOrElse("")
+    implicit def toMonthYear: String = o.map(displayMonthYear).getOrElse("")
   }
 }

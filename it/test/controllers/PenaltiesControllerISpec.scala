@@ -16,6 +16,7 @@
 
 package controllers
 
+import connectors.PenaltiesConnector.{GetPenaltyDetails, LSPDetails, LSPPenaltyCategoryEnum, LSPPenaltyStatusEnum, LSPSummary, LateSubmission, LateSubmissionPenalty, TaxReturnStatusEnum}
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
@@ -23,9 +24,11 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.SessionKeys.authToken
 import utils.JsoupUtils._
-import utils.{AuthWiremockStubs, IntegrationSpecCommonBase}
+import utils.{AuthWiremockStubs, IntegrationSpecCommonBase, PenaltiesWiremockStubs}
 
-class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremockStubs {
+import java.time.LocalDate
+
+class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with PenaltiesWiremockStubs {
 
   val fakeClientRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/")).withSession(
     authToken -> "12345"
@@ -42,8 +45,60 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
     "return page with 1 penalty point when user has 1 penalty point" in {
       mockEnroledResponse()
-      //      getPenaltyDetailsStub()
-      //      complianceDataStub()
+
+      val sampleLSP: LSPDetails = LSPDetails(
+        penaltyNumber = "12345678901234",
+        penaltyOrder = Some("01"),
+        penaltyCategory = Some(LSPPenaltyCategoryEnum.Point),
+        penaltyStatus = LSPPenaltyStatusEnum.Active,
+        incomeSourceName = Some("JB Painting and Decorating"),
+        FAPIndicator = None,
+        penaltyCreationDate = LocalDate.parse("2069-10-30"),
+        penaltyExpiryDate = LocalDate.parse("2029-10-01"),
+        expiryReason = None,
+        communicationsDate = Some(LocalDate.parse("2069-10-30")),
+        lateSubmissions = Some(Seq(
+          LateSubmission(
+            taxPeriodStartDate = Some(LocalDate.parse("2027-04-06")),
+            taxPeriodEndDate = Some(LocalDate.parse("2027-07-05")),
+            taxPeriodDueDate = Some(LocalDate.parse("2027-08-05")),
+            returnReceiptDate = Some(LocalDate.parse("2027-08-10")),
+            taxReturnStatus = Some(TaxReturnStatusEnum.Fulfilled)
+          )
+        )),
+        appealInformation = None,
+        chargeAmount = None,
+        chargeOutstandingAmount = None,
+        chargeDueDate = None
+      )
+
+      val getPenaltyDetailsPayloadWithAddedPoint = GetPenaltyDetails(
+        totalisations = None,
+        lateSubmissionPenalty = Some(LateSubmissionPenalty(
+          summary = LSPSummary(
+            activePenaltyPoints = 1,
+            regimeThreshold = 4,
+            inactivePenaltyPoints = 0,
+            penaltyChargeAmount = 0,
+            PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+          ),
+          details = Seq(
+            sampleLSP.copy(
+              penaltyNumber = "1234567890",
+              penaltyOrder = Some("01"),
+              FAPIndicator = Some("X"),
+              penaltyExpiryDate = LocalDate.of(2029, 9, 1),
+              penaltyCreationDate = LocalDate.of(2021, 1, 1)
+            )
+          )
+        )
+        ),
+        latePaymentPenalty = None,
+        breathingSpace = None
+      )
+
+      mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
+
       val response = route(app, fakeClientRequest).get
       status(response) shouldBe Status.OK
       val parsedBody = Jsoup.parse(contentAsString(response))
@@ -59,12 +114,13 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
-      select("#lsp-tab p")(0).text shouldBe "You have 1 penalty point for sending a late update."
-      select("#lsp-tab p")(1).text shouldBe "You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates."
-      select("#lsp-tab p")(2).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
+      select("#lsp-tab p")(0).select("strong").text shouldBe "1"
+      select("#lsp-tab p")(1).text shouldBe "You have 1 penalty point for sending a late update."
+      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates."
+      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in a new tab)"
 
-      select(".app-summary-card").dump("card")
+      //select(".app-summary-card").dump("card")
       select(".app-summary-card header div strong").text shouldBe "ACTIVE"
       val rows = select(".govuk-summary-list__row")
 

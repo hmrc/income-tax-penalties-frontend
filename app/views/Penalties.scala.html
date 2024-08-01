@@ -21,58 +21,73 @@
   govukTabs : components.GovukTabsEx
 )
 
-@(pageTitle: String)(implicit request: Request[_], messages: Messages)
+@(penalties: models.Penalties)(implicit request: Request[_], messages: Messages)
 
 @lspTabContent = {
   <h3>Late submission penalties</h3>
-  <p>You have 1 penalty point for sending a late update.</p>
+  <p>Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
+  <p>You have @{penalties.totalLSPPs} penalty point for sending a late update.</p>
   <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
-  <p>If you reach 4 points you’ll have to pay a £200 penalty.</p>
+  <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
   <p><a>Read the guidance about late submission penalties (opens in a new tab)</a></p>
-  <section class="app-summary-card">
-    <header class="app-summary-card__header">
-      <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point 1</h4>
-      <div class="app-summary-card__tag"><strong class="govuk-tag">ACTIVE</strong></div>
-    </header>
-    <div class="app-summary-card__body">
-      <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Income source</dt>
-          <dd class="govuk-summary-list__value">JB Painting and Decorating</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Quarter</dt>
-          <dd class="govuk-summary-list__value">6&nbsp;April&nbsp;2027 to 5&nbsp;July&nbsp;2027</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Update due</dt>
-          <dd class="govuk-summary-list__value">5&nbsp;August&nbsp;2027</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Update submitted</dt>
-          <dd class="govuk-summary-list__value">10&nbsp;August&nbsp;2027</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Point due to expire</dt>
-          <dd class="govuk-summary-list__value">September 2029</dd>
-        </div>
-      </dl>
-    </div>
-    <footer class="app-summary-card__footer">
-      <div class="app-summary-card__link">
-        <a class="govuk-link" href="#">Appeal penalty point 1</a>
+  @for(penalty<-penalties.lateSubmissionPenalties){
+    <section class="app-summary-card">
+      <header class="app-summary-card__header">
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point @{penalty.ordinal}</h4>
+        <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
+      </header>
+      <div class="app-summary-card__body">
+        <dl class="govuk-summary-list">
+          @if(penalty.source.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Income source</dt>
+              <dd class="govuk-summary-list__value">@{penalty.source}</dd>
+            </div>
+          }
+          @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Quarter</dt>
+              <dd class="govuk-summary-list__value"><div style="white-space:nowrap">@{penalty.quarterFrom}</div> to <div style="white-space:nowrap">@{penalty.quarterTo}</div></dd>
+            </div>
+          }
+          @if(penalty.updateDue.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Update due</dt>
+              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateDue}</dd>
+            </div>
+          }
+          @if(penalty.updateSubmitted.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Update submitted</dt>
+              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateSubmitted}</dd>
+            </div>
+          }
+          @if(penalty.dueToExpire.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Point due to expire</dt>
+              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.dueToExpire}</dd>
+            </div>
+          }
+        </dl>
       </div>
-    </footer>
-  </section>
+      @if(penalty.updateSubmitted.nonEmpty) {
+        <footer class="app-summary-card__footer">
+          <div class="app-summary-card__link">
+            <a class="govuk-link" href="#">Appeal penalty point @{penalty.ordinal}  </a>
+          </div>
+        </footer>
+      }
+    </section>
+  }
 }
 
-@layout(pageTitle = pageTitle) {
+@layout(pageTitle = "Self-Assessment Penalties") {
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
   <div id="overview">
     <h2 class="govuk-heading-m">Overview</h2>
     <p>Your account has:</p>
     <ul id="your-account-has" class="govuk-list govuk-list--bullet">
-      <li>1 late submission penalty point</li>
+      @if(penalties.totalLSPPs > 0){<li>@{penalties.totalLSPPs} late submission penalty point</li>}
     </ul>
   </div>
   @govukTabs(Tabs(
@@ -91,5 +106,4 @@
       )*/
     )
   ))
-  </div>
 }

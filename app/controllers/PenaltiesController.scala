@@ -17,28 +17,30 @@
 package controllers
 
 import config.AppConfig
+import connectors.PenaltiesConnector
 import controllers.actions.IdentifierAction
 import play.api.Configuration
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.PenaltiesService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.Penalties
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class PenaltiesController @Inject()(val view: Penalties,
-                                    val penaltiesService: PenaltiesService,
+class PenaltiesController @Inject()(view: views.html.Penalties,
+                                     val penaltiesConnector: PenaltiesConnector,
+                                    //val penaltiesService: PenaltiesService,
                                     identify: IdentifierAction,
                                     val mcc: MessagesControllerComponents
                                    )(implicit val ec: ExecutionContext,
                                      val config: Configuration,
                                      val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify { implicit request =>
-
-    Ok(view("test"))
+  def onPageLoad: Action[AnyContent] = identify.async { implicit request =>
+    for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(request.clientNino)) yield {
+      val penalties = new models.Penalties(penaltyDetails)
+      Ok(view(penalties))
+    }
   }
 
 }

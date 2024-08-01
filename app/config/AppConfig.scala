@@ -16,14 +16,17 @@
 
 package config
 
+import config.AppConfig.ServiceEndpoint
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 
+import java.net.URL
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfig @Inject()(configuration: Configuration) {
+  private def service: String => ServiceEndpoint = ServiceEndpoint(configuration)
 
   val host: String    = configuration.get[String]("host")
   val appName: String = configuration.get[String]("appName")
@@ -44,31 +47,28 @@ class AppConfig @Inject()(configuration: Configuration) {
   val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("features.welsh-translation")
 
-  def languageMap: Map[String, Lang] = Map(
+  val languageMap: Map[String, Lang] = Map(
     "en" -> Lang("en"),
     "cy" -> Lang("cy")
   )
 
+  val penaltiesService: ServiceEndpoint = service("penalties")
 
+}
 
-//  val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
-
-//  def languageMap: Map[String, Lang] = Map("en" -> Lang("en"), "cy" -> Lang("cy"))
-
-//  lazy val signInContinueBaseUrl: String = config.get[String]("signIn.continueBaseUrl")
-
-//  lazy val signInContinueUrl: String = URLEncoder.encode(RedirectUrl(signInContinueBaseUrl + controllers.routes.PenaltiesController.onPageLoad.url).unsafeValue, "UTF-8")
-
-//  lazy val signOutUrlUnauthorised: String = config.get[String]("signOut.url") + signInContinueUrl
-
-//  lazy val feedbackUrl: String = config.get[String]("urls.feedback")
-
-//  lazy val signOutUrl: String = config.get[String]("signOut.url") + feedbackUrl
-
-//  lazy val timeoutPeriod: Int = config.get[Int]("timeout.period")
-
-//  lazy val timeoutCountdown: Int = config.get[Int]("timeout.countDown")
-
-//  lazy val signInUrl: String = config.get[String]("signIn.url")
-
+object AppConfig {
+  case class ServiceEndpoint(protocol: String, host: String, port: Option[Int], prefix: String) {
+    private def path = Some(prefix).filterNot(_.isBlank).map(_.stripSuffix("/")+"/").getOrElse("")
+    private def portSpec = port.map(port => s":$port").getOrElse("")
+    private val urlBase = s"$protocol://$host$portSpec/$path"
+    def resolve(suffix: String): URL = new URL(urlBase + suffix.stripPrefix("/"))
+  }
+  object ServiceEndpoint {
+    def apply(cfg: Configuration)(service: String) = new ServiceEndpoint(
+      cfg.getOptional[String](s"microservice.services.$service.protocol").getOrElse("http"),
+      cfg.getOptional[String](s"microservice.services.$service.host").getOrElse("localhost"),
+      cfg.getOptional[Int](s"microservice.services.$service.port"),
+      cfg.getOptional[String](s"microservice.services.$service.prefix").getOrElse(service)
+    )
+  }
 }

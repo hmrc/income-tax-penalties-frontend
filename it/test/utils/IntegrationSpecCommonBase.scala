@@ -36,6 +36,8 @@ trait IntegrationSpecCommonBase extends AnyWordSpec with Matchers with GuiceOneS
   override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .configure("microservice.services.auth.port" -> stubPort)
     .configure("microservice.services.auth.host" -> stubHost)
+    .configure("microservice.services.penalties.port" -> stubPort)
+    .configure("microservice.services.penalties.host" -> stubHost)
     .build()
 
   override def afterEach(): Unit = {

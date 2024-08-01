@@ -22,7 +22,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import controllers.actions._
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.must
 import org.scalatest.{OptionValues, TryValues}
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
@@ -33,7 +33,7 @@ import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 trait SpecBase
   extends AnyFreeSpec
-    with Matchers
+    with must.Matchers
     with TryValues
     with OptionValues
     with ScalaFutures
@@ -53,6 +53,6 @@ trait SpecBase
   }
 
   implicit class LogEventEx(log: Seq[ILoggingEvent]) {
-    def messages: Seq[(Level, String)] = log.filter(_.getLevel.isGreaterOrEqual(INFO)).map(m => (m.getLevel -> m.getMessage))
+    def messages: Seq[(Level, String)] = log.filter(_.getLevel.isGreaterOrEqual(INFO)).map(m => m.getLevel -> m.getMessage)
   }
 }
