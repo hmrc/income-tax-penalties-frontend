@@ -19,15 +19,14 @@ package connectors
 import config.AppConfig
 import play.api.Logging
 import play.api.libs.json._
-import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.client.HttpClientV2
 import utils.ExceptionUtils.FutureBodyFunctionImplicits
 
 import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 
 object PenaltiesConnector {
 
@@ -494,7 +493,7 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
     httpClient.get(penaltiesServiceUrl(s"etmp/penalties/$enrolmentKey")).execute.delayFailure.transform(
       { case response if response.status == 200 =>
-          logger.info(Try(Json.prettyPrint(response.json)).toOption.getOrElse("response.body"))
+          logger.debug(Json.prettyPrint(response.json))
           response.json.as[GetPenaltyDetails]
         case response =>
           throw new Exception(s"Backend responded with ${response.status}")
