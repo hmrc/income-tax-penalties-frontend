@@ -32,7 +32,7 @@ class AuthController @Inject()(
                               ) extends FrontendBaseController with I18nSupport {
 
   def signOut(): Action[AnyContent] = identify {
-    Redirect(config.signOutUrl, Map("continue" -> Seq(config.exitSurveyUrl)))
+    Redirect(config.signOutUrl, Map("continue" -> Seq(config.exitSurveyUrl.toString)))
   }
 
   def signOutNoSurvey(): Action[AnyContent] = identify {
