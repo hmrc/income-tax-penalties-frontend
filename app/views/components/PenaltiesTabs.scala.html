@@ -24,7 +24,7 @@
 @(params: Tabs)(implicit messages: Messages)
 @import params._
 <div @id.filter(_.nonEmpty).map {id => id="@id"} class="@toClasses("govuk-tabs", classes)"@toAttributes(attributes) data-module="govuk-tabs">
-  <h2 class="govuk-tabs__title">
+  <h2 class="penalties-tabs__title govuk-heading-m">
     @{title.getOrElse(messages("govuk.tabs.titleFallbackText"))}
   </h2>
 

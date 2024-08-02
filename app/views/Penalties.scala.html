@@ -18,18 +18,18 @@
 
 @this(
   layout: Layout,
-  govukTabs : components.GovukTabsEx
+  govukTabs : components.PenaltiesTabs
 )
 
 @(penalties: models.Penalties)(implicit request: Request[_], messages: Messages)
 
 @lspTabContent = {
-  <h3>Late submission penalties</h3>
-  <p>Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
+  <h3 class="govuk-heading-s">Late submission penalties</h3>
+  <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
   <p>You have @{penalties.totalLSPPs} penalty point for sending a late update.</p>
   <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
-  <p><a>Read the guidance about late submission penalties (opens in a new tab)</a></p>
+  <p><a href="#" target="_blank">Read the guidance about late submission penalties (opens in a new tab)</a></p>
   @for(penalty<-penalties.lateSubmissionPenalties){
     <section class="app-summary-card">
       <header class="app-summary-card__header">
@@ -47,7 +47,7 @@
           @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Quarter</dt>
-              <dd class="govuk-summary-list__value"><div style="white-space:nowrap">@{penalty.quarterFrom}</div> to <div style="white-space:nowrap">@{penalty.quarterTo}</div></dd>
+              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@{penalty.quarterFrom}</span> to <span style="white-space:nowrap">@{penalty.quarterTo}</span></dd>
             </div>
           }
           @if(penalty.updateDue.nonEmpty) {
@@ -85,7 +85,7 @@
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
   <div id="overview">
     <h2 class="govuk-heading-m">Overview</h2>
-    <p>Your account has:</p>
+    <p class="govuk-body">Your account has:</p>
     <ul id="your-account-has" class="govuk-list govuk-list--bullet">
       @if(penalties.totalLSPPs > 0){<li>@{penalties.totalLSPPs} late submission penalty point</li>}
     </ul>

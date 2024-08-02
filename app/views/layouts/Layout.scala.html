@@ -15,28 +15,39 @@
  *@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
 @import config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.ServiceURLs
-
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accountmenu.{SignOut,CheckProgress}
 @this(
   appConfig: AppConfig,
-  hmrcStandardPage: HmrcStandardPage
+  hmrcStandardPage: HmrcStandardPage,
+  hmrcAccountMenu: HmrcAccountMenu
 )
 
 @(pageTitle: String,
   showSignOut: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
+@headBlock = {
+  <link href="/income-tax-penalties-frontend/assets/stylesheets/penalties.css" media="all" rel="stylesheet" type="text/css">
+}
+
 @hmrcStandardPage(
   HmrcStandardPageParams(
     serviceName = Some("Personal tax account"),
     serviceURLs = ServiceURLs(
-      serviceUrl = Some(routes.PenaltiesController.onPageLoad.url),
-      signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut().url) else None
+      serviceUrl = Some(routes.PenaltiesController.onPageLoad.url)
     ),
     pageTitle = Some(pageTitle),
     isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
-    backLink = Some(BackLink(href = "#"))
+    templateOverrides = uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.TemplateOverrides(
+      additionalHeadBlock = Some(headBlock),
+      beforeContentBlock = Some(hmrcAccountMenu(AccountMenu(
+        checkProgress = CheckProgress(href = "", active = false),
+        signOut = SignOut(href = controllers.auth.routes.AuthController.signOut().url)
+      ))),
+    )
   )
-)(contentBlock)
+)(
+contentBlock
+)

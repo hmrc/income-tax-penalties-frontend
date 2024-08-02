@@ -18,11 +18,9 @@ package utils
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import connectors.PenaltiesConnector.{AppealInformationType, AppealLevelEnum, AppealStatusEnum, BreathingSpace, ExpiryReasonEnum, GetPenaltyDetails, LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LSPDetails, LSPPenaltyCategoryEnum, LSPPenaltyStatusEnum, LSPSummary, LatePaymentPenalty, LateSubmission, LateSubmissionPenalty, MainTransactionEnum, TaxReturnStatusEnum, Totalisations}
+import connectors.PenaltiesConnector.GetPenaltyDetails
 import play.api.http.Status
 import play.api.libs.json.Json
-
-import java.time.LocalDate
 
 /**
  * @see "https://wiremock.org/docs/request-matching/"
@@ -34,7 +32,7 @@ trait PenaltiesWiremockStubs {
   )
 
   def mockGetPenaltyDetailsResponse(nino: String = "AB123456A", penaltyDetails: Option[GetPenaltyDetails] = None): StubMapping =
-    stubFor(get(urlMatching(s"/penalties/etmp/penalties/$nino"))
+    stubFor(get(urlMatching(s"/penalties/etmp/penalties/HMRC-PT~NINO~$nino"))
       .willReturn(aResponse()
         .withStatus(Status.OK)
         .withBody(
