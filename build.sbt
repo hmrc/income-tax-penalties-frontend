@@ -11,6 +11,7 @@ lazy val microservice = Project("income-tax-penalties-frontend", file("."))
     // suppress warnings in generated routes files
     scalacOptions += "-Wconf:src=routes/.*:s",
     scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
+    PlayKeys.playDefaultPort := 9185,
     pipelineStages := Seq(gzip),
     TwirlKeys.templateImports ++= Seq(
 //      "play.twirl.api.HtmlFormat",

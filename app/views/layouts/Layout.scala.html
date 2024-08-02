@@ -30,11 +30,13 @@
 
 @hmrcStandardPage(
   HmrcStandardPageParams(
+    serviceName = Some("Personal tax account"),
     serviceURLs = ServiceURLs(
       serviceUrl = Some(routes.PenaltiesController.onPageLoad.url),
       signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut().url) else None
     ),
     pageTitle = Some(pageTitle),
-    isWelshTranslationAvailable = appConfig.languageTranslationEnabled
+    isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
+    backLink = Some(BackLink(href = "#"))
   )
 )(contentBlock)

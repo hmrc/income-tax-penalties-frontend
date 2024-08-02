@@ -27,6 +27,7 @@ import utils.ExceptionUtils.FutureBodyFunctionImplicits
 import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 object PenaltiesConnector {
 
@@ -492,8 +493,14 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
     logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for VRN $enrolmentKey.")
 
     httpClient.get(penaltiesServiceUrl(s"etmp/penalties/$enrolmentKey")).execute.delayFailure.transform(
-      { x => x.json.as[GetPenaltyDetails] },
-      { x => x }
+      { case response if response.status == 200 =>
+          logger.info(Try(Json.prettyPrint(response.json)).toOption.getOrElse("response.body"))
+          response.json.as[GetPenaltyDetails]
+        case response =>
+          throw new Exception(s"Backend responded with ${response.status}")
+      }, {
+        th: Throwable => th
+      }
     )
   }
 }

@@ -94,16 +94,16 @@
     id = Some("penalty-and-appeal-details"),
     title = Some("Penalty and appeal details"),
     items = Seq(
-      TabItem(
+      if (penalties.lateSubmissionPenalties.nonEmpty) Some(TabItem(
         id = Some("lsp-tab"),
         label = "Late submission penalties",
         panel = TabPanel(content = HtmlContent(lspTabContent))
-      ) /*,
-      TabItem(
+      )) else None,
+      if (penalties.latePaymentPenalties.nonEmpty) Some(TabItem(
         id = Some("lpp-tab"),
         label = "Late payment penalties",
         panel = TabPanel(content = HtmlContent(""))
-      )*/
-    )
+      )) else None
+    ).flatten
   ))
 }

@@ -37,7 +37,8 @@ class PenaltiesController @Inject()(view: views.html.Penalties,
                                      val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = identify.async { implicit request =>
-    for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(request.clientNino)) yield {
+    val ninoEnrolmentKey = s"HMRC-PT~NINO~${request.clientNino}"
+    for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(ninoEnrolmentKey)) yield {
       val penalties = new models.Penalties(penaltyDetails)
       Ok(view(penalties))
     }
