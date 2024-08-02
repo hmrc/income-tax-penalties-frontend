@@ -118,7 +118,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p")(1).text shouldBe "You have 1 penalty point for sending a late update."
       select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates."
       select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
-      select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in a new tab)"
+      select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
       //select(".app-summary-card").dump("card")
       select(".app-summary-card header div strong").text shouldBe "ACTIVE"

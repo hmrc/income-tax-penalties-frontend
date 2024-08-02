@@ -15,10 +15,12 @@
  *@
 
 @import views.html.layouts.Layout
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 
 @this(
   layout: Layout,
-  govukTabs : components.PenaltiesTabs
+  govukTabs : components.PenaltiesTabs,
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )
 
 @(penalties: models.Penalties)(implicit request: Request[_], messages: Messages)
@@ -29,7 +31,7 @@
   <p>You have @{penalties.totalLSPPs} penalty point for sending a late update.</p>
   <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
-  <p><a href="#" target="_blank">Read the guidance about late submission penalties (opens in a new tab)</a></p>
+  <p>@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
     <section class="app-summary-card">
       <header class="app-summary-card__header">
