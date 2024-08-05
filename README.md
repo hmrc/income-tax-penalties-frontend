@@ -16,7 +16,6 @@ Run penalties-backend (in a separate shell):
 ```  
   git clone git@github.com:hmrc/penalties-backend.git
   cd penalties-backend
-  git switch integration-fixes && git pull
   sbt run
 ```
 
@@ -42,13 +41,13 @@ In a web browser:
 
 ### Test NINOs
 
-| NINO      | Scenario               |
-| --------- | ---------------------- |
-| AB123456D | User with no penalties |
-| TT217906A | One LSP                |
-| GP789349C | One LSP                |
-| GP406035B | One LSP                |
-| WC985350D | One LSP                |
+| NINO      | Scenario                    |
+| --------- |-----------------------------|
+| AB123456D | User with no penalties      |
+| TT217906A | One LSP, with income dource |
+| GP789349C | One LSP                     |
+| GP406035B | One LSP                     |
+| WC985350D | One LSP                     |
 
 ## License
 
