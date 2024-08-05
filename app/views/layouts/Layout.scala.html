@@ -21,7 +21,8 @@
 @this(
   appConfig: AppConfig,
   hmrcStandardPage: HmrcStandardPage,
-  hmrcAccountMenu: HmrcAccountMenu
+  hmrcAccountMenu: HmrcAccountMenu,
+  govukBackLink: GovukBackLink
 )
 
 @(pageTitle: String,
@@ -30,6 +31,14 @@
 
 @headBlock = {
   <link href="/income-tax-penalties-frontend/assets/stylesheets/penalties.css" media="all" rel="stylesheet" type="text/css">
+}
+
+@beforeContentBlock = {
+  @hmrcAccountMenu(AccountMenu(
+    checkProgress = CheckProgress(href = "", active = false),
+    signOut = SignOut(href = controllers.auth.routes.AuthController.signOut().url)
+    ))
+  @govukBackLink(BackLink(href = "javascript:location.back()", content = Empty))
 }
 
 @hmrcStandardPage(
@@ -42,10 +51,7 @@
     isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
     templateOverrides = uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.TemplateOverrides(
       additionalHeadBlock = Some(headBlock),
-      beforeContentBlock = Some(hmrcAccountMenu(AccountMenu(
-        checkProgress = CheckProgress(href = "", active = false),
-        signOut = SignOut(href = controllers.auth.routes.AuthController.signOut().url)
-      ))),
+      beforeContentBlock = Some(beforeContentBlock),
     )
   )
 )(
