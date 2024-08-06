@@ -46,6 +46,12 @@ trait SpecBase
     new GuiceApplicationBuilder()
       .overrides(
         bind[IdentifierAction].to[FakeIdentifierAction]
+      ).configure(
+        "pta-account-menu.account-home.href" -> "#",
+        "pta-account-menu.messages.href" -> "#",
+        "pta-account-menu.check-progress.href" -> "#",
+        "pta-account-menu.your-profile.href" -> "#",
+        "pta-account-menu.business-tax-account.href" -> "#"
       )
 
   implicit class StringEx(s: String) {
