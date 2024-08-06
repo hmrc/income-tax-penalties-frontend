@@ -44,7 +44,7 @@ In a web browser:
 | NINO      | Scenario                    |
 | --------- |-----------------------------|
 | AB123456D | User with no penalties      |
-| TT217906A | One LSP, with income dource |
+| TT217906A | One LSP, with income source |
 | GP789349C | One LSP                     |
 | GP406035B | One LSP                     |
 | WC985350D | One LSP                     |
