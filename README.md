@@ -36,7 +36,7 @@ Run income-tax-penalties-frontend (this repo)
 
 In a web browser:
 -  navigate to http://localhost:9185/income-tax-penalties-frontend
--  Enter enrolment key HMRC-MTD-ID ~ MTDITID ~ 12345
+-  Enter enrolment key HMRC-MTD-IT ~ MTDITID ~ 12345
 -  Enter NINO that matches a test case in the stubs
 
 ### Test NINOs
