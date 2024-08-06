@@ -34,10 +34,7 @@
 }
 
 @beforeContentBlock = {
-  @hmrcAccountMenu(AccountMenu(
-    checkProgress = CheckProgress(href = "", active = false),
-    signOut = SignOut(href = controllers.auth.routes.AuthController.signOut().url)
-    ))
+  @hmrcAccountMenu(layoutModel.accountMenu)
   @govukBackLink(BackLink(href = "javascript:location.back()", content = Empty))
 }
 
