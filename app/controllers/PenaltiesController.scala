@@ -22,6 +22,7 @@ import controllers.actions.IdentifierAction
 import play.api.Configuration
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.LayoutService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
@@ -31,7 +32,8 @@ class PenaltiesController @Inject()(view: views.html.Penalties,
                                      val penaltiesConnector: PenaltiesConnector,
                                     //val penaltiesService: PenaltiesService,
                                     identify: IdentifierAction,
-                                    val mcc: MessagesControllerComponents
+                                    val mcc: MessagesControllerComponents,
+                                    layoutService: LayoutService
                                    )(implicit val ec: ExecutionContext,
                                      val config: Configuration,
                                      val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
@@ -40,7 +42,7 @@ class PenaltiesController @Inject()(view: views.html.Penalties,
     val ninoEnrolmentKey = s"HMRC-PT~NINO~${request.clientNino}"
     for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(ninoEnrolmentKey)) yield {
       val penalties = new models.Penalties(penaltyDetails)
-      Ok(view(penalties))
+      Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self-Assessment Penalties")))
     }
   }
 

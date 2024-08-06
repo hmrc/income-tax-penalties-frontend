@@ -35,6 +35,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{MessagesControllerComponents, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.await
+import services.LayoutService
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{CompositeRetrieval, Retrieval, SimpleRetrieval}
@@ -76,7 +77,8 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
     view = app.injector.instanceOf[views.html.Penalties],
     penaltiesConnector = mockPenaltiesConnector,
     identify = app.injector.instanceOf[IdentifierAction],
-    mcc =app.injector.instanceOf[MessagesControllerComponents]
+    mcc = app.injector.instanceOf[MessagesControllerComponents],
+    layoutService = app.injector.instanceOf[LayoutService]
   )(ec = app.injector.instanceOf[ExecutionContext],
     config = app.injector.instanceOf[Configuration],
     appConfig = app.injector.instanceOf[AppConfig]

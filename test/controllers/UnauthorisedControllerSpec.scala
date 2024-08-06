@@ -19,9 +19,13 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.LayoutService.LayoutModel
+import uk.gov.hmrc.hmrcfrontend.views.Aliases.AccountMenu
 import views.html.UnauthorisedView
 
 class UnauthorisedControllerSpec extends SpecBase {
+
+  val layoutModel = LayoutModel("unauthorised.title - income-tax-penalties-frontend #TODO: change to agents service name - site.govuk", accountMenu = AccountMenu())
 
   "Unauthorised Controller" - {
 
@@ -37,7 +41,7 @@ class UnauthorisedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[UnauthorisedView]
 
         status(result) mustEqual OK
-        contentAsString(result).deNonce mustEqual view()(request, messages(application)).toString
+        contentAsString(result).deNonce mustEqual view(layoutModel)(request, messages(application)).toString
       }
     }
   }

@@ -17,18 +17,21 @@
 package controllers
 
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import services.LayoutService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.ViewUtils.titleNoForm
 import views.html.UnauthorisedView
 
 import javax.inject.Inject
 
 class UnauthorisedController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: UnauthorisedView
+                                        view: UnauthorisedView,
+                                        layoutService: LayoutService
                                       ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = Action { implicit request =>
-    Ok(view())
+  def onPageLoad(): Action[AnyContent] = Action { implicit request: Request[_] =>
+    Ok(view(layoutService.layoutModel(titleNoForm(request.messages.messages("unauthorised.title")))))
   }
 }

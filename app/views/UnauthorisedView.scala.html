@@ -14,14 +14,16 @@
  * limitations under the License.
  *@
 
+@import services.LayoutService.LayoutModel
+
 @this(
     layout: layouts.Layout
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = titleNoForm(messages("unauthorised.title"))
+@layout(layoutModel
+//    pageTitle = titleNoForm(messages("unauthorised.title"))
 ) {
 
     <h1 class="govuk-heading-xl">@messages("unauthorised.heading")</h1>

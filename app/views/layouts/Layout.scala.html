@@ -18,6 +18,8 @@
 @import config.AppConfig
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accountmenu.{SignOut,CheckProgress}
+@import services.LayoutService.LayoutModel
+
 @this(
   appConfig: AppConfig,
   hmrcStandardPage: HmrcStandardPage,
@@ -25,9 +27,7 @@
   govukBackLink: GovukBackLink
 )
 
-@(pageTitle: String,
-  showSignOut: Boolean = true
-)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(layoutModel: LayoutModel)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @headBlock = {
   <link href="/income-tax-penalties-frontend/assets/stylesheets/penalties.css" media="all" rel="stylesheet" type="text/css">
@@ -47,7 +47,7 @@
     serviceURLs = ServiceURLs(
       serviceUrl = Some(routes.PenaltiesController.onPageLoad.url)
     ),
-    pageTitle = Some(pageTitle),
+    pageTitle = Some(layoutModel.pageTitle),
     isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
     templateOverrides = uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.TemplateOverrides(
       additionalHeadBlock = Some(headBlock),

@@ -14,16 +14,19 @@
  * limitations under the License.
  *@
 
+@import services.LayoutService.LayoutModel
+
 @this(
     layout: layouts.Layout,
     govukButton: GovukButton
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle    = titleNoForm(messages("signedOut.title")),
-    showSignOut  = false
+  layoutModel.withoutSignout
+//    pageTitle    = titleNoForm(messages("signedOut.title")),
+//    showSignOut  = false
 ) {
 
     <h1 class="govuk-heading-xl">@messages("signedOut.heading")</h1>

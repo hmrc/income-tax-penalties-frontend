@@ -16,6 +16,7 @@
 
 @import views.html.layouts.Layout
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import services.LayoutService.LayoutModel
 
 @this(
   layout: Layout,
@@ -23,7 +24,7 @@
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )
 
-@(penalties: models.Penalties)(implicit request: Request[_], messages: Messages)
+@(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
 
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
@@ -83,7 +84,7 @@
   }
 }
 
-@layout(pageTitle = "Self-Assessment Penalties") {
+@layout(layoutModel) {
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
   <div id="overview">
     <h2 class="govuk-heading-m">Overview</h2>

@@ -19,15 +19,16 @@ package handler
 import play.api.i18n.MessagesApi
 import play.api.mvc.Request
 import play.twirl.api.Html
+import services.LayoutService
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 import views.html.ErrorTemplate
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ErrorHandler @Inject()(errorTemplate: ErrorTemplate, val messagesApi: MessagesApi)
+class ErrorHandler @Inject()(errorTemplate: ErrorTemplate, val messagesApi: MessagesApi, layoutService: LayoutService)
     extends FrontendErrorHandler {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]): Html =
-    errorTemplate(pageTitle, heading, message)
+    errorTemplate(heading, message, layoutService.layoutModel(pageTitle))
 }

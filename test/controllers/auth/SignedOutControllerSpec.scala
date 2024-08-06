@@ -19,9 +19,13 @@ package controllers.auth
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.LayoutService.LayoutModel
+import uk.gov.hmrc.hmrcfrontend.views.Aliases.AccountMenu
 import views.html.auth.SignedOutView
 
 class SignedOutControllerSpec extends SpecBase {
+
+  val layoutModel = LayoutModel("signedOut.title - income-tax-penalties-frontend #TODO: change to agents service name - site.govuk", accountMenu = AccountMenu())
 
   "SignedOut Controller" - {
 
@@ -38,7 +42,7 @@ class SignedOutControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result).deNonce mustEqual view()(request, messages(application)).toString
+        contentAsString(result).deNonce mustEqual view(layoutModel)(request, messages(application)).toString
       }
     }
   }
