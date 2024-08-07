@@ -1,0 +1,112 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import views.html.layouts.Layout
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import services.LayoutService.LayoutModel
+
+@this(
+  layout: Layout,
+  govukTabs : components.PenaltiesTabs,
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+)
+
+@(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
+
+@lspTabContent = {
+  <h3 class="govuk-heading-s">Late submission penalties</h3>
+  <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
+  <p>You have @{penalties.totalLSPPs} penalty point for sending a late update.</p>
+  <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
+  <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
+  <p>@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))</p>
+  @for(penalty<-penalties.lateSubmissionPenalties){
+    <section class="app-summary-card">
+      <header class="app-summary-card__header">
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point @{penalty.ordinal}</h4>
+        <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
+      </header>
+      <div class="app-summary-card__body">
+        <dl class="govuk-summary-list">
+          @if(penalty.source.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Income source</dt>
+              <dd class="govuk-summary-list__value">@{penalty.source}</dd>
+            </div>
+          }
+          @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Quarter</dt>
+              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@{penalty.quarterFrom}</span> to <span style="white-space:nowrap">@{penalty.quarterTo}</span></dd>
+            </div>
+          }
+          @if(penalty.updateDue.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Update due</dt>
+              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateDue}</dd>
+            </div>
+          }
+          @if(penalty.updateSubmitted.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Update submitted</dt>
+              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateSubmitted}</dd>
+            </div>
+          }
+          @if(penalty.dueToExpire.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Point due to expire</dt>
+              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.dueToExpire}</dd>
+            </div>
+          }
+        </dl>
+      </div>
+      @if(penalty.updateSubmitted.nonEmpty) {
+        <footer class="app-summary-card__footer">
+          <div class="app-summary-card__link">
+            <a class="govuk-link" href="#">Appeal penalty point @{penalty.ordinal}  </a>
+          </div>
+        </footer>
+      }
+    </section>
+  }
+}
+
+@layout(layoutModel) {
+  <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
+  <div id="overview">
+    <h2 class="govuk-heading-m">Overview</h2>
+    <p class="govuk-body">Your account has:</p>
+    <ul id="your-account-has" class="govuk-list govuk-list--bullet">
+      @if(penalties.totalLSPPs > 0){<li>@{penalties.totalLSPPs} late submission penalty point</li>}
+    </ul>
+  </div>
+  @govukTabs(Tabs(
+    id = Some("penalty-and-appeal-details"),
+    title = Some("Penalty and appeal details"),
+    items = Seq(
+      if (penalties.lateSubmissionPenalties.nonEmpty) Some(TabItem(
+        id = Some("lsp-tab"),
+        label = "Late submission penalties",
+        panel = TabPanel(content = HtmlContent(lspTabContent))
+      )) else None,
+      if (penalties.latePaymentPenalties.nonEmpty) Some(TabItem(
+        id = Some("lpp-tab"),
+        label = "Late payment penalties",
+        panel = TabPanel(content = HtmlContent(""))
+      )) else None
+    ).flatten
+  ))
+}
