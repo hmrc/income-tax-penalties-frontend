@@ -43,7 +43,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   }
 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
-    penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_))
+    penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_)).sortBy(_.ordinal.toInt).reverse
 
   class LatePaymentPenalty(lppDetails: LPPDetails) {
     /** placeholder for LPP functionality to be added */
