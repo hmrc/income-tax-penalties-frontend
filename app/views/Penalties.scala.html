@@ -34,7 +34,7 @@
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
   <p>@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
-    <section class="app-summary-card">
+    <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point @{penalty.ordinal}</h4>
         <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
