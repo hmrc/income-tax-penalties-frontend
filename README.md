@@ -41,13 +41,17 @@ In a web browser:
 
 ### Test NINOs
 
-| NINO      | Scenario                    |
-| --------- |-----------------------------|
-| AB123456D | User with no penalties      |
-| TT217906A | One LSP, with income source |
-| GP789349C | One LSP                     |
-| GP406035B | One LSP                     |
-| WC985350D | One LSP                     |
+| NINO      | Scenario                                                                                     |
+| --------- |----------------------------------------------------------------------------------------------|
+| AB123456D | User with no penalties                                                                       |
+| TT217906A | One LSP point                                                                                |
+| GP789349C | One LSP point                                                                                |
+| GP406035B | One LSP point                                                                                |
+| WC985350D | One LSP point                                                                                |
+| LM325099C | Two LSP points                                                                               |
+| RE406480A | Three LSP points, including LSP for late annual submission                                   |
+| JM245815B | Four LSP points, including LSP for late annual submission and £200 penalty                   |
+| GH071208D | Five LSP points, including all four penalty points from above and an additional £200 penalty |
 
 ## License
 
