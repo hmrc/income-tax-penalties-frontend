@@ -171,7 +171,7 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "the user has MTDITID and a NINO" - {
+    "the user has MTDITID and a NINO (National Insurance Number)" - {
       "should work" in {
         val application = applicationBuilder().build()
 
@@ -189,7 +189,7 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "the user has MTDITID but no NINO" - {
+    "the user has MTDITID but no NINO (National Insurance Number)" - {
       "should fail with internal server error" in {
         val application = applicationBuilder().build()
 
@@ -213,7 +213,7 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "the user has MTD but no MTDITID" - {
+    "the user has MTD (Making Tax Digital) but no MTDITID" - {
       "should fail with internal server error" in {
         val application = applicationBuilder().build()
 
@@ -237,7 +237,7 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "the user authenticates despite not being enrolled for MTD" - {
+    "the user authenticates despite not being enrolled for MTD (Making Tax Digital)" - {
       "should return internal error and log an error" in {
         val application = applicationBuilder().build()
 
