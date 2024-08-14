@@ -29,29 +29,37 @@ class DisplayFormatsSpec extends SpecBase {
 
   "DisplayFormats" - {
     "return a formatted LocalDate" - {
-      "dateToString is called" in {
+      "dateToDayMonthYearString is called" in {
         Some(LocalDate.of(2021, 1, 1)).toDayMonthYear mustBe "1\u00A0January\u00A02021"
       }
 
-      "dateTimeToString is called" in {
+      "dateTimeToDayMonthYearString is called" in {
         Some(LocalDateTime.of(2021, 1, 1, 1, 1, 1)).toDayMonthYear mustBe "1\u00A0January\u00A02021"
+      }
+
+      "dateToMonthYearString is called" in {
+        Some(LocalDate.of(2021, 1, 1)).toMonthYear mustBe "January\u00A02021"
       }
 
       "dateTimeToMonthYearString is called" in {
         Some(LocalDateTime.of(2021, 1, 1, 1, 1, 1)).toMonthYear mustBe "January\u00A02021"
       }
 
-      "dateToMonthYearString is called" in {
-        Some(LocalDate.of(2021, 1, 1)).toMonthYear mustBe "January\u00A02021"
+      "dateToYearString is called" in {
+        Some(LocalDate.of(2021, 1, 1)).toYear mustBe "2021"
+      }
+
+      "dateTimeToYearString is called" in {
+        Some(LocalDateTime.of(2021, 1, 1, 1, 1, 1)).toYear mustBe "2021"
       }
     }
 
     "return an empty string" - {
-      "dateToString is called" in {
+      "dateToDayMonthYearString is called" in {
         Option.empty[LocalDate].toDayMonthYear mustBe ""
       }
 
-      "dateTimeToString is called" in {
+      "dateTimeToDayMonthYearString is called" in {
         Option.empty[LocalDate].toMonthYear mustBe ""
       }
 
@@ -61,6 +69,14 @@ class DisplayFormatsSpec extends SpecBase {
 
       "dateToMonthYearString is called" in {
         Option.empty[LocalDateTime].toMonthYear mustBe ""
+      }
+
+      "dateTimeToYearString is called" in {
+        Option.empty[LocalDateTime].toYear mustBe ""
+      }
+
+      "dateToYearString is called" in {
+        Option.empty[LocalDateTime].toYear mustBe ""
       }
     }
 
