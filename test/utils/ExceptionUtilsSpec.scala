@@ -30,7 +30,7 @@ class ExceptionUtilsSpec extends AnyWordSpec with should.Matchers with GuiceOneA
 
   class ExampleThrowable(message: String) extends Throwable(message)
 
-  "Throwble.summary" should {
+  "Throwable.summary" should {
     "compose a summary of a throwable a with message" in {
       new ExampleThrowable("foo").summary shouldBe "ExampleThrowable: foo"
     }
@@ -61,7 +61,7 @@ class ExceptionUtilsSpec extends AnyWordSpec with should.Matchers with GuiceOneA
       result.failed.value shouldBe Some(Success(exampleFailure))
     }
 
-    "convert an immediatr success" in {
+    "convert an immediate success" in {
       def foobar: Future[_] = throw exampleFailure
       val result = foobar.delayFailure
       result.failed.value shouldBe Some(Success(exampleFailure))
