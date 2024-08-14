@@ -69,7 +69,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       redirectLocation(response) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in?continue=http%3A%2F%2Flocalhost%3A9185%2Fincome-tax-penalties-frontend")
     }
 
-    "return page with 1 penalty point when user has 1 penalty point" in {
+    "return page with 1 penalty point when user has 1 late submission penalty (LSP) point" in {
       mockEnroledResponse()
 
       val getPenaltyDetailsPayloadWithAddedPoint = GetPenaltyDetails(
