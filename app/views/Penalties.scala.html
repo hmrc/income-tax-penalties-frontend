@@ -26,6 +26,23 @@
 
 @(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
 
+@annualPenaltyAndNonEmpty(penalty: penalties.LateSubmissionPenalty, quarterRowTitle: String, annualRowTitle: String) = {
+  @if(penalty.updateDue.nonEmpty && !penalty.annualPenalty) {
+    @quarterRowTitle
+  } else if (penalty.updateDue.nonEmpty) {
+    @annualRowTitle
+  }
+}
+
+@taxStartYear(quarterFrom: String) = {
+  @quarterFrom.takeRight(4)
+}
+
+@taxEndYear(quarterTo: String) = {
+  @quarterTo.takeRight(4)
+}
+
+
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
@@ -34,6 +51,8 @@
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
   <p>@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
+    @println("AAAA" + penalty.annualPenalty)
+    @println(penalty.quarterTo)
     <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point @{penalty.ordinal}</h4>
@@ -41,7 +60,7 @@
       </header>
       <div class="app-summary-card__body">
         <dl class="govuk-summary-list">
-          @if(penalty.source.nonEmpty) {
+          @if(penalty.source.nonEmpty && !penalty.annualPenalty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Income source</dt>
               <dd class="govuk-summary-list__value">@{penalty.source}</dd>
@@ -49,19 +68,19 @@
           }
           @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Quarter</dt>
-              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@{penalty.quarterFrom}</span> to <span style="white-space:nowrap">@{penalty.quarterTo}</span></dd>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Quarter", "Tax year")</dt>
+              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterFrom, taxStartYear(penalty.quarterFrom).toString)</span> to <span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterTo, taxEndYear(penalty.quarterTo).toString)</span></dd>
             </div>
           }
           @if(penalty.updateDue.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Update due</dt>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update due", "Declaration due")</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateDue}</dd>
             </div>
           }
           @if(penalty.updateSubmitted.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Update submitted</dt>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update submitted", "Declaration submitted")</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateSubmitted}</dd>
             </div>
           }
