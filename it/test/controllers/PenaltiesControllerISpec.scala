@@ -142,6 +142,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 1"
     }
 
+
     "return page with 2 penalty points when user has 2 penalty points" in {
       mockEnroledResponse()
 
@@ -168,7 +169,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
                 taxPeriodDueDate = Some(LocalDate.parse("2027-11-05")),
                 returnReceiptDate = None
               )))
-            ), sampleLSP.copy(
+            ),sampleLSP.copy(
               penaltyNumber = "1234567890",
               penaltyOrder = Some("01"),
               FAPIndicator = Some("X"),
@@ -205,8 +206,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
-      {
-        val card1 = select(".app-summary-card").get(0)
+      { val card1 = select(".app-summary-card").get(0)
         card1.select("header div strong").text shouldBe "ACTIVE"
         val rows = card1.select(".govuk-summary-list__row")
 
@@ -228,8 +228,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
         card1.select("footer div a").text shouldBe "Appeal penalty point 2"
       }
 
-      {
-        val card2 = select(".app-summary-card")(1)
+      { val card2 = select(".app-summary-card")(1)
 
         card2.select("header div strong").text shouldBe "ACTIVE"
         val rows = card2.select(".govuk-summary-list__row")
@@ -330,8 +329,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
       {
-        val card1 = select(".app-summary-card")(1)
-        println("AAAAA" + card1)
+        val card1 = select(".app-summary-card")(0)
 
         card1.select("header div strong").text shouldBe "ACTIVE"
         val rows = card1.select(".govuk-summary-list__row")
@@ -352,8 +350,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       }
 
       {
-        val card2 = select(".app-summary-card").get(0)
-        println("BBBBB" + card2)
+        val card2 = select(".app-summary-card").get(1)
 
         card2.select("header div strong").text shouldBe "ACTIVE"
         val rows = card2.select(".govuk-summary-list__row")
@@ -378,7 +375,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       {
         val card3 = select(".app-summary-card")(2)
-        println("CCCC" + card3)
 
         card3.select("header div strong").text shouldBe "ACTIVE"
         val rows = card3.select(".govuk-summary-list__row")
