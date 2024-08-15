@@ -17,11 +17,13 @@
 @import views.html.layouts.Layout
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import services.LayoutService.LayoutModel
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @this(
   layout: Layout,
   govukTabs : components.PenaltiesTabs,
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        govukWarningText : GovukWarningText
 )
 
 @(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
@@ -38,6 +40,11 @@
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
+  @if(penalties.totalLSPPs == 3) {@govukWarningText(WarningText(
+    iconFallbackText = Some("Warning"),
+    content = Text("You will get a £200 penalty if you send another late update."),
+    attributes = Map("id" -> "warning-text")
+    ))}
   <p>You have @{penalties.totalLSPPs} penalty point@if(penalties.totalLSPPs>1){s} for sending @if(penalties.totalLSPPs>1){late updates}else{a late update}.</p>
   <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
