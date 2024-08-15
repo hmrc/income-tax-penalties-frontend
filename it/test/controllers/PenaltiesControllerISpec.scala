@@ -115,8 +115,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "1"
-      select("#lsp-tab p")(1).text shouldBe "You have 1 penalty point for sending a late update."
-      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates."
+      select("#lsp-tab p")(1).text shouldBe "You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven't already."
+      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
       select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
@@ -201,8 +201,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "2"
-      select("#lsp-tab p")(1).text shouldBe "You have 2 penalty points for sending late updates."
-      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates."
+      select("#lsp-tab p")(1).text shouldBe "You have 2 penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven't already."
+      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
       select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
@@ -323,9 +323,9 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "3"
-      parsedBody.getElementById("warning-text").text shouldBe "! Warning You will get a £200 penalty if you send another late update."
-      select("#lsp-tab p")(1).text shouldBe "You have 3 penalty points for sending late updates."
-      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates."
+      parsedBody.getElementById("warning-text").text shouldBe "! Warning You will get a £200 penalty if you send another late submission."
+      select("#lsp-tab p")(1).text shouldBe "You have 3 penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven't already."
+      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
       select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
@@ -338,10 +338,10 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
         rows(0).select("dt").text shouldBe "Tax year"
         rows(0).select("dd").text shouldBe "2026 to 2027"
 
-        rows(1).select("dt").text shouldBe "Declaration due"
+        rows(1).select("dt").text shouldBe "Return due"
         rows(1).select("dd").text shouldBe "31 January 2028"
 
-        rows(2).select("dt").text shouldBe "Declaration submitted"
+        rows(2).select("dt").text shouldBe "Return submitted"
         rows(2).select("dd").text shouldBe "Not yet received"
 
         rows(3).select("dt").text shouldBe "Point due to expire"
