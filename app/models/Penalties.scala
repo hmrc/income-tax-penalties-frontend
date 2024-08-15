@@ -30,7 +30,6 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
 
   class LateSubmissionPenalty(lspDetails: LSPDetails) {
     private val headSubmission = lspDetails.lateSubmissions.head.last
-    private val currSubmission = lspDetails.lateSubmissions.head.filter(_.taxReturnStatus.contains(TaxReturnStatusEnum.Fulfilled)).last
     val penaltyNumber: String = lspDetails.penaltyNumber
     val ordinal: String = lspDetails.penaltyOrder.map(_.toInt.toString).get // "1"
     val status: String = lspDetails.penaltyStatus.toString // "ACTIVE"
@@ -38,12 +37,17 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     val quarterFrom: String = headSubmission.taxPeriodStartDate.toDayMonthYear // "6 April 2027"
     val quarterTo: String = headSubmission.taxPeriodEndDate.toDayMonthYear //"5 July 2027"
     val updateDue: String = headSubmission.taxPeriodDueDate.toDayMonthYear //"5 August 2027"
-    val updateSubmitted: String = currSubmission.returnReceiptDate.map(displayDayMonthYear).getOrElse("Not yet received") // "10 August 2027" // "Not yet received"
+    val updateSubmitted: String = headSubmission.taxReturnStatus match {
+      case Some(TaxReturnStatusEnum.Fulfilled) =>
+        headSubmission.returnReceiptDate.map(displayDayMonthYear).getOrElse("Not yet received")
+      case _ =>
+        "Not yet received"
+    }
     val dueToExpire: String = displayMonthYear(lspDetails.penaltyExpiryDate); // "September 2029"
   }
 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
-    penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_))
+    penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_)).sortBy(_.ordinal.toInt).reverse
 
   class LatePaymentPenalty(lppDetails: LPPDetails) {
     /** placeholder for LPP functionality to be added */

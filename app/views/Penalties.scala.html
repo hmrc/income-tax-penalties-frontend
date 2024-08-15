@@ -29,12 +29,12 @@
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
-  <p>You have @{penalties.totalLSPPs} penalty point for sending a late update.</p>
+  <p>You have @{penalties.totalLSPPs} penalty point@if(penalties.totalLSPPs>1){s} for sending @if(penalties.totalLSPPs>1){late updates}else{a late update}.</p>
   <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
   <p>@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
-    <section class="app-summary-card">
+    <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point @{penalty.ordinal}</h4>
         <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
@@ -90,7 +90,7 @@
     <h2 class="govuk-heading-m">Overview</h2>
     <p class="govuk-body">Your account has:</p>
     <ul id="your-account-has" class="govuk-list govuk-list--bullet">
-      @if(penalties.totalLSPPs > 0){<li>@{penalties.totalLSPPs} late submission penalty point</li>}
+      @if(penalties.totalLSPPs > 0){<li>@{penalties.totalLSPPs} late submission penalty point@if(penalties.totalLSPPs > 1){s}</li>}
     </ul>
   </div>
   @govukTabs(Tabs(
