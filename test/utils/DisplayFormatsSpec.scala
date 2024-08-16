@@ -72,7 +72,7 @@ class DisplayFormatsSpec extends SpecBase {
       }
 
       "dateTimeToYearString is called" in {
-        Option.empty[LocalDateTime].toYear mustBe ""
+        Option.empty[LocalDate].toYear mustBe ""
       }
 
       "dateToYearString is called" in {
