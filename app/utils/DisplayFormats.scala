@@ -28,9 +28,13 @@ object DisplayFormats {
   def displayMonthYear(date: LocalDate)(implicit messages: Messages): String =
     s"${messages(s"month.${date.getMonthValue}")}\u00A0${date.getYear}"
 
+  def displayYear(date: LocalDate): String =
+    s"${date.getYear}"
+
   implicit class LocalDateEx(o: Option[LocalDate])(implicit messages: Messages) {
     implicit def toDayMonthYear: String = o.map(displayDayMonthYear).getOrElse("")
     implicit def toMonthYear: String = o.map(displayMonthYear).getOrElse("")
+    implicit def toYear: String = o.map(displayYear).getOrElse("")
   }
 
   def displayDayMonthYear(dateTime: LocalDateTime)(implicit messages: Messages): String =
@@ -39,8 +43,13 @@ object DisplayFormats {
   def displayMonthYear(dateTime: LocalDateTime)(implicit messages: Messages): String =
     s"${messages(s"month.${dateTime.getMonthValue}")}\u00A0${dateTime.getYear}"
 
+  def displayYear(date: LocalDateTime): String =
+    s"${date.getYear}"
+
   implicit class LocalDateTimeEx(o: Option[LocalDateTime])(implicit messages: Messages) {
     implicit def toDayMonthYear: String = o.map(displayDayMonthYear).getOrElse("")
     implicit def toMonthYear: String = o.map(displayMonthYear).getOrElse("")
+    implicit def toYear: String = o.map(displayYear).getOrElse("")
   }
+
 }

@@ -17,20 +17,36 @@
 @import views.html.layouts.Layout
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import services.LayoutService.LayoutModel
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @this(
   layout: Layout,
   govukTabs : components.PenaltiesTabs,
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        govukWarningText : GovukWarningText
 )
 
 @(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
 
+@annualPenaltyAndNonEmpty(penalty: penalties.LateSubmissionPenalty, quarterRowTitle: String, annualRowTitle: String) = {
+  @if(penalty.updateDue.nonEmpty && !penalty.annualPenalty) {
+    @quarterRowTitle
+  } else if (penalty.updateDue.nonEmpty) {
+    @annualRowTitle
+  }
+}
+
+
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
-  <p>You have @{penalties.totalLSPPs} penalty point@if(penalties.totalLSPPs>1){s} for sending @if(penalties.totalLSPPs>1){late updates}else{a late update}.</p>
-  <p>You'll get another point if you send another update after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late updates.</p>
+  @if(penalties.totalLSPPs == 3) {@govukWarningText(WarningText(
+    iconFallbackText = Some("Warning"),
+    content = Text("You will get a £200 penalty if you send another late submission."),
+    attributes = Map("id" -> "warning-text")
+    ))}
+  <p>You have @{penalties.totalLSPPs} penalty point@if(penalties.totalLSPPs>1){s} for sending @if(penalties.totalLSPPs > 1){late submissions}else{a late submission}. You should send @if(penalties.totalLSPPs > 1){any}else{this} missing submission@if(penalties.totalLSPPs>1){s} as soon as possible if you haven't already.</p>
+  <p>You'll get another point if you send another submission after a deadline had passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.</p>
   <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
   <p>@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
@@ -41,7 +57,7 @@
       </header>
       <div class="app-summary-card__body">
         <dl class="govuk-summary-list">
-          @if(penalty.source.nonEmpty) {
+          @if(penalty.source.nonEmpty && !penalty.annualPenalty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Income source</dt>
               <dd class="govuk-summary-list__value">@{penalty.source}</dd>
@@ -49,19 +65,19 @@
           }
           @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Quarter</dt>
-              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@{penalty.quarterFrom}</span> to <span style="white-space:nowrap">@{penalty.quarterTo}</span></dd>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Quarter", "Tax year")</dt>
+              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterFrom, penalty.taxYearFrom)</span> to <span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterTo, penalty.taxYearTo)</span></dd>
             </div>
           }
           @if(penalty.updateDue.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Update due</dt>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update due", "Return due")</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateDue}</dd>
             </div>
           }
           @if(penalty.updateSubmitted.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Update submitted</dt>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update submitted", "Return submitted")</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateSubmitted}</dd>
             </div>
           }

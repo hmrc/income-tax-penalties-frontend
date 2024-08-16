@@ -44,6 +44,12 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
         "Not yet received"
     }
     val dueToExpire: String = displayMonthYear(lspDetails.penaltyExpiryDate); // "September 2029"
+
+    val annualPenalty: Boolean = quarterFrom.contains("6\u00A0April") && quarterTo.contains("5\u00A0April") && (quarterTo.takeRight(4).toInt == quarterFrom.takeRight(4).toInt + 1)
+
+    val taxYearFrom: String = headSubmission.taxPeriodStartDate.toYear // 2026
+
+    val taxYearTo: String = headSubmission.taxPeriodEndDate.toYear // 2027
   }
 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
