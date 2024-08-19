@@ -476,7 +476,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       select("#overview h2").text shouldBe "Overview"
       select("#overview p").text shouldBe "Your account has:"
-      select("#overview #your-account-has li:nth-child(1)").text shouldBe "4 late submission penalty points"
+      select("#overview #your-account-has li:nth-child(1)").text shouldBe "a late submission penalty"
       select("#overview #your-account-has li:nth-child(2)").text shouldBe "the maximum number of late submission penalty points"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
