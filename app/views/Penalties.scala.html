@@ -48,7 +48,7 @@
     ))}
   @if(penalties.totalLSPPs == 4) {@govukWarningText(WarningText(
     iconFallbackText = Some("Warning"),
-    content = Text("You have reached the financial penalty threshold."),
+    content = Text("You have been given a £200 penalty for reaching the penalty threshold."),
     attributes = Map("id" -> "warning-text")
     ))}
   @if(penalties.totalLSPPs < 4) {
@@ -59,7 +59,7 @@
       You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.</p>
     <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
   } else{
-    <p>This means you have to pay £200 penalty every time you send a late update, until we remove your penalty points.</p>
+    <p>You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already.</p>
   }
   <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))}</p>
   @for(penalty<-penalties.lateSubmissionPenalties){

@@ -484,8 +484,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "4"
-      parsedBody.getElementById("warning-text").text shouldBe "! Warning You have reached the financial penalty threshold."
-      select("#lsp-tab p")(1).text shouldBe "This means you have to pay £200 penalty every time you send a late update, until we remove your penalty points."
+      parsedBody.getElementById("warning-text").text shouldBe "! Warning You have been given a £200 penalty for reaching the penalty threshold."
+      select("#lsp-tab p")(1).text shouldBe "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already."
       select("#lsp-tab p a").text shouldBe "Actions to take to get your points removed (opens in new tab)"
 
       {
