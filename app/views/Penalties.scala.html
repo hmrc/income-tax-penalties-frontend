@@ -39,64 +39,61 @@
 
 
 @lspTabContent = {
-  <h3 class="govuk-heading-s">Late submission penalties</h3>
-  <p class="govuk-body-l">Penalty points total: <strong>@{penalties.totalLSPPs}</strong></p>
+  <h3 class="govuk-heading-s">@messages("penalties.lsp.heading1")</h3>
+  <p class="govuk-body-l">@messages("penalties.lsp.paragraph1") <strong>@{penalties.totalLSPPs}</strong></p>
   @if(penalties.totalLSPPs == 3) {@govukWarningText(WarningText(
     iconFallbackText = Some("Warning"),
-    content = Text("You will get a £200 penalty if you send another late submission."),
+    content = Text(messages("penalties.lsp.warning1")),
     attributes = Map("id" -> "warning-text")
     ))}
   @if(penalties.totalLSPPs == 4) {@govukWarningText(WarningText(
     iconFallbackText = Some("Warning"),
-    content = Text("You have reached the financial penalty threshold."),
+    content = Text(messages("penalties.lsp.warning2")),
     attributes = Map("id" -> "warning-text")
     ))}
   @if(penalties.totalLSPPs < 4) {
-    <p>You have @{
-      penalties.totalLSPPs
-    } penalty point@if(penalties.totalLSPPs > 1) {s} for sending @if(penalties.totalLSPPs > 1) {late submissions} else {a late submission}. You should send @if(penalties.totalLSPPs > 1) {any} else {this} missing submission@if(penalties.totalLSPPs > 1) {s} as soon as possible if you haven't already.</p>
-    <p>
-      You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.</p>
-    <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
+    <p>@messages("penalties.lsp.paragraph2", penalties.totalLSPPs, if(penalties.totalLSPPs > 1) {"points"} else {"point"}, if(penalties.totalLSPPs > 1) "late submissions" else "a late submission", if(penalties.totalLSPPs > 1) "any" else "this", if(penalties.totalLSPPs > 1) "submissions" else "submission")</p>
+    <p>@messages("penalties.lsp.paragraph3")</p>
+    <p>@messages("penalties.lsp.paragraph4")</p>
   } else{
-    <p>This means you have to pay £200 penalty every time you send a late update, until we remove your penalty points.</p>
+    <p>@messages("penalties.lsp.paragraph5")</p>
   }
-  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))}</p>
+  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = messages("penalties.lsp.link"), href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))}</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
     <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
-        <h4 class="app-summary-card__title govuk-!-font-weight-bold">Penalty point @{penalty.ordinal}@if(penalty.ordinal == "4"){: £200 penalty}</h4>
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">@messages("penalties.box.heading", penalty.ordinal) + @if(penalty.ordinal == "4"){messages("penalties.box.heading.penalty")}</h4>
         <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
       </header>
       <div class="app-summary-card__body">
         <dl class="govuk-summary-list">
           @if(penalty.source.nonEmpty && !penalty.annualPenalty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Income source</dt>
+              <dt class="govuk-summary-list__key">@messages("penalties.box.row1.heading")</dt>
               <dd class="govuk-summary-list__value">@{penalty.source}</dd>
             </div>
           }
           @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Quarter", "Tax year")</dt>
-              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterFrom, penalty.taxYearFrom)</span> to <span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterTo, penalty.taxYearTo)</span></dd>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, messages("penalties.box.row2.heading.quarter"), messages("penalties.box.row2.heading.annual"))</dt>
+              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterFrom, penalty.taxYearFrom)</span> @messages("penalties.box.to") <span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterTo, penalty.taxYearTo)</span></dd>
             </div>
           }
           @if(penalty.updateDue.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update due", "Return due")</dt>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, messages("penalties.box.row3.heading.quarter"), messages("penalties.box.row3.heading.annual"))</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateDue}</dd>
             </div>
           }
           @if(penalty.updateSubmitted.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update submitted", "Return submitted")</dt>
+              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, messages("penalties.box.row4.heading.quarter"), messages("penalties.box.row4.heading.annual"))</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateSubmitted}</dd>
             </div>
           }
           @if(penalty.dueToExpire.nonEmpty) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Point due to expire</dt>
+              <dt class="govuk-summary-list__key">@messages("penalties.box.row5.heading")</dt>
               <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.dueToExpire}</dd>
             </div>
           }
@@ -105,7 +102,7 @@
       @if(penalty.updateSubmitted.nonEmpty) {
         <footer class="app-summary-card__footer">
           <div class="app-summary-card__link">
-            <a class="govuk-link" href="#">Appeal penalty point @{penalty.ordinal}  </a>
+            <a class="govuk-link" href="#">@messages("penalties.box.link", penalty.ordinal)</a>
           </div>
         </footer>
       }
@@ -114,22 +111,22 @@
 }
 
 @layout(layoutModel) {
-  <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
+  <h1 class="govuk-heading-l">@messages("penalties.heading1")</h1>
   <div id="overview">
-    <h2 class="govuk-heading-m">Overview</h2>
-    <p class="govuk-body">Your account has:</p>
+    <h2 class="govuk-heading-m">@messages("penalties.heading2")</h2>
+    <p class="govuk-body">@messages("penalties.paragraph1")</p>
     <ul id="your-account-has" class="govuk-list govuk-list--bullet">
-      @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@{penalties.totalLSPPs} late submission penalty point@if(penalties.totalLSPPs > 1){s}</li>}
+      @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@messages("penalties.bullet.point1", penalties.totalLSPPs.toString, if(penalties.totalLSPPs == 1){"point"} else {"points"})</li>}
       @if(penalties.totalLSPPs == 4){
-        <li>a late submission penalty</li>
-        <li>the maximum number of late submission penalty points</li>
+        <li>@messages("penalties.bullet.point1", "a", "")</li>
+        <li>@messages("penalties.bullet.point2")</li>
       }
     </ul>
   </div>
-  @if(penalties.totalLSPPs == 4){@govukButton(Button(content = Text("Check amounts and pay") ))}
+  @if(penalties.totalLSPPs == 4){@govukButton(Button(content = Text(messages("penalties.lsp.button"))))}
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
-    title = Some("Penalty and appeal details"),
+    title = Some(messages("penalties.heading3")),
     items = Seq(
       if (penalties.lateSubmissionPenalties.nonEmpty) Some(TabItem(
         id = Some("lsp-tab"),
