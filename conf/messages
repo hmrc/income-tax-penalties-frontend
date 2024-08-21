@@ -23,7 +23,8 @@ penalties.lsp.paragraph2                                = You have {0} penalty {
 penalties.lsp.paragraph3                                = You’ll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.
 penalties.lsp.paragraph4                                = If you reach 4 points you’ll have to pay a £200 penalty.
 penalties.lsp.paragraph5                                = This means you have to pay £200 penalty every time you send a late update, until we remove your penalty points.
-penalties.lsp.link                                      = Read the guidance about late submission penalties
+penalties.lsp.link1                                     = Read the guidance about late submission penalties
+penalties.lsp.link2                                     = Actions to take to get your points removed
 penalties.lsp.button                                    = Check amounts and pay
 penalties.lsp.warning1                                  = You will get a £200 penalty if you send another late submission.
 penalties.lsp.warning2                                  = You have reached the financial penalty threshold.
@@ -64,3 +65,16 @@ month.9 = September
 month.10 = October
 month.11 = November
 month.12 = December
+
+## Commonly used words ##
+
+penalties.penalty                                       = penalty
+penalties.penalties                                     = penalties
+penalties.point                                         = point
+penalties.points                                        = points
+penalties.late.submission                               = a late submission
+penalties.late.submissions                              = late submissions
+penalties.any                                           = any
+penalties.this                                          = this
+penalties.submission                                    = submission
+penalties.submissions                                   = submissions

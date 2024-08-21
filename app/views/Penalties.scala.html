@@ -52,17 +52,17 @@
     attributes = Map("id" -> "warning-text")
     ))}
   @if(penalties.totalLSPPs < 4) {
-    <p>@messages("penalties.lsp.paragraph2", penalties.totalLSPPs, if(penalties.totalLSPPs > 1) {"points"} else {"point"}, if(penalties.totalLSPPs > 1) "late submissions" else "a late submission", if(penalties.totalLSPPs > 1) "any" else "this", if(penalties.totalLSPPs > 1) "submissions" else "submission")</p>
+    <p>@messages("penalties.lsp.paragraph2", penalties.totalLSPPs, if(penalties.totalLSPPs > 1) messages("penalties.points") else messages("penalties.point"), if(penalties.totalLSPPs > 1) messages("penalties.late.submissions") else messages("penalties.late.submission"), if(penalties.totalLSPPs > 1) messages("penalties.any") else messages("penalties.this"), if(penalties.totalLSPPs > 1) messages("penalties.submissions") else messages("penalties.submission"))</p>
     <p>@messages("penalties.lsp.paragraph3")</p>
     <p>@messages("penalties.lsp.paragraph4")</p>
   } else{
     <p>@messages("penalties.lsp.paragraph5")</p>
   }
-  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = messages("penalties.lsp.link"), href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))}</p>
+  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = messages("penalties.lsp.link1"), href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = messages("penalties.lsp.link2"), href = Some("#")))}</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
     <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
-        <h4 class="app-summary-card__title govuk-!-font-weight-bold">@messages("penalties.box.heading", penalty.ordinal) + @if(penalty.ordinal == "4"){messages("penalties.box.heading.penalty")}</h4>
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">@messages("penalties.box.heading", penalty.ordinal) @if(penalty.ordinal == "4"){@messages("penalties.box.heading.penalty")}</h4>
         <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
       </header>
       <div class="app-summary-card__body">
@@ -116,7 +116,7 @@
     <h2 class="govuk-heading-m">@messages("penalties.heading2")</h2>
     <p class="govuk-body">@messages("penalties.paragraph1")</p>
     <ul id="your-account-has" class="govuk-list govuk-list--bullet">
-      @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@messages("penalties.bullet.point1", penalties.totalLSPPs.toString, if(penalties.totalLSPPs == 1){"point"} else {"points"})</li>}
+      @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@messages("penalties.bullet.point1", penalties.totalLSPPs.toString, if(penalties.totalLSPPs == 1) messages("penalties.point") else messages("penalties.points"))</li>}
       @if(penalties.totalLSPPs == 4){
         <li>@messages("penalties.bullet.point1", "a", "")</li>
         <li>@messages("penalties.bullet.point2")</li>

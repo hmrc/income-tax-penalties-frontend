@@ -19,8 +19,8 @@ penalties.tabs.heading2                                 = Late payment penalties
 penalties.lsp.heading1                                  = Late submission penalties
 penalties.lsp.paragraph1                                = Penalty points total:
 penalties.lsp.points                                    = {0}
-penalties.lsp.paragraph2                                = You have {0} penalty {1} for sending {2}. You should send {3} missing {4} as soon as possible if you haven't already.
-penalties.lsp.paragraph3                                = You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.
+penalties.lsp.paragraph2                                = You have {0} penalty {1} for sending {2}. You should send {3} missing {4} as soon as possible if you haven’t already.
+penalties.lsp.paragraph3                                = You’ll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.
 penalties.lsp.paragraph4                                = If you reach 4 points you’ll have to pay a £200 penalty.
 penalties.lsp.paragraph5                                = This means you have to pay £200 penalty every time you send a late update, until we remove your penalty points.
 penalties.lsp.link                                      = Read the guidance about late submission penalties
@@ -49,3 +49,31 @@ penalties.box.row4.heading.quarter                      = Update submitted
 penalties.box.row4.heading.annual                       = Return submitted
 penalties.box.row5.heading                              = Point due to expire
 penalties.box.link                                      = Appeal penalty point {0}
+
+# Months
+# --------------------------
+month.1 = January
+month.2 = February
+month.3 = March
+month.4 = April
+month.5 = May
+month.6 = June
+month.7 = July
+month.8 = August
+month.9 = September
+month.10 = October
+month.11 = November
+month.12 = December
+
+## Commonly used words ##
+
+penalties.penalty                                       = penalty
+penalties.penalties                                     = penalties
+penalties.point                                         = point
+penalties.points                                        = points
+penalties.late.submission                               = a late submission
+penalties.late.submissions                              = late submissions
+penalties.any                                           = any
+penalties.this                                          = this
+penalties.submission                                    = submission
+penalties.submissions                                   = submissions
