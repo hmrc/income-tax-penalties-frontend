@@ -62,7 +62,7 @@
   @for(penalty<-penalties.lateSubmissionPenalties){
     <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
-        <h4 class="app-summary-card__title govuk-!-font-weight-bold">@messages("penalties.box.heading", penalty.ordinal) @if(penalty.ordinal == "4"){@messages("penalties.box.heading.penalty")}</h4>
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">@messages("penalties.box.heading", penalty.ordinal)@if(penalty.ordinal == "4"){@messages("penalties.box.heading.penalty")}</h4>
         <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
       </header>
       <div class="app-summary-card__body">
