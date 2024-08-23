@@ -97,7 +97,7 @@
       @if(penalty.updateSubmitted.nonEmpty) {
         <footer class="app-summary-card__footer">
           <div class="app-summary-card__link">
-            <a class="govuk-link" href="#">@messages("penalties.box.link", penalty.ordinal)</a>
+            <a class="govuk-link" href="#">@if(penalty.ordinal.toInt < 5){@messages("penalties.box.link", penalty.ordinal)} else {@messages("penalties.box.link2")}</a>
           </div>
         </footer>
       }

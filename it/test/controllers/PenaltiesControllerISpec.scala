@@ -707,7 +707,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       rows(4).select("dt").text shouldBe "Point due to expire"
       rows(4).select("dd").text shouldBe "September 2030"
 
-      card1.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 5"
+      card1.select(".app-summary-card footer div a").text shouldBe "Appeal penalty"
     }
 
     {
