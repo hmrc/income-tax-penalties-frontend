@@ -52,6 +52,7 @@ penalties.box.row4.heading.quarter                      = Update submitted
 penalties.box.row4.heading.annual                       = Return submitted
 penalties.box.row5.heading                              = Point due to expire
 penalties.box.link                                      = Appeal penalty point {0}
+penalties.box.link2                                     = Appeal penalty
 
 # Months
 # --------------------------
