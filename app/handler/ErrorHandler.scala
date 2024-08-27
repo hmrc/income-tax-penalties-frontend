@@ -20,7 +20,7 @@ import play.api.i18n.MessagesApi
 import play.api.mvc.Request
 import play.twirl.api.Html
 import services.LayoutService
-import uk.gov.hmrc.play.bootstrap.frontend.http.{FrontendErrorHandler, LegacyFrontendErrorHandler}
+import uk.gov.hmrc.play.bootstrap.frontend.http.LegacyFrontendErrorHandler
 import views.html.ErrorTemplate
 
 import javax.inject.{Inject, Singleton}
