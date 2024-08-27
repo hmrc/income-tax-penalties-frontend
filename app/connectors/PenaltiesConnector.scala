@@ -498,7 +498,7 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
         case response =>
           throw new Exception(s"Backend responded with ${response.status}")
       }, {
-        th: Throwable => th
+        (th: Throwable) => th
       }
     )
   }
