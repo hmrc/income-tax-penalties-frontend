@@ -486,7 +486,8 @@ object PenaltiesConnector {
 class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
                                    val appConfig: AppConfig)(implicit ec: ExecutionContext) extends Logging {
   import PenaltiesConnector._
-  import appConfig.penaltiesService.{resolve => penaltiesServiceUrl}
+
+  private def penaltiesServiceUrl = appConfig.penaltiesService.resolve
 
   def getPenaltyDetails(enrolmentKey: String)(implicit hc: HeaderCarrier): Future[GetPenaltyDetails] = {
     logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for VRN $enrolmentKey.")
@@ -498,7 +499,7 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
         case response =>
           throw new Exception(s"Backend responded with ${response.status}")
       }, {
-        th: Throwable => th
+        (th: Throwable) => th
       }
     )
   }

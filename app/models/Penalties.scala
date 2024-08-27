@@ -20,6 +20,8 @@ import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails,
 import play.api.i18n.Messages
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
 
+import scala.annotation.unused
+
 class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) {
 
   private val lspSummary = penaltyDetails.lateSubmissionPenalty.map(_.summary)
@@ -55,7 +57,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
     penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_)).sortBy(_.ordinal.toInt).reverse
 
-  class LatePaymentPenalty(lppDetails: LPPDetails) {
+  class LatePaymentPenalty(@unused lppDetails: LPPDetails) {
     /** placeholder for LPP functionality to be added */
   }
 
