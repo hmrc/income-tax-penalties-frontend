@@ -17,6 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
+import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Level.ERROR
 import com.google.inject.Inject
 import config.AppConfig
@@ -24,8 +25,8 @@ import controllers.routes
 import play.api.Logger
 import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
 import uk.gov.hmrc.http.HeaderCarrier
@@ -205,9 +206,8 @@ class AuthActionSpec extends SpecBase {
 
             status(result) mustBe INTERNAL_SERVER_ERROR
 
-            println(log.messages)
-            log.messages mustBe List(
-              ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without NINO"
+            log.messages.filter(_._1.isGreaterOrEqual(Level.INFO)) mustBe List(
+              ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] Individual with NINO=None and 1 enrolments"
             )
           }
         }
@@ -230,7 +230,7 @@ class AuthActionSpec extends SpecBase {
 
             status(result) mustBe INTERNAL_SERVER_ERROR
 
-            log.messages mustBe List(
+            log.messages.filter(_._1.isGreaterOrEqual(Level.INFO)) mustBe List(
               ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without MTDITID"
             )
           }
@@ -254,7 +254,7 @@ class AuthActionSpec extends SpecBase {
 
             status(result) mustBe INTERNAL_SERVER_ERROR
 
-            log.messages mustBe List(
+            log.messages.filter(_._1.isGreaterOrEqual(Level.INFO)) mustBe List(
               ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] Non-MTD IT user authenticated"
             )
           }
@@ -273,7 +273,7 @@ import uk.gov.hmrc.auth.core.retrieve._
 
 class FakeNonMTDAuthConnector @Inject()(nino: Option[String] = Some("bar")) extends AuthConnector {
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
-    val x = new ~(Enrolments(Set()), nino)
+    val x = new ~(new ~(Enrolments(Set()), nino), Some(AffinityGroup.Individual))
     Future.successful( x.asInstanceOf[A] )
   }
 }
@@ -284,7 +284,7 @@ class FakeSuccessfulAuthConnector @Inject()(mtdItId: Option[String] = Some("foo"
       case Some(id) => Set(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", id))
       case None => Set(Enrolment("HMRC-MTD-IT"))
     }
-    val x = new ~(Enrolments(enrolment), nino)
+    val x = new ~(new ~(Enrolments(enrolment), nino), Some(AffinityGroup.Individual))
     Future.successful( x.asInstanceOf[A] )
   }
 }
