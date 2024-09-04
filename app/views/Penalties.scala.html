@@ -27,7 +27,7 @@
         govukButton : GovukButton
 )
 
-@(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: Request[_], messages: Messages)
+@(penalties: models.Penalties, layoutModel: LayoutModel, isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
 @annualPenaltyAndNonEmpty(penalty: penalties.LateSubmissionPenalty, quarterRowTitle: String, annualRowTitle: String) = {
   @if(penalty.updateDue.nonEmpty && !penalty.annualPenalty) {
@@ -43,18 +43,18 @@
   <p class="govuk-body-l">Penalty points total: <strong>@if(penalties.totalLSPPs < 5){@penalties.totalLSPPs} else {4}</strong></p>
   @if(penalties.totalLSPPs >= 3) {@govukWarningText(WarningText(
     iconFallbackText = Some("Warning"),
-    content = Text(if(penalties.totalLSPPs == 3){"You will get a £200 penalty if you send another late submission."} else if(penalties.totalLSPPs == 4){"You have been given a £200 penalty for reaching the penalty threshold."} else {"You have been given an additional £200 penalty."}),
+    content = Text(if(penalties.totalLSPPs == 3){"@if(!isAgent) {You} else {Your client} will get a £200 penalty if @if(!isAgent) {you} else {they} send another late submission."} else if(penalties.totalLSPPs == 4){"@if(!isAgent) {You have} else {Your client has} been given a £200 penalty for reaching the penalty threshold."} else {"@if(!isAgent) {You} else {They} have been given an additional £200 penalty."}),
     attributes = Map("id" -> "warning-text")
     ))}
   @if(penalties.totalLSPPs < 4) {
-    <p>You have @{
+    <p>@if(!isAgent) {You have} else {Your client has} @{
       penalties.totalLSPPs
-    } penalty point@if(penalties.totalLSPPs > 1) {s} for sending @if(penalties.totalLSPPs > 1) {late submissions} else {a late submission}. You should send @if(penalties.totalLSPPs > 1) {any} else {this} missing submission@if(penalties.totalLSPPs > 1) {s} as soon as possible if you haven't already.</p>
+    } penalty point@if(penalties.totalLSPPs > 1) {s} for sending @if(penalties.totalLSPPs > 1) {late submissions} else {a late submission}. @if(!isAgent) {You} else {They} should send @if(penalties.totalLSPPs > 1) {any} else {this} missing submission@if(penalties.totalLSPPs > 1) {s} as soon as possible if @if(!isAgent) {you} else {they} haven't already.</p>
     <p>
-      You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions.</p>
-    <p>If you reach @(penalties.regimeLSPThreshold) points you’ll have to pay a £200 penalty.</p>
+      @if(!isAgent) {You} else {They}'ll get another point if @if(!isAgent) {you} else {they} send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if @if(!isAgent) {you keep} else {your client keeps} sending late submissions.</p>
+    <p>If @if(!isAgent) {you reach} else {your client reaches} @(penalties.regimeLSPThreshold) points @if(!isAgent) {you} else {they}’ll have to pay a £200 penalty.</p>
   } else{
-    <p>You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already.</p>
+    <p>@if(!isAgent) {You} else {They} will get an additional £200 penalty every time @if(!isAgent) {you} else {they} send a late submission in the future, until @if(!isAgent) {your} else {their} points are removed. @if(!isAgent) {You} else {They} should send any missing submissions as soon as possible if @if(!isAgent) {you} else {they} haven't already.</p>
   }
   <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))}</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
@@ -112,7 +112,7 @@
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
   <div id="overview">
     <h2 class="govuk-heading-m">Overview</h2>
-    <p class="govuk-body">Your account has:</p>
+    <p class="govuk-body">@if(!isAgent){Your account has:} else {Your client's account has:}</p>
     <ul id="your-account-has" class="govuk-list govuk-list--bullet">
       @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@{penalties.totalLSPPs} late submission penalty point@if(penalties.totalLSPPs > 1){s}</li>} else if(penalties.totalLSPPs == 4){
         <li>a late submission penalty</li>

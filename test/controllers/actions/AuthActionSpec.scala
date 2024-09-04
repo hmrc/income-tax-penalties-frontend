@@ -205,6 +205,7 @@ class AuthActionSpec extends SpecBase {
 
             status(result) mustBe INTERNAL_SERVER_ERROR
 
+            println(log.messages)
             log.messages mustBe List(
               ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without NINO"
             )
