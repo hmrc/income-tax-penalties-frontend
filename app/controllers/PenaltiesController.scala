@@ -52,6 +52,6 @@ class PenaltiesController @Inject()(
 
   def individualSummary: Action[AnyContent] = forIndividual.summary
 
-  def clientSummary(clientNino: String): Action[AnyContent] = forClient(clientNino).summary
+  def clientSummary(mtdItId: String): Action[AnyContent] = forClient(mtdItId).summary
 
 }
