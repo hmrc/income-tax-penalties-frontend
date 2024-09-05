@@ -207,7 +207,7 @@ class AuthActionSpec extends SpecBase {
             status(result) mustBe INTERNAL_SERVER_ERROR
 
             log.messages.filter(_._1.isGreaterOrEqual(Level.INFO)) mustBe List(
-              ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] Individual with NINO=None and 1 enrolments"
+              ERROR -> "[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without NINO"
             )
           }
         }
@@ -273,7 +273,7 @@ import uk.gov.hmrc.auth.core.retrieve._
 
 class FakeNonMTDAuthConnector @Inject()(nino: Option[String] = Some("bar")) extends AuthConnector {
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
-    val x = new ~(new ~(Enrolments(Set()), nino), Some(AffinityGroup.Individual))
+    val x = new ~(Enrolments(Set()), nino)
     Future.successful( x.asInstanceOf[A] )
   }
 }
@@ -284,7 +284,7 @@ class FakeSuccessfulAuthConnector @Inject()(mtdItId: Option[String] = Some("foo"
       case Some(id) => Set(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", id))
       case None => Set(Enrolment("HMRC-MTD-IT"))
     }
-    val x = new ~(new ~(Enrolments(enrolment), nino), Some(AffinityGroup.Individual))
+    val x = new ~(Enrolments(enrolment), nino)
     Future.successful( x.asInstanceOf[A] )
   }
 }

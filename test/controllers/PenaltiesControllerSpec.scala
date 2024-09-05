@@ -19,7 +19,7 @@ package controllers
 import config.AppConfig
 import connectors.PenaltiesConnector
 import connectors.PenaltiesConnector.GetPenaltyDetails
-import controllers.actions.{FakeIdentifierAction, IdentifierAction}
+import controllers.actions.{AgentAction, FakeIdentifierAction, IdentifierAction}
 import org.apache.pekko.util.Timeout
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.when
@@ -76,7 +76,8 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
   private val controller = new PenaltiesController(
     view = app.injector.instanceOf[views.html.Penalties],
     penaltiesConnector = mockPenaltiesConnector,
-    identify = app.injector.instanceOf[IdentifierAction],
+    forIndividual = app.injector.instanceOf[IdentifierAction],
+    forClient = app.injector.instanceOf[AgentAction],
     mcc = app.injector.instanceOf[MessagesControllerComponents],
     layoutService = app.injector.instanceOf[LayoutService]
   )(ec = app.injector.instanceOf[ExecutionContext],
@@ -91,12 +92,12 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
 
   "GET /" should {
     "return 200" in {
-      val result: Result = await(controller.onPageLoad(fakeRequest))
+      val result: Result = await(controller.individualSummary(fakeRequest))
       result.header.status shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = await(controller.onPageLoad(fakeRequest))
+      val result = await(controller.individualSummary(fakeRequest))
       result.body.contentType shouldBe Some("text/html; charset=utf-8")
     }
   }
