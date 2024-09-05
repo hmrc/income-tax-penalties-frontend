@@ -18,32 +18,40 @@ package controllers
 
 import config.AppConfig
 import connectors.PenaltiesConnector
-import controllers.actions.IdentifierAction
+import controllers.actions.{AgentAction, IdentifierAction}
+import models.requests.IdentifierRequest
 import play.api.Configuration
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import services.LayoutService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class PenaltiesController @Inject()(view: views.html.Penalties,
-                                     val penaltiesConnector: PenaltiesConnector,
-                                    //val penaltiesService: PenaltiesService,
-                                    identify: IdentifierAction,
-                                    val mcc: MessagesControllerComponents,
-                                    layoutService: LayoutService
-                                   )(implicit val ec: ExecutionContext,
-                                     val config: Configuration,
-                                     val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
+class PenaltiesController @Inject()(
+  view: views.html.Penalties,
+  val penaltiesConnector: PenaltiesConnector,
+  forIndividual: IdentifierAction,
+  forClient: AgentAction,
+  val mcc: MessagesControllerComponents,
+  layoutService: LayoutService
+)(implicit
+  val ec: ExecutionContext,
+  val config: Configuration,
+  val appConfig: AppConfig
+) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify.async { implicit request =>
+  extension (ab: ActionBuilder[IdentifierRequest,_]) private def summary = ab.async { implicit request =>
     val ninoEnrolmentKey = s"HMRC-PT~NINO~${request.clientNino}"
     for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(ninoEnrolmentKey)) yield {
       val penalties = new models.Penalties(penaltyDetails)
       Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self-Assessment Penalties")))
     }
   }
+
+  def individualSummary: Action[AnyContent] = forIndividual.summary
+
+  def clientSummary(clientNino: String): Action[AnyContent] = forClient(clientNino).summary
 
 }
