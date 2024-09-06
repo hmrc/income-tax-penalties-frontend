@@ -42,7 +42,7 @@ class PenaltiesController @Inject()(view: views.html.Penalties,
     val ninoEnrolmentKey = s"HMRC-PT~NINO~${request.clientNino}"
     for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(ninoEnrolmentKey)) yield {
       val penalties = new models.Penalties(penaltyDetails)
-      Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self-Assessment Penalties")))
+      Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self Assessment penalties and appeals")))
     }
   }
 
