@@ -117,7 +117,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p")(0).select("strong").text shouldBe "1"
       select("#lsp-tab p")(1).text shouldBe "You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven't already."
       select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
-      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
+      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points, you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
       //select(".app-summary-card").dump("card")
@@ -203,7 +203,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p")(0).select("strong").text shouldBe "2"
       select("#lsp-tab p")(1).text shouldBe "You have 2 penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven't already."
       select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
-      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
+      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points, you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
       { val card1 = select(".app-summary-card").get(0)
@@ -326,7 +326,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       parsedBody.getElementById("warning-text").text shouldBe "! Warning You will get a £200 penalty if you send another late submission."
       select("#lsp-tab p")(1).text shouldBe "You have 3 penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven't already."
       select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
-      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points you’ll have to pay a £200 penalty."
+      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points, you’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
       {

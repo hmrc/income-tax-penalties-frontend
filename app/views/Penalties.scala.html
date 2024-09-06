@@ -52,7 +52,7 @@
     } penalty point@if(penalties.totalLSPPs > 1) {s} for sending @if(penalties.totalLSPPs > 1) {late submissions} else {a late submission}. @if(!isAgent) {You} else {They} should send @if(penalties.totalLSPPs > 1) {any} else {this} missing submission@if(penalties.totalLSPPs > 1) {s} as soon as possible if @if(!isAgent) {you} else {they} haven't already.</p>
     <p>
       @if(!isAgent) {You} else {They}'ll get another point if @if(!isAgent) {you} else {they} send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if @if(!isAgent) {you} else {they} keep sending late submissions.</p>
-    <p>If @if(!isAgent) {you} else {they} reach @(penalties.regimeLSPThreshold) points @if(!isAgent) {you} else {they}’ll have to pay a £200 penalty.</p>
+    <p>If @if(!isAgent) {you} else {they} reach @(penalties.regimeLSPThreshold) points, @if(!isAgent) {you} else {they}’ll have to pay a £200 penalty.</p>
   } else{
     <p>You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already.</p>
   }

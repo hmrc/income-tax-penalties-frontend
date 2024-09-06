@@ -118,7 +118,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p")(0).select("strong").text shouldBe "1"
       select("#lsp-tab p")(1).text shouldBe "Your client has 1 penalty point for sending a late submission. They should send this missing submission as soon as possible if they haven't already."
       select("#lsp-tab p")(2).text shouldBe "They'll get another point if they send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if they keep sending late submissions."
-      select("#lsp-tab p")(3).text shouldBe "If they reach 4 points they’ll have to pay a £200 penalty."
+      select("#lsp-tab p")(3).text shouldBe "If they reach 4 points, they’ll have to pay a £200 penalty."
       select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
 
       //select(".app-summary-card").dump("card")
@@ -142,5 +142,115 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 1"
     }
+
+    "return page with 2 penalty points when agent's client has 2 late submission penalty (LSP) points" in {
+      mockDelegatedResponse()
+
+      val getPenaltyDetailsPayloadWithAddedPoint = GetPenaltyDetails(
+        totalisations = None,
+        lateSubmissionPenalty = Some(LateSubmissionPenalty(
+          summary = LSPSummary(
+            activePenaltyPoints = 2,
+            regimeThreshold = 4,
+            inactivePenaltyPoints = 0,
+            penaltyChargeAmount = 0,
+            PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+          ),
+          details = Seq(
+            sampleLSP.copy(
+              penaltyNumber = "1234567891",
+              penaltyOrder = Some("02"),
+              FAPIndicator = Some("X"),
+              penaltyExpiryDate = LocalDate.of(2029, 12, 1),
+              penaltyCreationDate = LocalDate.of(2021, 4, 1),
+              lateSubmissions = Some(Seq(sampleLateSubmission.copy(
+                taxPeriodStartDate = Some(LocalDate.parse("2027-07-06")),
+                taxPeriodEndDate = Some(LocalDate.parse("2027-10-05")),
+                taxPeriodDueDate = Some(LocalDate.parse("2027-11-05")),
+                returnReceiptDate = None
+              )))
+            ), sampleLSP.copy(
+              penaltyNumber = "1234567890",
+              penaltyOrder = Some("01"),
+              FAPIndicator = Some("X"),
+              penaltyExpiryDate = LocalDate.of(2029, 9, 1),
+              penaltyCreationDate = LocalDate.of(2021, 1, 1)
+            )
+          )
+        )
+        ),
+        latePaymentPenalty = None,
+        breathingSpace = None
+      )
+
+      mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
+
+      val response = route(app, fakeClientRequest).get
+      status(response) shouldBe Status.OK
+      val parsedBody = Jsoup.parse(contentAsString(response))
+      import parsedBody._
+
+      select("#main-content h1").text shouldBe "Self Assessment penalties and appeals"
+
+      select("#overview h2").text shouldBe "Overview"
+      select("#overview p").text shouldBe "Your client's account has:"
+      select("#overview #your-account-has li:nth-child(1)").text shouldBe "2 late submission penalty points"
+      select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
+
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p")(0).select("strong").text shouldBe "2"
+      select("#lsp-tab p")(1).text shouldBe "Your client has 2 penalty points for sending late submissions. They should send any missing submissions as soon as possible if they haven't already."
+      select("#lsp-tab p")(2).text shouldBe "They'll get another point if they send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if they keep sending late submissions."
+      select("#lsp-tab p")(3).text shouldBe "If they reach 4 points, they’ll have to pay a £200 penalty."
+      select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
+
+      { val card1 = select(".app-summary-card").get(0)
+        card1.select("header div strong").text shouldBe "ACTIVE"
+        val rows = card1.select(".govuk-summary-list__row")
+
+        rows(0).select("dt").text shouldBe "Income source"
+        rows(0).select("dd").text shouldBe "JB Painting and Decorating"
+
+        rows(1).select("dt").text shouldBe "Quarter"
+        rows(1).select("dd").text shouldBe "6 July 2027 to 5 October 2027"
+
+        rows(2).select("dt").text shouldBe "Update due"
+        rows(2).select("dd").text shouldBe "5 November 2027"
+
+        rows(3).select("dt").text shouldBe "Update submitted"
+        rows(3).select("dd").text shouldBe "Not yet received"
+
+        rows(4).select("dt").text shouldBe "Point due to expire"
+        rows(4).select("dd").text shouldBe "December 2029"
+
+        card1.select("footer div a").text shouldBe "Appeal penalty point 2"
+      }
+
+      { val card2 = select(".app-summary-card")(1)
+
+        card2.select("header div strong").text shouldBe "ACTIVE"
+        val rows = card2.select(".govuk-summary-list__row")
+
+        rows(0).select("dt").text shouldBe "Income source"
+        rows(0).select("dd").text shouldBe "JB Painting and Decorating"
+
+        rows(1).select("dt").text shouldBe "Quarter"
+        rows(1).select("dd").text shouldBe "6 April 2027 to 5 July 2027"
+
+        rows(2).select("dt").text shouldBe "Update due"
+        rows(2).select("dd").text shouldBe "5 August 2027"
+
+        rows(3).select("dt").text shouldBe "Update submitted"
+        rows(3).select("dd").text shouldBe "10 August 2027"
+
+        rows(4).select("dt").text shouldBe "Point due to expire"
+        rows(4).select("dd").text shouldBe "September 2029"
+
+        card2.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 1"
+      }
+    }
+    
   }
   }
