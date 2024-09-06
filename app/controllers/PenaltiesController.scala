@@ -19,7 +19,6 @@ package controllers
 import config.AppConfig
 import connectors.PenaltiesConnector
 import controllers.actions.IdentifierAction
-import models.requests.IdentifierRequest
 import play.api.Configuration
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -43,7 +42,7 @@ class PenaltiesController @Inject()(view: views.html.Penalties,
     val ninoEnrolmentKey = s"HMRC-PT~NINO~${request.clientNino}"
     for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(ninoEnrolmentKey)) yield {
       val penalties = new models.Penalties(penaltyDetails)
-      Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self-Assessment Penalties")))
+      Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self Assessment penalties and appeals")))
     }
   }
 

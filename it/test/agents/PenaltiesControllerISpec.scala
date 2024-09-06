@@ -105,6 +105,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       val parsedBody = Jsoup.parse(contentAsString(response))
       import parsedBody._
 
+      parsedBody.title shouldBe "Self Assessment penalties and appeals"
+
       select("#main-content h1").text shouldBe "Self Assessment penalties and appeals"
 
       select("#overview h2").text shouldBe "Overview"
