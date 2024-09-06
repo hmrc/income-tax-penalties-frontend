@@ -37,7 +37,7 @@ class AuthActionSpec extends SpecBase {
 
   class Harness(authAction: IdentifierAction) {
     def onPageLoad(): Action[AnyContent] = authAction { request =>
-      Results.Ok(s"${request.clientMtdItId} - ${request.clientNino}")
+      Results.Ok(s"${request.isAgent} - ${request.clientNino}")
     }
   }
 
@@ -184,7 +184,7 @@ class AuthActionSpec extends SpecBase {
           val result = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe OK
-          contentAsString(result) mustBe "foo - bar"
+          contentAsString(result) mustBe "false - bar"
         }
       }
     }

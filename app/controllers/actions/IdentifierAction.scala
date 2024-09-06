@@ -41,34 +41,28 @@ class AuthenticatedIdentifierAction @Inject()(
                                                override val authConnector: AuthConnector,
                                                config: AppConfig,
                                                val parser: BodyParsers.Default
-                                             )(implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions with Logging {
+                                             ) (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    authorised(Enrolment("HMRC-MTD-IT").withDelegatedAuthRule("mtd-it-auth")).retrieve(Retrievals.nino and Retrievals.affinityGroup) {
-      case Some(nino) ~ Some(Individual) => block(IdentifierRequest(request, false, nino))
-      case Some(nino) ~ Some(Agent) => block(IdentifierRequest(request, true, nino))
-      case _ ~ Some(other) =>
-        logger.error(s"[AuthenticatedIdentifierAction][invokeBlock] MTD IT $other not supported")
-        successful(InternalServerError)
-      case ~(None, Some(Agent)) =>
-        request.session.get(SessionKeys.clientNino) match {
-          case Some(clientNino) =>
-            authorised(Enrolment("HMRC-AS-AGENT").withIdentifier("NINO", clientNino).withDelegatedAuthRule("mtd-it-auth")).retrieve(Retrievals.allEnrolments) {
-              enrolments =>
-                enrolments.enrolments.collectFirst {
-                  case Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), "Activated", _) => arn
-                } match {
-                  case Some(arn) => block(IdentifierRequest(request = request, isAgent = true, clientNino = clientNino))
-                }
+    authorised(Enrolment("HMRC-MTD-IT")).retrieve(Retrievals.authorisedEnrolments and Retrievals.nino) {
+      case ~(enrolments, Some(nino)) =>
+        enrolments.getEnrolment("HMRC-MTD-IT") match {
+          case Some(enrolment) =>
+            enrolment.getIdentifier("MTDITID") match {
+              case Some(EnrolmentIdentifier("MTDITID", "changeMeAgentHack")) => block(IdentifierRequest(request, isAgent = true, nino))
+              case Some(_) => block(IdentifierRequest(request, isAgent = false, nino))
+              case None =>
+                logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without MTDITID")
+                successful(InternalServerError)
             }
+          case None =>
+            logger.error("[AuthenticatedIdentifierAction][invokeBlock] Non-MTD IT user authenticated")
+            successful(InternalServerError)
         }
-      case ~(Some(_), _) =>
-        logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without NINO")
-        successful(InternalServerError)
-      case ~(Some(_), None) =>
+      case ~(_, None) =>
         logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without NINO")
         successful(InternalServerError)
     } recover {
