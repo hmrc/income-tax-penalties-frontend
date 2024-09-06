@@ -27,7 +27,8 @@
         govukButton : GovukButton
 )
 
-@(penalties: models.Penalties, layoutModel: LayoutModel, isAgent: Boolean)(implicit request: Request[_], messages: Messages)
+@(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: models.requests.IdentifierRequest[_], messages: Messages)
+@import request.isAgent
 
 @annualPenaltyAndNonEmpty(penalty: penalties.LateSubmissionPenalty, quarterRowTitle: String, annualRowTitle: String) = {
   @if(penalty.updateDue.nonEmpty && !penalty.annualPenalty) {
