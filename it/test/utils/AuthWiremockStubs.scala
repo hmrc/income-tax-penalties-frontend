@@ -79,4 +79,21 @@ trait AuthWiremockStubs {
     ))
   }
 
+  def mockDelegatedResponse(mtdItId: String = "changeMeAgentHack", nino: String = "AB123456A"): StubMapping = {
+    stubFor(post(urlPathEqualTo(s"/auth/authorise")).withRequestBody(equalToJson(authRequestBody)).willReturn(aResponse()
+      .withStatus(Status.OK)
+      .withHeader("Content-Type", "application/json")
+      .withBody(
+        s"""{
+           |  "authorisedEnrolments": [{
+           |    "key": "HMRC-MTD-IT",
+           |    "identifiers": [{ "key": "MTDITID", "value": "$mtdItId" }],
+           |    "state": "Activated"
+           |  }],
+           |  "nino": "$nino"
+           |}""".stripMargin
+      )
+    ))
+  }
+
 }

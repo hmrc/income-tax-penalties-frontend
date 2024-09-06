@@ -19,6 +19,7 @@ package controllers
 import config.AppConfig
 import connectors.PenaltiesConnector
 import controllers.actions.IdentifierAction
+import models.requests.IdentifierRequest
 import play.api.Configuration
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
