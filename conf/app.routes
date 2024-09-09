@@ -3,8 +3,6 @@
 ->         /hmrc-frontend               hmrcfrontend.Routes
 
 GET        /                            controllers.PenaltiesController.combinedSummary()
-GET        /self                         controllers.PenaltiesController.individualSummary
-GET        /client/:mtdItId             controllers.PenaltiesController.clientSummary(mtdItId: String)
 
 GET        /assets/*file                controllers.Assets.versioned(path = "/public", file: Asset)
 

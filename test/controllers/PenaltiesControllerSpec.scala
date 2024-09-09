@@ -76,8 +76,6 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
   private val controller = new PenaltiesController(
     view = app.injector.instanceOf[views.html.Penalties],
     penaltiesConnector = mockPenaltiesConnector,
-    forIndividual = app.injector.instanceOf[IdentifierAction],
-    forClient = app.injector.instanceOf[AgentAction],
     agentOrIndividual = app.injector.instanceOf[CombinedAction],
     mcc = app.injector.instanceOf[MessagesControllerComponents],
     layoutService = app.injector.instanceOf[LayoutService]
@@ -93,12 +91,12 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
 
   "GET /" should {
     "return 200" in {
-      val result: Result = await(controller.individualSummary(fakeRequest))
+      val result: Result = await(controller.combinedSummary()(fakeRequest))
       result.header.status shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = await(controller.individualSummary(fakeRequest))
+      val result = await(controller.combinedSummary()(fakeRequest))
       result.body.contentType shouldBe Some("text/html; charset=utf-8")
     }
   }
