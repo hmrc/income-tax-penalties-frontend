@@ -19,7 +19,7 @@ package controllers
 import config.AppConfig
 import connectors.PenaltiesConnector
 import connectors.PenaltiesConnector.GetPenaltyDetails
-import controllers.actions.{AgentAction, FakeIdentifierAction, IdentifierAction}
+import controllers.actions.{AgentAction, CombinedAction, FakeIdentifierAction, IdentifierAction}
 import org.apache.pekko.util.Timeout
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.when
@@ -27,7 +27,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.{Application, Configuration}
 import play.api.http.Status
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -35,6 +34,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{MessagesControllerComponents, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.await
+import play.api.{Application, Configuration}
 import services.LayoutService
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.auth.core.authorise.Predicate
@@ -78,6 +78,7 @@ class PenaltiesControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
     penaltiesConnector = mockPenaltiesConnector,
     forIndividual = app.injector.instanceOf[IdentifierAction],
     forClient = app.injector.instanceOf[AgentAction],
+    agentOrIndividual = app.injector.instanceOf[CombinedAction],
     mcc = app.injector.instanceOf[MessagesControllerComponents],
     layoutService = app.injector.instanceOf[LayoutService]
   )(ec = app.injector.instanceOf[ExecutionContext],

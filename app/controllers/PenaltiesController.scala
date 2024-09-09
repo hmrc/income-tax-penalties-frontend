@@ -18,7 +18,7 @@ package controllers
 
 import config.AppConfig
 import connectors.PenaltiesConnector
-import controllers.actions.{AgentAction, IdentifierAction}
+import controllers.actions.{AgentAction, CombinedAction, IdentifierAction}
 import models.requests.IdentifierRequest
 import play.api.Configuration
 import play.api.i18n.I18nSupport
@@ -34,6 +34,7 @@ class PenaltiesController @Inject()(
   val penaltiesConnector: PenaltiesConnector,
   forIndividual: IdentifierAction,
   forClient: AgentAction,
+  agentOrIndividual: CombinedAction,
   val mcc: MessagesControllerComponents,
   layoutService: LayoutService
 )(implicit
@@ -53,5 +54,7 @@ class PenaltiesController @Inject()(
   def individualSummary: Action[AnyContent] = forIndividual.summary
 
   def clientSummary(mtdItId: String): Action[AnyContent] = forClient(mtdItId).summary
+
+  def combinedSummary(): Action[AnyContent] = agentOrIndividual().summary
 
 }
