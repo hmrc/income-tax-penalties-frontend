@@ -60,7 +60,7 @@
     <p>If @if(!isAgent) {you} else {they} reach @(penalties.regimeLSPThreshold) points, @if(!isAgent) {you} else {they}’ll have to pay a £200 penalty.</p>
   } else{
     <p>@if(!isAgent) {You} else {They} will get an additional £200 penalty every time @if(!isAgent) {you} else {they} send a late submission in the future, until @if(!isAgent) {your} else {their} points are removed. @if(!isAgent) {You} else {They} should send any missing submissions as soon as possible if @if(!isAgent) {you} else {they} haven't already.</p>  }
-  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))}</p>
+  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))} else if(penalties.totalLSPPs >= 4 && !isAgent) {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed", href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions your client must take to get their points removed", href = Some("#")))}</p>
   @for(penalty<-penalties.lateSubmissionPenalties){
     <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
       <header class="app-summary-card__header">
