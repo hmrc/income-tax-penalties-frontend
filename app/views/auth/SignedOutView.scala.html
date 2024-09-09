@@ -35,7 +35,7 @@
 
     <p class="govuk-body">
         @govukButton(
-            button.Button(content = HtmlContent(messages("site.signIn"))).copy(element = Some("a"), href = Some(routes.PenaltiesController.individualSummary.url))
+            button.Button(content = HtmlContent(messages("site.signIn"))).copy(element = Some("a"), href = Some(routes.PenaltiesController.combinedSummary().url))
         )
     </p>
 }

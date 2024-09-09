@@ -18,7 +18,7 @@ package controllers
 
 import config.AppConfig
 import connectors.PenaltiesConnector
-import controllers.actions.{AgentAction, CombinedAction, IdentifierAction}
+import controllers.actions.CombinedAction
 import models.requests.IdentifierRequest
 import play.api.Configuration
 import play.api.i18n.I18nSupport
@@ -32,8 +32,6 @@ import scala.concurrent.ExecutionContext
 class PenaltiesController @Inject()(
   view: views.html.Penalties,
   val penaltiesConnector: PenaltiesConnector,
-  forIndividual: IdentifierAction,
-  forClient: AgentAction,
   agentOrIndividual: CombinedAction,
   val mcc: MessagesControllerComponents,
   layoutService: LayoutService
@@ -50,10 +48,6 @@ class PenaltiesController @Inject()(
       Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self Assessment penalties and appeals")))
     }
   }
-
-  def individualSummary: Action[AnyContent] = forIndividual.summary
-
-  def clientSummary(mtdItId: String): Action[AnyContent] = forClient(mtdItId).summary
 
   def combinedSummary(): Action[AnyContent] = agentOrIndividual().summary
 

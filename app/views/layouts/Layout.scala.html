@@ -41,7 +41,7 @@
   HmrcStandardPageParams(
     serviceName = Some("Personal tax account"),
     serviceURLs = ServiceURLs(
-      serviceUrl = Some(routes.PenaltiesController.individualSummary.url)
+      serviceUrl = Some(routes.PenaltiesController.combinedSummary().url)
     ),
     pageTitle = Some(layoutModel.pageTitle),
     isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
