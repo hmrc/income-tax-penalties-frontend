@@ -38,13 +38,18 @@
   }
 }
 
-
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-l">Penalty points total: <strong>@if(penalties.totalLSPPs < 5){@penalties.totalLSPPs} else {4}</strong></p>
   @if(penalties.totalLSPPs >= 3) {@govukWarningText(WarningText(
     iconFallbackText = Some("Warning"),
-    content = Text(if(penalties.totalLSPPs == 3){"You will get a £200 penalty if you send another late submission."} else if(penalties.totalLSPPs == 4){"You have been given a £200 penalty for reaching the penalty threshold."} else {"You have been given an additional £200 penalty."}),    attributes = Map("id" -> "warning-text")
+    content = Text(if(penalties.totalLSPPs == 3 && !isAgent){"You will get a £200 penalty if you send another late submission."}
+                  else if(penalties.totalLSPPs == 3 && isAgent){"Your client will get a £200 penalty if they send another late submission."}
+                  else if(penalties.totalLSPPs == 4 && !isAgent){"You have been given a £200 penalty for reaching the penalty threshold."}
+                  else if(penalties.totalLSPPs == 4 && isAgent){"Your client has been given a £200 penalty for reaching the penalty threshold."}
+                  else if(penalties.totalLSPPs > 4 && !isAgent){"You have been given an additional £200 penalty."}
+                  else {"Your client has been given an additional £200 penalty."}),
+    attributes = Map("id" -> "warning-text")
     ))}
   @if(penalties.totalLSPPs < 4) {
     <p>@if(!isAgent) {You have} else {Your client has} @{
