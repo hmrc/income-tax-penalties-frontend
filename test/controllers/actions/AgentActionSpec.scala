@@ -47,8 +47,8 @@ class AgentActionSpec extends SpecBase {
   lazy val targetLogger = Logger(classOf[AuthenticatedAgentAction])
 
   "Agent Action" - {
-    "when the user hasn't logged in" - {
-      "must redirect the user to log in " in {
+    "when the agent hasn't logged in" - {
+      "must redirect the agent to log in " in {
 
         val application = applicationBuilder().build()
 
@@ -66,8 +66,8 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user's session has expired" - {
-      "must redirect the user to log in " in {
+    "the agent's session has expired" - {
+      "must redirect the agent to log in " in {
         val application = applicationBuilder().build()
 
         running(application) {
@@ -84,8 +84,8 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user doesn't have sufficient enrolments" - {
-      "must redirect the user to the unauthorised page" in {
+    "the agent doesn't have sufficient enrolments" - {
+      "must redirect the agent to the unauthorised page" in {
         val application = applicationBuilder().build()
 
         running(application) {
@@ -102,8 +102,8 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user doesn't have sufficient confidence level" - {
-      "must redirect the user to the unauthorised page" in {
+    "the agent doesn't have sufficient confidence level" - {
+      "must redirect the agent to the unauthorised page" in {
         val application = applicationBuilder().build()
 
         running(application) {
@@ -120,8 +120,8 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user used an unaccepted auth provider" - {
-      "must redirect the user to the unauthorised page" in {
+    "the agent used an unaccepted auth provider" - {
+      "must redirect the agent to the unauthorised page" in {
         val application = applicationBuilder().build()
 
         running(application) {
@@ -138,8 +138,8 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user has an unsupported affinity group" - {
-      "must redirect the user to the unauthorised page" in {
+    "the agent has an unsupported affinity group" - {
+      "must redirect the agent to the unauthorised page" in {
         val application = applicationBuilder().build()
 
         running(application) {
@@ -156,8 +156,8 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user has an unsupported credential role" - {
-      "must redirect the user to the unauthorised page" in {
+    "the agent has an unsupported credential role" - {
+      "must redirect the agent to the unauthorised page" in {
         val application = applicationBuilder().build()
 
         running(application) {
@@ -216,7 +216,7 @@ class AgentActionSpec extends SpecBase {
       }
     }
 
-    "the user authenticates despite session having neither MTDITID or NINO" - {
+    "the agent authenticates despite session having neither MTDITID or NINO" - {
       "should return internal error and log an error" in {
         val application = applicationBuilder().build()
 
