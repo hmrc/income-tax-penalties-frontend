@@ -34,7 +34,6 @@ class CombinedAction @Inject()(
         case Some(mtdIdId) => agentAction(mtdIdId).invokeBlock(request, block)
         case None => identifierAction.invokeBlock(request, block)
       }
-      identifierAction.invokeBlock(request, block)
     }
   }
 

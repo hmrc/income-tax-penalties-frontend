@@ -38,6 +38,19 @@ trait AuthWiremockStubs {
                                   |  "retrieve": ["authorisedEnrolments", "nino"]
                                   |}""".stripMargin
 
+  private val agentAuthRequestBody =
+    """{
+      |  "authorise": [
+      |    {
+      |      "delegatedAuthRule" : "mtd-it-auth",
+      |      "state" : "Activated",
+      |      "enrolment" : "HMRC-MTD-IT",
+      |      "identifiers" : [ { "key": "MTDITID", "value": "987654321" } ]
+      |    }
+      |  ],
+      |  "retrieve": []
+      |}""".stripMargin
+
   def mockUnauthorisedResponse(): StubMapping = {
     stubFor(post(urlPathEqualTo(s"/auth/authorise")).withRequestBody(equalToJson(authRequestBody))
       .willReturn(aResponse()
@@ -79,8 +92,8 @@ trait AuthWiremockStubs {
     ))
   }
 
-  def mockDelegatedResponse(mtdItId: String = "changeMeAgentHack", nino: String = "AB123456A"): StubMapping = {
-    stubFor(post(urlPathEqualTo(s"/auth/authorise")).withRequestBody(equalToJson(authRequestBody)).willReturn(aResponse()
+  def mockDelegatedResponse(mtdItId: String = "12345678901234567890"): StubMapping = {
+    stubFor(post(urlPathEqualTo(s"/auth/authorise")).withRequestBody(equalToJson(agentAuthRequestBody)).willReturn(aResponse()
       .withStatus(Status.OK)
       .withHeader("Content-Type", "application/json")
       .withBody(
@@ -89,8 +102,7 @@ trait AuthWiremockStubs {
            |    "key": "HMRC-MTD-IT",
            |    "identifiers": [{ "key": "MTDITID", "value": "$mtdItId" }],
            |    "state": "Activated"
-           |  }],
-           |  "nino": "$nino"
+           |  }]
            |}""".stripMargin
       )
     ))
