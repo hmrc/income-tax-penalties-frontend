@@ -17,22 +17,24 @@
 package agents
 
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LSPDetails, LSPPenaltyCategoryEnum, LSPPenaltyStatusEnum, LSPSummary, LateSubmission, LateSubmissionPenalty, TaxReturnStatusEnum}
+import controllers.agent.SessionKeys
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.http.SessionKeys.authToken
-import utils.JsoupUtils._
+import utils.JsoupUtils.*
 import utils.{AuthWiremockStubs, IntegrationSpecCommonBase, PenaltiesWiremockStubs}
-import controllers.PenaltiesController
 
 import java.time.LocalDate
 
 class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with PenaltiesWiremockStubs {
 
-  val fakeClientRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/")).withSession(
-    authToken -> "12345"
+  val fakeAgentRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/")).withSession(
+    authToken -> "12345",
+    SessionKeys.clientMTDID -> "987654321",
+    SessionKeys.clientNino -> "AB123456A"
   )
 
   val fakeAnonymousRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/"))
@@ -100,10 +102,10 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
 
-      val response = route(app, fakeClientRequest).get
+      val response = route(app, fakeAgentRequest).get
       status(response) shouldBe Status.OK
       val parsedBody = Jsoup.parse(contentAsString(response))
-      import parsedBody._
+      import parsedBody.*
 
       parsedBody.title shouldBe "Self Assessment penalties and appeals"
 
@@ -187,10 +189,10 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
 
-      val response = route(app, fakeClientRequest).get
+      val response = route(app, fakeAgentRequest).get
       status(response) shouldBe Status.OK
       val parsedBody = Jsoup.parse(contentAsString(response))
-      import parsedBody._
+      import parsedBody.*
 
       select("#main-content h1").text shouldBe "Self Assessment penalties and appeals"
 
@@ -309,10 +311,10 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
 
-      val response = route(app, fakeClientRequest).get
+      val response = route(app, fakeAgentRequest).get
       status(response) shouldBe Status.OK
       val parsedBody = Jsoup.parse(contentAsString(response))
-      import parsedBody._
+      import parsedBody.*
 
       parsedBody.title shouldBe "Self Assessment penalties and appeals"
 
@@ -471,10 +473,10 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
 
-      val response = route(app, fakeClientRequest).get
+      val response = route(app, fakeAgentRequest).get
       status(response) shouldBe Status.OK
       val parsedBody = Jsoup.parse(contentAsString(response))
-      import parsedBody._
+      import parsedBody.*
 
       parsedBody.title shouldBe "Self Assessment penalties and appeals"
 
@@ -669,10 +671,10 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
 
-      val response = route(app, fakeClientRequest).get
+      val response = route(app, fakeAgentRequest).get
       status(response) shouldBe Status.OK
       val parsedBody = Jsoup.parse(contentAsString(response))
-      import parsedBody._
+      import parsedBody.*
 
       parsedBody.title shouldBe "Self Assessment penalties and appeals"
 

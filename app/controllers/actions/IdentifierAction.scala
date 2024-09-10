@@ -18,14 +18,12 @@ package controllers.actions
 
 import com.google.inject.Inject
 import config.AppConfig
-import controllers.agent.SessionKeys
 import controllers.routes
 import models.requests.IdentifierRequest
 import play.api.Logging
-import play.api.mvc.*
-import play.api.mvc.Results.*
-import uk.gov.hmrc.auth.core.*
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
+import play.api.mvc.Results._
+import play.api.mvc._
+import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
@@ -38,10 +36,10 @@ import scala.concurrent.{ExecutionContext, Future}
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
 
 class AuthenticatedIdentifierAction @Inject()(
-                                               override val authConnector: AuthConnector,
-                                               config: AppConfig,
-                                               val parser: BodyParsers.Default
-                                             ) (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions with Logging {
+   override val authConnector: AuthConnector,
+   config: AppConfig,
+   val parser: BodyParsers.Default
+) (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
@@ -52,8 +50,7 @@ class AuthenticatedIdentifierAction @Inject()(
         enrolments.getEnrolment("HMRC-MTD-IT") match {
           case Some(enrolment) =>
             enrolment.getIdentifier("MTDITID") match {
-              case Some(EnrolmentIdentifier("MTDITID", "changeMeAgentHack")) => block(IdentifierRequest(request, isAgent = true, nino))
-              case Some(_) => block(IdentifierRequest(request, isAgent = false, nino))
+              case Some(_) => block(IdentifierRequest(request, false, nino))
               case None =>
                 logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without MTDITID")
                 successful(InternalServerError)
