@@ -112,6 +112,35 @@
   }
 }
 
+@lppTabContent = {
+  <h3 class="govuk-heading-s">Late payment penalties</h3>
+  <p class="govuk-body-m">The earlier you pay your Income Tax, the lower your penalties and interest will be.</p>
+  <p class="govuk-body">
+    <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in new tab)</a>
+  </p>
+  @for(paymentPenalty <- penalties.latePaymentPenalties){
+@*    <section class="app-summary-card" @if(paymentPenalty.) {style="margin-bottom: 15px;"}>*@
+      <header class="app-summary-card__header">
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.amountAccruing + paymentPenalty.amountPosted} penalty</h4>
+@*        <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>*@
+      </header>
+      <div class = "app-summary-card__body">
+        <dl class="govuk-summary-list">
+          @if(paymentPenalty.dueDate.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Income Tax due</dt>
+              <dd class="govuk-summary-list__value">@{paymentPenalty.dueDate}</dd>
+            </div>
+          }
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Income Tax paid</dt>
+            <dd class="govuk-summary-list__value">@if(paymentPenalty.latestClearing.nonEmpty){paymentPenalty.latestClearing} else {Payment not yet received}</dd>
+          </div>
+        </dl>
+      </div>
+  }
+}
+
 @layout(layoutModel) {
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
   <div id="overview">
@@ -140,7 +169,7 @@
       if (penalties.latePaymentPenalties.nonEmpty) Some(TabItem(
         id = Some("lpp-tab"),
         label = "Late payment penalties",
-        panel = TabPanel(content = HtmlContent(""))
+        panel = TabPanel(content = HtmlContent(lppTabContent))
       )) else None
     ).flatten
   ))

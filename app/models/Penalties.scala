@@ -16,6 +16,7 @@
 
 package models
 
+import connectors.PenaltiesConnector
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum}
 import play.api.i18n.Messages
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
@@ -57,8 +58,12 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
     penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_)).sortBy(_.ordinal.toInt).reverse
 
-  class LatePaymentPenalty(@unused lppDetails: LPPDetails) {
-    /** placeholder for LPP functionality to be added */
+  class LatePaymentPenalty(lppDetails: LPPDetails) {
+    val category: PenaltiesConnector.LPPPenaltyCategoryEnum.Value = lppDetails.penaltyCategory // LPP1 or LPP2
+    val dueDate: String = displayDayMonthYear(lppDetails.principalChargeDueDate) // "31 January 2028"
+    val latestClearing: String = lppDetails.principalChargeLatestClearing.toDayMonthYear // "19 February 2028" or None
+    val amountAccruing: Double = lppDetails.penaltyAmountAccruing.setScale(3, BigDecimal.RoundingMode.FLOOR).toDouble // 400.00
+    val amountPosted: Double = lppDetails.penaltyAmountPosted.toDouble // 350.00
   }
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
