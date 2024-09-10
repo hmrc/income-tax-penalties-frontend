@@ -16,12 +16,12 @@
 
 @(mtditid: String, nino: String, sessionId: String)
 
-<html>
+<html lang="en-GB">
  <body>
    <form method="post">
     <p>Session ID: @sessionId</p>
-    <p>MTDITID: <input type="text" name="mtditid" value="@mtditid"></p>
-    <p>NINO: <input type="text" name="nino" value="@nino"></p>
+    <p>MTDITID: <input type="text" name="mtditid" value="@mtditid" aria-label="Making Tax Digital for Income Tax Identifier"></p>
+    <p>NINO: <input type="text" name="nino" value="@nino" aria-label="National Insurance Number"></p>
     <p><input type="submit"></p>
    </form>
    <p><a href="/income-tax-penalties-frontend/">main page</a></p>
