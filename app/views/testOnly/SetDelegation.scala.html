@@ -1,0 +1,29 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@(mtditid: String, nino: String, sessionId: String)
+
+<html>
+ <body>
+   <form method="post">
+    <p>Session ID: @sessionId</p>
+    <p>MTDITID: <input type="text" name="mtditid" value="@mtditid"></p>
+    <p>NINO: <input type="text" name="nino" value="@nino"></p>
+    <p><input type="submit"></p>
+   </form>
+   <p><a href="/income-tax-penalties-frontend/">main page</a></p>
+ </body>
+</html>
