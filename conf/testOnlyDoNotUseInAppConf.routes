@@ -11,3 +11,7 @@
 
 # Add all the application routes to the prod.routes file
 ->         /                          prod.Routes
+
+GET        /income-tax-penalties/test-only/set-delegation controllers.testOnly.SetDelegationController.delegationPage()
++NOCSRF
+POST       /income-tax-penalties/test-only/set-delegation controllers.testOnly.SetDelegationController.setDelegation()
