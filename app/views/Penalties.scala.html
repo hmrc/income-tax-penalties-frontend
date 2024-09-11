@@ -119,13 +119,25 @@
     <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in a new tab)</a>
   </p>
   @for(paymentPenalty <- penalties.latePaymentPenalties){
-@*    <section class="app-summary-card" @if(paymentPenalty.) {style="margin-bottom: 15px;"}>*@
+    <section class="app-summary-card">
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-@*        <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>*@
+        <div class="app-summary-card__tag"><strong class="govuk-tag penalty-due-tag">@{paymentPenalty.status}</strong></div>
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
+          @if(paymentPenalty.penaltyType.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Penalty type</dt>
+              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>
+            </div>
+          }
+@*          @if(paymentPenalty.penaltyType.nonEmpty) {*@
+@*            <div class="govuk-summary-list__row">*@
+@*              <dt class="govuk-summary-list__key">Overdue charge</dt>*@
+@*              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>*@
+@*            </div>*@
+@*          }*@
           @if(paymentPenalty.dueDate.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Income Tax due</dt>
