@@ -19,26 +19,39 @@ package controllers.testOnly
 import controllers.agent.SessionKeys.*
 import play.api.Logging
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.retrieve.EmptyRetrieval
+import uk.gov.hmrc.auth.core.{AuthConnector, Enrolment}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
+import scala.concurrent.Future.successful
 
 class SetDelegationController @Inject()(
-   val mcc: MessagesControllerComponents
+  authConnector: AuthConnector,
+  val mcc: MessagesControllerComponents
 )(implicit
   val ec: ExecutionContext
 ) extends FrontendController(mcc) with Logging {
 
-  def delegationPage(): Action[AnyContent] = Action { request =>
+  def delegationPage(): Action[AnyContent] = Action.async { request =>
     val sessionId = request.session.get("sessionId")
     val mtditid = request.session.get(clientMTDID)
     val nino = request.session.get(clientNino) // eg TT217906A
 
-    logger.info(s"[SetDelegationController][setDelegation] Existing MTDITID=$mtditid, NINO=$nino")
+    mtditid.filterNot(_.isBlank).map { id =>
+      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      val spec = Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID",id).withDelegatedAuthRule("mtd-it-auth")
+      authConnector.authorise(spec, EmptyRetrieval).map(_=>"Success").recover(e=>e.getClass.getSimpleName + ": " + e.getMessage)
 
-    val view = views.html.testOnly.SetDelegation(mtditid.getOrElse(""), nino.getOrElse(""), sessionId.getOrElse("none"))
-    Ok(view)
+    }.getOrElse(successful("")).map { authReesult =>
+      logger.info(s"[SetDelegationController][setDelegation] Existing MTDITID=$mtditid, NINO=$nino, auth result: $authReesult")
+
+      val view = views.html.testOnly.SetDelegation(mtditid.getOrElse(""), nino.getOrElse(""), sessionId.getOrElse("none"), authReesult)
+      Ok(view)
+    }
   }
   
   def setDelegation(): Action[AnyContent] = Action { request =>
