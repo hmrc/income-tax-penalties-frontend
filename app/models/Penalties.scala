@@ -16,10 +16,12 @@
 
 package models
 
-import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum}
+import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum, getPenaltyDetailsFmt}
 import play.api.i18n.Messages
+import play.api.Logging
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
 
+import java.time.LocalDate
 import scala.annotation.unused
 
 class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) {
@@ -30,6 +32,18 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
 
   def regimeLSPThreshold: Int = lspSummary.map(_.regimeThreshold).get
 
+  private val lspDetails: Option[LSPDetails]  = penaltyDetails.lateSubmissionPenalty.map(_.details.head)
+  val penaltyRemovedDate: Option[LocalDate] = lspDetails match
+    case Some(value) => value.lateSubmissions.head.last.taxPeriodDueDate
+    
+  val penaltyRemoveDateToString: String = penaltyRemovedDate match {
+    case Some(date) => 
+      val year = date.getYear
+      val month = date.getMonthValue
+      if (month == 12) messages("month.1") + " " + (year + 2).toString
+      else messages(s"month.${month + 1}") + " " + (year + 1).toString
+  }
+  
   class LateSubmissionPenalty(lspDetails: LSPDetails) {
     private val headSubmission = lspDetails.lateSubmissions.head.last
     val penaltyNumber: String = lspDetails.penaltyNumber
@@ -52,6 +66,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     val taxYearFrom: String = headSubmission.taxPeriodStartDate.toYear // 2026
 
     val taxYearTo: String = headSubmission.taxPeriodEndDate.toYear // 2027
+    
   }
 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
