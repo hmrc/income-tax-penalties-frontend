@@ -132,12 +132,12 @@
               <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>
             </div>
           }
-@*          @if(paymentPenalty.penaltyType.nonEmpty) {*@
-@*            <div class="govuk-summary-list__row">*@
-@*              <dt class="govuk-summary-list__key">Overdue charge</dt>*@
-@*              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>*@
-@*            </div>*@
-@*          }*@
+          @if(paymentPenalty.penaltyType.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Overdue charge</dt>
+              <dd class="govuk-summary-list__value">Income Tax for @{paymentPenalty.taxYearFrom} to @{paymentPenalty.taxYearTo} tax year</dd>
+            </div>
+          }
           @if(paymentPenalty.dueDate.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Income Tax due</dt>

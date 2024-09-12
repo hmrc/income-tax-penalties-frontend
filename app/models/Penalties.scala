@@ -72,6 +72,8 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
       case LPPPenaltyStatusEnum.Accruing => "Estimate"
       case LPPPenaltyStatusEnum.Posted => "Due"
     } // Active or Inactive
+    val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
+    val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
   }
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
