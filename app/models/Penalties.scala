@@ -18,9 +18,7 @@ package models
 
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum, getPenaltyDetailsFmt}
 import play.api.i18n.Messages
-import play.api.Logging
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
-
 import java.time.LocalDate
 import scala.annotation.unused
 
@@ -33,15 +31,18 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   def regimeLSPThreshold: Int = lspSummary.map(_.regimeThreshold).get
 
   private val lspDetails: Option[LSPDetails]  = penaltyDetails.lateSubmissionPenalty.map(_.details.head)
-  val penaltyRemovedDate: Option[LocalDate] = lspDetails match
-    case Some(value) => value.lateSubmissions.head.last.taxPeriodDueDate
+  val penaltyRemovedDate: Either[String, Option[LocalDate]] = lspDetails match
+    case Some(value) => Right(value.lateSubmissions.head.last.taxPeriodDueDate)
+    case None => Left("No LSP details available.")
     
   val penaltyRemoveDateToString: String = penaltyRemovedDate match {
-    case Some(date) => 
+    case Right(Some(date)) => 
       val year = date.getYear
       val month = date.getMonthValue
       if (month == 12) messages("month.1") + " " + (year + 2).toString
       else messages(s"month.${month + 1}") + " " + (year + 1).toString
+    case Right(None) => "Error extracting the date."
+    case Left(_) => "No date found within the empty LSP details class."
   }
   
   class LateSubmissionPenalty(lspDetails: LSPDetails) {
