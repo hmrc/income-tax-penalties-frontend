@@ -112,6 +112,53 @@
   }
 }
 
+@lppTabContent = {
+  <h3 class="govuk-heading-s">Late payment penalties</h3>
+  <p class="govuk-body-m">The earlier you pay your Income Tax, the lower your penalties and interest will be.</p>
+  <p class="govuk-body">
+    <a id="hyperlink" href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in a new tab)</a>
+  </p>
+  @for(paymentPenalty <- penalties.latePaymentPenalties){
+    <section class="app-summary-card">
+      <header class="app-summary-card__header">
+        <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
+        <div class="app-summary-card__tag"><strong class="govuk-tag penalty-due-tag">@{paymentPenalty.status.toUpperCase}</strong></div>
+      </header>
+      <div class = "app-summary-card__body">
+        <dl class="govuk-summary-list">
+          @if(paymentPenalty.penaltyType.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Penalty type</dt>
+              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>
+            </div>
+          }
+          @if(paymentPenalty.penaltyType.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Overdue charge</dt>
+              <dd class="govuk-summary-list__value">Income Tax for @{paymentPenalty.taxYearFrom} to @{paymentPenalty.taxYearTo} tax year</dd>
+            </div>
+          }
+          @if(paymentPenalty.dueDate.nonEmpty) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Income Tax due</dt>
+              <dd class="govuk-summary-list__value">@{paymentPenalty.dueDate}</dd>
+            </div>
+          }
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Income Tax paid</dt>
+            <dd class="govuk-summary-list__value">@if(paymentPenalty.latestClearing.nonEmpty){paymentPenalty.latestClearing} else {Payment not yet received}</dd>
+          </div>
+        </dl>
+      </div>
+      <footer class="app-summary-card__footer">
+        <div class="app-summary-card__link">
+          <a class="govuk-link" href="#">View calculation</a>
+          <a class="govuk-link" style="margin-left: 10px;" href="#">Appeal this penalty</a>
+        </div>
+      </footer>
+  }
+}
+
 @layout(layoutModel) {
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
   <div id="overview">
@@ -121,13 +168,18 @@
       @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@{penalties.totalLSPPs} late submission penalty point@if(penalties.totalLSPPs > 1){s}</li>} else if(penalties.totalLSPPs == 4){
         <li>a late submission penalty</li>
         <li>the maximum number of late submission penalty points</li>
-      } else {
+      } else if(penalties.totalLSPPs > 4){
         <li>late submission penalties</li>
         <li>the maximum number of late submission penalty points</li>
       }
+      @if(penalties.accountHasLPPs){
+        <li>overdue Income Tax charges</li>
+        <li>unpaid interest</li>
+        <li>a late payment penalty</li>
+      }
     </ul>
   </div>
-  @if(penalties.totalLSPPs == 4 || penalties.totalLSPPs == 5){@govukButton(Button(content = Text("Check amounts and pay") ))}
+  @if(penalties.totalLSPPs >= 4 || penalties.accountHasLPPs){@govukButton(Button(id = Some("check-amounts"), content = Text("Check amounts and pay") ))}
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
     title = Some("Penalty and appeal details"),
@@ -140,7 +192,7 @@
       if (penalties.latePaymentPenalties.nonEmpty) Some(TabItem(
         id = Some("lpp-tab"),
         label = "Late payment penalties",
-        panel = TabPanel(content = HtmlContent(""))
+        panel = TabPanel(content = HtmlContent(lppTabContent))
       )) else None
     ).flatten
   ))

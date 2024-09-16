@@ -16,7 +16,7 @@
 
 package models
 
-import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum}
+import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LSPDetails, TaxReturnStatusEnum}
 import play.api.i18n.Messages
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
 
@@ -57,11 +57,27 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   val lateSubmissionPenalties: Seq[LateSubmissionPenalty] =
     penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_)).sortBy(_.ordinal.toInt).reverse
 
-  class LatePaymentPenalty(@unused lppDetails: LPPDetails) {
-    /** placeholder for LPP functionality to be added */
+  class LatePaymentPenalty(lppDetails: LPPDetails) {
+    val penaltyType: String = lppDetails.penaltyCategory match {
+      case LPPPenaltyCategoryEnum.LPP1 => "First penalty for late payment"
+      case LPPPenaltyCategoryEnum.LPP2 => "Second penalty for late payment"
+    }// LPP1 or LPP2
+    val dueDate: String = displayDayMonthYear(lppDetails.principalChargeDueDate) // "31 January 2028"
+    val latestClearing: String = lppDetails.principalChargeLatestClearing.toDayMonthYear // "19 February 2028" or None
+    val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing // 400.00
+    val amountPosted: BigDecimal = lppDetails.penaltyAmountPosted // 350.00
+    val totalAmount: BigDecimal = (amountAccruing + amountPosted).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+    val status: String = lppDetails.penaltyStatus match {
+      case LPPPenaltyStatusEnum.Accruing => "Estimate"
+      case LPPPenaltyStatusEnum.Posted => "Due"
+    } // Active or Inactive
+    val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
+    val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
   }
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
     penaltyDetails.latePaymentPenalty.map(_.details).getOrElse(Seq()).map(new LatePaymentPenalty(_))
+    
+  val accountHasLPPs: Boolean = penaltyDetails.latePaymentPenalty.nonEmpty
 
 }
