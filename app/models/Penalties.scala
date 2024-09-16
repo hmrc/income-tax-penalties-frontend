@@ -16,7 +16,6 @@
 
 package models
 
-import connectors.PenaltiesConnector
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LSPDetails, TaxReturnStatusEnum}
 import play.api.i18n.Messages
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}

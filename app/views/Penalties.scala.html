@@ -116,13 +116,13 @@
   <h3 class="govuk-heading-s">Late payment penalties</h3>
   <p class="govuk-body-m">The earlier you pay your Income Tax, the lower your penalties and interest will be.</p>
   <p class="govuk-body">
-    <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in a new tab)</a>
+    <a id="hyperlink" href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in a new tab)</a>
   </p>
   @for(paymentPenalty <- penalties.latePaymentPenalties){
     <section class="app-summary-card">
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-        <div class="app-summary-card__tag"><strong class="govuk-tag penalty-due-tag">@{paymentPenalty.status}</strong></div>
+        <div class="app-summary-card__tag"><strong class="govuk-tag penalty-due-tag">@{paymentPenalty.status.toUpperCase}</strong></div>
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
@@ -179,7 +179,7 @@
       }
     </ul>
   </div>
-  @if(penalties.totalLSPPs >= 4 || penalties.accountHasLPPs){@govukButton(Button(content = Text("Check amounts and pay") ))}
+  @if(penalties.totalLSPPs >= 4 || penalties.accountHasLPPs){@govukButton(Button(id = Some("check-amounts"), content = Text("Check amounts and pay") ))}
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
     title = Some("Penalty and appeal details"),

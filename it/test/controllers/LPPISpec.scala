@@ -16,11 +16,13 @@
 
 package controllers
 
-import connectors.PenaltiesConnector.{GetPenaltyDetails, LatePaymentPenalty, LPPDetails, LPPDetailsMetadata, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, lateSubmissionPenaltyFmt}
+import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LatePaymentPenalty, TimeToPay, lateSubmissionPenaltyFmt}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.http.Status
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
+import org.jsoup.Jsoup
+import utils.JsoupUtils._
 import java.time.LocalDate
 import uk.gov.hmrc.http.SessionKeys.authToken
 import utils.{AuthWiremockStubs, IntegrationSpecCommonBase, PenaltiesWiremockStubs}
@@ -32,10 +34,6 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
   )
 
   val fakeAnonymousRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/"))
-
-  val sampleMetaData: LPPDetailsMetadata = LPPDetailsMetadata(
-    mainTransaction = None, outstandingAmount = None, timeToPay = None
-  )
 
   val sampleLPP: LPPDetails = LPPDetails(
     penaltyChargeReference = None,
@@ -62,8 +60,10 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
     principalChargeBillingTo = LocalDate.parse("2027-04-05"),
     principalChargeDueDate = LocalDate.parse("2028-01-31"),
     principalChargeLatestClearing = None,
-    vatOutstandingAmount = None,
-    LPPDetailsMetadata = sampleMetaData
+    principalChargeDocNumber = "12938348",
+    principalChargeMainTransaction = "4239874329785",
+    principalChargeSubTransaction = "3447584",
+    timeToPay = None
   )
 
   "GET /" should {
@@ -79,7 +79,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       val getPenaltyDetailsPayloadWithAddedPoint = GetPenaltyDetails(
         totalisations = None,
         lateSubmissionPenalty =None,
-        latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP))),
+        latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP), true)),
         breathingSpace = None
       )
 
@@ -96,38 +96,36 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
 
       select("#overview h2").text shouldBe "Overview"
       select("#overview p").text shouldBe "Your account has:"
-      select("#overview #your-account-has li:nth-child(1)").text shouldBe "1 late submission penalty point"
+      select("#overview #your-account-has li:nth-child(1)").text shouldBe "overdue Income Tax charges"
+      select("#overview #your-account-has li:nth-child(2)").text shouldBe "unpaid interest"
+      select("#overview #your-account-has li:nth-child(3)").text shouldBe "a late payment penalty"
+      select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
 
-      select("#lsp-tab h3").text shouldBe "Late submission penalties"
-      select("#lsp-tab p")(0).select("strong").text shouldBe "1"
-      select("#lsp-tab p")(1).text shouldBe "You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven't already."
-      select("#lsp-tab p")(2).text shouldBe "You'll get another point if you send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if you keep sending late submissions."
-      select("#lsp-tab p")(3).text shouldBe "If you reach 4 points, you’ll have to pay a £200 penalty."
-      select("#lsp-tab p a").text shouldBe "Read the guidance about late submission penalties (opens in new tab)"
+      select("#lpp-tab h3").text shouldBe "Late payment penalties"
+      select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
+      select("#lpp-tab p a").text shouldBe "Read the guidance about how late payment penalties are calculated (opens in a new tab)"
 
       //select(".app-summary-card").dump("card")
-      select(".app-summary-card header div strong").text shouldBe "ACTIVE"
+      select(".app-summary-card header div strong").text shouldBe "ESTIMATE"
       val rows = select(".govuk-summary-list__row")
 
-      rows(0).select("dt").text shouldBe "Income source"
-      rows(0).select("dd").text shouldBe "JB Painting and Decorating"
+      rows(0).select("dt").text shouldBe "Penalty type"
+      rows(0).select("dd").text shouldBe "First penalty for late payment"
 
-      rows(1).select("dt").text shouldBe "Quarter"
-      rows(1).select("dd").text shouldBe "6 April 2027 to 5 July 2027"
+      rows(1).select("dt").text shouldBe "Overdue charge"
+      rows(1).select("dd").text shouldBe "Income Tax for 2026 to 2027 tax year"
 
-      rows(2).select("dt").text shouldBe "Update due"
-      rows(2).select("dd").text shouldBe "5 August 2027"
+      rows(2).select("dt").text shouldBe "Income Tax due"
+      rows(2).select("dd").text shouldBe "31 January 2028"
 
-      rows(3).select("dt").text shouldBe "Update submitted"
-      rows(3).select("dd").text shouldBe "10 August 2027"
+      rows(3).select("dt").text shouldBe "Income Tax paid"
+      rows(3).select("dd").text shouldBe "Payment not yet received"
 
-      rows(4).select("dt").text shouldBe "Point due to expire"
-      rows(4).select("dd").text shouldBe "September 2029"
-
-      select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 1"
+      select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
+      select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
     }
   }
 }
