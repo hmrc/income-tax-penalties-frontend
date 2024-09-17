@@ -73,6 +73,10 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     } // Active or Inactive
     val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
     val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
+    val isPaid: Boolean = lppDetails.penaltyAmountPaid match {
+      case Some(amount) => (lppDetails.penaltyAmountPosted !=0) && (lppDetails.penaltyAmountPosted - amount == 0)
+      case None => false
+    }
   }
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
