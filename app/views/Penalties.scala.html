@@ -119,10 +119,10 @@
     <a id="hyperlink" href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in a new tab)</a>
   </p>
   @for(paymentPenalty <- penalties.latePaymentPenalties){
-    <section class="app-summary-card">
+    <section class="app-summary-card" style="margin-bottom: 15px;">
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-        <div class="app-summary-card__tag"><strong class="govuk-tag penalty-due-tag">@{paymentPenalty.status.toUpperCase}</strong></div>
+        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@if(paymentPenalty.isPaid) {PAID} else @{paymentPenalty.status.toUpperCase}</strong></div>
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
@@ -156,6 +156,7 @@
           <a class="govuk-link" style="margin-left: 10px;" href="#">Appeal this penalty</a>
         </div>
       </footer>
+    </section>
   }
 }
 
