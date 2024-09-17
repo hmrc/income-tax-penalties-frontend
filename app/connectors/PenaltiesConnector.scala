@@ -463,7 +463,7 @@ object PenaltiesConnector {
   )
   implicit val timeToPayFmt: OFormat[TimeToPay] = Json.format[TimeToPay]
 
-  case class LatePaymentPenalty(details: Seq[LPPDetails], manualLPPIndicator: Boolean)
+  case class LatePaymentPenalty(details: Seq[LPPDetails], manualLPPIndicator: Boolean = false)
   implicit val latePaymentPenaltyFmt: Format[LatePaymentPenalty] = Json.format[LatePaymentPenalty]
 
   case class BreathingSpace(BSStartDate: LocalDate, BSEndDate: LocalDate)
