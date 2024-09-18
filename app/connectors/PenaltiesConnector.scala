@@ -288,30 +288,27 @@ object PenaltiesConnector {
                          principalChargeDueDate: LocalDate,
                          penaltyChargeReference: Option[String],
                          principalChargeLatestClearing: Option[LocalDate],
-                         vatOutstandingAmount: Option[BigDecimal],
-                         LPPDetailsMetadata: LPPDetailsMetadata
+                         principalChargeDocNumber: String,
+                         principalChargeMainTransaction: String,
+                         principalChargeSubTransaction: String,
+                         timeToPay: Option[Seq[TimeToPay]]
                        ) extends Ordered[LPPDetails] {
     override def compare(that: LPPDetails): Int = {
       (this.principalChargeBillingFrom, that.principalChargeBillingFrom,
         this.principalChargeBillingTo, that.principalChargeBillingTo,
-        this.LPPDetailsMetadata.mainTransaction, that.LPPDetailsMetadata.mainTransaction,
         this.penaltyCategory, that.penaltyCategory)
       match {
         //Compare tax period start dates
-        case (startDateA, startDateB, _, _, _, _, _, _) if startDateA.isBefore(startDateB) => 1
-        case (startDateA, startDateB, _, _, _, _, _, _) if startDateA.isAfter(startDateB) => -1
+        case (startDateA, startDateB, _, _, _, _) if startDateA.isBefore(startDateB) => 1
+        case (startDateA, startDateB, _, _, _, _) if startDateA.isAfter(startDateB) => -1
 
         //Compare tax period end dates
-        case (_, _, endDateA, endDateB, _, _, _, _) if endDateA.isBefore(endDateB) => 1
-        case (_, _, endDateA, endDateB, _, _, _, _) if endDateA.isAfter(endDateB) => -1
-
-        //Compare mainTransactions
-        case (_, _, _, _, Some(mainTransA), Some(mainTransB), _, _) if mainTransA < mainTransB => 1
-        case (_, _, _, _, Some(mainTransA), Some(mainTransB), _, _) if mainTransA > mainTransB => -1
+        case (_, _, endDateA, endDateB, _, _) if endDateA.isBefore(endDateB) => 1
+        case (_, _, endDateA, endDateB, _, _) if endDateA.isAfter(endDateB) => -1
 
         //Compare penaltyCategory
-        case (_, _, _, _, _, _, categoryA, categoryB) if categoryA < categoryB => 1
-        case (_, _, _, _, _, _, categoryA, categoryB) if categoryA > categoryB => -1
+        case (_, _, _, _, categoryA, categoryB) if categoryA < categoryB => 1
+        case (_, _, _, _, categoryA, categoryB) if categoryA > categoryB => -1
 
         //No difference found between this and that (will use ETMP order)
         case _ => 0
@@ -346,15 +343,17 @@ object PenaltiesConnector {
           principalChargeDueDate <- (json \ "principalChargeDueDate").validate[LocalDate]
           penaltyChargeReference <- (json \ "penaltyChargeReference").validateOpt[String]
           principalChargeLatestClearing <- (json \ "principalChargeLatestClearing").validateOpt[LocalDate]
-          vatOutstandingAmount <- (json \ "vatOutstandingAmount").validateOpt[BigDecimal]
-          metadata <- Json.fromJson(json)(lppDetailsMetadataFmt)
+          principalChargeDocNumber <- (json \ "principalChargeDocNumber").validate[String]
+          principalChargeMainTransaction <- (json \ "principalChargeMainTransaction").validate[String]
+          principalChargeSubTransaction <- (json \ "principalChargeSubTransaction").validate[String]
+          timeToPay <- (json \ "timeToPay").validateOpt[Seq[TimeToPay]]
         }
         yield {
           LPPDetails(principalChargeReference, penaltyCategory, penaltyChargeCreationDate, penaltyStatus, penaltyAmountPaid,
             penaltyAmountPosted, penaltyAmountAccruing, penaltyAmountOutstanding, lPP1LRDays, lPP1HRDays, lPP2Days, lPP1LRCalculationAmount,
             lPP1HRCalculationAmount, lPP1LRPercentage, lPP1HRPercentage, lPP2Percentage, communicationsDate, penaltyChargeDueDate, appealInformation,
             principalChargeBillingFrom, principalChargeBillingTo, principalChargeDueDate, penaltyChargeReference,
-            principalChargeLatestClearing, vatOutstandingAmount, metadata)
+            principalChargeLatestClearing, principalChargeDocNumber, principalChargeMainTransaction, principalChargeSubTransaction, timeToPay)
         }
       }
       override def writes(o: LPPDetails): JsValue = {
@@ -383,8 +382,11 @@ object PenaltiesConnector {
           "principalChargeDueDate" -> o.principalChargeDueDate,
           "penaltyChargeReference" -> o.penaltyChargeReference,
           "principalChargeLatestClearing" -> o.principalChargeLatestClearing,
-          "vatOutstandingAmount" -> o.vatOutstandingAmount
-        ).deepMerge(Json.toJsObject(o.LPPDetailsMetadata)(lppDetailsMetadataFmt))
+          "principalChargeDocNumber" -> o.principalChargeDocNumber,
+          "principalChargeMainTransaction" -> o.principalChargeMainTransaction,
+          "principalChargeSubTransaction" -> o.principalChargeSubTransaction,
+          "timeToPay" -> o.timeToPay
+        )
       }
     }
 
@@ -461,14 +463,7 @@ object PenaltiesConnector {
   )
   implicit val timeToPayFmt: OFormat[TimeToPay] = Json.format[TimeToPay]
 
-  case class LPPDetailsMetadata(
-    mainTransaction: Option[MainTransactionEnum.Value],
-    outstandingAmount: Option[BigDecimal],
-    timeToPay: Option[Seq[TimeToPay]]
-  )
-  implicit val lppDetailsMetadataFmt: OFormat[LPPDetailsMetadata] = Json.format[LPPDetailsMetadata]
-
-  case class LatePaymentPenalty(details: Seq[LPPDetails])
+  case class LatePaymentPenalty(details: Seq[LPPDetails], manualLPPIndicator: Boolean = false)
   implicit val latePaymentPenaltyFmt: Format[LatePaymentPenalty] = Json.format[LatePaymentPenalty]
 
   case class BreathingSpace(BSStartDate: LocalDate, BSEndDate: LocalDate)

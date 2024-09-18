@@ -63,6 +63,7 @@ class AuthenticatedAgentAction @Inject()(override val authConnector: AuthConnect
              _: UnsupportedCredentialRole =>
           Redirect(routes.UnauthorisedController.onPageLoad())
         case e =>
+          println("BBBB")
           logger.error(s"[AuthenticatedIdentifierAction][invokeBlock] ${e.summary}", e)
           InternalServerError
       }

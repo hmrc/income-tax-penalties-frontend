@@ -198,6 +198,10 @@
     text-align: right;
   }
 }
+.penalty-due-tag {
+  color: #ffffff;
+  background-color: #d4351c;
+}
 .app-summary-card .app-summary-card__body {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
