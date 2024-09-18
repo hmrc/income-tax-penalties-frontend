@@ -486,6 +486,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#overview p").text shouldBe "Your account has:"
       select("#overview #your-account-has li:nth-child(1)").text shouldBe "a late submission penalty"
       select("#overview #your-account-has li:nth-child(2)").text shouldBe "the maximum number of late submission penalty points"
+      select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
@@ -494,7 +495,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#lsp-tab p")(0).select("strong").text shouldBe "4"
       parsedBody.getElementById("warning-text").text shouldBe "! Warning You have been given a £200 penalty for reaching the penalty threshold."
       select("#lsp-tab p")(1).text shouldBe "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already."
-      select("#lsp-tab p a").text shouldBe "Actions to take to get your points removed (opens in new tab)"
+      select("#lsp-tab p a").text shouldBe "Actions to take to get your points removed by December 2028 (opens in new tab)"
 
       {
         val card1 = select(".app-summary-card")(0)
@@ -514,9 +515,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
         rows(3).select("dt").text shouldBe "Update submitted"
         rows(3).select("dd").text shouldBe "Not yet received"
 
-        rows(4).select("dt").text shouldBe "Point due to expire"
-        rows(4).select("dd").text shouldBe "June 2030"
-
         card1.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 4"
       }
 
@@ -534,9 +532,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
         rows(2).select("dt").text shouldBe "Return submitted"
         rows(2).select("dd").text shouldBe "Not yet received"
-
-        rows(3).select("dt").text shouldBe "Point due to expire"
-        rows(3).select("dd").text shouldBe "December 2030"
 
         card2.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 3"
       }
@@ -559,9 +554,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
         rows(3).select("dt").text shouldBe "Update submitted"
         rows(3).select("dd").text shouldBe "Not yet received"
 
-        rows(4).select("dt").text shouldBe "Point due to expire"
-        rows(4).select("dd").text shouldBe "December 2029"
-
         card3.select("footer div a").text shouldBe "Appeal penalty point 2"
       }
 
@@ -582,9 +574,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
         rows(3).select("dt").text shouldBe "Update submitted"
         rows(3).select("dd").text shouldBe "10 August 2027"
-
-        rows(4).select("dt").text shouldBe "Point due to expire"
-        rows(4).select("dd").text shouldBe "September 2029"
 
         card4.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 1"
       }
@@ -685,6 +674,7 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
     select("#overview p").text shouldBe "Your account has:"
     select("#overview #your-account-has li:nth-child(1)").text shouldBe "late submission penalties"
     select("#overview #your-account-has li:nth-child(2)").text shouldBe "the maximum number of late submission penalty points"
+    select("#check-amounts").text shouldBe "Check amounts and pay"
     select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
     select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
@@ -692,8 +682,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
     select("#lsp-tab h3").text shouldBe "Late submission penalties"
     select("#lsp-tab p")(0).select("strong").text shouldBe "4"
     parsedBody.getElementById("warning-text").text shouldBe "! Warning You have been given an additional £200 penalty."
-    select("#lsp-tab p")(1).text shouldBe "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already."
-    select("#lsp-tab p a").text shouldBe "Actions to take to get your points removed (opens in new tab)"
+    select("#lsp-tab p")(1).text shouldBe "You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven't already."
+    select("#lsp-tab p a").text shouldBe "Actions to take to get your points removed by December 2028 (opens in new tab)"
 
     {
       val card1 = select(".app-summary-card")(0)
@@ -712,9 +702,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       rows(3).select("dt").text shouldBe "Update submitted"
       rows(3).select("dd").text shouldBe "Not yet received"
-
-      rows(4).select("dt").text shouldBe "Point due to expire"
-      rows(4).select("dd").text shouldBe "September 2030"
 
       card1.select(".app-summary-card footer div a").text shouldBe "Appeal penalty"
     }
@@ -737,9 +724,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       rows(3).select("dt").text shouldBe "Update submitted"
       rows(3).select("dd").text shouldBe "Not yet received"
 
-      rows(4).select("dt").text shouldBe "Point due to expire"
-      rows(4).select("dd").text shouldBe "June 2030"
-
       card2.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 4"
     }
 
@@ -757,9 +741,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       rows(2).select("dt").text shouldBe "Return submitted"
       rows(2).select("dd").text shouldBe "Not yet received"
-
-      rows(3).select("dt").text shouldBe "Point due to expire"
-      rows(3).select("dd").text shouldBe "December 2030"
 
       card3.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 3"
     }
@@ -782,9 +763,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       rows(3).select("dt").text shouldBe "Update submitted"
       rows(3).select("dd").text shouldBe "Not yet received"
 
-      rows(4).select("dt").text shouldBe "Point due to expire"
-      rows(4).select("dd").text shouldBe "December 2029"
-
       card4.select("footer div a").text shouldBe "Appeal penalty point 2"
     }
 
@@ -805,9 +783,6 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
 
       rows(3).select("dt").text shouldBe "Update submitted"
       rows(3).select("dd").text shouldBe "10 August 2027"
-
-      rows(4).select("dt").text shouldBe "Point due to expire"
-      rows(4).select("dd").text shouldBe "September 2029"
 
       card5.select(".app-summary-card footer div a").text shouldBe "Appeal penalty point 1"
     }
