@@ -153,7 +153,9 @@
       <footer class="app-summary-card__footer">
         <div class="app-summary-card__link">
           <a class="govuk-link" href="#">View calculation</a>
-          <a class="govuk-link" style="margin-left: 10px;" href="#">Appeal this penalty</a>
+          @if(paymentPenalty.status != "Estimate") {
+            <a class="govuk-link" style="margin-left: 10px;" href="#">Appeal this penalty</a>
+          }
         </div>
       </footer>
     </section>
