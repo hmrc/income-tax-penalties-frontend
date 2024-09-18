@@ -50,8 +50,7 @@ class AuthenticatedIdentifierAction @Inject()(
         enrolments.getEnrolment("HMRC-MTD-IT") match {
           case Some(enrolment) =>
             enrolment.getIdentifier("MTDITID") match {
-              case Some(_) =>
-                block(IdentifierRequest(request, false, nino))
+              case Some(_) => block(IdentifierRequest(request, false, nino))
               case None =>
                 logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without MTDITID")
                 successful(InternalServerError)
