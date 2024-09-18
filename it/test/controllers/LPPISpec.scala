@@ -125,7 +125,6 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       rows(3).select("dd").text shouldBe "Payment not yet received"
 
       select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
-      select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
     }
 
     "return page with 1 estimated penalty point and 1 paid penalty point when user has 2 late payment penalty (LPP) point" in {
@@ -182,7 +181,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
 
       {
         val card1 = select(".app-summary-card").get(0)
-//        card1.select(".app-summary-card header div strong").text shouldBe "ESTIMATE"
+        card1.select(".app-summary-card header div strong").text shouldBe "ESTIMATE"
         val rows = card1.select(".govuk-summary-list__row")
 
         rows(0).select("dt").text shouldBe "Penalty type"
@@ -198,12 +197,11 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
         rows(3).select("dd").text shouldBe "Payment not yet received"
 
         card1.select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
-        card1.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
       }
 
       {
         val card2 = select(".app-summary-card").get(1)
-//        card2.select(".app-summary-card header div strong").text shouldBe "ESTIMATE"
+        card2.select(".app-summary-card header div strong").text shouldBe "PAID"
         val rows = card2.select(".govuk-summary-list__row")
 
         rows(0).select("dt").text shouldBe "Penalty type"
