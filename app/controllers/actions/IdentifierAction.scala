@@ -51,7 +51,6 @@ class AuthenticatedIdentifierAction @Inject()(
           case Some(enrolment) =>
             enrolment.getIdentifier("MTDITID") match {
               case Some(_) =>
-                println("BBBB")
                 block(IdentifierRequest(request, false, nino))
               case None =>
                 logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without MTDITID")
@@ -74,7 +73,6 @@ class AuthenticatedIdentifierAction @Inject()(
            _: UnsupportedCredentialRole =>
         Redirect(routes.UnauthorisedController.onPageLoad())
       case e =>
-        println("AAAAA")
         logger.error(s"[AuthenticatedIdentifierAction][invokeBlock] ${e.summary}", e)
         InternalServerError
     }

@@ -43,7 +43,6 @@ class PenaltiesController @Inject()(
 
   extension (ab: ActionBuilder[IdentifierRequest,_]) private def summary = ab.async { implicit request =>
     val ninoEnrolmentKey = s"HMRC-PT~NINO~${request.clientNino}"
-    println("CCCC" + request.clientNino + " " + ninoEnrolmentKey)
     for (penaltyDetails <- penaltiesConnector.getPenaltyDetails(ninoEnrolmentKey)) yield {
       val penalties = new models.Penalties(penaltyDetails)
       Ok(view(penalties, layoutService.layoutModel(pageTitle = "Self Assessment penalties and appeals")))
