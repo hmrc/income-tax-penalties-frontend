@@ -565,6 +565,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
         rows(3).select("dd").text shouldBe "23 March 2029"
 
         card1.select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
+        card1.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
       }
 
       {
