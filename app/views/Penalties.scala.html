@@ -122,7 +122,7 @@
     <section class="app-summary-card" style="margin-bottom: 15px;">
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@if(paymentPenalty.isPaid) {PAID} else @{paymentPenalty.status.toUpperCase}</strong></div>
+        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@{paymentPenalty.status.toUpperCase}</strong></div>
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
@@ -178,7 +178,7 @@
       @if(penalties.accountHasLPPs){
         <li>overdue Income Tax charges</li>
         <li>unpaid interest</li>
-        <li>a late payment penalty</li>
+        <li>@if(penalties.LPPSeqSize > 1) {late payment penalties} else {a late payment penalty}</li>
       }
     </ul>
   </div>
