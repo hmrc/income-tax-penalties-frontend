@@ -16,10 +16,11 @@
 
 package models
 
+import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum, getPenaltyDetailsFmt}
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LSPDetails, TaxReturnStatusEnum}
 import play.api.i18n.Messages
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
-
+import java.time.LocalDate
 import scala.annotation.unused
 
 class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) {
@@ -29,6 +30,21 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   val totalLSPPs: Int = lspSummary.map(_.activePenaltyPoints).getOrElse(0)
 
   def regimeLSPThreshold: Int = lspSummary.map(_.regimeThreshold).get
+
+  private val lspDetails: Option[LSPDetails]  = penaltyDetails.lateSubmissionPenalty.map(_.details.head)
+  val penaltyRemovedDate: Either[String, Option[LocalDate]] = lspDetails match
+    case Some(value) => Right(value.lateSubmissions.head.last.taxPeriodDueDate)
+    case None => Left("No LSP details available.")
+
+  val penaltyRemoveDateToString: String = penaltyRemovedDate match {
+    case Right(Some(date)) =>
+      val year = date.getYear
+      val month = date.getMonthValue
+      if (month == 12) messages("month.1") + " " + (year + 2).toString
+      else messages(s"month.${month + 1}") + " " + (year + 1).toString
+    case Right(None) => "Error extracting the date."
+    case Left(_) => "No date found within the empty LSP details class."
+  }
 
   class LateSubmissionPenalty(lspDetails: LSPDetails) {
     private val headSubmission = lspDetails.lateSubmissions.head.last
@@ -81,7 +97,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
     penaltyDetails.latePaymentPenalty.map(_.details).getOrElse(Seq()).map(new LatePaymentPenalty(_))
-    
+
   val accountHasLPPs: Boolean = penaltyDetails.latePaymentPenalty.nonEmpty
   
   val LPPSeqSize: Int = latePaymentPenalties.size

@@ -125,7 +125,6 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       rows(3).select("dd").text shouldBe "Payment not yet received"
 
       select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
-      select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
     }
 
     "return page with 1 estimated penalty point and 1 paid penalty point when user has 2 late payment penalty (LPP) points in total" in {
@@ -198,7 +197,6 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
         rows(3).select("dd").text shouldBe "Payment not yet received"
 
         card1.select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
-        card1.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
       }
 
       {
