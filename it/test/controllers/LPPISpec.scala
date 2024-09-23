@@ -169,7 +169,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       select("#overview p").text shouldBe "Your account has:"
       select("#overview #your-account-has li:nth-child(1)").text shouldBe "overdue Income Tax charges"
       select("#overview #your-account-has li:nth-child(2)").text shouldBe "unpaid interest"
-      select("#overview #your-account-has li:nth-child(3)").text shouldBe "late payment penalties"
+      select("#overview #your-account-has li:nth-child(3)").text shouldBe "a late payment penalty"
       select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 

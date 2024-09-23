@@ -101,5 +101,9 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   val accountHasLPPs: Boolean = penaltyDetails.latePaymentPenalty.nonEmpty
   
   val LPPSeqSize: Int = latePaymentPenalties.size
+  
+  val allPenaltiesPaid: Seq[Boolean] = latePaymentPenalties.map(_.isPaid)
+
+  val secondLPP: Option[LatePaymentPenalty] = latePaymentPenalties.find(_.penaltyType == "Second penalty for late payment")
 
 }
