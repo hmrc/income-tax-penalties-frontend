@@ -608,6 +608,124 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
         card3.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
       }
     }
+
+    "return page with all late payment penalty (LPP) points displayed as paid" in {
+      mockEnroledResponse()
+
+      val getPenaltyDetailsPayloadWithAddedPoint = GetPenaltyDetails(
+        totalisations = None,
+        lateSubmissionPenalty = None,
+        latePaymentPenalty = Some(LatePaymentPenalty(
+          details = Seq(
+            sampleLPP.copy(
+              penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+              penaltyStatus = LPPPenaltyStatusEnum.Posted,
+              penaltyAmountAccruing = 0,
+              penaltyAmountPaid = Some(46.02),
+              penaltyAmountPosted = 46.02,
+              penaltyAmountOutstanding = Some(0),
+              LPP2Percentage = Some(4.00),
+              principalChargeBillingFrom = LocalDate.parse("2027-04-06"),
+              principalChargeBillingTo = LocalDate.parse("2028-04-05"),
+              principalChargeDueDate = LocalDate.parse("2029-01-31"),
+              principalChargeLatestClearing = Some(LocalDate.parse("2029-03-23"))
+            ), sampleLPP.copy(
+              principalChargeReference = "XJ002616061028",
+              penaltyStatus = LPPPenaltyStatusEnum.Posted,
+              penaltyAmountAccruing = 0,
+              penaltyAmountPosted = 800.00,
+              penaltyAmountPaid = Some(800.00),
+              penaltyAmountOutstanding = Some(0),
+              principalChargeBillingFrom = LocalDate.parse("2027-04-06"),
+              principalChargeBillingTo = LocalDate.parse("2028-04-05"),
+              principalChargeDueDate = LocalDate.parse("2029-01-31"),
+              principalChargeLatestClearing = Some(LocalDate.parse("2029-03-23"))
+            ), sampleLPP.copy(
+              principalChargeReference = "XJ002616061029",
+              penaltyStatus = LPPPenaltyStatusEnum.Posted,
+              penaltyAmountAccruing = 0,
+              penaltyAmountPosted = 400.00,
+              penaltyAmountPaid = Some(400.00),
+              penaltyAmountOutstanding = Some(0),
+              principalChargeLatestClearing = Some(LocalDate.parse("2028-02-19"))
+            )
+          ), manualLPPIndicator = false
+        )
+        ),
+        breathingSpace = None
+      )
+
+      mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayloadWithAddedPoint))
+
+      val response = route(app, fakeClientRequest).get
+      status(response) shouldBe Status.OK
+      val parsedBody = Jsoup.parse(contentAsString(response))
+      import parsedBody._
+
+      parsedBody.title shouldBe "Self Assessment penalties and appeals"
+
+      select("#main-content h1").text shouldBe "Self Assessment penalties and appeals"
+      
+      select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
+
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
+
+      select("#lpp-tab h3").text shouldBe "Late payment penalties"
+      select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
+      select("#lpp-tab p a").text shouldBe "Read the guidance about how late payment penalties are calculated (opens in a new tab)"
+
+      {
+        val card1 = select(".app-summary-card").get(0)
+        card1.select(".app-summary-card header div strong").text shouldBe "PAID"
+        val rows = card1.select(".govuk-summary-list__row")
+
+        rows(0).select("dt").text shouldBe "Penalty type"
+        rows(0).select("dd").text shouldBe "Second penalty for late payment"
+
+        rows(1).select("dt").text shouldBe "Overdue charge"
+        rows(1).select("dd").text shouldBe "Income Tax for 2027 to 2028 tax year"
+
+        rows(2).select("dt").text shouldBe "Income Tax due"
+        rows(2).select("dd").text shouldBe "31 January 2029"
+
+        rows(3).select("dt").text shouldBe "Income Tax paid"
+        rows(3).select("dd").text shouldBe "23 March 2029"
+
+        card1.select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
+        card1.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
+      }
+
+      {
+        val card2 = select(".app-summary-card").get(1)
+        card2.select(".app-summary-card header div strong").text shouldBe "PAID"
+        val rows = card2.select(".govuk-summary-list__row")
+        rows(0).select("dt").text shouldBe "Penalty type"
+        rows(0).select("dd").text shouldBe "First penalty for late payment"
+        rows(1).select("dt").text shouldBe "Overdue charge"
+        rows(1).select("dd").text shouldBe "Income Tax for 2027 to 2028 tax year"
+        rows(2).select("dt").text shouldBe "Income Tax due"
+        rows(2).select("dd").text shouldBe "31 January 2029"
+        rows(3).select("dt").text shouldBe "Income Tax paid"
+        rows(3).select("dd").text shouldBe "23 March 2029"
+        card2.select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
+        card2.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
+      }
+      {
+        val card3 = select(".app-summary-card").get(2)
+        card3.select(".app-summary-card header div strong").text shouldBe "PAID"
+        val rows = card3.select(".govuk-summary-list__row")
+        rows(0).select("dt").text shouldBe "Penalty type"
+        rows(0).select("dd").text shouldBe "First penalty for late payment"
+        rows(1).select("dt").text shouldBe "Overdue charge"
+        rows(1).select("dd").text shouldBe "Income Tax for 2026 to 2027 tax year"
+        rows(2).select("dt").text shouldBe "Income Tax due"
+        rows(2).select("dd").text shouldBe "31 January 2028"
+        rows(3).select("dt").text shouldBe "Income Tax paid"
+        rows(3).select("dd").text shouldBe "19 February 2028"
+        card3.select(".app-summary-card footer div a")(0).text shouldBe "View calculation"
+        card3.select(".app-summary-card footer div a")(1).text shouldBe "Appeal this penalty"
+      }
+    }
   }
 }
 
