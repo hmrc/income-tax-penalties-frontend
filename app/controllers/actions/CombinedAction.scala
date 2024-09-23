@@ -17,24 +17,34 @@
 package controllers.actions
 
 import com.google.inject.Inject
+import connectors.SessionDataConnector
 import controllers.agent.SessionKeys
 import models.requests.IdentifierRequest
+import play.api.Logging
 import play.api.mvc.*
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CombinedAction @Inject()(
     identifierAction: IdentifierAction,
     agentAction: AgentAction,
-    defaultParser: BodyParsers.Default
+    defaultParser: BodyParsers.Default,
+    sessionDataConnector: SessionDataConnector
   )(implicit val executionContext: ExecutionContext) {
   class Impl(val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext) extends IdentifierAction {
     override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-      request.session.get(SessionKeys.clientMTDID) match {
-        case Some(mtdIdId) => agentAction(mtdIdId).invokeBlock(request, block)
-        case None => identifierAction.invokeBlock(request, block)
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      for (sessionData <- sessionDataConnector.getSessionData) yield {
+        (sessionData.mtditid, sessionData.nino) match {
+          case (Some(mtditid), Some(nino)) => agentAction(mtditid, nino).invokeBlock(request, block)
+          case _ => identifierAction.invokeBlock(request, block)
+        }
       }
-    }
+    }.flatten
   }
 
   def apply(): ActionBuilder[IdentifierRequest, AnyContent] = new Impl(defaultParser)

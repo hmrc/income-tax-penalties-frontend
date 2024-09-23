@@ -16,10 +16,13 @@
 
 package controllers.testOnly
 
+import connectors.SessionDataConnector
+import connectors.SessionDataConnector.SessionData
 import controllers.agent.SessionKeys.*
 import play.api.Logging
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.retrieve.EmptyRetrieval
+import uk.gov.hmrc.auth.core.retrieve.{EmptyRetrieval, ~}
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{affinityGroup, confidenceLevel, internalId}
 import uk.gov.hmrc.auth.core.{AuthConnector, Enrolment}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -31,37 +34,53 @@ import scala.concurrent.Future.successful
 
 class SetDelegationController @Inject()(
   authConnector: AuthConnector,
-  val mcc: MessagesControllerComponents
+  val mcc: MessagesControllerComponents,
+  sessionDataConnector: SessionDataConnector
 )(implicit
   val ec: ExecutionContext
 ) extends FrontendController(mcc) with Logging {
 
   def delegationPage(): Action[AnyContent] = Action.async { request =>
-    val sessionId = request.session.get("sessionId")
-    val mtditid = request.session.get(clientMTDID)
-    val nino = request.session.get(clientNino) // eg TT217906A
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    mtditid.filterNot(_.isBlank).map { id =>
-      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-      val spec = Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID",id).withDelegatedAuthRule("mtd-it-auth")
-      authConnector.authorise(spec, EmptyRetrieval).map(_=>"Success").recover(e=>e.getClass.getSimpleName + ": " + e.getMessage)
+    (for (sessionData <- sessionDataConnector.getSessionData) yield {
+      import sessionData._
 
-    }.getOrElse(successful("")).map { authReesult =>
-      logger.info(s"[SetDelegationController][setDelegation] Existing MTDITID=$mtditid, NINO=$nino, auth result: $authReesult")
+      mtditid.filterNot(_.isBlank).map { id =>
+        implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+        val spec = Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", id).withDelegatedAuthRule("mtd-it-auth")
+        val retr = affinityGroup and internalId and confidenceLevel
+        authConnector.authorise(spec, retr).map {
+          case Some(_) ~ Some(_) ~ confidenceLevel if confidenceLevel.level >= 200 => s"Success (confidence $confidenceLevel)"
+          case Some(_) ~ Some(_) ~ confidenceLevel => s"Failed: confidence = $confidenceLevel, required = 200"
+          case affinityGroup ~ internalId ~ confidenceLevel => s"Failed: affinityGroup = $affinityGroup, internalId = $internalId, confidence = $confidenceLevel"
+        }.recover(e => e.getClass.getSimpleName + ": " + e.getMessage)
 
-      val view = views.html.testOnly.SetDelegation(mtditid.getOrElse(""), nino.getOrElse(""), sessionId.getOrElse("none"), authReesult)
-      Ok(view)
-    }
+      }.getOrElse(successful("")).map { authReesult =>
+        logger.info(s"[SetDelegationController][setDelegation] Existing MTDITID=$mtditid, NINO=$nino, auth result: $authReesult")
+
+        val view = views.html.testOnly.SetDelegation(mtditid.getOrElse(""), nino.getOrElse(""), sessionId.getOrElse("none"), authReesult)
+        Ok(view)
+      }
+    }).flatten
   }
   
-  def setDelegation(): Action[AnyContent] = Action { request =>
+  def setDelegation(): Action[AnyContent] = Action.async { request =>
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+
     val data = request.body.asFormUrlEncoded.get
     val mtditid = data("mtditid").mkString
     val nino = data("nino").mkString
 
     logger.info(s"[SetDelegationController][setDelegation] Setting client MTDITID to $mtditid and NINO to $nino")
 
-    val newSession = request.session + (clientMTDID -> mtditid) + (clientNino -> nino)
-    SeeOther(routes.SetDelegationController.delegationPage().url).withSession(newSession)
+    sessionDataConnector.putSessionData(SessionData(
+      mtditid = Some(mtditid),
+      nino = Some(nino),
+      utr = Some(""),
+      sessionId = request.session.get("sessionId")
+    )) map { _ =>
+      SeeOther(routes.SetDelegationController.delegationPage().url)
+    }
   }
 }
