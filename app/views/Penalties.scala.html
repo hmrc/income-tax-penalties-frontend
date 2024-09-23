@@ -126,13 +126,13 @@
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
-          @if(paymentPenalty.penaltyType.nonEmpty) {
+          @if(paymentPenalty.penaltyTypeString.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Penalty type</dt>
-              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>
+              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyTypeString}</dd>
             </div>
           }
-          @if(paymentPenalty.penaltyType.nonEmpty) {
+          @if(paymentPenalty.penaltyTypeString.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Overdue charge</dt>
               <dd class="govuk-summary-list__value">Income Tax for @{paymentPenalty.taxYearFrom} to @{paymentPenalty.taxYearTo} tax year</dd>
