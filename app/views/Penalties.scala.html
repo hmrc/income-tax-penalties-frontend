@@ -175,7 +175,9 @@
         <li>late submission penalties</li>
         <li>the maximum number of late submission penalty points</li>
       }
-      @if(penalties.accountHasLPPs){
+      @if((penalties.accountHasLPPs) && (penalties.firstLPPisPaid && penalties.allPenaltiesPaid.exists(_ == false))){
+        <li>1 late payment penalty</li>
+      } else if (penalties.accountHasLPPs){
         <li>overdue Income Tax charges</li>
         <li>unpaid interest</li>
         <li>@if(penalties.secondLPP.isEmpty) {a late payment penalty} else {late payment penalties}</li>
