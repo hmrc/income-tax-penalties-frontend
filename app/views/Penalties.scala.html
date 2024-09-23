@@ -126,13 +126,13 @@
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
-          @if(paymentPenalty.penaltyType.nonEmpty) {
+          @if(paymentPenalty.penaltyTypeString.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Penalty type</dt>
-              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyType}</dd>
+              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyTypeString}</dd>
             </div>
           }
-          @if(paymentPenalty.penaltyType.nonEmpty) {
+          @if(paymentPenalty.penaltyTypeString.nonEmpty) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Overdue charge</dt>
               <dd class="govuk-summary-list__value">Income Tax for @{paymentPenalty.taxYearFrom} to @{paymentPenalty.taxYearTo} tax year</dd>
@@ -175,14 +175,16 @@
         <li>late submission penalties</li>
         <li>the maximum number of late submission penalty points</li>
       }
-      @if(penalties.accountHasLPPs){
+      @if((penalties.accountHasLPPs) && (penalties.firstLPPisPaid && penalties.allPenaltiesPaid.exists(_ == false))){
+        <li>1 late payment penalty</li>
+      } else if (penalties.accountHasLPPs){
         <li>overdue Income Tax charges</li>
         <li>unpaid interest</li>
-        <li>@if(penalties.LPPSeqSize > 1) {late payment penalties} else {a late payment penalty}</li>
+        <li>@if(penalties.secondLPP.isEmpty) {a late payment penalty} else {late payment penalties}</li>
       }
     </ul>
   </div>
-  @if(penalties.totalLSPPs >= 4 || penalties.accountHasLPPs){@govukButton(Button(id = Some("check-amounts"), content = Text(if(!isAgent)"Check amounts and pay" else "Check amounts")))}
+  @if(penalties.totalLSPPs >= 4 || (penalties.accountHasLPPs && penalties.allPenaltiesPaid.exists(_ == false))){@govukButton(Button(id = Some("check-amounts"), content = Text(if(!isAgent)"Check amounts and pay" else "Check amounts")))}
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
     title = Some("Penalty and appeal details"),

@@ -16,6 +16,7 @@
 
 package models
 
+import connectors.PenaltiesConnector
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LSPDetails, TaxReturnStatusEnum, getPenaltyDetailsFmt}
 import connectors.PenaltiesConnector.{GetPenaltyDetails, LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LSPDetails, TaxReturnStatusEnum}
 import play.api.i18n.Messages
@@ -74,10 +75,11 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     penaltyDetails.lateSubmissionPenalty.map(_.details).getOrElse(Seq()).map(new LateSubmissionPenalty(_)).sortBy(_.ordinal.toInt).reverse
 
   class LatePaymentPenalty(lppDetails: LPPDetails) {
-    val penaltyType: String = lppDetails.penaltyCategory match {
+    val penaltyType: PenaltiesConnector.LPPPenaltyCategoryEnum.Value = lppDetails.penaltyCategory // LPP1 or LPP2
+    val penaltyTypeString: String = lppDetails.penaltyCategory match {
       case LPPPenaltyCategoryEnum.LPP1 => "First penalty for late payment"
       case LPPPenaltyCategoryEnum.LPP2 => "Second penalty for late payment"
-    }// LPP1 or LPP2
+    }
     val dueDate: String = displayDayMonthYear(lppDetails.principalChargeDueDate) // "31 January 2028"
     val latestClearing: String = lppDetails.principalChargeLatestClearing.toDayMonthYear // "19 February 2028" or None
     val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing // 400.00
@@ -101,5 +103,11 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
   val accountHasLPPs: Boolean = penaltyDetails.latePaymentPenalty.nonEmpty
   
   val LPPSeqSize: Int = latePaymentPenalties.size
+  
+  val allPenaltiesPaid: Seq[Boolean] = latePaymentPenalties.map(_.isPaid)
+
+  val secondLPP: Option[LatePaymentPenalty] = latePaymentPenalties.find(_.penaltyType.equals(LPPPenaltyCategoryEnum.LPP2))
+
+  val firstLPPisPaid: Boolean = latePaymentPenalties.filter(_.penaltyType.equals(LPPPenaltyCategoryEnum.LPP1)).map(_.isPaid).forall(_ == true)
 
 }
