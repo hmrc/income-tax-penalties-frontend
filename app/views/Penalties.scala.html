@@ -122,7 +122,7 @@
     <section class="app-summary-card" style="margin-bottom: 15px;">
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@if(paymentPenalty.isPaid) {PAID} else @{paymentPenalty.status.toUpperCase}</strong></div>
+        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@{paymentPenalty.status.toUpperCase}</strong></div>
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
@@ -178,11 +178,11 @@
       @if(penalties.accountHasLPPs){
         <li>overdue Income Tax charges</li>
         <li>unpaid interest</li>
-        <li>a late payment penalty</li>
+        <li>@if(penalties.secondLPP.isEmpty) {a late payment penalty} else {late payment penalties}</li>
       }
     </ul>
   </div>
-  @if(penalties.totalLSPPs >= 4 || penalties.accountHasLPPs){@govukButton(Button(id = Some("check-amounts"), content = Text(if(!isAgent)"Check amounts and pay" else "Check amounts")))}
+  @if(penalties.totalLSPPs >= 4 || (penalties.accountHasLPPs && penalties.allPenaltiesPaid.exists(_ == false))){@govukButton(Button(id = Some("check-amounts"), content = Text(if(!isAgent)"Check amounts and pay" else "Check amounts")))}
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
     title = Some("Penalty and appeal details"),

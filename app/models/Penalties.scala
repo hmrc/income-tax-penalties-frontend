@@ -83,21 +83,27 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing // 400.00
     val amountPosted: BigDecimal = lppDetails.penaltyAmountPosted // 350.00
     val totalAmount: BigDecimal = (amountAccruing + amountPosted).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+    val isPaid: Boolean = lppDetails.penaltyAmountPaid match {
+      case Some(amount) => (lppDetails.penaltyAmountPosted != 0) && (lppDetails.penaltyAmountPosted - amount == 0)
+      case None => false
+    }
     val status: String = lppDetails.penaltyStatus match {
-      case LPPPenaltyStatusEnum.Accruing => "Estimate"
-      case LPPPenaltyStatusEnum.Posted => "Due"
+      case LPPPenaltyStatusEnum.Accruing => if(lppDetails.penaltyAmountOutstanding == Some(0) || lppDetails.penaltyAmountOutstanding.isEmpty) "Estimate" else "Due"
+      case LPPPenaltyStatusEnum.Posted => if(isPaid) {"Paid"} else {"Posted"}
     } // Active or Inactive
     val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
     val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
-    val isPaid: Boolean = lppDetails.penaltyAmountPaid match {
-      case Some(amount) => (lppDetails.penaltyAmountPosted !=0) && (lppDetails.penaltyAmountPosted - amount == 0)
-      case None => false
-    }
   }
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
     penaltyDetails.latePaymentPenalty.map(_.details).getOrElse(Seq()).map(new LatePaymentPenalty(_))
 
   val accountHasLPPs: Boolean = penaltyDetails.latePaymentPenalty.nonEmpty
+  
+  val LPPSeqSize: Int = latePaymentPenalties.size
+  
+  val allPenaltiesPaid: Seq[Boolean] = latePaymentPenalties.map(_.isPaid)
+
+  val secondLPP: Option[LatePaymentPenalty] = latePaymentPenalties.find(_.penaltyType == "Second penalty for late payment")
 
 }
