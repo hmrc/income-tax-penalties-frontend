@@ -38,6 +38,11 @@
   }
 }
 
+@lspTabContentEmpty = {
+  <h3 class="govuk-heading-s">Late submission penalties</h3>
+  <p class="govuk-body-m">You don't have any late submission penalties.</p>
+}
+
 @lspTabContent = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-l">Penalty points total: <strong>@if(penalties.totalLSPPs < 5){@penalties.totalLSPPs} else {4}</strong></p>
@@ -111,6 +116,12 @@
     </section>
   }
 }
+
+@lppTabContentEmpty = {
+  <h3 class="govuk-heading-s">Late submission penalties</h3>
+  <p class="govuk-body-m">@if(!isAgent) {You don't have any late payment penalties.} else {There are no late payment penalties.}</p>
+}
+
 
 @lppTabContent = {
   <h3 class="govuk-heading-s">Late payment penalties</h3>
@@ -190,17 +201,17 @@
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
     title = Some("Penalty and appeal details"),
-    items = Seq(
-      if (penalties.lateSubmissionPenalties.nonEmpty) Some(TabItem(
-        id = Some("lsp-tab"),
-        label = "Late submission penalties",
-        panel = TabPanel(content = HtmlContent(lspTabContent))
-      )) else None,
-      if (penalties.latePaymentPenalties.nonEmpty) Some(TabItem(
+    items = Seq(Some(TabItem(
+      id = Some("lsp-tab"),
+      label = "Late submission penalties",
+      panel = TabPanel(content = if(penalties.lateSubmissionPenalties.nonEmpty) {HtmlContent(lspTabContent)} else {HtmlContent(lspTabContentEmpty)})
+    )),
+      Some(TabItem(
         id = Some("lpp-tab"),
         label = "Late payment penalties",
-        panel = TabPanel(content = HtmlContent(lppTabContent))
-      )) else None
+        panel = TabPanel(content = if(penalties.latePaymentPenalties.nonEmpty) {HtmlContent(lppTabContent)} else {HtmlContent(lppTabContentEmpty)})
+      ))
     ).flatten
   ))
+
 }

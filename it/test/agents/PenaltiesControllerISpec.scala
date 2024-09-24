@@ -117,6 +117,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
+      select("#lpp-tab p").text shouldBe "There are no late payment penalties."
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "1"
@@ -202,6 +204,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
+      select("#lpp-tab p").text shouldBe "There are no late payment penalties."
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "2"
@@ -326,6 +330,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
+      select("#lpp-tab p").text shouldBe "There are no late payment penalties."
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "3"
@@ -490,6 +496,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
+      select("#lpp-tab p").text shouldBe "There are no late payment penalties."
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "4"
@@ -677,6 +685,8 @@ class PenaltiesControllerISpec extends IntegrationSpecCommonBase with AuthWiremo
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
       select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
+      select("#lpp-tab p").text shouldBe "There are no late payment penalties."
 
       select("#lsp-tab h3").text shouldBe "Late submission penalties"
       select("#lsp-tab p")(0).select("strong").text shouldBe "4"

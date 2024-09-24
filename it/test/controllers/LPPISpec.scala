@@ -102,7 +102,10 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a")(0).text shouldBe "Late submission penalties"
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p").text shouldBe "You don't have any late submission penalties."
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
 
       select("#lpp-tab h3").text shouldBe "Late payment penalties"
       select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
@@ -173,7 +176,10 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a")(0).text shouldBe "Late submission penalties"
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p").text shouldBe "You don't have any late submission penalties."
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
 
       select("#lpp-tab h3").text shouldBe "Late payment penalties"
       select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
@@ -279,7 +285,10 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a")(0).text shouldBe "Late submission penalties"
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p").text shouldBe "You don't have any late submission penalties."
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
 
       select("#lpp-tab h3").text shouldBe "Late payment penalties"
       select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
@@ -408,8 +417,10 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
-
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a")(0).text shouldBe "Late submission penalties"
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p").text shouldBe "You don't have any late submission penalties."
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
       select("#lpp-tab h3").text shouldBe "Late payment penalties"
       select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
       select("#lpp-tab p a").text shouldBe "Read the guidance about how late payment penalties are calculated (opens in a new tab)"
@@ -539,8 +550,10 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       select("#check-amounts").text shouldBe "Check amounts and pay"
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
-
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a")(0).text shouldBe "Late submission penalties"
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p").text shouldBe "You don't have any late submission penalties."
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item > a")(1).text shouldBe "Late payment penalties"
       select("#lpp-tab h3").text shouldBe "Late payment penalties"
       select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
       select("#lpp-tab p a").text shouldBe "Read the guidance about how late payment penalties are calculated (opens in a new tab)"
@@ -668,8 +681,9 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
       
       select("#penalty-and-appeal-details h2").text shouldBe "Penalty and appeal details"
 
-      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late payment penalties"
-
+      select("#penalty-and-appeal-details > ul > li.govuk-tabs__list-item.govuk-tabs__list-item--selected > a").text shouldBe "Late submission penalties"
+      select("#lsp-tab h3").text shouldBe "Late submission penalties"
+      select("#lsp-tab p").text shouldBe "You don't have any late submission penalties."
       select("#lpp-tab h3").text shouldBe "Late payment penalties"
       select("#lpp-tab p")(0).text shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
       select("#lpp-tab p a").text shouldBe "Read the guidance about how late payment penalties are calculated (opens in a new tab)"
