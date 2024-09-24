@@ -175,26 +175,28 @@
 
 @layout(layoutModel) {
   <h1 class="govuk-heading-l">Self Assessment penalties and appeals</h1>
-  <div id="overview">
-    <h2 class="govuk-heading-m">Overview</h2>
-    <p class="govuk-body">@if(!isAgent){Your account has:} else {Your client's account has:}</p>
-    <ul id="your-account-has" class="govuk-list govuk-list--bullet">
-      @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4){<li>@{penalties.totalLSPPs} late submission penalty point@if(penalties.totalLSPPs > 1){s}</li>} else if(penalties.totalLSPPs == 4){
-        <li>a late submission penalty</li>
-        <li>the maximum number of late submission penalty points</li>
-      } else if(penalties.totalLSPPs > 4){
-        <li>late submission penalties</li>
-        <li>the maximum number of late submission penalty points</li>
-      }
-      @if((penalties.accountHasLPPs) && (penalties.firstLPPisPaid && penalties.allPenaltiesPaid.exists(_ == false))){
-        <li>1 late payment penalty</li>
-      } else if (penalties.accountHasLPPs){
-        <li>overdue Income Tax charges</li>
-        <li>unpaid interest</li>
-        <li>@if(penalties.secondLPP.isEmpty) {a late payment penalty} else {late payment penalties}</li>
-      }
-    </ul>
-  </div>
+  @if(penalties.totalLSPPs > 0 || penalties.allPenaltiesPaid.exists(_ == false)) {
+    <div id="overview">
+      <h2 class="govuk-heading-m">Overview</h2>
+      <p class="govuk-body">@if(!isAgent) {Your account has:} else {Your client's account has:}</p>
+      <ul id="your-account-has" class="govuk-list govuk-list--bullet">
+        @if(penalties.totalLSPPs > 0 & penalties.totalLSPPs < 4) {<li>@{penalties.totalLSPPs} late submission penalty point@if(penalties.totalLSPPs > 1) {s}</li>} else if(penalties.totalLSPPs == 4){
+          <li>a late submission penalty</li>
+          <li>the maximum number of late submission penalty points</li>
+        } else if(penalties.totalLSPPs > 4){
+          <li>late submission penalties</li>
+          <li>the maximum number of late submission penalty points</li>
+        }
+        @if((penalties.accountHasLPPs) && (penalties.firstLPPisPaid && penalties.allPenaltiesPaid.exists(_ == false))) {
+          <li>1 late payment penalty</li>
+        } else if (penalties.accountHasLPPs){
+          <li>overdue Income Tax charges</li>
+          <li>unpaid interest</li>
+          <li>@if(penalties.secondLPP.isEmpty) {a late payment penalty} else {late payment penalties}</li>
+        }
+      </ul>
+    </div>
+  }
   @if(penalties.totalLSPPs >= 4 || (penalties.accountHasLPPs && penalties.allPenaltiesPaid.exists(_ == false))){@govukButton(Button(id = Some("check-amounts"), content = Text(if(!isAgent)"Check amounts and pay" else "Check amounts")))}
   @govukTabs(Tabs(
     id = Some("penalty-and-appeal-details"),
