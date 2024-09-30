@@ -85,8 +85,16 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing // 400.00
     val amountPosted: BigDecimal = lppDetails.penaltyAmountPosted // 350.00
     val totalAmount: BigDecimal = (amountAccruing + amountPosted).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+    val amountPaid: BigDecimal = lppDetails.penaltyAmountPaid match {
+      case Some(amount) => amount.setScale(2)
+      case _ => 0
+    }
+    val amountOutstanding: BigDecimal = lppDetails.penaltyAmountOutstanding match {
+      case Some(amount) => amount
+      case _ => 0
+    }
     val isPaid: Boolean = lppDetails.penaltyAmountPaid match {
-      case Some(amount) => (lppDetails.penaltyAmountPosted != 0) && (lppDetails.penaltyAmountPosted - amount == 0)
+      case Some(amount) => ((lppDetails.penaltyAmountPosted != 0) && (lppDetails.penaltyAmountPosted - amount == 0))
       case None => false
     }
     val status: String = lppDetails.penaltyStatus match {
@@ -95,6 +103,12 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     } // Active or Inactive
     val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
     val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
+
+    val penaltyChargeReference: String = lppDetails.principalChargeReference
+    val lpp1LrCalcAmount: BigDecimal = lppDetails.LPP1LRCalculationAmount match {
+      case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
+      case _ => 0
+    }
   }
 
   val latePaymentPenalties: Seq[LatePaymentPenalty] =
