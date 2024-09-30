@@ -244,6 +244,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
               principalChargeDueDate = LocalDate.parse("2029-01-31")
             ), sampleLPP.copy(
               principalChargeReference = "XJ002616061028",
+              penaltyStatus = LPPPenaltyStatusEnum.Posted,
               penaltyAmountAccruing = 0,
               penaltyAmountPosted = 800.00,
               penaltyAmountPaid = Some(0),
@@ -376,6 +377,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
               principalChargeDueDate = LocalDate.parse("2029-01-31")
             ), sampleLPP.copy(
               principalChargeReference = "XJ002616061028",
+              penaltyStatus = LPPPenaltyStatusEnum.Posted,
               penaltyAmountAccruing = 0,
               penaltyAmountPosted = 800.00,
               penaltyAmountPaid = Some(0),
@@ -498,6 +500,7 @@ class LPPISpec extends IntegrationSpecCommonBase with AuthWiremockStubs with Pen
           details = Seq(
             sampleLPP.copy(
               penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+              penaltyStatus = LPPPenaltyStatusEnum.Posted,
               penaltyAmountAccruing = 0,
               penaltyAmountPaid = Some(0),
               penaltyAmountPosted = 46.02,

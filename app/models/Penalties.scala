@@ -90,7 +90,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
       case _ => 0
     }
     val amountOutstanding: BigDecimal = lppDetails.penaltyAmountOutstanding match {
-      case Some(amount) => amount
+      case Some(amount) => amount.setScale(2)
       case _ => 0
     }
     val isPaid: Boolean = lppDetails.penaltyAmountPaid match {
@@ -98,14 +98,22 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
       case None => false
     }
     val status: String = lppDetails.penaltyStatus match {
-      case LPPPenaltyStatusEnum.Accruing => if(lppDetails.penaltyAmountOutstanding == Some(0) || lppDetails.penaltyAmountOutstanding.isEmpty) "Estimate" else "Due"
-      case LPPPenaltyStatusEnum.Posted => if(isPaid) {"Paid"} else {"Posted"}
+      case LPPPenaltyStatusEnum.Accruing => "Estimate"
+      case LPPPenaltyStatusEnum.Posted => if(isPaid) {"Paid"} else {"Due"}
     } // Active or Inactive
     val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
     val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
 
     val penaltyChargeReference: String = lppDetails.principalChargeReference
     val lpp1LrCalcAmount: BigDecimal = lppDetails.LPP1LRCalculationAmount match {
+      case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
+      case _ => 0
+    }
+    val paidBefore31Days: Boolean = lppDetails.principalChargeLatestClearing match {
+      case Some(date) => (date.toEpochDay - lppDetails.principalChargeDueDate.toEpochDay) <= 30
+      case None => false
+    }
+    val lpp1HrCalcAmount: BigDecimal = lppDetails.LPP1HRCalculationAmount match {
       case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
       case _ => 0
     }

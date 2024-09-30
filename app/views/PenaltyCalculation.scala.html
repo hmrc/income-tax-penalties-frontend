@@ -30,9 +30,17 @@
     <h2 class="govuk-caption-l hmrc-caption-l">Income Tax year @paymentPenalty.taxYearFrom to @paymentPenalty.taxYearTo</h2>
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@penalties.latePaymentPenalties.filter(_.penaltyChargeReference == penaltyChargeReference).map(_.penaltyTypeString)</h1>
   </header>
-    <p class="govuk-body">This penalty applies if Income Tax has not been paid for 15 days.</p>
-    <p id="paragraph2">The calculation we use is:<br>2% of £@paymentPenalty.lpp1LrCalcAmount (the unpaid Income Tax 15 days after the due date)</p>
+    <p id="paragraph1">This penalty applies if Income Tax has not been paid for @if(paymentPenalty.status == "Estimate" || paymentPenalty.paidBefore31Days) {15} else {30} days.</p>
+    <p id="paragraph2">The calculation we use is:<br>2% of £@paymentPenalty.lpp1LrCalcAmount (the unpaid Income Tax 15 days after the due date)@if(paymentPenalty.status != "Estimate" && !paymentPenalty.paidBefore31Days){<br>2% of £@paymentPenalty.lpp1HrCalcAmount (the unpaid Income Tax 30 days after the due date)}</p>
     <dl class="govuk-summary-list">
+        @if(paymentPenalty.status == "Due") {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key" id="key4">Due date</dt>
+                <dd class="govuk-summary-list__value" id="value4">
+                    @paymentPenalty.dueDate <strong class="govuk-tag govuk-tag--red">OVERDUE</strong>
+                </dd>
+            </div>
+        }
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key" id="key1">Penalty amount</dt>
             <dt class="govuk-summary-list__value" id="value1">£@paymentPenalty.totalAmount</dt>
@@ -46,6 +54,20 @@
             <dt class="govuk-summary-list__value" id="value3">£@if(paymentPenalty.amountOutstanding == 0) {0.00} else {@paymentPenalty.amountOutstanding}</dt>
         </div>
     </dl>
+    @if(paymentPenalty.status == "Estimate") {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">The penalty will increase by a further 2% of the unpaid Income Tax, if Income Tax remains unpaid 30 days after the due date.</span>
+            </strong>
+        </div>
+        <h3 class="govuk-heading-s">Estimates</h3>
+        <p class="govuk-body" id="estimates">Penalties will show as estimates until:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>you pay the Income Tax bill, or</li>
+            <li>30 days have passed since the Income Tax due date</li>
+        </ul>
+    }
     <p>
         <a class="govuk-link" href=@controllers.routes.PenaltiesController.combinedSummary().url>Return to Self Assessment penalties and appeals</a>
     </p>
