@@ -27,23 +27,14 @@ import javax.inject.{Inject, Singleton}
 class AppConfig @Inject()(configuration: Configuration) {
   private def service: String => ServiceEndpoint = ServiceEndpoint(configuration)
 
+  val sessionDataService: ServiceEndpoint = service("income-tax-session-data")
   val penaltiesService: ServiceEndpoint = service("penalties")
   val feedbackFrontend: ServiceEndpoint = service("feedback-frontend")
-
-  //  val host: String    = configuration.get[String]("host")
-//  val appName: String = configuration.get[String]("appName")
-
-//  private val contactHost = configuration.get[String]("contact-frontend.host")
-//  private val contactFormServiceIdentifier = "penalties-admin-frontend"
-//
-//  def feedbackUrl(implicit request: RequestHeader): String =
-//    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
   val loginUrl: String         = configuration.get[String]("urls.login")
   val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   val signOutUrl: String       = configuration.get[String]("urls.signOut")
 
-  //private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
   val exitSurveyUrl: URL       = feedbackFrontend.resolve(s"/feedback/penalties-admin-frontend")
 
   val languageMap: Map[String, Lang] = {
@@ -54,4 +45,7 @@ class AppConfig @Inject()(configuration: Configuration) {
   val languageTranslationEnabled: Boolean =
     configuration.getOptional[Boolean]("features.welsh-translation").getOrElse(languageMap.size > 1)
 
+  object feature {
+    val useSessionService = configuration.getOptional[Boolean]("feature.useSessionService").getOrElse(false)
+  }
 }
