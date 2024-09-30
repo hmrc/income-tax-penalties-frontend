@@ -26,7 +26,7 @@
   govukBackLink: GovukBackLink
 )
 
-@(layoutModel: LayoutModel)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(layoutModel: LayoutModel, backLink: String = "")(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @headBlock = {
   <link href="/income-tax-penalties-frontend/assets/stylesheets/penalties.css" media="all" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@
 
 @beforeContentBlock = {
   @hmrcAccountMenu(layoutModel.accountMenu)
-  @govukBackLink(BackLink(href = "javascript:location.back()", content = Empty))
+  @govukBackLink(BackLink(href = backLink, content = Empty))
 }
 
 @hmrcStandardPage(

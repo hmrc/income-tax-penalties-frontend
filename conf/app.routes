@@ -1,15 +1,17 @@
 # microservice specific routes
 
-->         /hmrc-frontend               hmrcfrontend.Routes
+->         /hmrc-frontend                                       hmrcfrontend.Routes
 
-GET        /                            controllers.PenaltiesController.combinedSummary()
+GET        /                                                    controllers.PenaltiesController.combinedSummary()
 
-GET        /assets/*file                controllers.Assets.versioned(path = "/public", file: Asset)
+GET        /assets/*file                                        controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET        /language/:lang              controllers.LanguageSwitchController.switchToLanguage(lang: String)
+GET        /language/:lang                                      controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
-GET         /account/sign-out-survey    controllers.auth.AuthController.signOut()
-GET         /account/sign-out           controllers.auth.AuthController.signOutNoSurvey()
-GET         /account/signed-out         controllers.auth.SignedOutController.onPageLoad()
+GET         /account/sign-out-survey                            controllers.auth.AuthController.signOut()
+GET         /account/sign-out                                   controllers.auth.AuthController.signOutNoSurvey()
+GET         /account/signed-out                                 controllers.auth.SignedOutController.onPageLoad()
 
-GET         /unauthorised               controllers.UnauthorisedController.onPageLoad()
+GET         /unauthorised                                       controllers.UnauthorisedController.onPageLoad()
+
+GET         /calculation/:penaltyChargeReference                controllers.PenaltyCalculationController.combinedSummary(penaltyChargeReference: String)

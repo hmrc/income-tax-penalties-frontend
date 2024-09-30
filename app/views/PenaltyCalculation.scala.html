@@ -1,0 +1,53 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import views.html.layouts.Layout
+@import services.LayoutService.LayoutModel
+
+@this(
+    layout: Layout
+)
+    
+@(penalties: models.Penalties, layoutModel: LayoutModel, penaltyChargeReference: String)(implicit request: models.requests.IdentifierRequest[_], messages: Messages)
+@import request.isAgent
+
+@layout(layoutModel, controllers.routes.PenaltiesController.combinedSummary().url) {
+    @for(paymentPenalty <- penalties.latePaymentPenalties.filter(_.penaltyChargeReference == penaltyChargeReference)) {
+  <header class="hmrc-page-heading govuk-!-margin-top-0">
+    <h2 class="govuk-caption-l hmrc-caption-l">Income Tax year @paymentPenalty.taxYearFrom to @paymentPenalty.taxYearTo</h2>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@penalties.latePaymentPenalties.filter(_.penaltyChargeReference == penaltyChargeReference).map(_.penaltyTypeString)</h1>
+  </header>
+    <p class="govuk-body">This penalty applies if Income Tax has not been paid for 15 days.</p>
+    <p id="paragraph2">The calculation we use is:<br>2% of £@paymentPenalty.lpp1LrCalcAmount (the unpaid Income Tax 15 days after the due date)</p>
+    <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key" id="key1">Penalty amount</dt>
+            <dt class="govuk-summary-list__value" id="value1">£@paymentPenalty.totalAmount</dt>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key" id="key2">Amount received</dt>
+            <dt class="govuk-summary-list__value" id="value2">£@if(paymentPenalty.amountPaid == 0) {0.00} else {@paymentPenalty.amountPaid}</dt>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key" id="key3">Left to pay</dt>
+            <dt class="govuk-summary-list__value" id="value3">£@if(paymentPenalty.amountOutstanding == 0) {0.00} else {@paymentPenalty.amountOutstanding}</dt>
+        </div>
+    </dl>
+    <p>
+        <a class="govuk-link" href=@controllers.routes.PenaltiesController.combinedSummary().url>Return to Self Assessment penalties and appeals</a>
+    </p>
+    }
+}
