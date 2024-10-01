@@ -32,8 +32,8 @@
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@penalties.latePaymentPenalties.filter(_.penaltyChargeReference == penaltyChargeReference).map(_.penaltyTypeString)</h1>
   </header>
     @if(paymentPenalty.penaltyType == LPPPenaltyCategoryEnum.LPP1) {
-        <p id="paragraph1">This penalty applies if Income Tax has not been paid for @if(paymentPenalty.status == LPPPenaltyStatusEnum.Accruing || paymentPenalty.paidBefore31Days) {15} else {30} days.</p>
-        <p id="paragraph2">The calculation we use is:<br>2% of £@paymentPenalty.lpp1LrCalcAmount (the unpaid Income Tax 15 days after the due date)@if(paymentPenalty.status != LPPPenaltyStatusEnum.Accruing && !paymentPenalty.paidBefore31Days){<br>2% of £@paymentPenalty.lpp1HrCalcAmount (the unpaid Income Tax 30 days after the due date)}</p>
+        <p id="paragraph1">This penalty applies if Income Tax has not been paid for @if(paymentPenalty.days31ThresholdPassed) {30} else {15} days.</p>
+        <p id="paragraph2">The calculation we use is:<br>2% of £@paymentPenalty.lpp1LrCalcAmount (the unpaid Income Tax 15 days after the due date)@if(paymentPenalty.days31ThresholdPassed){<br>2% of £@paymentPenalty.lpp1HrCalcAmount (the unpaid Income Tax 30 days after the due date)}</p>
     } else if(paymentPenalty.penaltyType == LPPPenaltyCategoryEnum.LPP2) {
         <p id="paragraph1-lpp2">This penalty applies from day 31, if any Income Tax remains unpaid.</p>
         <p id="paragraph2-lpp2">The total builds up daily until you pay your Income Tax or set up a payment plan.</p>
@@ -58,7 +58,7 @@
         </div>
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key" id="key3">Left to pay</dt>
-            <dt class="govuk-summary-list__value" id="value3">£@if(paymentPenalty.amountOutstanding == 0) {0.00} else {@paymentPenalty.amountOutstanding}</dt>
+            <dt class="govuk-summary-list__value" id="value3">£@if(paymentPenalty.status == LPPPenaltyStatusEnum.Accruing) {@paymentPenalty.amountAccruing} else {@paymentPenalty.amountOutstanding}</dt>
         </div>
     </dl>
     @if(paymentPenalty.status == LPPPenaltyStatusEnum.Accruing) {
