@@ -41,7 +41,7 @@ object SessionDataConnector {
 class SessionDataConnector @Inject()(httpClient: HttpClientV2, val appConfig: AppConfig)(implicit ec: ExecutionContext) extends Logging {
   import SessionDataConnector.*
 
-  private val sessionDataServiceUrl = appConfig.sessionDataService.resolve("/") //new URL("http://localhost:30027/income-tax-session-data/")
+  private lazy val sessionDataServiceUrl = appConfig.sessionDataService.resolve("/") //new URL("http://localhost:30027/income-tax-session-data/")
 
   def getSessionData(using headerCarrier: HeaderCarrier): Future[SessionData] = {
     logger.info(s"headerCarrier.sessionId = ${headerCarrier.sessionId}")

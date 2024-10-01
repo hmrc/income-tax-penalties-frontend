@@ -46,7 +46,7 @@ class SetDelegationController @Inject()(
   def delegationPage(): Action[AnyContent] = Action.async { request =>
     given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    val fSeesionData = if (feature.useSessionService) sessionDataConnector.getSessionData else successful(SessionData(
+    val fSeesionData = if (featureUseSessionService) sessionDataConnector.getSessionData else successful(SessionData(
       sessionId = request.session.get("sessionId"),
       mtditid = request.session.get(clientMTDID),
       nino = request.session.get(clientNino)
@@ -83,7 +83,7 @@ class SetDelegationController @Inject()(
 
     logger.info(s"[SetDelegationController][setDelegation] Setting client MTDITID to $mtditid and NINO to $nino")
 
-    if (feature.useSessionService) {
+    if (featureUseSessionService) {
       sessionDataConnector.putSessionData(SessionData(
         mtditid = Some(mtditid),
         nino = Some(nino),
