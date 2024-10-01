@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import services.LayoutService.LayoutModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import connectors.PenaltiesConnector.LPPPenaltyStatusEnum
 
 @this(
         layout: Layout,
@@ -133,7 +134,7 @@
     <section class="app-summary-card" style="margin-bottom: 15px;">
       <header class="app-summary-card__header">
         <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@{paymentPenalty.status.toUpperCase}</strong></div>
+        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@{paymentPenalty.statusString.toUpperCase}</strong></div>
       </header>
       <div class = "app-summary-card__body">
         <dl class="govuk-summary-list">
@@ -164,7 +165,7 @@
       <footer class="app-summary-card__footer">
         <div class="app-summary-card__link">
           <a class="govuk-link" href=@{controllers.routes.PenaltyCalculationController.combinedSummary(paymentPenalty.penaltyChargeReference)}>View calculation</a>
-          @if(paymentPenalty.status != "Estimate") {
+          @if(paymentPenalty.status != LPPPenaltyStatusEnum.Accruing) {
             <a class="govuk-link" style="margin-left: 10px;" href="#">Appeal this penalty</a>
           }
         </div>

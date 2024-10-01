@@ -82,7 +82,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     }
     val dueDate: String = displayDayMonthYear(lppDetails.principalChargeDueDate) // "31 January 2028"
     val latestClearing: String = lppDetails.principalChargeLatestClearing.toDayMonthYear // "19 February 2028" or None
-    val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing // 400.00
+    val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing.setScale(2) // 400.00
     val amountPosted: BigDecimal = lppDetails.penaltyAmountPosted // 350.00
     val totalAmount: BigDecimal = (amountAccruing + amountPosted).setScale(2, BigDecimal.RoundingMode.HALF_UP)
     val amountPaid: BigDecimal = lppDetails.penaltyAmountPaid match {
@@ -90,22 +90,28 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
       case _ => 0
     }
     val amountOutstanding: BigDecimal = lppDetails.penaltyAmountOutstanding match {
-      case Some(amount) => amount
+      case Some(amount) => amount.setScale(2)
       case _ => 0
     }
     val isPaid: Boolean = lppDetails.penaltyAmountPaid match {
       case Some(amount) => ((lppDetails.penaltyAmountPosted != 0) && (lppDetails.penaltyAmountPosted - amount == 0))
       case None => false
     }
-    val status: String = lppDetails.penaltyStatus match {
-      case LPPPenaltyStatusEnum.Accruing => if(lppDetails.penaltyAmountOutstanding == Some(0) || lppDetails.penaltyAmountOutstanding.isEmpty) "Estimate" else "Due"
-      case LPPPenaltyStatusEnum.Posted => if(isPaid) {"Paid"} else {"Posted"}
+    val status: PenaltiesConnector.LPPPenaltyStatusEnum.Value = lppDetails.penaltyStatus
+    val statusString: String = lppDetails.penaltyStatus match {
+      case LPPPenaltyStatusEnum.Accruing => "Estimate"
+      case LPPPenaltyStatusEnum.Posted => if(isPaid) {"Paid"} else {"Due"}
     } // Active or Inactive
     val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
     val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
 
     val penaltyChargeReference: String = lppDetails.principalChargeReference
     val lpp1LrCalcAmount: BigDecimal = lppDetails.LPP1LRCalculationAmount match {
+      case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
+      case _ => 0
+    }
+    val days31ThresholdPassed: Boolean = lppDetails.LPP1HRCalculationAmount.nonEmpty
+    val lpp1HrCalcAmount: BigDecimal = lppDetails.LPP1HRCalculationAmount match {
       case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
       case _ => 0
     }
