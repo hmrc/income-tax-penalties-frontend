@@ -407,6 +407,11 @@
   margin: 0;
 }
 
+dt {
+  display: block;
+  unicode-bidi: isolate;
+}
+
 .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
   padding-right: 0;
 }

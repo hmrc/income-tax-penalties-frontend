@@ -23,6 +23,7 @@ import play.api.i18n.Messages
 import utils.DisplayFormats.{LocalDateEx, displayDayMonthYear, displayMonthYear}
 import java.time.LocalDate
 import scala.annotation.unused
+import play.api.Logging
 
 class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) {
 
@@ -105,7 +106,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     val taxYearFrom: String = Some(lppDetails.principalChargeBillingFrom).toYear
     val taxYearTo: String = Some(lppDetails.principalChargeBillingTo).toYear
 
-    val penaltyChargeReference: String = lppDetails.principalChargeReference
+    val penaltyChargeReference: String = lppDetails.penaltyChargeReference.getOrElse(lppDetails.principalChargeReference)
     val lpp1LrCalcAmount: BigDecimal = lppDetails.LPP1LRCalculationAmount match {
       case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
       case _ => 0
