@@ -43,13 +43,13 @@
         @if(paymentPenalty.statusString == "Due") {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key" id="key4">Due date</dt>
-                <dd class="govuk-summary-list__value" id="value4">
+                <dt class="govuk-summary-list__value" id="value4">
                     @paymentPenalty.dueDate <strong class="govuk-tag govuk-tag--red">OVERDUE</strong>
-                </dd>
+                </dt>
             </div>
         }
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key" id="key1">Penalty amount</dt>
+            <dt class="govuk-summary-list__key" id="key1">Penalty amount @if(paymentPenalty.status == LPPPenaltyStatusEnum.Accruing){(estimate)}</dt>
             <dt class="govuk-summary-list__value" id="value1">£@paymentPenalty.totalAmount</dt>
         </div>
         <div class="govuk-summary-list__row">
