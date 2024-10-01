@@ -42,7 +42,7 @@ class PenaltyCalculationControllerISpec extends IntegrationSpecCommonBase with A
     penaltyStatus = LPPPenaltyStatusEnum.Posted,
     penaltyAmountPaid = Some(400.00),
     penaltyAmountPosted = 400.00,
-    penaltyAmountAccruing = 0,
+    penaltyAmountAccruing = 0.00,
     penaltyAmountOutstanding = None,
     LPP1LRDays = Some("15"),
     LPP1HRDays = Some("30"),
@@ -79,7 +79,9 @@ class PenaltyCalculationControllerISpec extends IntegrationSpecCommonBase with A
     val getPenaltyDetailsPayload = GetPenaltyDetails(
       totalisations = None,
       lateSubmissionPenalty = None,
-      latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP), true)),
+      latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP.copy(
+        penaltyAmountOutstanding = Some(0)
+      )), true)),
       breathingSpace = None
     )
 
@@ -122,9 +124,7 @@ class PenaltyCalculationControllerISpec extends IntegrationSpecCommonBase with A
         penaltyAmountPosted = 0,
         penaltyAmountAccruing = 400.00,
         principalChargeLatestClearing = None,
-        penaltyChargeDueDate = None,
-        penaltyAmountOutstanding = Some(400.00),
-        LPP1HRCalculationAmount = Some(20000.00)
+        penaltyChargeDueDate = None
       )), true)),
       breathingSpace = None
     )

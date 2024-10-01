@@ -82,7 +82,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
     }
     val dueDate: String = displayDayMonthYear(lppDetails.principalChargeDueDate) // "31 January 2028"
     val latestClearing: String = lppDetails.principalChargeLatestClearing.toDayMonthYear // "19 February 2028" or None
-    val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing // 400.00
+    val amountAccruing: BigDecimal = lppDetails.penaltyAmountAccruing.setScale(2) // 400.00
     val amountPosted: BigDecimal = lppDetails.penaltyAmountPosted // 350.00
     val totalAmount: BigDecimal = (amountAccruing + amountPosted).setScale(2, BigDecimal.RoundingMode.HALF_UP)
     val amountPaid: BigDecimal = lppDetails.penaltyAmountPaid match {
@@ -97,7 +97,8 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
       case Some(amount) => ((lppDetails.penaltyAmountPosted != 0) && (lppDetails.penaltyAmountPosted - amount == 0))
       case None => false
     }
-    val status: String = lppDetails.penaltyStatus match {
+    val status: PenaltiesConnector.LPPPenaltyStatusEnum.Value = lppDetails.penaltyStatus
+    val statusString: String = lppDetails.penaltyStatus match {
       case LPPPenaltyStatusEnum.Accruing => "Estimate"
       case LPPPenaltyStatusEnum.Posted => if(isPaid) {"Paid"} else {"Due"}
     } // Active or Inactive
@@ -109,10 +110,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
       case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
       case _ => 0
     }
-    val paidBefore31Days: Boolean = lppDetails.principalChargeLatestClearing match {
-      case Some(date) => (date.toEpochDay - lppDetails.principalChargeDueDate.toEpochDay) <= 30
-      case None => false
-    }
+    val days31ThresholdPassed: Boolean = lppDetails.LPP1HRCalculationAmount.nonEmpty
     val lpp1HrCalcAmount: BigDecimal = lppDetails.LPP1HRCalculationAmount match {
       case Some(amount: BigDecimal) => amount.setScale(2, BigDecimal.RoundingMode.HALF_UP)
       case _ => 0
