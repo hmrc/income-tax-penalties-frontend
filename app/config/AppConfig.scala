@@ -44,6 +44,7 @@ class AppConfig @Inject()(configuration: Configuration) {
 
   val languageTranslationEnabled: Boolean =
     configuration.getOptional[Boolean]("features.welsh-translation").getOrElse(languageMap.size > 1)
-  
+
   val featureUseSessionService: Boolean = configuration.getOptional[Boolean]("feature.useSessionService").getOrElse(false)
+  val featureOptimizeAuthForIndividuals: Boolean = configuration.getOptional[Boolean]("feature.optimiseAuthForIndividuals").getOrElse(true)
 }
