@@ -47,7 +47,6 @@ class AuthActionSpec extends SpecBase {
   "Auth Action" - {
     "when the user hasn't logged in" - {
       "must redirect the user to log in " in {
-
         val application = applicationBuilder().build()
 
         running(application) {

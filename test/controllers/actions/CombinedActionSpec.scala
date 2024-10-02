@@ -17,39 +17,58 @@
 package controllers.actions
 
 import base.SpecBase
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Level.ERROR
+import com.google.inject.Inject
+import config.AppConfig
+import connectors.SessionDataConnector
+import connectors.SessionDataConnector.SessionData
 import controllers.agent.SessionKeys
 import controllers.agent.SessionKeys.clientMTDID
+import controllers.routes
 import models.requests.IdentifierRequest
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{verify, verifyNoMoreInteractions, when}
+import org.mockito.Mockito.*
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import play.api.mvc.{ActionBuilder, AnyContent, BodyParsers, Results}
+import play.api.Logger
+import play.api.mvc.*
 import play.api.test.FakeRequest
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.*
+import uk.gov.hmrc.auth.core.authorise.Predicate
+import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.successful
+import scala.concurrent.{ExecutionContext, Future}
 
 class CombinedActionSpec extends SpecBase {
 
-  class Setup {
-    val bodyParser = mock[BodyParsers.Default]
-    val agentAction = mock[AgentAction]
-    val individualAction = mock[IdentifierAction]
+  "When new session feature is switched off "- {
+    class Setup(useSessionService: Boolean) {
+      val authConnector = mock[AuthConnector]
+      val appConfig = mock[AppConfig]
+      val sessionDataConnector = mock[SessionDataConnector]
+      val agentAction = mock[AgentAction]
+      val individualAction = mock[IdentifierAction]
+      val bodyParser = mock[BodyParsers.Default]
 
-    val combinedActionBuilder = new CombinedAction(individualAction, agentAction, bodyParser).apply()
-    val combinedAction = combinedActionBuilder { (_: IdentifierRequest[AnyContent]) => Results.NoContent }
-  }
+      when(appConfig.featureUseSessionService).thenReturn(useSessionService)
 
-  "Combined Action" - {
-    "delegates individuals to the individual auth action" in new Setup {
+      val combinedActionBuilder: ActionBuilder[IdentifierRequest, AnyContent] = new CombinedAction(authConnector, appConfig, sessionDataConnector, individualAction, agentAction, bodyParser).apply()
+      val combinedAction = combinedActionBuilder { (_: IdentifierRequest[AnyContent]) => Results.NoContent }
+    }
+
+    "delegates individuals to the individual auth action" in new Setup(useSessionService = false) {
         combinedAction(FakeRequest())
 
         verify(individualAction).invokeBlock(any(), any())
         verifyNoMoreInteractions(agentAction, individualAction)
     }
 
-    "delegates agents to the agent auth action" in new Setup {
+    "delegates agents to the agent auth action" in new Setup(useSessionService = false) {
       val actionBuilder = mock[ActionBuilder[_,_]]
       when(agentAction.apply("foo")).thenReturn(actionBuilder)
 
@@ -59,5 +78,132 @@ class CombinedActionSpec extends SpecBase {
       verify(actionBuilder).invokeBlock(any(), any())
       verifyNoMoreInteractions(agentAction, individualAction, actionBuilder)
     }
+  }
+
+  "When new session feature is switched on " - {
+    class Harness(authAction: CombinedAction) {
+      def onPageLoad(): Action[AnyContent] = authAction() { request =>
+        Results.Ok(s"${request.isAgent} - ${request.clientNino}")
+      }
+    }
+
+    val noSessionDataConnector = new SessionDataConnector(null,null) {
+      override def getSessionData(using headerCarrier: HeaderCarrier): Future[SessionData] = successful(SessionData(sessionId = None))
+    }
+    val okSessionDataConnector = new SessionDataConnector(null,null) {
+      override def getSessionData(using headerCarrier: HeaderCarrier): Future[SessionData] = successful(SessionData(mtditid = Some("foo"), nino = Some("bar"), sessionId = Some("123")))
+    }
+
+    val applicationOptimizedForIndividuals = applicationBuilder().configure("feature.useSessionService" -> true).build()
+    val applicationWithBalancedAuthentication = applicationBuilder().configure("feature.useSessionService" -> true, "feature.optimiseAuthForIndividuals" -> false).build()
+
+    "when the user hasn't logged in" - {
+      "must redirect the user to log in " in {
+        val application = applicationOptimizedForIndividuals
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[AppConfig]
+
+          val authAction = new CombinedAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, noSessionDataConnector, null, null, bodyParsers)
+          val controller = new Harness(authAction)
+          val result = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result).value must startWith(appConfig.loginUrl)
+        }
+      }
+    }
+
+    "the user's session has expired" - {
+      "must redirect the user to log in " in {
+        val application = applicationOptimizedForIndividuals
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[AppConfig]
+
+          val authAction = new CombinedAction(new FakeFailingAuthConnector(new BearerTokenExpired), appConfig, noSessionDataConnector, null, null, bodyParsers)
+          val controller = new Harness(authAction)
+          val result = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result).value must startWith(appConfig.loginUrl)
+        }
+      }
+    }
+
+    "Individual Action" - {
+      "the user has MTDITID (Making Tax Digital Income Tax ID) and a NINO (National Insurance Number)" - {
+        "should work when optimized for individuals" in {
+          val application = applicationOptimizedForIndividuals
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
+
+            val authAction = new CombinedAction(new FakeSuccessfulAuthConnector(), appConfig, noSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe OK
+            contentAsString(result) mustBe "false - bar"
+          }
+        }
+
+        "should work with balanced optimisation" in {
+          val application = applicationWithBalancedAuthentication
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
+
+            val authAction = CombinedAction(new FakeSuccessfulCombinedAuthConnector(isAgent = false), appConfig, okSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe OK
+            contentAsString(result) mustBe "false - bar"
+          }
+        }
+      }
+    }
+
+    "Agent Action" - {
+      "session service has MTDITID (Making Tax Digital Income Tax ID) and a NINO (National Insurance Number)" - {
+        "should work when optimized for individuals" in {
+          val application = applicationOptimizedForIndividuals
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
+
+            val authAction = CombinedAction(new FakeSuccessfulAgentAuthConnector(), appConfig, okSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe OK
+            contentAsString(result) mustBe "true - bar"
+          }
+        }
+
+        "should work with balanced optimisation" in {
+          val application = applicationWithBalancedAuthentication
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
+
+            val authAction = CombinedAction(new FakeSuccessfulCombinedAuthConnector(isAgent = true), appConfig, okSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe OK
+            contentAsString(result) mustBe "true - bar"
+          }
+        }
+      }
+    }
+  }
+}
+
+class FakeSuccessfulCombinedAuthConnector @Inject()(isAgent: Boolean) extends AuthConnector {
+  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
+    val x: AffinityGroup = if (isAgent) AffinityGroup.Agent else AffinityGroup.Individual 
+    Future.successful( Some(x).asInstanceOf[A] )
   }
 }
