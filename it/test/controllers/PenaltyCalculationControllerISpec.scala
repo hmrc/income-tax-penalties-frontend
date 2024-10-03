@@ -32,7 +32,7 @@ class PenaltyCalculationControllerISpec extends IntegrationSpecCommonBase with A
     authToken -> "12345"
   )
 
-  val fakeAnonymousRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/"))
+  val fakeAnonymousRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path("/calculation/XJ002616061027"))
 
   val sampleLPP: LPPDetails = LPPDetails(
     penaltyChargeReference = Some("XJ002616061027"),
