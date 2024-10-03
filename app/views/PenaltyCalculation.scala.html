@@ -75,7 +75,7 @@
         @if(paymentPenalty.penaltyType == LPPPenaltyCategoryEnum.LPP1) {
             <p class="govuk-body" id="estimates">Penalties will show as estimates until:</p>
             <ul class="govuk-list govuk-list--bullet">
-                <li>you pay the Income Tax bill, or</li>
+                <li>@if(isAgent){your client pays their} else {you pay the} Income Tax bill, or</li>
                 <li>30 days have passed since the Income Tax due date</li>
             </ul>
         } else if(paymentPenalty.penaltyType == LPPPenaltyCategoryEnum.LPP2) {
@@ -83,7 +83,7 @@
         }
     }
     <p>
-        <a class="govuk-link" href=@controllers.routes.PenaltiesController.combinedSummary().url>Return to Self Assessment penalties and appeals</a>
+        <a class="govuk-link" href=@controllers.routes.PenaltiesController.combinedSummary().url>Return to @if(isAgent){your client's} Self Assessment penalties and appeals</a>
     </p>
     }
 }
