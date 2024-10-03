@@ -15,3 +15,6 @@
 GET        /income-tax-penalties/test-only/set-delegation controllers.testOnly.SetDelegationController.delegationPage()
 +NOCSRF
 POST       /income-tax-penalties/test-only/set-delegation controllers.testOnly.SetDelegationController.setDelegation()
+
+PUT        /income-tax-penalties/test-only/feature/use-session-service controllers.testOnly.FeatureController.putUseSessionService()
+PUT        /income-tax-penalties/test-only/feature/optimise-auth-for-individuals controllers.testOnly.FeatureController.putOptimiseAuthForIndividuals()

@@ -50,7 +50,7 @@ class CombinedAction @Inject()(
         // start fetching the session data (only needed for agents)
         val sessionFetch: Future[SessionData] = sessionDataConnector.getSessionData
 
-        val mainStage = if (appConfig.featureOptimizeAuthForIndividuals) {
+        val mainStage = if (appConfig.featureOptimiseAuthForIndividuals) {
           // start fetching the authentication result for an individual
           val individualFetch: Future[Option[(Boolean, String, String)]] = authConnector.authorise(Enrolment("HMRC-MTD-IT"), Retrievals.authorisedEnrolments and Retrievals.nino).map {
             case ~(enrolments, Some(nino)) => enrolments.getEnrolment("HMRC-MTD-IT") map (id => (false, id.getIdentifier("MTDITID").get.value, nino))
