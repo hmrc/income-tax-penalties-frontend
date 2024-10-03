@@ -19,17 +19,23 @@ package base
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Level.INFO
 import ch.qos.logback.classic.spi.ILoggingEvent
-import controllers.actions._
+import com.google.inject
+import com.google.inject.binder.LinkedBindingBuilder
+import com.google.inject.{Binder, Key}
+import controllers.actions.*
+import org.mockito.ArgumentMatchers.any
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must
 import org.scalatest.{OptionValues, TryValues}
-import play.api.Application
+import play.api.{Application, Configuration, Environment}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.inject.guice.{BinderOption, GuiceApplicationBuilder, GuiceableModule}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
+
+import scala.reflect.{ClassTag, classTag}
 
 trait SpecBase
   extends AnyFreeSpec
@@ -61,4 +67,20 @@ trait SpecBase
   implicit class LogEventEx(log: Seq[ILoggingEvent]) {
     def messages: Seq[(Level, String)] = log.filter(_.getLevel.isGreaterOrEqual(INFO)).map(m => m.getLevel -> m.getMessage)
   }
+
+  def bindInstance[T](clazz: Class[T], instance: T): GuiceableModule = {
+    object Bar extends inject.Module {
+      override def configure(binder: Binder): Unit = {
+        binder.bind(Key.get(clazz)).toInstance(instance)
+        binder
+      }
+    }
+
+    new GuiceableModule {
+      override def guiced(env: Environment, conf: Configuration, binderOptions: Set[BinderOption]): Seq[inject.Module] = Seq(Bar)
+      override def disable(classes: Seq[Class[_]]): GuiceableModule = throw new NotImplementedError()
+    }
+  }
+
+  def bindInstance[T: ClassTag](instance: T): GuiceableModule = bindInstance(classTag[T].runtimeClass.asInstanceOf[Class[T]], instance)
 }
