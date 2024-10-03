@@ -43,7 +43,7 @@ class SessionDataConnector @Inject()(httpClient: HttpClientV2, val appConfig: Ap
 
   private lazy val sessionDataServiceUrl = appConfig.sessionDataService.resolve("/") //new URL("http://localhost:30027/income-tax-session-data/")
 
-  def getSessionData(using headerCarrier: HeaderCarrier): Future[SessionData] = {
+  def getSessionData(implicit headerCarrier: HeaderCarrier): Future[SessionData] = {
     logger.info(s"headerCarrier.sessionId = ${headerCarrier.sessionId}")
     val x = httpClient.get(sessionDataServiceUrl).execute[SessionData]
     x.recoverWith {
