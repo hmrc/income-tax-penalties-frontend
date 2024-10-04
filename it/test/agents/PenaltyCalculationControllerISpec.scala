@@ -318,4 +318,157 @@ class PenaltyCalculationControllerISpec extends IntegrationSpecCommonBase with A
     select("p a").text shouldBe "Return to your client's Self Assessment penalties and appeals"
   }
 
+  "return page with calculation (daily rate) when penalty is paid and logged in as agent" in {
+    mockDelegatedResponse()
+
+    val getPenaltyDetailsPayload = GetPenaltyDetails(
+      totalisations = None,
+      lateSubmissionPenalty = None,
+      latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP.copy(
+        penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+        penaltyAmountPosted = 46.02,
+        penaltyAmountOutstanding = Some(0),
+        penaltyAmountPaid = Some(46.02),
+        LPP2Percentage = Some(4),
+        principalChargeBillingFrom = LocalDate.parse("2027-04-06"),
+        principalChargeBillingTo = LocalDate.parse("2028-04-05"),
+        principalChargeDueDate = LocalDate.parse("2029-01-31"),
+        principalChargeLatestClearing = Some(LocalDate.parse("2029-03-23")),
+        penaltyChargeDueDate = None
+      )), true)),
+      breathingSpace = None
+    )
+
+    mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayload))
+
+    val response = route(app, fakeAgentRequest).get
+    status(response) shouldBe Status.OK
+    val parsedBody = Jsoup.parse(contentAsString(response))
+    import parsedBody._
+
+    parsedBody.title shouldBe "Manage your Self Assessment - GOV.UK"
+
+    select("#main-content h2").text shouldBe "Income Tax year 2027 to 2028"
+    select("#main-content h1").text shouldBe "Second penalty for late payment"
+
+    getElementById("paragraph1-lpp2").text shouldBe "This penalty applies from day 31, if any Income Tax remains unpaid."
+    getElementById("paragraph2-lpp2").text shouldBe "The total builds up daily until your client pays their Income Tax or set up a payment plan."
+    getElementById("paragraph3-lpp2").text shouldBe "The calculation we use for each day is: (Penalty rate of 4% x unpaid Income Tax) ÷ days in a year"
+
+    getElementById("key1").text shouldBe "Penalty amount"
+    getElementById("value1").text shouldBe "£46.02"
+
+    getElementById("key2").text shouldBe "Amount received"
+    getElementById("value2").text shouldBe "£46.02"
+
+    getElementById("key3").text shouldBe "Left to pay"
+    getElementById("value3").text shouldBe "£0.00"
+
+    select("p a").text shouldBe "Return to your client's Self Assessment penalties and appeals"
+  }
+
+  "return page with calculation (daily rate) when penalty is an estimate and logged in as agent" in {
+    mockDelegatedResponse()
+
+    val getPenaltyDetailsPayload = GetPenaltyDetails(
+      totalisations = None,
+      lateSubmissionPenalty = None,
+      latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP.copy(
+        penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+        penaltyStatus = LPPPenaltyStatusEnum.Accruing,
+        penaltyAmountPaid = Some(0),
+        penaltyAmountPosted = 0,
+        penaltyAmountAccruing = 46.02,
+        principalChargeBillingFrom = LocalDate.parse("2027-04-06"),
+        principalChargeBillingTo = LocalDate.parse("2028-04-05"),
+        principalChargeDueDate = LocalDate.parse("2029-01-31"),
+        principalChargeLatestClearing = None,
+        penaltyChargeDueDate = None
+      )), true)),
+      breathingSpace = None
+    )
+
+    mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayload))
+
+    val response = route(app, fakeAgentRequest).get
+    status(response) shouldBe Status.OK
+    val parsedBody = Jsoup.parse(contentAsString(response))
+    import parsedBody._
+
+    parsedBody.title shouldBe "Manage your Self Assessment - GOV.UK"
+
+    select("#main-content h2").text shouldBe "Income Tax year 2027 to 2028"
+    select("#main-content h1").text shouldBe "Second penalty for late payment"
+
+    getElementById("paragraph1-lpp2").text shouldBe "This penalty applies from day 31, if any Income Tax remains unpaid."
+    getElementById("paragraph2-lpp2").text shouldBe "The total builds up daily until your client pays their Income Tax or set up a payment plan."
+    getElementById("paragraph3-lpp2").text shouldBe "The calculation we use for each day is: (Penalty rate of 4% x unpaid Income Tax) ÷ days in a year"
+
+    getElementById("key1").text shouldBe "Penalty amount (estimate)"
+    getElementById("value1").text shouldBe "£46.02"
+
+    getElementById("key2").text shouldBe "Amount received"
+    getElementById("value2").text shouldBe "£0.00"
+
+    getElementById("key3").text shouldBe "Left to pay"
+    getElementById("value3").text shouldBe "£46.02"
+
+    getElementsByClass("govuk-heading-s").text shouldBe "Estimates"
+    getElementById("estimates-lpp2").text shouldBe "Penalties and interest will show as estimates until your client pays the charge they relate to."
+
+    select("p a").text shouldBe "Return to your client's Self Assessment penalties and appeals"
+  }
+
+  "return page with calculation (daily rate) when penalty is due and logged in as an agent" in {
+    mockDelegatedResponse()
+
+    val getPenaltyDetailsPayload = GetPenaltyDetails(
+      totalisations = None,
+      lateSubmissionPenalty = None,
+      latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPP.copy(
+        penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+        penaltyAmountPaid = Some(0),
+        penaltyAmountPosted = 46.02,
+        principalChargeLatestClearing = None,
+        penaltyChargeDueDate = None,
+        penaltyAmountOutstanding = Some(46.02),
+        LPP1HRCalculationAmount = Some(20000.00),
+        principalChargeBillingFrom = LocalDate.parse("2027-04-06"),
+        principalChargeBillingTo = LocalDate.parse("2028-04-05"),
+        principalChargeDueDate = LocalDate.parse("2029-01-31"),
+      )), true)),
+      breathingSpace = None
+    )
+
+    mockGetPenaltyDetailsResponse(penaltyDetails = Some(getPenaltyDetailsPayload))
+
+    val response = route(app, fakeAgentRequest).get
+    status(response) shouldBe Status.OK
+    val parsedBody = Jsoup.parse(contentAsString(response))
+    import parsedBody._
+
+    parsedBody.title shouldBe "Manage your Self Assessment - GOV.UK"
+
+    select("#main-content h2").text shouldBe "Income Tax year 2027 to 2028"
+    select("#main-content h1").text shouldBe "Second penalty for late payment"
+
+    getElementById("paragraph1-lpp2").text shouldBe "This penalty applies from day 31, if any Income Tax remains unpaid."
+    getElementById("paragraph2-lpp2").text shouldBe "The total builds up daily until your client pays their Income Tax or set up a payment plan."
+    getElementById("paragraph3-lpp2").text shouldBe "The calculation we use for each day is: (Penalty rate of 4% x unpaid Income Tax) ÷ days in a year"
+
+    getElementById("key4").text shouldBe "Due date"
+    getElementById("value4").text shouldBe "31 January 2029 OVERDUE"
+
+    getElementById("key1").text shouldBe "Penalty amount"
+    getElementById("value1").text shouldBe "£46.02"
+
+    getElementById("key2").text shouldBe "Amount received"
+    getElementById("value2").text shouldBe "£0.00"
+
+    getElementById("key3").text shouldBe "Left to pay"
+    getElementById("value3").text shouldBe "£46.02"
+
+    select("p a").text shouldBe "Return to your client's Self Assessment penalties and appeals"
+  }
+
 }
