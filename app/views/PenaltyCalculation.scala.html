@@ -79,7 +79,7 @@
                 <li>30 days have passed since the Income Tax due date</li>
             </ul>
         } else if(paymentPenalty.penaltyType == LPPPenaltyCategoryEnum.LPP2) {
-            <p class="govuk-body" id="estimates-lpp2">Penalties and interest will show as estimates until you pay the charge they relate to.</p>
+            <p class="govuk-body" id="estimates-lpp2">Penalties and interest will show as estimates until @if(isAgent){your client pays} else {you pay} the charge they relate to.</p>
         }
     }
     <p>
