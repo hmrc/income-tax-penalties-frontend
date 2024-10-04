@@ -66,7 +66,7 @@ class SetDelegationController @Inject()(
         }.recover(e => e.getClass.getSimpleName + ": " + e.getMessage)
 
       }.getOrElse(successful("")).map { authReesult =>
-        logger.info(s"[SetDelegationController][setDelegation] Existing MTDITID=$mtditid, NINO=$nino, auth result: $authReesult")
+        logger.info(s"[SetDelegationController][setDelegation] Existing MTDITID=$mtditid, NINO=$nino, auth result: $authReesult, featureUseSessionService: $featureUseSessionService")
 
         val view = views.html.testOnly.SetDelegation(mtditid.getOrElse(""), nino.getOrElse(""), sessionId.getOrElse("none"), authReesult)
         Ok(view)

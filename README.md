@@ -53,6 +53,28 @@ In a web browser:
 | JM245815B | Four LSP points, including LSP for late annual submission and £200 penalty                   |
 | GH071208D | Five LSP points, including all four penalty points from above and an additional £200 penalty |
 
+## Test-only enpoints
+
+To start the micro-service locally using the test routes run the following command: 
+
+``` sbt run -Dapplication.router=testOnlyDoNotUseInAppConf.Routes ```
+
+When testing manually and needing to initialise the identifiers for a session, visit:
+
+```GET        /income-tax-penalties/test-only/set-delegation```
+
+Automated tests can post form-urlencoded identifiers "mtditd" and "nino" to the following endpoint: 
+
+```POST       /income-tax-penalties/test-only/set-delegation```
+
+To switch the session service feature put a json true or false to:
+
+```PUT        /income-tax-penalties/test-only/feature/use-session-service```
+
+To switch the auth optimisation feature put a json true or false to:
+
+```PUT        /income-tax-penalties/test-only/feature/optimise-auth-for-individuals```
+
 ## License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
