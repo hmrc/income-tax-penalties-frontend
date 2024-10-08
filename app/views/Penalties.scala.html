@@ -19,110 +19,30 @@
 @import services.LayoutService.LayoutModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import connectors.PenaltiesConnector.LPPPenaltyStatusEnum
+@import views.html.components.{LSPTabContentAgents, LSPTabContent}
 
 @this(
         layout: Layout,
         govukTabs : components.PenaltiesTabs,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
         govukWarningText : GovukWarningText,
-        govukButton : GovukButton
+        govukButton : GovukButton,
+        lspTabContent : components.LSPTabContent,
+        lspTabContentAgents: components.LSPTabContentAgents
 )
 
 @(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: models.requests.IdentifierRequest[_], messages: Messages)
 @import request.isAgent
-
-@annualPenaltyAndNonEmpty(penalty: penalties.LateSubmissionPenalty, quarterRowTitle: String, annualRowTitle: String) = {
-  @if(penalty.updateDue.nonEmpty && !penalty.annualPenalty) {
-    @quarterRowTitle
-  } else if (penalty.updateDue.nonEmpty) {
-    @annualRowTitle
-  }
-}
 
 @lspTabContentEmpty = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-m">You don't have any late submission penalties.</p>
 }
 
-@lspTabContent = {
-  <h3 class="govuk-heading-s">Late submission penalties</h3>
-  <p class="govuk-body-l">Penalty points total: <strong>@if(penalties.totalLSPPs < 5){@penalties.totalLSPPs} else {4}</strong></p>
-  @if(penalties.totalLSPPs >= 3) {@govukWarningText(WarningText(
-    iconFallbackText = Some("Warning"),
-    content = Text(if(penalties.totalLSPPs == 3 && !isAgent){"You will get a £200 penalty if you send another late submission."}
-                  else if(penalties.totalLSPPs == 3 && isAgent){"Your client will get a £200 penalty if they send another late submission."}
-                  else if(penalties.totalLSPPs == 4 && !isAgent){"You have been given a £200 penalty for reaching the penalty threshold."}
-                  else if(penalties.totalLSPPs == 4 && isAgent){"Your client has been given a £200 penalty for reaching the penalty threshold."}
-                  else if(penalties.totalLSPPs > 4 && !isAgent){"You have been given an additional £200 penalty."}
-                  else {"Your client has been given an additional £200 penalty."}),
-    attributes = Map("id" -> "warning-text")
-    ))}
-  @if(penalties.totalLSPPs < 4) {
-    <p>@if(!isAgent) {You have} else {Your client has} @{
-      penalties.totalLSPPs
-    } penalty point@if(penalties.totalLSPPs > 1) {s} for sending @if(penalties.totalLSPPs > 1) {late submissions} else {a late submission}. @if(!isAgent) {You} else {They} should send @if(penalties.totalLSPPs > 1) {any} else {this} missing submission@if(penalties.totalLSPPs > 1) {s} as soon as possible if @if(!isAgent) {you} else {they} haven't already.</p>
-    <p>
-      @if(!isAgent) {You} else {They}'ll get another point if @if(!isAgent) {you} else {they} send another submission after a deadline has passed. Points usually expire after 24 months, but it can be longer if @if(!isAgent) {you} else {they} keep sending late submissions.</p>
-    <p>If @if(!isAgent) {you reach} else {your client reaches} @(penalties.regimeLSPThreshold) points, @if(!isAgent) {you} else {they}’ll have to pay a £200 penalty.</p>
-  } else{
-    <p>@if(!isAgent) {You} else {They} will get @if(penalties.totalLSPPs == 4){an additional} else {another} £200 penalty every time @if(!isAgent) {you} else {they} send a late submission in the future, until @if(!isAgent) {your} else {their} points are removed. @if(!isAgent) {You} else {They} should send any missing submissions as soon as possible if @if(!isAgent) {you} else {they} haven't already.</p>  }
-  <p>@if(penalties.totalLSPPs < 4){@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Read the guidance about late submission penalties", href = Some("#")))} else if(penalties.totalLSPPs >= 4 && !isAgent) {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions to take to get your points removed by" + " " + penalties.penaltyRemoveDateToString, href = Some("#")))} else {@hmrcNewTabLinkHelper(NewTabLinkHelper(text = "Actions your client must take to get their points removed by" + " " + penalties.penaltyRemoveDateToString, href = Some("#")))}</p>
-  @for(penalty<-penalties.lateSubmissionPenalties){
-    <section class="app-summary-card" @if(penalty.ordinal != "1") {style="margin-bottom: 15px;"}>
-      <header class="app-summary-card__header">
-        <h4 class="app-summary-card__title govuk-!-font-weight-bold">@if(penalty.ordinal.toInt < 5){Penalty point @{penalty.ordinal}@if(penalty.ordinal == "4"){: £200 penalty}} else {Additional £200 penalty}</h4>
-        <div class="app-summary-card__tag">@if(penalty.status.nonEmpty){<strong class="govuk-tag">@{penalty.status}</strong>}</div>
-      </header>
-      <div class="app-summary-card__body">
-        <dl class="govuk-summary-list">
-          @if(penalty.source.nonEmpty && !penalty.annualPenalty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Income source</dt>
-              <dd class="govuk-summary-list__value">@{penalty.source}</dd>
-            </div>
-          }
-          @if(penalty.quarterFrom.nonEmpty && penalty.quarterTo.nonEmpty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Quarter", "Tax year")</dt>
-              <dd class="govuk-summary-list__value"><span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterFrom, penalty.taxYearFrom)</span> to <span style="white-space:nowrap">@annualPenaltyAndNonEmpty(penalty, penalty.quarterTo, penalty.taxYearTo)</span></dd>
-            </div>
-          }
-          @if(penalty.updateDue.nonEmpty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update due", "Return due")</dt>
-              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateDue}</dd>
-            </div>
-          }
-          @if(penalty.updateSubmitted.nonEmpty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">@annualPenaltyAndNonEmpty(penalty, "Update submitted", "Return submitted")</dt>
-              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.updateSubmitted}</dd>
-            </div>
-          }
-          @if(penalty.dueToExpire.nonEmpty && penalties.totalLSPPs < 4) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Point due to expire</dt>
-              <dd class="govuk-summary-list__value" style="white-space:nowrap">@{penalty.dueToExpire}</dd>
-            </div>
-          }
-        </dl>
-      </div>
-      @if(penalty.updateSubmitted.nonEmpty) {
-        <footer class="app-summary-card__footer">
-          <div class="app-summary-card__link">
-            <a class="govuk-link" href="#">@if(penalty.ordinal.toInt < 5){Appeal penalty point @{penalty.ordinal}} else {Appeal penalty}</a>
-          </div>
-        </footer>
-      }
-    </section>
-  }
-}
-
 @lppTabContentEmpty = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-m">@if(!isAgent) {You don't have any late payment penalties.} else {There are no late payment penalties.}</p>
 }
-
 
 @lppTabContent = {
   <h3 class="govuk-heading-s">Late payment penalties</h3>
@@ -205,7 +125,7 @@
     items = Seq(Some(TabItem(
       id = Some("lsp-tab"),
       label = "Late submission penalties",
-      panel = TabPanel(content = if(penalties.lateSubmissionPenalties.nonEmpty) {HtmlContent(lspTabContent)} else {HtmlContent(lspTabContentEmpty)})
+      panel = TabPanel(content = if(penalties.lateSubmissionPenalties.nonEmpty && isAgent) {HtmlContent(lspTabContentAgents(penalties))} else if(penalties.lateSubmissionPenalties.nonEmpty && !isAgent) {HtmlContent(lspTabContent(penalties))} else {HtmlContent(lspTabContentEmpty)})
     )),
       Some(TabItem(
         id = Some("lpp-tab"),
