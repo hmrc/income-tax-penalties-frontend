@@ -18,8 +18,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import services.LayoutService.LayoutModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import connectors.PenaltiesConnector.LPPPenaltyStatusEnum
-@import views.html.components.{LSPTabContentAgents, LSPTabContent}
+@import views.html.components.{LSPTabContentAgents, LSPTabContent, LPPTabContent, LPPTabContentAgents}
 
 @this(
         layout: Layout,
@@ -28,7 +27,9 @@
         govukWarningText : GovukWarningText,
         govukButton : GovukButton,
         lspTabContent : components.LSPTabContent,
-        lspTabContentAgents: components.LSPTabContentAgents
+        lspTabContentAgents: components.LSPTabContentAgents,
+        lppTabContent: components.LPPTabContent,
+        lppTabContentAgents: components.LPPTabContentAgents
 )
 
 @(penalties: models.Penalties, layoutModel: LayoutModel)(implicit request: models.requests.IdentifierRequest[_], messages: Messages)
@@ -42,56 +43,6 @@
 @lppTabContentEmpty = {
   <h3 class="govuk-heading-s">Late submission penalties</h3>
   <p class="govuk-body-m">@if(!isAgent) {You don't have any late payment penalties.} else {There are no late payment penalties.}</p>
-}
-
-@lppTabContent = {
-  <h3 class="govuk-heading-s">Late payment penalties</h3>
-  <p class="govuk-body-m">The earlier you pay your Income Tax, the lower your penalties and interest will be.</p>
-  <p class="govuk-body">
-    <a id="hyperlink" href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">Read the guidance about how late payment penalties are calculated (opens in a new tab)</a>
-  </p>
-  @for(paymentPenalty <- penalties.latePaymentPenalties){
-    <section class="app-summary-card" style="margin-bottom: 15px;">
-      <header class="app-summary-card__header">
-        <h4 class="app-summary-card__title govuk-!-font-weight-bold">£@{paymentPenalty.totalAmount} penalty</h4>
-        <div class="app-summary-card__tag"><strong @if(paymentPenalty.isPaid) {class="govuk-tag"} else {class="govuk-tag penalty-due-tag"}>@{paymentPenalty.statusString.toUpperCase}</strong></div>
-      </header>
-      <div class = "app-summary-card__body">
-        <dl class="govuk-summary-list">
-          @if(paymentPenalty.penaltyTypeString.nonEmpty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Penalty type</dt>
-              <dd class="govuk-summary-list__value">@{paymentPenalty.penaltyTypeString}</dd>
-            </div>
-          }
-          @if(paymentPenalty.penaltyTypeString.nonEmpty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Overdue charge</dt>
-              <dd class="govuk-summary-list__value">Income Tax for @{paymentPenalty.taxYearFrom} to @{paymentPenalty.taxYearTo} tax year</dd>
-            </div>
-          }
-          @if(paymentPenalty.dueDate.nonEmpty) {
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Income Tax due</dt>
-              <dd class="govuk-summary-list__value">@{paymentPenalty.dueDate}</dd>
-            </div>
-          }
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Income Tax paid</dt>
-            <dd class="govuk-summary-list__value">@if(paymentPenalty.latestClearing.nonEmpty)@{paymentPenalty.latestClearing} else {Payment not yet received}</dd>
-          </div>
-        </dl>
-      </div>
-      <footer class="app-summary-card__footer">
-        <div class="app-summary-card__link">
-          <a class="govuk-link" href=@{controllers.routes.PenaltyCalculationController.combinedSummary(paymentPenalty.penaltyChargeReference)}>View calculation</a>
-          @if(paymentPenalty.status != LPPPenaltyStatusEnum.Accruing) {
-            <a class="govuk-link" style="margin-left: 10px;" href="#">Appeal this penalty</a>
-          }
-        </div>
-      </footer>
-    </section>
-  }
 }
 
 @layout(layoutModel) {
@@ -130,7 +81,7 @@
       Some(TabItem(
         id = Some("lpp-tab"),
         label = "Late payment penalties",
-        panel = TabPanel(content = if(penalties.latePaymentPenalties.nonEmpty) {HtmlContent(lppTabContent)} else {HtmlContent(lppTabContentEmpty)})
+        panel = TabPanel(content = if(penalties.latePaymentPenalties.nonEmpty && isAgent) {HtmlContent(lppTabContentAgents(penalties))} else if(penalties.latePaymentPenalties.nonEmpty && !isAgent) {HtmlContent(lppTabContent(penalties))} else {HtmlContent(lppTabContentEmpty)})
       ))
     ).flatten
   ))
