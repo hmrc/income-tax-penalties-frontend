@@ -10,11 +10,6 @@ Start supporting services:
 ```
   sm2 -start MONGO ASSETS_FRONTEND_2 AUTH AUTH_LOGIN_API AUTH_LOGIN_STUB IDENTITY_VERIFICATION USER_DETAILS SI_PROTECTED_USER_LIST_ADMIN
 ```
-or similarly:
-
-```
-  sm2 --start INCOME_TAX_PENALTIES_ALL
-```
 
 Run penalties-backend (in a separate shell):
 
@@ -32,11 +27,17 @@ Run income-tax-penalties-stubs (in a separate shell):
   sbt run
 ```
 
-Run income-tax-penalties-frontend (this repo)
+Run income-tax-penalties-frontend (this repo):
 
 ```  
   cd income-tax-penalties-frontend
   sbt run
+```
+
+Alternatively, start all supporting services including the penalties microservices by running:
+
+```
+  sm2 --start INCOME_TAX_PENALTIES_ALL
 ```
 
 In a web browser:
