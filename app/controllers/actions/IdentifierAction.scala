@@ -29,6 +29,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.ExceptionUtils.ThrowableImplicits
+import utils.EnrolmentKeys
 
 import scala.concurrent.Future.successful
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,11 +46,11 @@ class AuthenticatedIdentifierAction @Inject()(
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    authorised(Enrolment("HMRC-MTD-IT")).retrieve(Retrievals.authorisedEnrolments and Retrievals.nino) {
+    authorised(Enrolment(EnrolmentKeys.mtdEnrolmentKey)).retrieve(Retrievals.authorisedEnrolments and Retrievals.nino) {
       case ~(enrolments, Some(nino)) =>
-        enrolments.getEnrolment("HMRC-MTD-IT") match {
+        enrolments.getEnrolment(EnrolmentKeys.mtdEnrolmentKey) match {
           case Some(enrolment) =>
-            enrolment.getIdentifier("MTDITID") match {
+            enrolment.getIdentifier(EnrolmentKeys.mtdId) match {
               case Some(_) => block(IdentifierRequest(request, false, nino))
               case None =>
                 logger.error("[AuthenticatedIdentifierAction][invokeBlock] MTD IT user without MTDITID")

@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package services
+package utils
 
-import connectors.PenaltiesConnector
-
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class PenaltiesService @Inject()(
-                                val penaltiesConnector: PenaltiesConnector
-                                ){
-
+object EnrolmentKeys {
+  val mtdEnrolmentKey: String = "HMRC-MTD-IT"
+  val mtdId: String = "MTDITID"
+  val agentDelegatedAuthRuleKey: String = "mtd-it-auth"
 }

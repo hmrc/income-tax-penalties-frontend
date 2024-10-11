@@ -52,7 +52,7 @@ object FuturePartition {
     def matching(test: T => Boolean)(using ExecutionContext): Future[FuturePartition[T]] = {
       fp map { partition =>
         partition.head match {
-          case Success(value) if (test(value)) => successful(FuturePartition(partition.head, partition.tail, test))
+          case Success(value) if test(value) => successful(FuturePartition(partition.head, partition.tail, test))
           case _ => race(partition.tail*).matching(test)
         }
       }
