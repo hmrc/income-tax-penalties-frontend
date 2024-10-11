@@ -30,7 +30,6 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, AuthorisedFunctions,
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.FuturePartition.race
-import utils.EnrolmentKeys
 
 import scala.concurrent.Future.successful
 import scala.concurrent.{ExecutionContext, Future}
@@ -53,8 +52,8 @@ class CombinedAction @Inject()(
 
         val mainStage = if (appConfig.featureOptimiseAuthForIndividuals) {
           // start fetching the authentication result for an individual
-          val individualFetch: Future[Option[(Boolean, String, String)]] = authConnector.authorise(Enrolment(EnrolmentKeys.mtdEnrolmentKey), Retrievals.authorisedEnrolments and Retrievals.nino).map {
-            case ~(enrolments, Some(nino)) => enrolments.getEnrolment(EnrolmentKeys.mtdEnrolmentKey) map (id => (false, id.getIdentifier(EnrolmentKeys.mtdId).get.value, nino))
+          val individualFetch: Future[Option[(Boolean, String, String)]] = authConnector.authorise(Enrolment("HMRC-MTD-IT"), Retrievals.authorisedEnrolments and Retrievals.nino).map {
+            case ~(enrolments, Some(nino)) => enrolments.getEnrolment("HMRC-MTD-IT") map (id => (false, id.getIdentifier("MTDITID").get.value, nino))
           }.recover(_ => None)
 
           def individualCut = individualFetch.isCompleted && individualFetch.value.exists(_.toOption.flatten.isDefined)
@@ -63,7 +62,7 @@ class CombinedAction @Inject()(
           // unless the individual result is already available and indicates success
           val agentFetch: Future[Option[(Boolean, String, String)]] = sessionFetch flatMap {
             case sessionData if sessionData.mtditid.isDefined && sessionData.nino.isDefined && !individualCut =>
-              authConnector.authorise(Enrolment(EnrolmentKeys.mtdEnrolmentKey).withIdentifier(EnrolmentKeys.mtdId, sessionData.mtditid.get).withDelegatedAuthRule(EnrolmentKeys.agentDelegatedAuthRuleKey), EmptyRetrieval).map {
+              authConnector.authorise(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", sessionData.mtditid.get).withDelegatedAuthRule("mtd-it-auth"), EmptyRetrieval).map {
                 _ => Some((true, sessionData.mtditid.get, sessionData.nino.get))
               }.recover(_ => None)
             case _ => successful(None)
@@ -76,7 +75,7 @@ class CombinedAction @Inject()(
         } else {
           sessionFetch.flatMap {
             case SessionData(Some(mtditid), Some(nino), _, Some(_)) =>
-              authConnector.authorise(Enrolment(EnrolmentKeys.mtdEnrolmentKey) or Enrolment(EnrolmentKeys.mtdEnrolmentKey).withIdentifier(EnrolmentKeys.mtdId, mtditid).withDelegatedAuthRule(EnrolmentKeys.agentDelegatedAuthRuleKey), Retrievals.affinityGroup).flatMap {
+              authConnector.authorise(Enrolment("HMRC-MTD-IT") or Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", mtditid).withDelegatedAuthRule("mtd-it-auth"), Retrievals.affinityGroup).flatMap {
                 case Some(AffinityGroup.Individual) => block(IdentifierRequest(request, false, nino))
                 case Some(AffinityGroup.Agent) => block(IdentifierRequest(request, true, nino))
               }

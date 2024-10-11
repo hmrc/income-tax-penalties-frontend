@@ -27,7 +27,6 @@ import play.api.mvc.Results.{InternalServerError, Redirect}
 import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import utils.EnrolmentKeys
 import utils.ExceptionUtils.given
 
 import scala.concurrent.Future.successful
@@ -44,7 +43,7 @@ class AuthenticatedAgentAction @Inject()(override val authConnector: AuthConnect
   class Impl(clientMTDITID: String, val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext) extends IdentifierAction {
     override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
       implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-      authorised(Enrolment(EnrolmentKeys.mtdEnrolmentKey).withIdentifier(EnrolmentKeys.mtdId, clientMTDITID).withDelegatedAuthRule(EnrolmentKeys.agentDelegatedAuthRuleKey)) {
+      authorised(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", clientMTDITID).withDelegatedAuthRule("mtd-it-auth")) {
         val sessionClientMTDITID = request.session(SessionKeys.clientMTDID)
         if (sessionClientMTDITID == clientMTDITID) {
           val sessionClientNINO = request.session(SessionKeys.clientNino)
