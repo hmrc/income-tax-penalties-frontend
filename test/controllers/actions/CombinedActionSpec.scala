@@ -240,28 +240,20 @@ class CombinedActionSpec extends SpecBase with TableDrivenPropertyChecks {
 
 class FakeSuccessfulBalancedAuthConnector @Inject()(isAgent: Boolean) extends AuthConnector {
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
-    println(s"predicate = $predicate")
-    val x: AffinityGroup = if (isAgent) AffinityGroup.Agent else AffinityGroup.Individual
-    Future.successful(Some(x).asInstanceOf[A])
+    val affinityGroup: AffinityGroup = if (isAgent) AffinityGroup.Agent else AffinityGroup.Individual
+    Future.successful(Some(affinityGroup).asInstanceOf[A])
   }
 }
 
 class FakeSuccessfulCombinedAuthConnector @Inject()(isAgent: Boolean) extends AuthConnector {
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
-    println(s"predicate = $predicate")
-    predicate match {
-      case enr: Enrolment if enr.identifiers.isEmpty =>
-        if (isAgent) {
-          Future.failed(InsufficientEnrolments())
-        } else {
-          val mtdItId = Some("foo")
-          val enrolment = mtdItId match {
-            case Some(id) => Set(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", id))
-            //case None => Set(Enrolment("HMRC-MTD-IT"))
-          }
-          val x = new~(Enrolments(enrolment), Some("bar"))
-          Future.successful(x.asInstanceOf[A])
-        }
+    (predicate, isAgent) match {
+      case (enr: Enrolment, true) if enr.identifiers.isEmpty =>
+        Future.failed(InsufficientEnrolments())
+      case (enr: Enrolment, false) if enr.identifiers.isEmpty =>
+        val enrolment = Set(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", "foo"))
+        val retreivals = new~(Enrolments(enrolment), Some("bar"))
+        Future.successful(retreivals.asInstanceOf[A])
       case _ =>
         Future.successful( ().asInstanceOf[A] )
     }
