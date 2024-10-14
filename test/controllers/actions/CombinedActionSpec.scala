@@ -17,21 +17,18 @@
 package controllers.actions
 
 import base.SpecBase
-import ch.qos.logback.classic.Level
-import ch.qos.logback.classic.Level.ERROR
 import com.google.inject.Inject
 import config.AppConfig
 import connectors.SessionDataConnector
 import connectors.SessionDataConnector.SessionData
 import controllers.agent.SessionKeys
 import controllers.agent.SessionKeys.clientMTDID
-import controllers.routes
 import models.requests.IdentifierRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
 import org.mockito.{ArgumentMatchers, Mockito}
+import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatestplus.mockito.MockitoSugar.mock
-import play.api.Logger
 import play.api.mvc.*
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -44,7 +41,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedActionSpec extends SpecBase {
+class CombinedActionSpec extends SpecBase with TableDrivenPropertyChecks {
 
   "When new session feature is switched off "- {
     class Setup(useSessionService: Boolean) {
@@ -97,36 +94,76 @@ class CombinedActionSpec extends SpecBase {
     val applicationOptimizedForIndividuals = applicationBuilder().configure("feature.useSessionService" -> true).build()
     val applicationWithBalancedAuthentication = applicationBuilder().configure("feature.useSessionService" -> true, "feature.optimiseAuthForIndividuals" -> false).build()
 
-    "when the user hasn't logged in" - {
-      "must redirect the user to log in " in {
-        val application = applicationOptimizedForIndividuals
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[AppConfig]
+    "must redirect the user to log in" - {
+      Table(
+        ("Problem", "Auth Exception"),
+        ("the user is not logged in ", new MissingBearerToken),
+        ("the user's session has expired", new BearerTokenExpired),
+        ("the user's session is invalid", new InvalidBearerToken),
+        ("the user's session does not exist", new SessionRecordNotFound)
+      ).forEvery { (problem, authException) =>
+        s"when $problem " in {
+          val application = applicationOptimizedForIndividuals
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
 
-          val authAction = new CombinedAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, noSessionDataConnector, null, null, bodyParsers)
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+            val authAction = new CombinedAction(new FakeFailingAuthConnector(authException), appConfig, noSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginUrl)
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result).value must startWith(appConfig.loginUrl)
+          }
         }
       }
     }
 
-    "the user's session has expired" - {
-      "must redirect the user to log in " in {
-        val application = applicationOptimizedForIndividuals
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[AppConfig]
+    "must deny access" - {
+      Table(
+        ("Problem", "Auth Exception"),
+        ("auth lacks confidence in this user's identity", new InsufficientConfidenceLevel),
+        ("the user's credentials are too weak", new IncorrectCredentialStrength),
+        ("the agent-client relationship is not estanblished", new FailedRelationship)
+      ).forEvery { (problem, authException) =>
+        s"when $problem " in {
+          val application = applicationOptimizedForIndividuals
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
 
-          val authAction = new CombinedAction(new FakeFailingAuthConnector(new BearerTokenExpired), appConfig, noSessionDataConnector, null, null, bodyParsers)
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+            val authAction = new CombinedAction(new FakeFailingAuthConnector(authException), appConfig, noSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginUrl)
+            status(result) mustBe FORBIDDEN
+          }
+        }
+      }
+    }
+
+    "return internal server error" - {
+      Table(
+        ("Problem", "Auth Exception"),
+        ("the user is of an unsupported type", new UnsupportedAffinityGroup),
+        ("the user lacks necessary enrolments", new InsufficientEnrolments),
+        ("the user has an unsupported credential role", new UnsupportedCredentialRole),
+        ("we do not support this auth provider", new UnsupportedAuthProvider),
+        ("there is an internal error in auth", new InternalError),
+        ("the user's nino is incorrect", IncorrectNino)
+      ).forEvery { (problem, authException) =>
+        s"when $problem " in {
+          val application = applicationOptimizedForIndividuals
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig = application.injector.instanceOf[AppConfig]
+
+            val authAction = new CombinedAction(new FakeFailingAuthConnector(authException), appConfig, noSessionDataConnector, null, null, bodyParsers)
+            val controller = new Harness(authAction)
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe INTERNAL_SERVER_ERROR
+          }
         }
       }
     }
@@ -154,7 +191,7 @@ class CombinedActionSpec extends SpecBase {
             val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
             val appConfig = application.injector.instanceOf[AppConfig]
 
-            val authAction = CombinedAction(new FakeSuccessfulCombinedAuthConnector(isAgent = false), appConfig, okSessionDataConnector, null, null, bodyParsers)
+            val authAction = CombinedAction(new FakeSuccessfulBalancedAuthConnector(isAgent = false), appConfig, okSessionDataConnector, null, null, bodyParsers)
             val controller = new Harness(authAction)
             val result = controller.onPageLoad()(FakeRequest())
 
@@ -173,7 +210,7 @@ class CombinedActionSpec extends SpecBase {
             val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
             val appConfig = application.injector.instanceOf[AppConfig]
 
-            val authAction = CombinedAction(new FakeSuccessfulAgentAuthConnector(), appConfig, okSessionDataConnector, null, null, bodyParsers)
+            val authAction = CombinedAction(new FakeSuccessfulCombinedAuthConnector(isAgent = true), appConfig, okSessionDataConnector, null, null, bodyParsers)
             val controller = new Harness(authAction)
             val result = controller.onPageLoad()(FakeRequest())
 
@@ -188,7 +225,7 @@ class CombinedActionSpec extends SpecBase {
             val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
             val appConfig = application.injector.instanceOf[AppConfig]
 
-            val authAction = CombinedAction(new FakeSuccessfulCombinedAuthConnector(isAgent = true), appConfig, okSessionDataConnector, null, null, bodyParsers)
+            val authAction = CombinedAction(new FakeSuccessfulBalancedAuthConnector(isAgent = true), appConfig, okSessionDataConnector, null, null, bodyParsers)
             val controller = new Harness(authAction)
             val result = controller.onPageLoad()(FakeRequest())
 
@@ -201,9 +238,34 @@ class CombinedActionSpec extends SpecBase {
   }
 }
 
-class FakeSuccessfulCombinedAuthConnector @Inject()(isAgent: Boolean) extends AuthConnector {
+class FakeSuccessfulBalancedAuthConnector @Inject()(isAgent: Boolean) extends AuthConnector {
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
-    val x: AffinityGroup = if (isAgent) AffinityGroup.Agent else AffinityGroup.Individual 
-    Future.successful( Some(x).asInstanceOf[A] )
+    println(s"predicate = $predicate")
+    val x: AffinityGroup = if (isAgent) AffinityGroup.Agent else AffinityGroup.Individual
+    Future.successful(Some(x).asInstanceOf[A])
   }
 }
+
+class FakeSuccessfulCombinedAuthConnector @Inject()(isAgent: Boolean) extends AuthConnector {
+  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
+    println(s"predicate = $predicate")
+    predicate match {
+      case enr: Enrolment if enr.identifiers.isEmpty =>
+        if (isAgent) {
+          Future.failed(InsufficientEnrolments())
+        } else {
+          val mtdItId = Some("foo")
+          val enrolment = mtdItId match {
+            case Some(id) => Set(Enrolment("HMRC-MTD-IT").withIdentifier("MTDITID", id))
+            //case None => Set(Enrolment("HMRC-MTD-IT"))
+          }
+          val x = new~(Enrolments(enrolment), Some("bar"))
+          Future.successful(x.asInstanceOf[A])
+        }
+      case _ =>
+        Future.successful( ().asInstanceOf[A] )
+    }
+  }
+}
+
+
