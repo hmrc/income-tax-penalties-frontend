@@ -30,7 +30,7 @@ object LayoutService {
     accountMenu: AccountMenu,
     showSignOut: Boolean = true
   ) {
-    def withoutSignout: LayoutModel = this.copy(showSignOut = false)
+    def withoutSignOut: LayoutModel = this.copy(showSignOut = false)
   }
 }
 
