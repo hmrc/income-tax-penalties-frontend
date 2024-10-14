@@ -73,13 +73,12 @@ class CombinedAction @Inject()(
           }
 
           // only one authenication type can apply, so whichever works first is our winner
-          val all: Future[FuturePartition[(Boolean, String, String)]] = race(individualFetch, agentFetch)
-          val result: Future[(Option[Try[(Boolean, String, String)]],Option[Try[(Boolean, String, String)]])] = all.map(_.head).transformWith {
+          val partitioned = race(individualFetch, agentFetch)
+          partitioned.map(_.head).transformWith {
             case Success(Success(result)) => successful((Some(Success(result)),None))
-            case Success(Failure(failure)) => all.flatMap(_.next).map(_.head).transform(v=>Success((Some(Failure(failure)),v.toOption)))
+            case Success(Failure(failure)) => partitioned.flatMap(_.next).map(_.head).transform(v=>Success((Some(Failure(failure)),v.toOption)))
             case _ => throw InternalError()
-          }
-          result.map {
+          }.map {
             case (Some(Success((isAgent: Boolean, _: String, nino: String))),_) => block(IdentifierRequest(request, isAgent, nino))
             case (_, Some(Success((isAgent: Boolean, _: String, nino: String)))) => block(IdentifierRequest(request, isAgent, nino))
             case (Some(Failure(_: SessionRecordNotFound)),Some(Failure(exc))) => throw exc
@@ -87,8 +86,8 @@ class CombinedAction @Inject()(
             case _ => throw InternalError()
           }.recover {
             case _: NoActiveSession => redirectToLogin
-            case _: InsufficientConfidenceLevel | _: IncorrectCredentialStrength | _: FailedRelationship => successful(Forbidden(""))
-            case _: AuthorisationException => successful(InternalServerError(""))
+            case _: InsufficientConfidenceLevel | _: IncorrectCredentialStrength | _: FailedRelationship => successful(Forbidden)
+            case _: AuthorisationException => successful(InternalServerError)
           }.flatten
         } else {
           sessionFetch.flatMap {
