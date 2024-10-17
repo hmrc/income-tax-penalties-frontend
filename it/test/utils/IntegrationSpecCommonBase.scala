@@ -66,5 +66,5 @@ trait IntegrationSpecCommonBase extends AnyWordSpec with Matchers with GuiceOneS
     SharedMetricRegistries.clear()
   }
 
-  def path(path: String) = s"/income-tax-penalties-frontend$path"
+  def path(path: String) = s"/penalties/income-tax$path"
 }
