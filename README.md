@@ -41,7 +41,7 @@ Alternatively, start all supporting services including the penalties microservic
 ```
 
 In a web browser:
--  navigate to http://localhost:9185/income-tax-penalties-frontend
+-  navigate to http://localhost:9185/penalties/income-tax
 -  Enter enrolment key HMRC-MTD-IT ~ MTDITID ~ 12345
 -  Enter NINO that matches a test case in the stubs
 
