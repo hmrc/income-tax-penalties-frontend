@@ -33,7 +33,7 @@ class Penalties(penaltyDetails: GetPenaltyDetails)(implicit messages: Messages) 
 
   def regimeLSPThreshold: Int = lspSummary.map(_.regimeThreshold).get
 
-  private val lspDetails: Option[LSPDetails]  = penaltyDetails.lateSubmissionPenalty.map(_.details.head)
+  private val lspDetails: Option[LSPDetails]  = penaltyDetails.lateSubmissionPenalty.flatMap(_.details.headOption)
   val penaltyRemovedDate: Either[String, Option[LocalDate]] = lspDetails match
     case Some(value) => Right(value.lateSubmissions.head.last.taxPeriodDueDate)
     case None => Left("No LSP details available.")
