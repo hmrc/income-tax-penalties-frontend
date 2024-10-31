@@ -1,5 +1,5 @@
-@*
- * Copyright 2024 HM Revenue & Customs
+/*
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,19 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.Layout
+package uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models
 
-@this(layout: Layout)
+import play.api.libs.json.{Json, OFormat}
 
-@()(implicit request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = Some("income-tax-penalties-frontend")) {
-    <h1 class="govuk-heading-xl">income-tax-penalties-frontend</h1>
-    <p class="govuk-body">@{messages("service.text")}</p>
-}
+case class FeatureSwitchSetting(configName: String,
+                                displayName: String,
+                                isEnabled: Boolean)
 
-@{
-    //$COVERAGE-OFF$
+object FeatureSwitchSetting {
+
+  implicit val format: OFormat[FeatureSwitchSetting] = Json.format[FeatureSwitchSetting]
+
 }
