@@ -14,16 +14,23 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.Layout
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
 
-@this(layout: Layout)
+@this(
+  appConfig: AppConfig,
+  hmrcStandardPage: HmrcStandardPage
+)
 
-@()(implicit request: RequestHeader, messages: Messages)
+@(pageTitle: Option[String] = None)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = Some("income-tax-penalties-frontend")) {
-    <h1 class="govuk-heading-xl">income-tax-penalties-frontend</h1>
-    <p class="govuk-body">@{messages("service.text")}</p>
-}
+@hmrcStandardPage(
+  HmrcStandardPageParams(
+    pageTitle = pageTitle,
+    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
+  )
+)(contentBlock)
 
 @{
     //$COVERAGE-OFF$

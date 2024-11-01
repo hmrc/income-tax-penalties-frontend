@@ -16,18 +16,24 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import org.jsoup.Jsoup
+import play.api.http.Status.OK
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
 
-@Singleton
-class HelloWorldController @Inject()(mcc: MessagesControllerComponents,
-                                     helloWorldPage: HelloWorldPage) extends FrontendController(mcc) {
+class HelloWorldControllerISpec extends ComponentSpecHelper with ViewSpecHelper {
 
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(helloWorldPage()))
+  "GET /" should {
+    "return an OK with a view" in {
+
+      val result = get("/")
+
+      val document = Jsoup.parse(result.body)
+
+      result.status shouldBe OK
+
+      document.getH1Elements.text() shouldBe "income-tax-penalties-frontend"
+
+    }
   }
 
 }
