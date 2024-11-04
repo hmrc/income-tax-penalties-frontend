@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,28 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
-
-import org.jsoup.Jsoup
-import play.api.http.Status.OK
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
-
-class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper {
-
-  "GET /" should {
-    "return an OK with a view" in {
-
-      val result = get("/")
-
-      val document = Jsoup.parse(result.body)
-
-      result.status shouldBe OK
-
-      document.getH1Elements.text() shouldBe "income-tax-penalties-frontend"
-
-    }
-  }
-
-}
+@this()

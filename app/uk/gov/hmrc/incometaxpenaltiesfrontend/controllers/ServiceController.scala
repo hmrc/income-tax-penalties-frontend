@@ -24,8 +24,8 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class HelloWorldController @Inject()(mcc: MessagesControllerComponents,
-                                     helloWorldPage: HelloWorldPage)(appConfig: AppConfig) extends FrontendController(mcc) {
+class ServiceController @Inject()(mcc: MessagesControllerComponents,
+                                  helloWorldPage: HelloWorldPage)(appConfig: AppConfig) extends FrontendController(mcc) {
 
   val helloWorld: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok(helloWorldPage()))
@@ -35,4 +35,14 @@ class HelloWorldController @Inject()(mcc: MessagesControllerComponents,
     Redirect(appConfig.survey).withNewSession
   }
 
+  val serviceSessionExpired: Action[AnyContent] = Action {
+    Redirect(appConfig.survey).withNewSession
+  }
+
+
+  val keepAlive: Action[AnyContent] = Action {
+    NoContent
+  }
 }
+
+

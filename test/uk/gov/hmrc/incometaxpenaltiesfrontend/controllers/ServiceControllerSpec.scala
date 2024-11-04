@@ -24,11 +24,11 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
 
-class HelloWorldControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
+class ServiceControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 
   lazy val view: HelloWorldPage = app.injector.instanceOf[HelloWorldPage]
 
-  object TestController extends HelloWorldController(stubMessagesControllerComponents(), view)
+  object TestController extends ServiceController(stubMessagesControllerComponents(), view)
 
   "GET /" should {
     "return 200" in {
