@@ -14,20 +14,18 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.H1
 
+@this(
+        main: MainTemplate,
+        h1: H1
+)
 
-@this (
-    main: MainTemplate,
-    h1: H1
-    )
+@()(implicit request: Request[_], messages: Messages)
 
-    @()(messages: Messages)
+@main(pageTitle = messages("individual.main.h1")) {
 
-    @main (
-        pageTitle = messages("individual.main.h1")
-    ) {
+       @h1("individual.main.h1")
 
-        @h1("individual.main.h1")
-
-        }
+    }

@@ -14,23 +14,16 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
+@import uk.gov.hmrc.govukfrontend.views.html.components.Text
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
 
-@this(
-  appConfig: AppConfig,
-  hmrcStandardPage: HmrcStandardPage
-)
+@this(main: MainTemplate)
 
-@(pageTitle: Option[String] = None)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@hmrcStandardPage(
-  HmrcStandardPageParams(
-    pageTitle = pageTitle,
-    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-  )
-)(contentBlock)
+@main(pageTitle = "Page not found") {
+    <h1 class="govuk-heading-xl">Page Not Found</h1>
+}
 
 @{
     //$COVERAGE-OFF$

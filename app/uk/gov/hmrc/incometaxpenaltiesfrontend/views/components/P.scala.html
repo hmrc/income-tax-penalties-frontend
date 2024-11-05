@@ -16,6 +16,6 @@
 
 @this()
 
-@(content: Content, elmId: Option[String] = None, classes: Option[String] = None)
+@(msg: String, elmId: Option[String] = None, classes: Option[String] = None)
 
-<p @if(elmId.isDefined){ id="@{elmId.get}"} class="@classes.getOrElse("govuk-body")">@content</p>
+<p @if(elmId.isDefined){ id="@{elmId.get}"} class="@classes.getOrElse("govuk-body")">@msg</p>

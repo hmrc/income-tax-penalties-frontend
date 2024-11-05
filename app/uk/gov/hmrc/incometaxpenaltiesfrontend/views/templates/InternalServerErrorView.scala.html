@@ -14,15 +14,15 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.Layout
+@import uk.gov.hmrc.govukfrontend.views.html.components.Text
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
 
-@this(layout: Layout)
+@this(main: MainTemplate)
 
-@()(implicit request: RequestHeader, messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = Some("income-tax-penalties-frontend")) {
-    <h1 class="govuk-heading-xl">income-tax-penalties-frontend</h1>
-    <p class="govuk-body">@{messages("service.text")}</p>
+@main(pageTitle = "Error") {
+    <h1 class="govuk-heading-xl">Error</h1>
 }
 
 @{

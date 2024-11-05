@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates
 import com.google.inject.ImplementedBy
 import play.api.Logging
 import play.api.i18n.Messages
-import play.api.mvc.Request
+import play.api.mvc.RequestHeader
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.ServiceURLs
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
@@ -27,8 +27,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.HeadBlock
 import uk.gov.hmrc.sca.models.BannerConfig
 import uk.gov.hmrc.sca.services.WrapperService
 
+
 import javax.inject.Inject
-import scala.util.{Failure, Success, Try}
 
 
 @ImplementedBy(classOf[MainTemplateImpl])
@@ -41,7 +41,7 @@ trait MainTemplate {
              fullWidth: Boolean = false,
              signOutUrl: Option[String] = None
            )(contentBlock: Html)(implicit
-                                 request: Request[_],
+                                 request: RequestHeader,
                                  messages: Messages
            ): HtmlFormat.Appendable
 }
@@ -61,7 +61,7 @@ class MainTemplateImpl @Inject() (
                       signOutUrl: Option[String] = None
                     )(
                       contentBlock: Html
-                    )(implicit request: Request[_], messages: Messages): HtmlFormat.Appendable = {
+                    )(implicit request: RequestHeader, messages: Messages): HtmlFormat.Appendable = {
 
     val fullPageTitle = s"$pageTitle - ${Messages("label.service_name")} - GOV.UK"
 

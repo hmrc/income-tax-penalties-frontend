@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
@@ -25,10 +25,11 @@ import scala.concurrent.Future
 
 @Singleton
 class ServiceController @Inject()(mcc: MessagesControllerComponents,
-                                  helloWorldPage: HelloWorldPage)(appConfig: AppConfig) extends FrontendController(mcc) {
+                                  individualMainView: IndividualMainView)(appConfig: AppConfig) extends FrontendController(mcc) {
 
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(helloWorldPage()))
+
+  val individualMain: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(individualMainView()))
   }
 
   val serviceSignout: Action[AnyContent] = Action {
