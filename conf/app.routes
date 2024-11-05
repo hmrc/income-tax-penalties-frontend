@@ -1,6 +1,7 @@
 # microservice specific routes
 
 ->         /hmrc-frontend                       hmrcfrontend.Routes
+->         /sca-wrapper                         sca.Routes
 
 GET        /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
 
@@ -10,3 +11,5 @@ GET        /signOutUrl                          uk.gov.hmrc.incometaxpenaltiesfr
 GET        /serviceSessionExpired               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.serviceSessionExpired()
 GET        /keepAlive                           uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.keepAlive()
 
+
+GET        /language/:lang                     uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)
