@@ -16,6 +16,6 @@
 
 @this()
 
-@(msg: String, elmId: Option[String] = None, classes: Option[String] = None)(implicit messages: Messages)
+@(msg: String, classes: Option[String] = None, elmId: Option[String] = None)(implicit messages: Messages)
 
-<p @if(elmId.isDefined){ id="@{elmId.get}"} class="@classes.getOrElse("govuk-body")">@Html(messages(msg))</p>
+<h3 id=@elmId.getOrElse("pageHeading") class="@classes.getOrElse("govuk-heading-m")">@Html(messages(msg))</h3>

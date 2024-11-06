@@ -17,23 +17,26 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
 class ServiceController @Inject()(mcc: MessagesControllerComponents,
-                                  individualMainView: IndividualMainView)(appConfig: AppConfig) extends FrontendController(mcc) {
+                                  individualMainView: IndividualMainView,
+                                  sessionExpired: SessionExpired)(appConfig: AppConfig) extends FrontendController(mcc) {
 
 
   val individualMain: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok(individualMainView()))
   }
 
-  val serviceSignout: Action[AnyContent] = Action {
-    Redirect(appConfig.survey).withNewSession
+  val serviceSignout: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(sessionExpired()).withNewSession)
   }
 
   val serviceSessionExpired: Action[AnyContent] = Action {

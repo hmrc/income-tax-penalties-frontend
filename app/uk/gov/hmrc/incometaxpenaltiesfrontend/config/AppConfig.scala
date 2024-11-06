@@ -32,7 +32,9 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val surveyOrigin: String =
     servicesConfig.getString("sca-wrapper.exit-survey-origin")
-  val survey = s"""${servicesConfig.getConfString("sca-wrapper.feedback-frontend-host", "")}/feedback/$surveyOrigin"""
+  val survey = s"""${servicesConfig.getString("sca-wrapper.feedback-frontend-host")}/feedback/$surveyOrigin"""
+
+
 
   lazy val accessibilityBaseUrl: String = servicesConfig.getString("accessibility-statement.baseUrl")
   lazy private val accessibilityRedirectUrl: String = servicesConfig.getString("accessibility-statement.redirectUrl")

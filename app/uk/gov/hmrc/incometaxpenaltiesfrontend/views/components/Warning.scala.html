@@ -14,8 +14,14 @@
  * limitations under the License.
  *@
 
-@this()
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@(msg: String, elmId: Option[String] = None, classes: Option[String] = None)(implicit messages: Messages)
+@this(govukWarningText : GovukWarningText)
 
-<p @if(elmId.isDefined){ id="@{elmId.get}"} class="@classes.getOrElse("govuk-body")">@Html(messages(msg))</p>
+@(msg: String, elmId: String)(implicit messages: Messages)
+
+@govukWarningText(WarningText(
+  iconFallbackText = Some("Warning"),
+  content = Text(messages(msg)),
+  attributes = Map("id" -> elmId)
+))

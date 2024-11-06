@@ -15,17 +15,209 @@
  *@
 
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.H1
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+
 
 @this(
         main: MainTemplate,
-        h1: H1
+        h1: H1,
+        h2: H2,
+        p: P,
+        link: Link,
+        warning: Warning,
+        govukTabs : GovukTabs,
+        govukTable : GovukTable,
+        govukTag : GovukTag,
+        govukSummaryList : GovukSummaryList
+
 )
+
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main(pageTitle = messages("individual.main.h1")) {
 
-       @h1("individual.main.h1")
 
-    }
+
+@pastMonthHtml = {
+    @h2("general.main.lsp")
+    <p class="govuk-body-l">@messages("general.main.penalty.point.total") <strong class="govuk-!-font-weight-bold">4</strong></p>
+
+    @warning(msg = "individual.main.warning.text", elmId = "financialWarningText")
+
+    @p("individual.main.what.this.means")
+
+    @link(
+        link = "#",
+        messageKey = messages("individual.main.actions.to.remove.link") + " " + messages("general.opens.in.new.tab"),
+        attrTarget = true,
+        id = Some("actionsToRemoveLink")
+    )
+
+
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">
+                Additional £200 penalty
+            </h2>
+            @govukTag(Tag(
+                content = Text("Due"),
+                classes = "govuk-tag--red"
+            ))
+        </div>
+        <div class="govuk-summary-card__content">
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.income.source.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        JB Painting and Decorating
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.quarter.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        6 October 2027 to 5 January 2028
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.update.due.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        7 February 2028
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.update.submitted.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        28 February 2028
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.points.due.expire.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        June 2030
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="govuk-summary-card__title-wrapper">
+            @link(
+                link = "#",
+                messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
+                id = Some("appealPenalty1Link")
+            )
+        </div>
+    </div>
+
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">
+                Penalty point 1
+            </h2>
+            @govukTag(Tag(
+                content = Text("Active")
+            ))
+        </div>
+        <div class="govuk-summary-card__content">
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.tax.year.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        2026/27
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.declaration.due.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        31 January 2028
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.declaration.submitted.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        7 February 2028
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @messages("general.main.penalty.summary.point.due.expire.heading")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        March 2029
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="govuk-summary-card__title-wrapper">
+            @link(
+                link = "#",
+                messageKey = messages("general.main.penalty.summary.appeal.penalty.point.link", "1"),
+                id = Some("appealPenaltyPoint1Link")
+            )
+        </div>
+    </div>
+}
+
+@pastYearHtml = {
+    @h2("general.main.lpp")
+
+    @p("general.main.no.lpp")
+}
+
+@main(pageTitle = messages("general.main.h1")) {
+
+   @h1("general.main.h1")
+
+   @h2("general.main.overview.heading")
+
+   @p("individual.main.your.account.has")
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("individual.main.late.submission")</li>
+        <li>@messages("individual.main.maximum.late.submission")</li>
+    </ul>
+
+
+   @link(link = "#", messageKey = "individual.main.check.amount.button", classes = Some("govuk-button"))
+
+   @h2("general.main.penalties.appeal.heading")
+
+
+    @govukTabs(Tabs(
+        items = Seq(
+            TabItem(
+                id = Some("lspTab"),
+                label = messages("general.main.lsp"),
+                panel = TabPanel(
+                    content = HtmlContent(pastMonthHtml)
+                )
+            ),
+            TabItem(
+                id = Some("lppTab"),
+                label = messages("general.main.lpp"),
+                panel = TabPanel(
+                    content = HtmlContent(pastYearHtml)
+                )
+            )
+        )
+    ))
+
+
+}

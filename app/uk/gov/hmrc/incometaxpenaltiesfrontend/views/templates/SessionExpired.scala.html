@@ -14,17 +14,20 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.Text
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.{H1, P}
 
-@this(main: MainTemplate)
+@this(
+        main: MainTemplate,
+        h1: H1,
+        p: P
+)
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main(pageTitle = "Error") {
-    <h1 class="govuk-heading-xl">Error</h1>
-}
+@main(pageTitle = messages("session.expired.h1")) {
 
-@{
-    //$COVERAGE-OFF$
+    @h1("session.expired.h1")
+    @p("session.expired.p")
+
 }

@@ -14,17 +14,14 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.Text
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
+@this()
 
-@this(main: MainTemplate)
+@(msg: Seq[String])
 
-@()(implicit request: Request[_], messages: Messages)
 
-@main(pageTitle = "Page not found") {
-    <h1 class="govuk-heading-xl">Page Not Found</h1>
-}
 
-@{
-    //$COVERAGE-OFF$
-}
+<ul class="govuk-list govuk-list--bullet">
+
+    <li>apples</li>
+
+</ul>

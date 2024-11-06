@@ -22,25 +22,29 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
 
 class ServiceControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 
-  lazy val view: HelloWorldPage = app.injector.instanceOf[HelloWorldPage]
+  lazy val individualMainView: IndividualMainView = app.injector.instanceOf[IndividualMainView]
+  lazy val sessionExpiredView: SessionExpired = app.injector.instanceOf[SessionExpired]
 
-  object TestController extends ServiceController(stubMessagesControllerComponents(), view)
+  lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
+  object ServiceController extends ServiceController(stubMessagesControllerComponents(), individualMainView, sessionExpiredView)(appConfig)
 
   "GET /" should {
     "return 200" in {
-      val result = TestController.helloWorld(FakeRequest())
+      val result = ServiceController.individualMain(FakeRequest())
       status(result) shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = TestController.helloWorld(FakeRequest())
+      val result = ServiceController.individualMain(FakeRequest())
       contentType(result) shouldBe Some("text/html")
       charset(result)     shouldBe Some("utf-8")
     }
   }
-
 }
