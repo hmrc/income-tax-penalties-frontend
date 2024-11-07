@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates
 
-import com.google.inject.ImplementedBy
 import play.api.Logging
 import play.api.i18n.Messages
 import play.api.mvc.RequestHeader
@@ -27,41 +26,20 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.HeadBlock
 import uk.gov.hmrc.sca.models.BannerConfig
 import uk.gov.hmrc.sca.services.WrapperService
 
-
 import javax.inject.Inject
 
 
-@ImplementedBy(classOf[MainTemplateImpl])
-trait MainTemplate {
-  def apply(
-             pageTitle: String,
+class MainTemplate @Inject()(appConfig: AppConfig,
+                             wrapperService: WrapperService,
+                             headBlock: HeadBlock) extends Logging {
+
+  def apply(pageTitle: String,
              sidebarLinks: Option[Html] = None,
              sidebarClass: Option[String] = None,
              disableSessionExpired: Boolean = false,
              fullWidth: Boolean = false,
              signOutUrl: Option[String] = None
-           )(contentBlock: Html)(implicit
-                                 request: RequestHeader,
-                                 messages: Messages
-           ): HtmlFormat.Appendable
-}
-
-class MainTemplateImpl @Inject() (
-                                   appConfig: AppConfig,
-                                   wrapperService: WrapperService,
-                                   headBlock: HeadBlock
-                                 ) extends MainTemplate
-  with Logging {
-  override def apply(
-                      pageTitle: String,
-                      sidebarLinks: Option[Html] = None,
-                      sidebarClass: Option[String] = None,
-                      disableSessionExpired: Boolean = false,
-                      fullWidth: Boolean = false,
-                      signOutUrl: Option[String] = None
-                    )(
-                      contentBlock: Html
-                    )(implicit request: RequestHeader, messages: Messages): HtmlFormat.Appendable = {
+           )(contentBlock: Html)(implicit request: RequestHeader, messages: Messages): HtmlFormat.Appendable = {
 
     val fullPageTitle = s"$pageTitle - ${Messages("label.service_name")} - GOV.UK"
 

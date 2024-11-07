@@ -19,3 +19,4 @@
 @(msg: String, classes: Option[String] = None, elmId: Option[String] = None)(implicit messages: Messages)
 
 <h1 id=@elmId.getOrElse("pageHeading") class="@classes.getOrElse("govuk-heading-xl")">@Html(messages(msg))</h1>
+@* TODO -  should this default ID be the same for all the heading levels? *@

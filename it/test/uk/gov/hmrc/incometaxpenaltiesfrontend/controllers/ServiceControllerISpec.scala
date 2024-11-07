@@ -31,7 +31,7 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper {
 
       result.status shouldBe OK
 
-      document.getH1Elements.text() shouldBe "income-tax-penalties-frontend"
+      document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
 
     }
   }

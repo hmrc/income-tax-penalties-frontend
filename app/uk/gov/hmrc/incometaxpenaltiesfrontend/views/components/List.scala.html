@@ -16,12 +16,14 @@
 
 @this()
 
-@(msg: Seq[String])
+@(messages: Seq[String])
 
 
 
 <ul class="govuk-list govuk-list--bullet">
 
-    <li>apples</li>
+  @for(message <- messages) {
+   <li>@message</li>
+  }
 
 </ul>
