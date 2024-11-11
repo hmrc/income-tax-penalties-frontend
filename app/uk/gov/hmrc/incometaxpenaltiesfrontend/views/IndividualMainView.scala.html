@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
@@ -181,7 +181,7 @@
     @p("general.main.no.lpp")
 }
 
-@main(pageTitle = messages("general.main.h1")) {
+@main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
 
    @h1("general.main.h1")
 

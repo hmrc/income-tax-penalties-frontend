@@ -34,6 +34,10 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
     servicesConfig.getString("sca-wrapper.exit-survey-origin")
   val survey = s"""${servicesConfig.getString("sca-wrapper.feedback-frontend-host")}/feedback/$surveyOrigin"""
 
+  val sessionTimeoutInSeconds = servicesConfig.getString("timeout.session-timeout-seconds")
+  val sessionCountdownInSeconds = servicesConfig.getString("timeout.session-countdown-seconds")
+
+  val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
 
 
   lazy val accessibilityBaseUrl: String = servicesConfig.getString("accessibility-statement.baseUrl")

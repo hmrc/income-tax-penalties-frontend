@@ -6,6 +6,9 @@ label.service_name = Manage your Self Assessment
 
 general.opens.in.new.tab = (opens in new tab)
 
+alphaBanner.message = This is a new service – your {0} will help us to improve it.
+alphaBanner.linkText = feedback
+
 general.main.h1 = Self Assessment penalties and appeals
 general.main.overview.heading = Overview
 general.main.penalties.appeal.heading = Penalty and appeal details
