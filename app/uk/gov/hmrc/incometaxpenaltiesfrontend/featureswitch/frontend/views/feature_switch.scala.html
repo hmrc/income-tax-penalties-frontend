@@ -18,14 +18,14 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models.FeatureSwitchSetting
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.models.FeatureSwitchProvider
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+
 
 @this(main: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
         formWithCSRF: FormWithCSRF
 )
-
 
 @(featureSwitchList: Seq[(FeatureSwitchProvider, Seq[FeatureSwitchSetting])], formAction: Call)(implicit request: Request[_], messages: Messages)
 

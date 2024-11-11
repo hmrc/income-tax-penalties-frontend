@@ -29,7 +29,7 @@
         govukTabs : GovukTabs,
         govukTable : GovukTable,
         govukTag : GovukTag,
-        govukSummaryList : GovukSummaryList
+        list : List
 
 )
 
@@ -40,7 +40,8 @@
 
 
 @pastMonthHtml = {
-    @h2("general.main.lsp")
+    @h2(msg = "general.main.lsp", elmId = "lspHeading")
+
     <p class="govuk-body-l">@messages("general.main.penalty.point.total") <strong class="govuk-!-font-weight-bold">4</strong></p>
 
     @warning(msg = "individual.main.warning.text", elmId = "financialWarningText")
@@ -178,28 +179,26 @@
 }
 
 @pastYearHtml = {
-    @h2("general.main.lpp")
+    @h2(msg = "general.main.lpp", elmId = "lppHeading")
 
     @p("general.main.no.lpp")
 }
 
-@main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
+@main(pageTitle = messages("general.main.h1")) {
 
    @h1("general.main.h1")
 
-   @h2("general.main.overview.heading")
+   @h2(msg = "general.main.overview.heading", elmId = "overviewHeading")
 
    @p("individual.main.your.account.has")
 
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("individual.main.late.submission")</li>
-        <li>@messages("individual.main.maximum.late.submission")</li>
-    </ul>
+    @list(Seq("individual.main.late.submission", "individual.main.maximum.late.submission"))
 
 
-   @link(link = "#", messageKey = "individual.main.check.amount.button", classes = Some("govuk-button"))
+   @link(link = "#", messageKey = "individual.main.check.amount.button", classes = Some("govuk-button"), id = Some("checkAmountPayButton"))
 
-   @h2("general.main.penalties.appeal.heading")
+
+    @h2(msg = "general.main.penalties.appeal.heading", elmId = "appealDetailsHeading")
 
 
     @govukTabs(Tabs(

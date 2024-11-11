@@ -16,14 +16,14 @@
 
 @this()
 
-@(messages: Seq[String])
+@(listOfMsg: Seq[String])(implicit messages: Messages)
 
 
 
 <ul class="govuk-list govuk-list--bullet">
 
-  @for(message <- messages) {
-   <li>@message</li>
+  @for(msg <- listOfMsg) {
+   <li>@messages(msg)</li>
   }
 
 </ul>

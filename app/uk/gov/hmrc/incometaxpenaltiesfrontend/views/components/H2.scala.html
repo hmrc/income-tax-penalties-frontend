@@ -16,7 +16,7 @@
 
 @this()
 
-@(msg: String, classes: Option[String] = None, elmId: Option[String] = None)(implicit messages: Messages)
+@(msg: String, classes: Option[String] = None, elmId: String)(implicit messages: Messages)
 
-<h2 id=@elmId.getOrElse("pageHeading") class="@classes.getOrElse("govuk-heading-l")">@Html(messages(msg))</h2>
+<h2 id=@elmId class="@classes.getOrElse("govuk-heading-l")">@Html(messages(msg))</h2>
  @* TODO -  should this default ID be the same for all the heading levels? *@
