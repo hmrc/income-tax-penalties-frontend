@@ -31,8 +31,8 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
 
   lazy val surveyOrigin: String =
-    servicesConfig.getString("sca-wrapper.exit-survey-origin")
-  val survey = s"""${servicesConfig.getString("sca-wrapper.feedback-frontend-host")}/feedback/$surveyOrigin"""
+    servicesConfig.getString("exit-survey-origin")
+  val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
 
   val sessionTimeoutInSeconds = servicesConfig.getString("timeout.session-timeout-seconds")
   val sessionCountdownInSeconds = servicesConfig.getString("timeout.session-countdown-seconds")
