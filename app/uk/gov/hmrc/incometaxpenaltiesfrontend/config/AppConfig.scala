@@ -40,13 +40,4 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
 
 
-  lazy val accessibilityBaseUrl: String = servicesConfig.getString("accessibility-statement.baseUrl")
-  lazy private val accessibilityRedirectUrl: String = servicesConfig.getString("accessibility-statement.redirectUrl")
-
-  lazy val plaftormFrontendUrl: String = servicesConfig.getConfString("platform.frontend.host", "")
-
-  def accessibilityStatementUrl(referrer: String): String =
-    s"$accessibilityBaseUrl/accessibility-statement$accessibilityRedirectUrl?referrerUrl=${plaftormFrontendUrl + referrer}"
-
-
 }
