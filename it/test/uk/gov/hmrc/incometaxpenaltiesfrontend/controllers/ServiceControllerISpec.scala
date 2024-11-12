@@ -22,16 +22,30 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSp
 
 class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper {
 
+
+
   "GET /" should {
+
+    val result = get("/")
+    val document = Jsoup.parse(result.body)
+
     "return an OK with a view" in {
-
-      val result = get("/")
-
-      val document = Jsoup.parse(result.body)
 
       result.status shouldBe OK
 
+    }
+
+
+    "have the correct page has correct elements" in {
+
+      document.getServiceName.text() shouldBe "Manage your Self Assessment"
+      document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
       document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
+      document.getH2Elements.get(0).text() shouldBe "Overview"
+      document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
+      document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
+      document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
+      document.getSubmitButton.text() shouldBe "Check amounts and pay"
 
     }
   }

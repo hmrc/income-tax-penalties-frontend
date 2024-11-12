@@ -65,7 +65,6 @@
             messages = AccountMessages(messageCount = None)
         ))
 
-
 }
 
 @beforeContent = {
@@ -98,7 +97,6 @@
 }
 
 
-
 @contentBlock = {
     @content
     @hmrcReportTechnicalIssueHelper()
@@ -114,7 +112,6 @@
             signOutUrl = None
         ),
         serviceName = Some(messages("label.service_name")),
-        backLink = Option.when(backLinkEnabled) { BackLink.mimicsBrowserBackButtonViaJavaScript },
         pageTitle = Some(fullPageTitle.toString()),
         isWelshTranslationAvailable = true,
         templateOverrides = TemplateOverrides(
