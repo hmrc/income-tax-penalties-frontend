@@ -51,9 +51,7 @@
     @if(!disableSessionExpired){
         @hmrcTimeoutDialogHelper(
             signOutUrl = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSignout().url,
-            keepAliveUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSessionExpired().url),
-            timeout = Some(appConfig.sessionTimeoutInSeconds.toInt),
-            countdown = Some(appConfig.sessionCountdownInSeconds.toInt)
+            keepAliveUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSessionExpired().url)
         )
     }
 }
