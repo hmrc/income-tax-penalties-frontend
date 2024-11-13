@@ -16,6 +16,12 @@ lazy val microservice = Project("income-tax-penalties-frontend", file("."))
   )
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
+  .settings(TwirlKeys.templateImports ++= Seq(
+      "uk.gov.hmrc.govukfrontend.views.html.components._",
+      "uk.gov.hmrc.hmrcfrontend.views.html.components._",
+      "uk.gov.hmrc.hmrcfrontend.views.html.helpers._",
+      "uk.gov.hmrc.govukfrontend.views.html.components.implicits._"
+  ))
 
 lazy val it = project
   .enablePlugins(PlayScala)

@@ -1,7 +1,14 @@
 # microservice specific routes
 
-->         /hmrc-frontend           hmrcfrontend.Routes
+->         /hmrc-frontend                       hmrcfrontend.Routes
 
-GET        /                        uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.HelloWorldController.helloWorld
+GET        /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)
+
+GET        /                                    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.individualMain
+GET        /signOutUrl                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.serviceSignout()
+GET        /serviceSessionExpired               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.serviceSessionExpired()
+GET        /keepAlive                           uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.keepAlive()
+
+
+GET        /language/:lang                     uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)

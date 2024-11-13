@@ -16,18 +16,20 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.HelloWorldPage
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import com.google.inject.Inject
+import play.api.i18n.Lang
+import play.api.mvc.ControllerComponents
+import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
 
-@Singleton
-class HelloWorldController @Inject()(mcc: MessagesControllerComponents,
-                                     helloWorldPage: HelloWorldPage) extends FrontendController(mcc) {
+class LanguageSwitchController @Inject()(
+  languageUtils: LanguageUtils,
+  cc: ControllerComponents
+) extends LanguageController(languageUtils, cc) {
 
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(helloWorldPage()))
-  }
+  override def languageMap: Map[String, Lang] = Map(
+    "english" -> Lang("en"),
+    "cymraeg" -> Lang("cy")
+  )
 
+  override def fallbackURL: String = routes.ServiceController.individualMain.url
 }

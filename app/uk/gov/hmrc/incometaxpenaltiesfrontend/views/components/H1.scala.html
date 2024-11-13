@@ -14,24 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
+@this()
 
-@this(
-  appConfig: AppConfig,
-  hmrcStandardPage: HmrcStandardPage
-)
+@(msg: String, classes: Option[String] = None, elmId: String = "pageHeading")(implicit messages: Messages)
 
-@(pageTitle: Option[String] = None)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+<h1 id=@elmId class="@classes.getOrElse("govuk-heading-xl")">@Html(messages(msg))</h1>
 
-@hmrcStandardPage(
-  HmrcStandardPageParams(
-    pageTitle = pageTitle,
-    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-  )
-)(contentBlock)
-
-@{
-    //$COVERAGE-OFF$
-}

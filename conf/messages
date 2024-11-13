@@ -1,2 +1,42 @@
 service.name = income-tax-penalties-frontend
 service.text = This is your new service
+
+
+label.service_name = Manage your Self Assessment
+
+general.opens.in.new.tab = (opens in new tab)
+
+alphaBanner.message = This is a new service – your {0} will help us to improve it.
+alphaBanner.linkText = feedback
+
+general.main.h1 = Self Assessment penalties and appeals
+general.main.overview.heading = Overview
+general.main.penalties.appeal.heading = Penalty and appeal details
+general.main.lsp = Late submission penalties
+general.main.lpp = Late payment penalties
+general.main.no.lpp = There are no late payment penalties.
+general.main.penalty.point.total = Penalty points total:
+general.main.penalty.summary.income.source.heading = Income source
+general.main.penalty.summary.quarter.heading = Quarter
+general.main.penalty.summary.update.due.heading = Update due
+general.main.penalty.summary.update.submitted.heading = Update submitted
+general.main.penalty.summary.points.due.expire.heading = Point due to expire
+general.main.penalty.summary.tax.year.heading = Tax year
+general.main.penalty.summary.declaration.due.heading = Declaration due
+general.main.penalty.summary.declaration.submitted.heading = Declaration submitted
+general.main.penalty.summary.point.due.expire.heading = Point due to expire
+general.main.penalty.summary.appeal.penalty.link = Appeal penalty
+general.main.penalty.summary.appeal.penalty.point.link = Appeal penalty point {0}
+
+individual.main.your.account.has = Your account has:
+individual.main.late.submission = a late submission penalty
+individual.main.maximum.late.submission = the maximum number of late submission penalty points
+individual.main.check.amount.button = Check amounts and pay
+individual.main.warning.text = You have reached the financial penalty threshold.
+individual.main.what.this.means = This means you have to pay a £200 penalty every time you send a late update, until we remove your penalty points.
+individual.main.actions.to.remove.link = Actions to take to get your points removed
+
+
+session.expired.h1 = For your security, this service has been reset
+
+session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.

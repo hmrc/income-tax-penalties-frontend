@@ -28,4 +28,13 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   def selfUrl: String = servicesConfig.baseUrl("income-tax-penalties-frontend")
 
+  lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
+
+  lazy val surveyOrigin: String =
+    servicesConfig.getString("exit-survey-origin")
+  val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
+
+  val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
+
+
 }
