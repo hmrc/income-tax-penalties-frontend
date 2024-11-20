@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package controllers.predicates
+package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates
 
 import play.api.http.Status
+import play.api.i18n.Messages
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent, Request, Result}
+import play.api.test.Helpers
 import play.api.test.Helpers._
-import testUtils.AuthMocks
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
+import uk.gov.hmrc.incometaxpenaltiesfrontend.testUtils.AuthMocks
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.SessionKeys
 
 import scala.concurrent.Future
@@ -31,9 +34,9 @@ class AuthPredicateSpec extends AuthMocks {
     _ => Future.successful(Ok("test"))
   }
 
-  def targetAgent(request: Request[AnyContent]): Future[Result] = mockAuthPredicate.authoriseAsAgent({
+  def targetAgent(request: Request[AnyContent])(implicit messages: Messages, hc: HeaderCarrier): Future[Result] = mockAuthPredicate.authoriseAsAgent({
     _: User[_] => Future.successful(Ok("welcome"))
-  })(request)
+  })(request, messages, hc)
 
   "AuthPredicate" should {
     "run the block request when the user has an active HMRC-MTD-VAT enrolment" in {
@@ -45,7 +48,7 @@ class AuthPredicateSpec extends AuthMocks {
     "run the block request when the user is an agent" +
       " (having a principal HMRC-AS-AGENT enrolment and a delegated HMRC-MTD-VAT enrolment - with a session key)" in {
       mockAgentAuthorised()
-      val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))
+      val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))(Helpers.stubMessages(), HeaderCarrier())
       status(result) shouldBe Status.OK
     }
 
@@ -64,27 +67,27 @@ class AuthPredicateSpec extends AuthMocks {
 
       "the user is an agent and doesn't have the mtdVatvcClientVrn in the session" in {
         mockAgentAuthorised()
-        val result = targetAgent(fakeRequest)
+        val result = targetAgent(fakeRequest)(Helpers.stubMessages(), HeaderCarrier())
         status(result) shouldBe Status.SEE_OTHER
         redirectLocation(result).get.contains("http://localhost:9152/vat-through-software/test-only/vaclf-stub") shouldBe true
       }
 
       "the user is an agent and has no active session" in {
         mockNoActiveSession()
-        val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))
+        val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))(Helpers.stubMessages(), HeaderCarrier())
         status(result) shouldBe Status.SEE_OTHER
         redirectLocation(result).get shouldBe appConfig.signInUrl
       }
 
       "the user is an agent but does not have an ARN in the enrolments" in {
         mockAgentAuthorisedNoARN()
-        val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))
+        val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))(Helpers.stubMessages(), HeaderCarrier())
         status(result) shouldBe Status.FORBIDDEN
       }
 
       "the user does not have authority to act on behalf of their client" in {
         mockAuthorisationException()
-        val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))
+        val result = targetAgent(fakeRequest.withSession(SessionKeys.agentSessionVrn -> "123"))(Helpers.stubMessages(), HeaderCarrier())
         status(result) shouldBe Status.FORBIDDEN
       }
 

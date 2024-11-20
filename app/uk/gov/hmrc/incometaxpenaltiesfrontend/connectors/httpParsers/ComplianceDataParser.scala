@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.CompliancePayload
+import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.CompliancePayload
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
 
-object ComplianceDataParser {
+object ComplianceDataParser extends Logging {
   sealed trait GetCompliancePayloadFailure {
     val message: String
   }

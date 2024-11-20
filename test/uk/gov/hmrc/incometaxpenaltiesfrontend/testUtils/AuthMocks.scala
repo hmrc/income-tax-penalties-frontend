@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package testUtils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.testUtils
 
-import base.SpecBase
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.AuthPredicate
-import org.mockito.Matchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.stubbing.OngoingStubbing
-import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.base.SpecBase
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.AuthPredicate
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -31,18 +30,16 @@ import scala.concurrent.Future
 trait AuthMocks extends SpecBase  {
   def setupAuthResponse(authResult: Future[~[Option[AffinityGroup], Enrolments]]): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] = {
     when(mockAuthConnector.authorise[~[Option[AffinityGroup], Enrolments]](
-      Matchers.any(), Matchers.any[Retrieval[~[Option[AffinityGroup], Enrolments]]]())(
-      Matchers.any(), Matchers.any())
+      any(), any[Retrieval[~[Option[AffinityGroup], Enrolments]]]())(
+      any(), any())
     ).thenReturn(authResult)
   }
 
   val mockAuthPredicate: AuthPredicate =
     new AuthPredicate(
-      messagesApi,
-      mcc,
-      mockAuthService,
-      errorHandler,
-      unauthorised
+      mockAuthConnector,
+      unauthorised,
+      mcc
     )
 
   def mockOrganisationAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
@@ -62,8 +59,8 @@ trait AuthMocks extends SpecBase  {
 
   def mockAgentAuthorised(): OngoingStubbing[Future[Enrolments]] = {
     when(mockAuthConnector.authorise[Enrolments](
-      Matchers.any(), Matchers.any())(
-      Matchers.any(), Matchers.any())
+      any(), any())(
+      any(), any())
     ).thenReturn(Future.successful(
       Enrolments(
         Set(
@@ -78,8 +75,8 @@ trait AuthMocks extends SpecBase  {
 
   def mockAgentAuthorisedNoARN(): OngoingStubbing[Future[Enrolments]] = {
     when(mockAuthConnector.authorise[Enrolments](
-      Matchers.any(), Matchers.any())(
-      Matchers.any(), Matchers.any())
+      any(), any())(
+      any(), any())
     ).thenReturn(Future.successful(
       Enrolments(
         Set(

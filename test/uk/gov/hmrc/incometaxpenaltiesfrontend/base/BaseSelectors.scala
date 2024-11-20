@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package base
+package uk.gov.hmrc.incometaxpenaltiesfrontend.base
 
 class BaseSelectors {
 

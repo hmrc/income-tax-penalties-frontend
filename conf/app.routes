@@ -10,8 +10,8 @@ GET        /signOutUrl                          uk.gov.hmrc.incometaxpenaltiesfr
 GET        /serviceSessionExpired               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.serviceSessionExpired()
 GET        /keepAlive                           uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.keepAlive()
 
-GET        /appeal-penalty                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.redirectToAppeals(penaltyId : String, isLPP : Boolean, isFindOutHowToAppealLSP: Boolean, isAdditional: Boolean)
-GET        /find-out-how-to-appeal              uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.redirectToFindOutHowToAppealLPP(principalChargeReference : String, vatAmountInPence : Int, vatPeriodStartDate: String, vatPeriodEndDate:String, isCa: Boolean)
+GET        /appeal-penalty                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToAppeals(penaltyId : String, isLPP : Boolean, isFindOutHowToAppealLSP: Boolean, isAdditional: Boolean)
+GET        /find-out-how-to-appeal              uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToFindOutHowToAppealLPP(principalChargeReference : String, vatAmountInPence : Int, vatPeriodStartDate: String, vatPeriodEndDate:String, isCa: Boolean)
 
 
 GET        /language/:lang                     uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)

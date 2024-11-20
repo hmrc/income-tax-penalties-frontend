@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 
-import base.LogCapturing
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.Logger
 import play.api.http.Status
 import play.api.http.Status.{IM_A_TEAPOT, INTERNAL_SERVER_ERROR}
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.{BadRequest, GetPenaltyDetailsParser, InvalidJson, UnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.GetPenaltyDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
+import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 class GetPenaltyDetailsParserSpec extends AnyWordSpec with Matchers with LogCapturing {
 
@@ -58,6 +58,8 @@ class GetPenaltyDetailsParserSpec extends AnyWordSpec with Matchers with LogCapt
 
   val mockImATeapotHttpResponse: HttpResponse = HttpResponse.apply(status = Status.IM_A_TEAPOT, body = "I'm a teapot.")
 
+  val testLogger: Logger = Logger("uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser")
+
   "GetPenaltyDetailsResponseReads" should {
     s"parse an OK (${Status.OK}) response" when {
       s"the body of the response is valid" in {
@@ -67,7 +69,7 @@ class GetPenaltyDetailsParserSpec extends AnyWordSpec with Matchers with LogCapt
       }
 
       s"the body is malformed - returning a $Left $InvalidJson" in {
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(testLogger) {
           logs => {
             val result = GetPenaltyDetailsParser.GetPenaltyDetailsResponseReads.read("GET", "/", mockOKHttpResponseWithInvalidBody)
             logs.exists(_.getMessage.contains(PagerDutyKeys.INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -78,7 +80,7 @@ class GetPenaltyDetailsParserSpec extends AnyWordSpec with Matchers with LogCapt
     }
 
     s"parse a BAD REQUEST (${Status.BAD_REQUEST}) response - logging a PagerDuty" in {
-      withCaptureOfLoggingFrom(logger) {
+      withCaptureOfLoggingFrom(testLogger) {
         logs => {
           val result = GetPenaltyDetailsParser.GetPenaltyDetailsResponseReads.read("GET", "/", mockBadRequestHttpResponse)
           logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -95,7 +97,7 @@ class GetPenaltyDetailsParserSpec extends AnyWordSpec with Matchers with LogCapt
     }
 
     s"parse an unknown error (e.g. IM A TEAPOT - ${Status.IM_A_TEAPOT}) - and log a PagerDuty" in {
-      withCaptureOfLoggingFrom(logger) {
+      withCaptureOfLoggingFrom(testLogger) {
         logs => {
           val result = GetPenaltyDetailsParser.GetPenaltyDetailsResponseReads.read("GET", "/", mockImATeapotHttpResponse)
           logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -106,7 +108,7 @@ class GetPenaltyDetailsParserSpec extends AnyWordSpec with Matchers with LogCapt
     }
 
     s"parse an unknown error (e.g. ISE - ${Status.INTERNAL_SERVER_ERROR}) - and log a PagerDuty" in {
-      withCaptureOfLoggingFrom(logger) {
+      withCaptureOfLoggingFrom(testLogger) {
         logs => {
           val result = GetPenaltyDetailsParser.GetPenaltyDetailsResponseReads.read("GET", "/", mockISEHttpResponse)
           logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true

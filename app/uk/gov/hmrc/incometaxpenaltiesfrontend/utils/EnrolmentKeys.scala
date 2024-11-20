@@ -25,5 +25,5 @@ object EnrolmentKeys {
   val agentEnrolmentKey = "HMRC-MTD-IT"
 
 
-  def constructMTDVATEnrolmentKey(vrn: String): String = s"$mtdITEnrolmentKey~$mtdId~$vrn"
+  def constructMTDITEnrolmentKey(mtditid: String): String = s"$mtdITEnrolmentKey~$mtdId~$mtditid"
 }

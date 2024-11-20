@@ -18,13 +18,12 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{PagerDutyHelper, SessionKeys}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.CompliancePayload
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys.POC_ACHIEVEMENT_DATE_NOT_FOUND
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{PagerDutyHelper, SessionKeys}
 
 import java.time.LocalDate
 import javax.inject.Inject

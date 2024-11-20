@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 
-import base.LogCapturing
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.Logger
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.{CompliancePayloadFailureResponse, CompliancePayloadMalformed, CompliancePayloadNoData, CompliancePayloadReads, CompliancePayloadSuccessResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{CompliancePayload, ComplianceStatusEnum, ObligationDetail, ObligationIdentification}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
+import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 import java.time.LocalDate
 
 class ComplianceParserSpec extends AnyWordSpec with Matchers with LogCapturing {
+
+  val testLogger: Logger = Logger("uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceParser")
   val compliancePayloadAsJson: JsValue = Json.parse(
     """
       |{
@@ -92,7 +94,7 @@ class ComplianceParserSpec extends AnyWordSpec with Matchers with LogCapturing {
 
     s"return a $CompliancePayloadFailureResponse" when {
       s"the status is $BAD_REQUEST" in {
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(testLogger) {
           logs => {
             val result = CompliancePayloadReads.read("GET", "/", HttpResponse(400, ""))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -103,7 +105,7 @@ class ComplianceParserSpec extends AnyWordSpec with Matchers with LogCapturing {
       }
 
       s"the status is $INTERNAL_SERVER_ERROR" in {
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(testLogger) {
           logs => {
             val result = CompliancePayloadReads.read("GET", "/", HttpResponse(500, ""))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -114,7 +116,7 @@ class ComplianceParserSpec extends AnyWordSpec with Matchers with LogCapturing {
       }
 
       s"the status is any other non-200 status - and log a PagerDuty" in {
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(testLogger) {
           logs => {
             val result = CompliancePayloadReads.read("GET", "/", HttpResponse(503, ""))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -132,7 +134,7 @@ class ComplianceParserSpec extends AnyWordSpec with Matchers with LogCapturing {
     }
 
     s"return a $CompliancePayloadNoData when the body is malformed" in {
-      withCaptureOfLoggingFrom(logger) {
+      withCaptureOfLoggingFrom(testLogger) {
         logs => {
           val result = CompliancePayloadReads.read("GET", "/", HttpResponse(200, "{}"))
           logs.exists(_.getMessage.contains(PagerDutyKeys.INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND.toString)) shouldBe true

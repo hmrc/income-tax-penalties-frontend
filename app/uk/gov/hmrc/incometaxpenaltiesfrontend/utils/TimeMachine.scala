@@ -14,29 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches
+package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
+import java.time.LocalDate
+import javax.inject.{Inject, Singleton}
 
-object FeatureSwitch {
+@Singleton
+class TimeMachine @Inject()() {
 
-  val prefix: String = "feature.switch"
+  def getCurrentDate: LocalDate = LocalDate.now()
 
-  val featureSwitches: Seq[FeatureSwitch] = Seq(
-    WebchatLink
-  )
-
-  def apply(str: String): FeatureSwitch =
-    featureSwitches find (_.name == str) match {
-      case Some(switch) => switch
-      case None => throw new IllegalArgumentException("Invalid feature switch: " + str)
-    }
-
-
-  sealed trait FeatureSwitch {
-    val name: String
-  }
-
-  object WebchatLink extends FeatureSwitch {
-    val name = s"$prefix.webchatLink"
-  }
 }

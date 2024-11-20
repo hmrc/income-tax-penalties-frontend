@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.config
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.models.FeatureSwitchProvider
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.models.FeatureSwitchProvider
+
 import javax.inject.{Inject, Singleton}
 
 @Singleton

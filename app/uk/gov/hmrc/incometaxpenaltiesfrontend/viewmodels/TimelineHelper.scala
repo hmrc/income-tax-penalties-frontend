@@ -19,20 +19,21 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitching
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{CompliancePayload, ComplianceStatusEnum, ObligationDetail}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, ViewUtils}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.Timeline
 
 import javax.inject.Inject
 
-class TimelineHelper @Inject()(timeline: uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.Timeline)
-                              (implicit val appConfig: AppConfig) extends ImplicitDateFormatter with ViewUtils with FeatureSwitching {
+class TimelineHelper @Inject()(timeline: Timeline, timeMachine: TimeMachine)
+                              (implicit val appConfig: AppConfig) extends ImplicitDateFormatter with FeatureSwitching {
 
   def getTimelineContent(complianceData: CompliancePayload)(implicit messages: Messages): Html = {
     val unfulfilledReturnsAfterLSPCreationDate: Seq[ObligationDetail] = complianceData.obligationDetails.filter(_.status.equals(ComplianceStatusEnum.Open))
     if (unfulfilledReturnsAfterLSPCreationDate.nonEmpty) {
       val events: Seq[TimelineEvent] = unfulfilledReturnsAfterLSPCreationDate.map { compReturn =>
-        val isReturnLate = compReturn.inboundCorrespondenceDueDate.isBefore(getFeatureDate)
+        val isReturnLate = compReturn.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate)
         TimelineEvent(
           headerContent = messages("compliance.timeline.actionEvent.header", dateToString(compReturn.inboundCorrespondenceFromDate),
             dateToString(compReturn.inboundCorrespondenceToDate)),
@@ -44,7 +45,7 @@ class TimelineHelper @Inject()(timeline: uk.gov.hmrc.incometaxpenaltiesfrontend.
       }
       timeline(events)
     } else {
-      html()
+      Html("")
     }
   }
 }

@@ -18,16 +18,16 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitching
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, ImplicitDateFormatter, PagerDutyHelper, TimeMachine}
 
 import java.time.LocalDate
 import javax.inject.Inject
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, ImplicitDateFormatter, PagerDutyHelper, ViewUtils}
 
-class CalculationPageHelper @Inject()(implicit val appConfig: AppConfig) extends ViewUtils with ImplicitDateFormatter with FeatureSwitching {
+class CalculationPageHelper @Inject()(timeMachine: TimeMachine)
+                                     (implicit val appConfig: AppConfig) extends ImplicitDateFormatter with FeatureSwitching {
 
   def getCalculationRowForLPP(lpp: LPPDetails)(implicit messages: Messages): Option[Seq[String]] = {
     (lpp.LPP1LRCalculationAmount, lpp.LPP1HRCalculationAmount) match {
@@ -56,7 +56,7 @@ class CalculationPageHelper @Inject()(implicit val appConfig: AppConfig) extends
   }
 
   def isTTPActive(lpp: LPPDetails, vrn: String): Boolean = {
-    val currentDate = getFeatureDate
+    val currentDate = timeMachine.getCurrentDate
     lpp.LPPDetailsMetadata.timeToPay.exists {
       _.exists(ttp => {
         (ttp.TTPStartDate, ttp.TTPEndDate) match {

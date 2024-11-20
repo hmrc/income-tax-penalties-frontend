@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package base
+package uk.gov.hmrc.incometaxpenaltiesfrontend.base
 
-import base.testData.{ComplianceDataTestData, PenaltiesDetailsTestData}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,9 +28,9 @@ import play.api.inject.Injector
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.FakeRequest
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuthService
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.incometaxpenaltiesfrontend.base.testData.{ComplianceDataTestData, PenaltiesDetailsTestData}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.SessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels.{SummaryCardHelper, TimelineHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.Unauthorised
@@ -65,8 +64,6 @@ trait SpecBase extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with P
 
   val mockAuthConnector: AuthConnector = mock(classOf[AuthConnector])
 
-  val mockAuthService: AuthService = new AuthService(mockAuthConnector)
-
   val summaryCardHelper: SummaryCardHelper = injector.instanceOf[SummaryCardHelper]
 
   val timelineHelper: TimelineHelper = injector.instanceOf[TimelineHelper]
@@ -79,11 +76,9 @@ trait SpecBase extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with P
   val sampleOldestDate: LocalDate = LocalDate.of(2021, 1, 1)
 
   lazy val authPredicate: AuthPredicate = new AuthPredicate(
-    messagesApi,
-    mcc,
-    mockAuthService,
-    errorHandler,
-    unauthorised
+    mockAuthConnector,
+    unauthorised,
+    mcc
   )
 
   val quarterlyThreshold: Int = 4
@@ -97,19 +92,19 @@ trait SpecBase extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with P
   val penaltyId = "123456789"
 
   val redirectToAppealUrlForLSP: String =
-    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.redirectToAppeals(penaltyId, isLPP = false, isFindOutHowToAppealLSP = false, isAdditional = false).url
+    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals(penaltyId, isLPP = false, isFindOutHowToAppealLSP = false, isAdditional = false).url
 
   val redirectToAppealUrlForLPP: String =
-    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.redirectToAppeals(penaltyId, isLPP = true, isFindOutHowToAppealLSP = false, isAdditional = false).url
+    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals(penaltyId, isLPP = true, isFindOutHowToAppealLSP = false, isAdditional = false).url
 
   val redirectToAppealObligationUrlForLSP: String =
-    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.redirectToAppeals(penaltyId, isLPP = false, isFindOutHowToAppealLSP = true, isAdditional = false).url
+    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals(penaltyId, isLPP = false, isFindOutHowToAppealLSP = true, isAdditional = false).url
 
   val redirectToAppealObligationUrlForLPP: String =
-    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.redirectToAppeals(penaltyId, isLPP = true, isFindOutHowToAppealLSP = true, isAdditional = false).url
+    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals(penaltyId, isLPP = true, isFindOutHowToAppealLSP = true, isAdditional = false).url
 
   val redirectToAppealObligationUrlForLPPAdditional: String =
-    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.redirectToAppeals(penaltyId, isLPP = true, isFindOutHowToAppealLSP = false, isAdditional = true).url
+    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals(penaltyId, isLPP = true, isFindOutHowToAppealLSP = false, isAdditional = true).url
 
   val vatTraderUser: User[AnyContent] = User("123456789", arn = None)(fakeRequest)
 

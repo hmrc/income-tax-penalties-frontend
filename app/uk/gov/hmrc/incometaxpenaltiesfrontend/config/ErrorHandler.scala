@@ -17,31 +17,19 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.i18n.MessagesApi
-import play.api.mvc.{Request, RequestHeader, Result}
+import play.api.mvc.RequestHeader
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.ErrorView
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.InternalServerErrorCustom
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
-import play.api.mvc.Results.InternalServerError
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class ErrorHandler @Inject()(errorView: ErrorView, val messagesApi: MessagesApi, iseCustom: InternalServerErrorCustom)(implicit val ec: ExecutionContext) extends FrontendErrorHandler {
+class ErrorHandler @Inject()(errorView: ErrorView, val messagesApi: MessagesApi)(implicit val ec: ExecutionContext) extends FrontendErrorHandler {
 
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] =
     Future.successful(errorView(pageTitle, heading, message))
-
-  def showInternalServerError(userOptional: Option[User[_]] = None)(implicit request: Request[_]): Result = {
-    if (userOptional.isDefined) {
-      implicit val user: User[_] = userOptional.get
-      InternalServerError(iseCustom())
-    } else {
-      InternalServerError(iseCustom())
-    }
-  }
 
 }

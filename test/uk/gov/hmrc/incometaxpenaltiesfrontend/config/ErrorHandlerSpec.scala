@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package config
+package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers

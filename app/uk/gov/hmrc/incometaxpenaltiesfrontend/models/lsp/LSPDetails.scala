@@ -17,9 +17,9 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformationType
 
 import java.time.LocalDate
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformationType
 
 case class LSPDetails(
                        penaltyNumber: String,

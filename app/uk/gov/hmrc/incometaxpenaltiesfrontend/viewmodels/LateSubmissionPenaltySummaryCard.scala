@@ -19,8 +19,8 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyCategoryEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyCategoryEnum
 
 case class LateSubmissionPenaltySummaryCard(
                                              cardRows: Seq[SummaryListRow],

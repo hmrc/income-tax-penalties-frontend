@@ -17,23 +17,24 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors
 
 
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import javax.inject.Inject
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitching
-import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsResponse, GetPenaltyDetailsResponseReads}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.{CompliancePayloadFailureResponse, CompliancePayloadResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.http.UpstreamErrorResponse
+import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsResponse, GetPenaltyDetailsResponseReads}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.UnexpectedFailure
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.UnexpectedFailure
-import play.api.http.Status.INTERNAL_SERVER_ERROR
-import java.time.LocalDate
 
-class PenaltiesConnector @Inject()(httpClient: HttpClient,
+import java.net.URI
+import java.time.LocalDate
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
+
+class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
                                    val appConfig: AppConfig)(implicit ec: ExecutionContext) extends FeatureSwitching {
 
 
@@ -49,7 +50,7 @@ class PenaltiesConnector @Inject()(httpClient: HttpClient,
 
   def getPenaltyDetails(enrolmentKey: String)(implicit user: User[_], hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
     logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for VRN $enrolmentKey.")
-    httpClient.GET[GetPenaltyDetailsResponse](s"$penaltiesBaseUrl${getPenaltiesDataUrl(enrolmentKey)}")(GetPenaltyDetailsResponseReads, hc, ec).recover{
+    httpClient.get(new URI(s"$penaltiesBaseUrl${getPenaltiesDataUrl(enrolmentKey)}").toURL).execute[GetPenaltyDetailsResponse].recover {
       case e: UpstreamErrorResponse =>
         PagerDutyHelper.logStatusCode("PenaltiesConnector: getPenaltyDetails", e.statusCode)(
           RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
@@ -64,7 +65,7 @@ class PenaltiesConnector @Inject()(httpClient: HttpClient,
 
   def getObligationData(vrn: String, fromDate: LocalDate, toDate: LocalDate)(implicit hc: HeaderCarrier): Future[CompliancePayloadResponse] = {
     logger.info(s"[PenaltiesConnector][getObligationData] - Requesting obligation data from backend for VRN $vrn.")
-    httpClient.GET[CompliancePayloadResponse](s"$penaltiesBaseUrl${getDESObligationsDataUrl(vrn, fromDate.toString, toDate.toString)}").recover {
+    httpClient.get(new URI(s"$penaltiesBaseUrl${getDESObligationsDataUrl(vrn, fromDate.toString, toDate.toString)}").toURL).execute[CompliancePayloadResponse].recover {
       case e: UpstreamErrorResponse => {
         PagerDutyHelper.logStatusCode("getObligationData", e.statusCode)(RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
         logger.error(s"[PenaltiesConnector][getObligationData] -" +

@@ -17,10 +17,10 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
 
 import play.api.libs.json._
-
-import java.time.LocalDate
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformationType
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
+
+import java.time.LocalDate
 
 case class LPPDetails(
                        principalChargeReference: String,

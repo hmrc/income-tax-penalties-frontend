@@ -16,13 +16,12 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitch.FeatureSwitch
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URLEncoder
-import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) {
@@ -34,15 +33,10 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
 
-  lazy val surveyOrigin: String =
-    servicesConfig.getString("exit-survey-origin")
+  lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
   lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
 
   lazy val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
-
-  def isFeatureSwitchEnabled(featureSwitch: FeatureSwitch): Boolean = config.get[Boolean](featureSwitch.name)
-
-  lazy val featureTimeNow = servicesConfig.getString("feature.switch.time-machine-now")
 
   lazy val penaltiesUrl: String = s"${servicesConfig.baseUrl("income-tax-penalties-frontend")}/penalties"
 

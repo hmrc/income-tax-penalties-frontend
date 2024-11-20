@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package base.testData
+package uk.gov.hmrc.incometaxpenaltiesfrontend.base.testData
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._

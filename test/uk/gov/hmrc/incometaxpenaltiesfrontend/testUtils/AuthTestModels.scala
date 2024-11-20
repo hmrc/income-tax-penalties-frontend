@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package testUtils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.testUtils
 
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core._

@@ -22,8 +22,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.GetPenaltyDetailsResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LatePaymentPenalty}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{GetPenaltyDetails, Totalisations, User}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LateSubmissionPenalty, TaxReturnStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{GetPenaltyDetails, Totalisations, User}
 
 import javax.inject.Inject
 import scala.concurrent.Future

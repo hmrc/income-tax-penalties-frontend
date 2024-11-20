@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 

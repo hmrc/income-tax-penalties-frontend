@@ -22,20 +22,19 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyStatusEnum.Posted
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.MainTransactionEnum._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, MainTransactionEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyStatusEnum.Posted
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.MainTransactionEnum.{CentralAssessment, CentralAssessmentFirstLPP, CentralAssessmentSecondLPP}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, ImplicitDateFormatter, PenaltyPeriodHelper, ViewUtils}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, ImplicitDateFormatter}
 
 import java.time.LocalDate
 import javax.inject.Inject
 
-class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelper: CalculationPageHelper) extends ImplicitDateFormatter with ViewUtils with FeatureSwitching {
+class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelper: CalculationPageHelper) extends ImplicitDateFormatter with FeatureSwitching {
 
   def populateLateSubmissionPenaltyCard(penalties: Seq[LSPDetails],
                                         threshold: Int, activePoints: Int)
@@ -56,6 +55,17 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
       }
     }
   }
+
+  private def sortedPenaltyPeriod(penaltyPeriod: Seq[LateSubmission]): Seq[LateSubmission] =
+    if (penaltyPeriod.nonEmpty)
+      penaltyPeriod.sortWith { (penaltyOne, penaltyTwo) =>
+        (penaltyOne.taxPeriodStartDate, penaltyTwo.taxPeriodStartDate) match {
+          case (Some(dateOne), Some(dateTwo)) => dateOne.compareTo(dateTwo) < 0
+          case _ => false
+        }
+      }
+    else
+      Seq.empty
 
   private def addedPointCard(penalty: LSPDetails, thresholdMet: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val rows = Seq(
@@ -81,11 +91,10 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
   private def buildLSPSummaryCard(rows: Seq[SummaryListRow], penalty: LSPDetails, isAnAddedPoint: Boolean = false,
                                   isAnAddedOrRemovedPoint: Boolean = false, isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val isReturnSubmitted = penalty.lateSubmissions.map(penaltyPeriod =>
-      PenaltyPeriodHelper.sortedPenaltyPeriod(penaltyPeriod).head)
-      .fold(false)(_.taxReturnStatus.contains(TaxReturnStatusEnum.Fulfilled))
+      sortedPenaltyPeriod(penaltyPeriod).head).fold(false)(_.taxReturnStatus.contains(TaxReturnStatusEnum.Fulfilled))
     val appealStatus = penalty.appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
     val appealLevel = penalty.appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
-    val dueDate = penalty.lateSubmissions.map(lateSubmissions => PenaltyPeriodHelper.sortedPenaltyPeriod(lateSubmissions)).map(_.head.taxPeriodDueDate.get)
+    val dueDate = penalty.lateSubmissions.map(lateSubmissions => sortedPenaltyPeriod(lateSubmissions)).map(_.head.taxPeriodDueDate.get)
     LateSubmissionPenaltySummaryCard(
       rows,
       tagStatus(Some(penalty), None),
@@ -108,7 +117,7 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
     if (penalty.lateSubmissions.getOrElse(Seq.empty).size > 1)
       Some(Html(
         s"""
-           |${messages("lsp.multiple.penaltyPeriod.1", dateToString(PenaltyPeriodHelper.sortedPenaltyPeriod(penalty.lateSubmissions.get).last.taxPeriodDueDate.get))}
+           |${messages("lsp.multiple.penaltyPeriod.1", dateToString(sortedPenaltyPeriod(penalty.lateSubmissions.get).last.taxPeriodDueDate.get))}
            |<br>
            |${messages("lsp.multiple.penaltyPeriod.2")}
            |""".stripMargin
@@ -123,18 +132,18 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
         Html(
           messages(
             "summaryCard.value1",
-            dateToString(PenaltyPeriodHelper.sortedPenaltyPeriod(penalty.lateSubmissions.get).head.taxPeriodStartDate.get),
-            dateToString(PenaltyPeriodHelper.sortedPenaltyPeriod(penalty.lateSubmissions.get).head.taxPeriodEndDate.get)
+            dateToString(sortedPenaltyPeriod(penalty.lateSubmissions.get).head.taxPeriodStartDate.get),
+            dateToString(sortedPenaltyPeriod(penalty.lateSubmissions.get).head.taxPeriodEndDate.get)
           )
         )
       ),
       summaryListRow(
         messages("summaryCard.key2"),
         Html(
-          dateToString(PenaltyPeriodHelper.sortedPenaltyPeriod(penalty.lateSubmissions.get).head.taxPeriodDueDate.get)
+          dateToString(sortedPenaltyPeriod(penalty.lateSubmissions.get).head.taxPeriodDueDate.get)
         )
       ),
-      PenaltyPeriodHelper.sortedPenaltyPeriod(penalty.lateSubmissions.get).head.returnReceiptDate.fold(
+      sortedPenaltyPeriod(penalty.lateSubmissions.get).head.returnReceiptDate.fold(
         summaryListRow(
           messages("summaryCard.key3"),
           Html(
@@ -158,7 +167,7 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
     val appealStatus = penalty.appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
     val appealLevel = penalty.appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
     val appealInformationWithoutUnappealableStatus = penalty.appealInformation.map(_.filterNot(_.appealStatus.contains(AppealStatusEnum.Unappealable))).getOrElse(Seq.empty)
-    val dueDate = penalty.lateSubmissions.map(lateSubmissions => PenaltyPeriodHelper.sortedPenaltyPeriod(lateSubmissions)).map(_.head.taxPeriodDueDate.get)
+    val dueDate = penalty.lateSubmissions.map(lateSubmissions => sortedPenaltyPeriod(lateSubmissions)).map(_.head.taxPeriodDueDate.get)
     LateSubmissionPenaltySummaryCard(
       if (appealInformationWithoutUnappealableStatus.nonEmpty) {
         baseRows :+ summaryListRow(
@@ -169,7 +178,7 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
       tagStatus(Some(penalty), None),
       getPenaltyNumberBasedOnThreshold(penalty.penaltyOrder, threshold),
       penalty.penaltyNumber,
-      penalty.lateSubmissions.map(penaltyPeriod => PenaltyPeriodHelper.sortedPenaltyPeriod(penaltyPeriod).head).fold(false)(_.returnReceiptDate.isDefined),
+      penalty.lateSubmissions.map(penaltyPeriod => sortedPenaltyPeriod(penaltyPeriod).head).fold(false)(_.returnReceiptDate.isDefined),
       penaltyCategory = penalty.penaltyCategory,
       isAppealedPoint = appealInformationWithoutUnappealableStatus.nonEmpty,
       appealStatus = appealStatus,
@@ -203,7 +212,7 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
 
   def pointCardBody(penalty: LSPDetails, thresholdMet: Boolean)(implicit messages: Messages): Seq[SummaryListRow] = {
     val appealStatus = penalty.appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
-    val sortedLateSubmissions: Seq[LateSubmission] = PenaltyPeriodHelper.sortedPenaltyPeriod(penalty.lateSubmissions.getOrElse(Seq.empty))
+    val sortedLateSubmissions: Seq[LateSubmission] = sortedPenaltyPeriod(penalty.lateSubmissions.getOrElse(Seq.empty))
     val receiptDate: Option[LocalDate] = sortedLateSubmissions.headOption.flatMap( _.returnReceiptDate)
     val base = Seq(
       summaryListRow(
@@ -238,8 +247,8 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
         Html(
           messages(
             "summaryCard.value1",
-            dateToString(penalty.lateSubmissions.flatMap(penaltyPeriod => PenaltyPeriodHelper.sortedPenaltyPeriod(penaltyPeriod).head.taxPeriodStartDate).get),
-            dateToString(penalty.lateSubmissions.flatMap(penaltyPeriod => PenaltyPeriodHelper.sortedPenaltyPeriod(penaltyPeriod).head.taxPeriodEndDate).get)
+            dateToString(penalty.lateSubmissions.flatMap(penaltyPeriod => sortedPenaltyPeriod(penaltyPeriod).head.taxPeriodStartDate).get),
+            dateToString(penalty.lateSubmissions.flatMap(penaltyPeriod => sortedPenaltyPeriod(penaltyPeriod).head.taxPeriodEndDate).get)
           )
         )
       )),

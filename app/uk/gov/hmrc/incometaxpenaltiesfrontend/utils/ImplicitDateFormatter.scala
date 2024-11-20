@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import java.time.{LocalDate, LocalDateTime}
-
 import play.api.i18n.Messages
+
+import java.time.{LocalDate, LocalDateTime}
 
 trait ImplicitDateFormatter {
 

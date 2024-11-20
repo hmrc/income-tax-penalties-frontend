@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 
-object PagerDutyHelper {
+object PagerDutyHelper extends Logging {
 
   object PagerDutyKeys extends Enumeration{
     final val INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND = Value

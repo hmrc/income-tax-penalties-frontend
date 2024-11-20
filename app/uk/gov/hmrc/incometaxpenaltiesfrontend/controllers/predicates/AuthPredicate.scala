@@ -16,43 +16,41 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates
 
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.Logging
+import play.api.i18n.Messages
+import play.api.mvc.Results.{Forbidden, NotImplemented, Redirect}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allEnrolments
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.ErrorHandler
+import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuthService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.SessionKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{EnrolmentKeys, SessionKeys}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.Unauthorised
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
-                              val mcc: MessagesControllerComponents,
-                              val authService: AuthService,
-                              errorHandler: ErrorHandler,
-                              unauthorisedView: Unauthorised)
-                             (implicit val appConfig: AppConfig,
-                              implicit val executionContext: ExecutionContext) extends FrontendController(mcc) with
-                                                                               I18nSupport with
-                                                                               ActionBuilder[User, AnyContent] with
-                                                                               ActionFunction[Request, User] {
+class AuthPredicate @Inject()(val authConnector: AuthConnector,
+                              unauthorisedView: Unauthorised,
+                              mcc: MessagesControllerComponents
+                             )(implicit appConfig: AppConfig,
+                               implicit val executionContext: ExecutionContext)
+  extends AuthorisedFunctions with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] with Logging {
 
   override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
     implicit val req: Request[A] = request
+    implicit val messages: Messages = mcc.messagesApi.preferred(request)
+    implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+
     val logMsgStart: String = "[AuthPredicate][invokeBlock]"
-    authService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+    authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments =>
         logger.debug(s"$logMsgStart - User is $affinityGroup and has ${allEnrolments.enrolments.size} enrolments. " +
           s"Enrolments: ${allEnrolments.enrolments}")
@@ -66,7 +64,7 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
         }
       case _ =>
         logger.warn(s"$logMsgStart - Missing affinity group")
-        Future.successful(errorHandler.showInternalServerError())
+        throw new InternalServerException("Missing affinity group")
     } recover {
       case _: NoActiveSession =>
         logger.debug(s"$logMsgStart - No active session, redirect to GG sign in")
@@ -77,12 +75,12 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
     }
   }
 
-  private[predicates] def checkVatEnrolment[A](allEnrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) = {
+  private[predicates] def checkVatEnrolment[A](allEnrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A], messages: Messages) = {
     val logMsgStart: String = "[AuthPredicate][checkVatEnrolment]"
     val extractedMTDVATEnrolment: Option[String] = User.extractFirstMTDVatEnrolment(allEnrolments)
-    if(extractedMTDVATEnrolment.isDefined) {
+    if (extractedMTDVATEnrolment.isDefined) {
       val user: User[A] = User(extractedMTDVATEnrolment.get)
-        block(user)
+      block(user)
     } else {
       logger.debug(s"$logMsgStart - User does not have an activated HMRC-MTD-VAT enrolment. User had these enrolments: ${allEnrolments.enrolments}")
       Future(Forbidden(unauthorisedView()))
@@ -90,27 +88,26 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
   }
 
   private[predicates] def authoriseAsAgent[A](block: User[A] => Future[Result])
-                      (implicit request: Request[A]): Future[Result] = {
+                                             (implicit request: Request[A], messages: Messages, hc: HeaderCarrier): Future[Result] = {
 
     val agentDelegatedAuthorityRule: String => Enrolment = vrn =>
       Enrolment(EnrolmentKeys.mtdITEnrolmentKey)
         .withIdentifier(EnrolmentKeys.mtdId, vrn)
         .withDelegatedAuthRule(EnrolmentKeys.agentDelegatedAuthRuleKey)
+
     request.session.get(SessionKeys.agentSessionVrn) match {
       case Some(vrn) =>
-        authService
-          .authorised(agentDelegatedAuthorityRule(vrn))
-          .retrieve(allEnrolments) {
-            enrolments =>
-              enrolments.enrolments.collectFirst {
-                case Enrolment(EnrolmentKeys.agentEnrolmentKey, Seq(EnrolmentIdentifier(_, arn)), EnrolmentKeys.activated, _) => arn
-              } match {
-                case Some(arn) => block(User(vrn, arn = Some(arn)))
-                case None =>
-                  logger.debug("[AuthPredicate][authoriseAsAgent] - Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
-                  Future.successful(Forbidden(unauthorisedView()))
-              }
-          } recover {
+        authorised(agentDelegatedAuthorityRule(vrn)).retrieve(allEnrolments) {
+          enrolments =>
+            enrolments.enrolments.collectFirst {
+              case Enrolment(EnrolmentKeys.agentEnrolmentKey, Seq(EnrolmentIdentifier(_, arn)), EnrolmentKeys.activated, _) => arn
+            } match {
+              case Some(arn) => block(User(vrn, arn = Some(arn)))
+              case None =>
+                logger.debug("[AuthPredicate][authoriseAsAgent] - Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
+                Future.successful(Forbidden(unauthorisedView()))
+            }
+        } recover {
           case _: NoActiveSession =>
             logger.debug(s"AgentPredicate][authoriseAsAgent] - No active session. Redirecting to ${appConfig.signInUrl}")
             Redirect(appConfig.signInUrl)
@@ -120,8 +117,9 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
             Forbidden(unauthorisedView())
         }
       case None =>
-        logger.debug(s"[AuthPredicate][authoriseAsAgent] - No Client VRN in session. Redirecting to ${appConfig.agentClientLookupStartUrl(request.uri)}")
-        Future.successful(Redirect(appConfig.agentClientLookupStartUrl(request.uri)))
+        logger.debug(s"[AuthPredicate][authoriseAsAgent] - No Client MTDITID in session. Not Implemented")
+        Future.successful(NotImplemented)
+      // TODO - Find out which Income Tax V&C page to redirect to
     }
   }
 
