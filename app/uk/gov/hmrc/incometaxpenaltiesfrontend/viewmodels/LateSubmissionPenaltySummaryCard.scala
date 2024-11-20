@@ -22,20 +22,18 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyCategoryEnum
 
-case class LateSubmissionPenaltySummaryCard(
-                                             cardRows: Seq[SummaryListRow],
-                                             status: Tag,
-                                             penaltyPoint: String,
-                                             penaltyId: String,
-                                             isReturnSubmitted: Boolean,
-                                             penaltyCategory: Option[LSPPenaltyCategoryEnum.Value],
-                                             totalPenaltyAmount: BigDecimal = 0,
-                                             isAddedPoint: Boolean = false,
-                                             isAppealedPoint: Boolean = false,
-                                             appealStatus: Option[AppealStatusEnum.Value] = None,
-                                             appealLevel: Option[AppealLevelEnum.Value] = None,
-                                             isAddedOrRemovedPoint: Boolean = false,
-                                             isManuallyRemovedPoint: Boolean = false,
-                                             multiplePenaltyPeriod: Option[Html] = None,
-                                             dueDate: Option[String]
-                                           )
+case class LateSubmissionPenaltySummaryCard(cardRows: Seq[SummaryListRow],
+                                            status: Tag,
+                                            penaltyPoint: String,
+                                            penaltyId: String,
+                                            isReturnSubmitted: Boolean,
+                                            penaltyCategory: Option[LSPPenaltyCategoryEnum.Value],
+                                            totalPenaltyAmount: BigDecimal = 0,
+                                            isAddedPoint: Boolean = false,
+                                            isAppealedPoint: Boolean = false,
+                                            appealStatus: Option[AppealStatusEnum.Value] = None,
+                                            appealLevel: Option[AppealLevelEnum.Value] = None,
+                                            isAddedOrRemovedPoint: Boolean = false,
+                                            isManuallyRemovedPoint: Boolean = false,
+                                            multiplePenaltyPeriod: Option[Html] = None,
+                                            dueDate: Option[String])

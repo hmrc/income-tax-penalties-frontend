@@ -22,14 +22,11 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LatePaymentPenalty
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LateSubmissionPenalty
 
 
+case class PenaltyDetails(totalisations: Option[Totalisations],
+                          lateSubmissionPenalty: Option[LateSubmissionPenalty],
+                          latePaymentPenalty: Option[LatePaymentPenalty],
+                          breathingSpace: Option[Seq[BreathingSpace]])
 
-case class GetPenaltyDetails(
-                           totalisations: Option[Totalisations],
-                           lateSubmissionPenalty: Option[LateSubmissionPenalty],
-                           latePaymentPenalty: Option[LatePaymentPenalty],
-                           breathingSpace: Option[Seq[BreathingSpace]]
-                         )
-
-object GetPenaltyDetails {
-  implicit val format: OFormat[GetPenaltyDetails] = Json.format[GetPenaltyDetails]
+object PenaltyDetails {
+  implicit val format: OFormat[PenaltyDetails] = Json.format[PenaltyDetails]
 }

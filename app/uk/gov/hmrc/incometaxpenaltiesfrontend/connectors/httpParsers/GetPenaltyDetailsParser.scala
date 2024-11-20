@@ -16,43 +16,65 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 
-import play.api.Logging
 import play.api.http.Status._
-import play.api.libs.json.JsSuccess
+import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.GetPenaltyDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
 
-object GetPenaltyDetailsParser extends Logging {
-  type GetPenaltyDetailsResponse = Either[ErrorResponse, GetPenaltyDetails]
+object GetPenaltyDetailsParser {
+
+  sealed trait GetPenaltyDetailsFailure {
+    val message: String
+  }
+
+  case class GetPenaltyDetailsUnexpectedFailure(status: Int) extends GetPenaltyDetailsFailure {
+    override val message: String = s"Unexpected response, status $status returned"
+  }
+
+  case object GetPenaltyDetailsBadRequest extends GetPenaltyDetailsFailure {
+    override val message: String = "Sent a bad request to downstream service"
+  }
+
+  case object GetPenaltyDetailsMalformed extends GetPenaltyDetailsFailure {
+    override val message: String = "Body received was malformed"
+  }
+
+
+  type GetPenaltyDetailsResponse = Either[GetPenaltyDetailsFailure, PenaltyDetails]
 
   implicit object GetPenaltyDetailsResponseReads extends HttpReads[GetPenaltyDetailsResponse] {
     override def read(method: String, url: String, response: HttpResponse): GetPenaltyDetailsResponse = {
       response.status match {
         case OK =>
-          response.json.validate[GetPenaltyDetails](GetPenaltyDetails.format) match {
+          response.json.validate[PenaltyDetails] match {
             case JsSuccess(model, _) =>
               logger.info("[GetPenaltyDetailsResponseReads][read]: Successful call to retrieve penalties details.")
               Right(model)
-            case failure => {
-              logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $failure")
+
+            case JsError(errors) =>
+              logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $errors")
               logger.error("[GetPenaltyDetailsResponseReads][read]: Failed to parse to model")
               PagerDutyHelper.log("PenaltiesConnectorParser: GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
-              Left(InvalidJson)
-            }
+              Left(GetPenaltyDetailsMalformed)
           }
+
         case NO_CONTENT =>
-          logger.info(s"[GetPenaltyDetailsResponseReads][read]: No content found for VRN provided, returning empty model")
-          Right(GetPenaltyDetails(None, None, None, None))
+          logger.info(s"[GetPenaltyDetailsResponseReads][read]: No content found for MTDITID provided, returning empty model")
+          Right(PenaltyDetails(None, None, None, None))
+
         case BAD_REQUEST =>
           logger.error(s"[GetPenaltyDetailsResponseReads][read]: Bad request returned with reason: ${response.body}")
           PagerDutyHelper.log("PenaltiesConnectorParser: GetPenaltyDetailsResponseReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
-          Left(BadRequest)
-        case status => logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned with reason: ${response.body}")
+          Left(GetPenaltyDetailsBadRequest)
+
+        case status =>
+          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned with reason: ${response.body}")
           PagerDutyHelper.logStatusCode("PenaltiesConnectorParser: GetPenaltyDetailsResponseReads", status)(
             RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
-          Left(UnexpectedFailure(status, s"Unexpected response, status $status returned"))
+          Left(GetPenaltyDetailsUnexpectedFailure(status))
       }
     }
   }

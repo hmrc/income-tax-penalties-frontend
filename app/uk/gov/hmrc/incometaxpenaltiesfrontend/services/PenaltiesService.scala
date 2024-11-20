@@ -23,15 +23,15 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyD
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LatePaymentPenalty}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LateSubmissionPenalty, TaxReturnStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{GetPenaltyDetails, Totalisations, User}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
 
 import javax.inject.Inject
 import scala.concurrent.Future
 
 class PenaltiesService @Inject()(connector: PenaltiesConnector) {
 
-  def getPenaltyDataFromEnrolmentKey(enrolmentKey: String)(implicit user: User[_], hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] =
-    connector.getPenaltyDetails(enrolmentKey)
+  def getPenaltyDataFromEnrolmentKey(enrolmentKey: String, optArn: Option[String])(implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] =
+    connector.getPenaltyDetails(enrolmentKey, optArn)
 
   def findInterestOnAccount(totalisations: Option[Totalisations]): BigDecimal = {
     val accruingInterest: BigDecimal = totalisations.flatMap(_.totalAccountAccruingInterest).getOrElse(0)
@@ -60,7 +60,7 @@ class PenaltiesService @Inject()(connector: PenaltiesConnector) {
       .filterNot(details => details.appealInformation.exists(_.exists(_.appealStatus.contains(AppealStatusEnum.Upheld))))
   }
 
-  def getRegimeThreshold(payload: GetPenaltyDetails): Int = {
+  def getRegimeThreshold(payload: PenaltyDetails): Int = {
     payload.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
   }
 

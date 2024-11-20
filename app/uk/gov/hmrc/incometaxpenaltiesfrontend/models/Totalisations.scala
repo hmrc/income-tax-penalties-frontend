@@ -18,15 +18,13 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models
 
 import play.api.libs.json.{Format, Json}
 
-case class Totalisations(
-                          LSPTotalValue: Option[BigDecimal],
-                          penalisedPrincipalTotal: Option[BigDecimal],
-                          LPPPostedTotal: Option[BigDecimal],
-                          LPPEstimatedTotal: Option[BigDecimal],
-                          totalAccountOverdue: Option[BigDecimal],
-                          totalAccountPostedInterest: Option[BigDecimal],
-                          totalAccountAccruingInterest: Option[BigDecimal]
-                        )
+case class Totalisations(LSPTotalValue: Option[BigDecimal],
+                         penalisedPrincipalTotal: Option[BigDecimal],
+                         LPPPostedTotal: Option[BigDecimal],
+                         LPPEstimatedTotal: Option[BigDecimal],
+                         totalAccountOverdue: Option[BigDecimal],
+                         totalAccountPostedInterest: Option[BigDecimal],
+                         totalAccountAccruingInterest: Option[BigDecimal])
 
 object Totalisations {
   implicit val format: Format[Totalisations] = Json.format[Totalisations]

@@ -18,11 +18,9 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance
 
 import play.api.libs.json.{Json, OFormat}
 
-case class CompliancePayload(
-                              identification: Option[ObligationIdentification],
-                              obligationDetails: Seq[ObligationDetail]
-                            )
+case class ComplianceData(identification: Option[ObligationIdentification],
+                           obligationDetails: Seq[ObligationDetail])
 
-object CompliancePayload {
-  implicit val format: OFormat[CompliancePayload] = Json.format[CompliancePayload]
+object ComplianceData {
+  implicit val format: OFormat[ComplianceData] = Json.format[ComplianceData]
 }

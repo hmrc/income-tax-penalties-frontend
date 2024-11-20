@@ -20,13 +20,11 @@ import play.api.libs.json.{Format, Json}
 
 import java.time.LocalDate
 
-case class LSPSummary(
-                       activePenaltyPoints: Int,
-                       inactivePenaltyPoints: Int,
-                       regimeThreshold: Int,
-                       penaltyChargeAmount: BigDecimal,
-                       PoCAchievementDate: Option[LocalDate]
-                     )
+case class LSPSummary(activePenaltyPoints: Int,
+                      inactivePenaltyPoints: Int,
+                      regimeThreshold: Int,
+                      penaltyChargeAmount: BigDecimal,
+                      PoCAchievementDate: Option[LocalDate])
 
 object LSPSummary {
   implicit val format: Format[LSPSummary] = Json.format[LSPSummary]

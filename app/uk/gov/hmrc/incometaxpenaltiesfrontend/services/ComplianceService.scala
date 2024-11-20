@@ -21,7 +21,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.CompliancePayload
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys.POC_ACHIEVEMENT_DATE_NOT_FOUND
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{PagerDutyHelper, SessionKeys}
 
@@ -32,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit val appConfig: AppConfig) extends FeatureSwitching {
 
   def getDESComplianceData(vrn: String)(implicit hc: HeaderCarrier, user: User[_],
-                                        ec: ExecutionContext, pocAchievementDate: Option[LocalDate] = None): Future[Option[CompliancePayload]] = {
+                                        ec: ExecutionContext, pocAchievementDate: Option[LocalDate] = None): Future[Option[ComplianceData]] = {
     val pocAchievementDateFromSession: Option[LocalDate] = user.session.get(SessionKeys.pocAchievementDate).map(LocalDate.parse(_))
     pocAchievementDate.orElse(pocAchievementDateFromSession) match {
       case Some(pocAchievementDate) => {
@@ -47,7 +48,7 @@ class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit val ap
             obligationData => {
               logger.debug(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data,  obligation data = $obligationData")
               logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")
-              Some(obligationData.model)
+              Some(obligationData)
             }
           )
         }

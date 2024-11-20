@@ -20,7 +20,7 @@ import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{CompliancePayload, ComplianceStatusEnum, ObligationDetail}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.Timeline
 
@@ -29,7 +29,7 @@ import javax.inject.Inject
 class TimelineHelper @Inject()(timeline: Timeline, timeMachine: TimeMachine)
                               (implicit val appConfig: AppConfig) extends ImplicitDateFormatter with FeatureSwitching {
 
-  def getTimelineContent(complianceData: CompliancePayload)(implicit messages: Messages): Html = {
+  def getTimelineContent(complianceData: ComplianceData)(implicit messages: Messages): Html = {
     val unfulfilledReturnsAfterLSPCreationDate: Seq[ObligationDetail] = complianceData.obligationDetails.filter(_.status.equals(ComplianceStatusEnum.Open))
     if (unfulfilledReturnsAfterLSPCreationDate.nonEmpty) {
       val events: Seq[TimelineEvent] = unfulfilledReturnsAfterLSPCreationDate.map { compReturn =>

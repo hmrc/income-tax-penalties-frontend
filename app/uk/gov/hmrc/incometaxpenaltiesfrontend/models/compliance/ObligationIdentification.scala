@@ -18,11 +18,9 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ObligationIdentification(
-                                   incomeSourceType: Option[String],
-                                   referenceNumber: String,
-                                   referenceType: String
-                                  )
+case class ObligationIdentification(incomeSourceType: Option[String],
+                                    referenceNumber: String,
+                                    referenceType: String)
 
 object ObligationIdentification {
   implicit val format: OFormat[ObligationIdentification] = Json.format[ObligationIdentification]

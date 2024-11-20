@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -27,7 +27,7 @@ import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 import play.api.test.Helpers._
 
 trait ComponentSpecHelper
-    extends AnyWordSpec
+  extends AnyWordSpec
     with Matchers
     with CustomMatchers
     with WiremockHelper
@@ -44,13 +44,13 @@ trait ComponentSpecHelper
 
   val mockHost: String = WiremockHelper.wiremockHost
   val mockPort: String = WiremockHelper.wiremockPort.toString
-  val mockUrl: String  = s"http://$mockHost:$mockPort"
+  val mockUrl: String = s"http://$mockHost:$mockPort"
 
   def config: Map[String, String] = Map(
-    "microservice.services.des.host"                        -> mockHost,
-    "microservice.services.des.port"                        -> mockPort,
-    "auditing.enabled"                                      -> "false",
-    "play.filters.csrf.header.bypassHeaders.Csrf-Token"     -> "nocheck"
+    "microservice.services.penalties.host" -> mockHost,
+    "microservice.services.penalties.port" -> mockPort,
+    "auditing.enabled" -> "true",
+    "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck"
   )
 
   implicit val ws: WSClient = app.injector.instanceOf[WSClient]

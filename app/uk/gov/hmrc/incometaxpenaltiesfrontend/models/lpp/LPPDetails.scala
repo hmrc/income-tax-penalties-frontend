@@ -22,8 +22,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 
 import java.time.LocalDate
 
-case class LPPDetails(
-                       principalChargeReference: String,
+case class LPPDetails(principalChargeReference: String,
                        penaltyCategory: LPPPenaltyCategoryEnum.Value,
                        penaltyChargeCreationDate: Option[LocalDate],
                        penaltyStatus: LPPPenaltyStatusEnum.Value,
@@ -48,8 +47,8 @@ case class LPPDetails(
                        penaltyChargeReference: Option[String],
                        principalChargeLatestClearing: Option[LocalDate],
                        vatOutstandingAmount: Option[BigDecimal],
-                       LPPDetailsMetadata: LPPDetailsMetadata
-                     ) extends Ordered[LPPDetails] {
+                       LPPDetailsMetadata: LPPDetailsMetadata) extends Ordered[LPPDetails] {
+
   override def compare(that: LPPDetails): Int = {
     (this.principalChargeBillingFrom, that.principalChargeBillingFrom,
       this.principalChargeBillingTo, that.principalChargeBillingTo,
@@ -76,6 +75,7 @@ case class LPPDetails(
       case _ => 0
     }
   }
+
 }
 
 object LPPDetails extends JsonUtils {

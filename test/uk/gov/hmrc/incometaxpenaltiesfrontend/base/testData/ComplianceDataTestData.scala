@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.base.testData
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{CompliancePayload, ComplianceStatusEnum, ObligationDetail, ObligationIdentification}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail, ObligationIdentification}
 
 import java.time.LocalDate
 
 trait ComplianceDataTestData {
 
-  val sampleCompliancePayload: CompliancePayload = CompliancePayload(
+  val sampleCompliancePayload: ComplianceData = ComplianceData(
     identification = Some(ObligationIdentification(
       incomeSourceType = None,
       referenceNumber = "123456789",
@@ -48,7 +48,7 @@ trait ComplianceDataTestData {
     )
   )
 
-  val compliancePayloadObligationsFulfilled: CompliancePayload = sampleCompliancePayload.copy(
+  val compliancePayloadObligationsFulfilled: ComplianceData = sampleCompliancePayload.copy(
     obligationDetails = Seq(
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,

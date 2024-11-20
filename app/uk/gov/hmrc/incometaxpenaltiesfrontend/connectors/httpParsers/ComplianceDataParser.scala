@@ -16,67 +16,63 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 
-import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.CompliancePayload
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
 
-object ComplianceDataParser extends Logging {
-  sealed trait GetCompliancePayloadFailure {
+object ComplianceDataParser {
+
+  sealed trait GetComplianceDataFailure {
     val message: String
   }
-  sealed trait GetCompliancePayloadSuccess {
-    val model: CompliancePayload
-  }
-
-  case class CompliancePayloadSuccessResponse(model: CompliancePayload) extends GetCompliancePayloadSuccess
-  case class CompliancePayloadFailureResponse(status: Int) extends GetCompliancePayloadFailure {
+  case class ComplianceDataUnexpectedFailure(status: Int) extends GetComplianceDataFailure {
     override val message: String = s"Received status code: $status"
   }
-  case object CompliancePayloadNoData extends GetCompliancePayloadFailure {
+  case object ComplianceDataNoData extends GetComplianceDataFailure {
     override val message: String = "Received no data from call"
   }
-  case object CompliancePayloadMalformed extends GetCompliancePayloadFailure {
+  case object ComplianceDataMalformed extends GetComplianceDataFailure {
     override val message: String = "Body received was malformed"
   }
 
-  type CompliancePayloadResponse = Either[GetCompliancePayloadFailure, GetCompliancePayloadSuccess]
+  type ComplianceDataResponse = Either[GetComplianceDataFailure, ComplianceData]
 
-  implicit object CompliancePayloadReads extends HttpReads[CompliancePayloadResponse] {
-    override def read(method: String, url: String, response: HttpResponse): CompliancePayloadResponse = {
+  implicit object ComplianceDataReads extends HttpReads[ComplianceDataResponse] {
+    override def read(method: String, url: String, response: HttpResponse): ComplianceDataResponse = {
       response.status match {
         case OK =>
-          logger.debug(s"[CompliancePayloadReads][read] Json response: ${response.json}")
-          response.json.validate[CompliancePayload](CompliancePayload.format) match {
+          logger.debug(s"[ComplianceDataReads][read]: Successful call to retrieve Compliance Data${response.json}")
+          response.json.validate[ComplianceData](ComplianceData.format) match {
             case JsSuccess(compliancePayload, _) =>
-              Right(CompliancePayloadSuccessResponse(compliancePayload))
+              Right(compliancePayload)
+
             case JsError(errors) =>
-              PagerDutyHelper.log("CompliancePayloadReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
-              logger.debug(s"[CompliancePayloadReads][read] Json validation errors: $errors")
-              Left(CompliancePayloadMalformed)
+              PagerDutyHelper.log("ComplianceDataReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
+              logger.debug(s"[ComplianceDataReads][read]: Failed to parse to model - failures: $errors")
+              logger.error("[ComplianceDataReads][read]: Failed to parse to model")
+
+              Left(ComplianceDataMalformed)
           }
-        case NOT_FOUND => {
-          logger.info(s"[CompliancePayloadReads][read] - Received not found response from backend for API 1330 data." +
+
+        case NOT_FOUND =>
+          logger.info(s"[ComplianceDataReads][read] - Received not found response from backend for API 1330 data." +
             s" No data associated with VRN. Body: ${response.body}")
-          Left(CompliancePayloadNoData)
-        }
-        case BAD_REQUEST => {
-          PagerDutyHelper.log("CompliancePayloadReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
-          logger.error(s"[CompliancePayloadReads][read] - Failed to parse to model with response body: ${response.body} (Status: $BAD_REQUEST)")
-          Left(CompliancePayloadFailureResponse(BAD_REQUEST))
-        }
-        case INTERNAL_SERVER_ERROR =>
-          PagerDutyHelper.log("CompliancePayloadReads", RECEIVED_5XX_FROM_PENALTIES_BACKEND)
-          logger.error(s"[CompliancePayloadReads][read] Received ISE when calling backend for API 1330 data - with body: ${response.body}")
-          Left(CompliancePayloadFailureResponse(INTERNAL_SERVER_ERROR))
-        case _@status =>
-          PagerDutyHelper.logStatusCode("CompliancePayloadReads", status)(RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
-          logger.error(s"[CompliancePayloadReads][read] Received unexpected response when calling backend for API 1330 data," +
+          Left(ComplianceDataNoData)
+
+        case BAD_REQUEST =>
+          PagerDutyHelper.log("ComplianceDataReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
+          logger.error(s"[ComplianceDataReads][read] - Failed to parse to model with response body: ${response.body} (Status: $BAD_REQUEST)")
+          Left(ComplianceDataUnexpectedFailure(BAD_REQUEST))
+
+        case status =>
+          PagerDutyHelper.logStatusCode("ComplianceDataReads", status)(RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
+          logger.error(s"[ComplianceDataReads][read] Received unexpected response when calling backend for API 1330 data," +
             s" status code: $status and body: ${response.body}")
-          Left(CompliancePayloadFailureResponse(status))
+          Left(ComplianceDataUnexpectedFailure(status))
       }
     }
   }

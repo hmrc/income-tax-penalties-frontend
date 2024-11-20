@@ -21,23 +21,21 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformatio
 
 import java.time.LocalDate
 
-case class LSPDetails(
-                       penaltyNumber: String,
-                       penaltyOrder: Option[String],
-                       penaltyCategory: Option[LSPPenaltyCategoryEnum.Value],
-                       penaltyStatus: LSPPenaltyStatusEnum.Value,
-                       FAPIndicator: Option[String],
-                       penaltyCreationDate: LocalDate,
-                       penaltyExpiryDate: LocalDate,
-                       expiryReason: Option[ExpiryReasonEnum.Value],
-                       communicationsDate: Option[LocalDate],
-                       lateSubmissions: Option[Seq[LateSubmission]],
-                       appealInformation: Option[Seq[AppealInformationType]],
-                       chargeAmount: Option[BigDecimal],
-                       chargeOutstandingAmount: Option[BigDecimal],
-                       chargeDueDate: Option[LocalDate],
-                       lspTypeEnum: Option[LSPTypeEnum.Value] = None
-                     )
+case class LSPDetails(penaltyNumber: String,
+                      penaltyOrder: Option[String],
+                      penaltyCategory: Option[LSPPenaltyCategoryEnum.Value],
+                      penaltyStatus: LSPPenaltyStatusEnum.Value,
+                      FAPIndicator: Option[String],
+                      penaltyCreationDate: LocalDate,
+                      penaltyExpiryDate: LocalDate,
+                      expiryReason: Option[ExpiryReasonEnum.Value],
+                      communicationsDate: Option[LocalDate],
+                      lateSubmissions: Option[Seq[LateSubmission]],
+                      appealInformation: Option[Seq[AppealInformationType]],
+                      chargeAmount: Option[BigDecimal],
+                      chargeOutstandingAmount: Option[BigDecimal],
+                      chargeDueDate: Option[LocalDate],
+                      lspTypeEnum: Option[LSPTypeEnum.Value] = None)
 
 object LSPDetails {
   implicit val format: OFormat[LSPDetails] = Json.format[LSPDetails]

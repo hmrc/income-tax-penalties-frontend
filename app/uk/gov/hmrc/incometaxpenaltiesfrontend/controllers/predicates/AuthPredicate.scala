@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates
 
-import play.api.Logging
 import play.api.i18n.Messages
 import play.api.mvc.Results.{Forbidden, NotImplemented, Redirect}
 import play.api.mvc._
@@ -27,6 +26,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{EnrolmentKeys, SessionKeys}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.Unauthorised
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -39,8 +39,7 @@ class AuthPredicate @Inject()(val authConnector: AuthConnector,
                               unauthorisedView: Unauthorised,
                               mcc: MessagesControllerComponents
                              )(implicit appConfig: AppConfig,
-                               implicit val executionContext: ExecutionContext)
-  extends AuthorisedFunctions with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] with Logging {
+                               implicit val executionContext: ExecutionContext) extends AuthorisedFunctions with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] {
 
   override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
 

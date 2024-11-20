@@ -20,14 +20,12 @@ import play.api.libs.json.{Json, OFormat}
 
 import java.time.LocalDate
 
-case class ObligationDetail(
-                             status: ComplianceStatusEnum.Value,
-                             inboundCorrespondenceFromDate: LocalDate,
-                             inboundCorrespondenceToDate: LocalDate,
-                             inboundCorrespondenceDateReceived: Option[LocalDate],
-                             inboundCorrespondenceDueDate: LocalDate,
-                             periodKey: String
-                           )
+case class ObligationDetail(status: ComplianceStatusEnum.Value,
+                            inboundCorrespondenceFromDate: LocalDate,
+                            inboundCorrespondenceToDate: LocalDate,
+                            inboundCorrespondenceDateReceived: Option[LocalDate],
+                            inboundCorrespondenceDueDate: LocalDate,
+                            periodKey: String)
 
 object ObligationDetail {
   implicit val format: OFormat[ObligationDetail] = Json.format[ObligationDetail]

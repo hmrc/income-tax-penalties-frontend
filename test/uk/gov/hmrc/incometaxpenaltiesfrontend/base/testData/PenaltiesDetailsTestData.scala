@@ -18,14 +18,14 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.base.testData
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{GetPenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
 
 import java.time.LocalDate
 
 trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestData {
   val sampleDate: LocalDate = LocalDate.of(2021, 1, 1)
 
-  val samplePenaltyDetailsModel: GetPenaltyDetails = GetPenaltyDetails(
+  val samplePenaltyDetailsModel: PenaltyDetails = PenaltyDetails(
     totalisations = Some(Totalisations(
       LSPTotalValue = Some(200),
       penalisedPrincipalTotal = Some(2000),
@@ -50,5 +50,5 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     breathingSpace = None
   )
 
-  val samplePenaltyDetailsModelWithoutMetadata: GetPenaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleUnpaidLPP1))))
+  val samplePenaltyDetailsModelWithoutMetadata: PenaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleUnpaidLPP1))))
 }

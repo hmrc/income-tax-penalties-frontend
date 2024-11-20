@@ -18,10 +18,8 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AppealInformationType(
-                                  appealStatus: Option[AppealStatusEnum.Value],
-                                  appealLevel: Option[AppealLevelEnum.Value]
-                                )
+case class AppealInformationType(appealStatus: Option[AppealStatusEnum.Value],
+                                 appealLevel: Option[AppealLevelEnum.Value])
 
 object AppealInformationType {
   implicit val format: OFormat[AppealInformationType] = Json.format[AppealInformationType]

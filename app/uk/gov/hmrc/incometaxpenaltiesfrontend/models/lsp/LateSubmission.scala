@@ -20,13 +20,11 @@ import play.api.libs.json.{Format, Json}
 
 import java.time.LocalDate
 
-case class LateSubmission(
-                            taxPeriodStartDate: Option[LocalDate],
-                            taxPeriodEndDate: Option[LocalDate],
-                            taxPeriodDueDate: Option[LocalDate],
-                            returnReceiptDate: Option[LocalDate],
-                            taxReturnStatus: Option[TaxReturnStatusEnum.Value]
-                          )
+case class LateSubmission(taxPeriodStartDate: Option[LocalDate],
+                          taxPeriodEndDate: Option[LocalDate],
+                          taxPeriodDueDate: Option[LocalDate],
+                          returnReceiptDate: Option[LocalDate],
+                          taxReturnStatus: Option[TaxReturnStatusEnum.Value])
 
 object LateSubmission {
   implicit val format: Format[LateSubmission] = Json.format[LateSubmission]

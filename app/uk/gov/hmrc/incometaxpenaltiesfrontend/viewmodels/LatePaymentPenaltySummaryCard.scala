@@ -21,22 +21,20 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum
 
-case class LatePaymentPenaltySummaryCard(
-                                          cardRows: Seq[SummaryListRow],
-                                          status: Tag,
-                                          penaltyChargeReference: Option[String],
-                                          principalChargeReference: String,
-                                          isPenaltyPaid: Boolean,
-                                          amountDue: BigDecimal = 0,
-                                          appealStatus: Option[AppealStatusEnum.Value] = None,
-                                          appealLevel: Option[AppealLevelEnum.Value] = None,
-                                          isVatPaid: Boolean = false,
-                                          penaltyCategory: LPPPenaltyCategoryEnum.Value,
-                                          dueDate: String,
-                                          taxPeriodStartDate: String,
-                                          taxPeriodEndDate: String,
-                                          isAgent: Boolean = false,
-                                          isCentralAssessment: Boolean = false,
-                                          vatOutstandingAmountInPence: Int,
-                                          isTTPActive: Boolean = false
-                                        )
+case class LatePaymentPenaltySummaryCard(cardRows: Seq[SummaryListRow],
+                                         status: Tag,
+                                         penaltyChargeReference: Option[String],
+                                         principalChargeReference: String,
+                                         isPenaltyPaid: Boolean,
+                                         amountDue: BigDecimal = 0,
+                                         appealStatus: Option[AppealStatusEnum.Value] = None,
+                                         appealLevel: Option[AppealLevelEnum.Value] = None,
+                                         isVatPaid: Boolean = false,
+                                         penaltyCategory: LPPPenaltyCategoryEnum.Value,
+                                         dueDate: String,
+                                         taxPeriodStartDate: String,
+                                         taxPeriodEndDate: String,
+                                         isAgent: Boolean = false,
+                                         isCentralAssessment: Boolean = false,
+                                         vatOutstandingAmountInPence: Int,
+                                         isTTPActive: Boolean = false)

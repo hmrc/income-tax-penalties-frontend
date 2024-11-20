@@ -18,10 +18,8 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
 
 import play.api.libs.json.{Format, Json}
 
-case class LateSubmissionPenalty(
-                                  summary: LSPSummary,
-                                  details: Seq[LSPDetails]
-                                )
+case class LateSubmissionPenalty(summary: LSPSummary,
+                                 details: Seq[LSPDetails])
 
 object LateSubmissionPenalty {
   implicit val format: Format[LateSubmissionPenalty] = Json.format[LateSubmissionPenalty]

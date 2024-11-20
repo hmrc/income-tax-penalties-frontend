@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config
 
-import play.api.Logging
+
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models.FeatureSwitch
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 
-trait FeatureSwitching extends Logging {
+trait FeatureSwitching {
 
   val appConfig: AppConfig
 

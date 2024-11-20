@@ -38,7 +38,7 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
 
-  lazy val penaltiesUrl: String = s"${servicesConfig.baseUrl("income-tax-penalties-frontend")}/penalties"
+  lazy val penaltiesUrl: String = s"${servicesConfig.baseUrl("penalties")}/penalties"
 
   lazy val signInUrl: String = config.get[String]("signIn.url")
 
