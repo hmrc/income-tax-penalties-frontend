@@ -18,7 +18,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.featureSwitches.FeatureSwitch.FeatureSwitch
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import java.net.URLEncoder
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 
 @Singleton
 class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) {
@@ -32,9 +36,33 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val surveyOrigin: String =
     servicesConfig.getString("exit-survey-origin")
-  val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
+  lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
 
-  val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
+  lazy val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
+
+  def isFeatureSwitchEnabled(featureSwitch: FeatureSwitch): Boolean = config.get[Boolean](featureSwitch.name)
+
+  lazy val featureTimeNow = servicesConfig.getString("feature.switch.time-machine-now")
+
+  lazy val penaltiesUrl: String = s"${servicesConfig.baseUrl("income-tax-penalties-frontend")}/penalties"
+
+  lazy val signInUrl: String = config.get[String]("signIn.url")
+
+  val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
+  val vatAgentClientLookupFrontendStartUrl: String = "vat-agent-client-lookup-frontend.startUrl"
+  private lazy val platformHost = servicesConfig.getString("host")
+
+  private lazy val agentClientLookupRedirectUrl: String => String = uri => URLEncoder.encode(RedirectUrl(platformHost + uri).unsafeValue, "UTF-8")
+
+  private lazy val agentClientLookupHost = servicesConfig.getConfString(vatAgentClientLookupFrontendHost, "")
+
+  lazy val agentClientLookupStartUrl: String => String = (uri: String) =>
+    agentClientLookupHost +
+      servicesConfig.getConfString(vatAgentClientLookupFrontendStartUrl, "") +
+      s"?redirectUrl=${agentClientLookupRedirectUrl(uri)}"
+
+  lazy val penaltiesAppealsBaseUrl: String = config.get[String]("urls.penaltiesAppealsBaseurl") + "/penalties-appeals"
+
 
 
 }

@@ -18,10 +18,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, InjectedController}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.services.FeatureSwitchService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models.FeatureSwitchSetting
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 
 import javax.inject.{Inject, Singleton}
 

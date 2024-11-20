@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
+package controllers
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -23,6 +23,7 @@ import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
 

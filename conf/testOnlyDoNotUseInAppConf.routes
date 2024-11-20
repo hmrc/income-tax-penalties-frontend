@@ -18,3 +18,4 @@ GET        /penalties/income-tax/test-only/api/feature-switches                 
 POST       /penalties/income-tax/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.updateFeatureSwitches()
 
 ->         /                                                                     prod.Routes
+
