@@ -34,7 +34,6 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
     servicesConfig.getString("exit-survey-origin")
   val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
 
-  val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
-
+  val alphaBannerUrl: String = servicesConfig.getString("alpha-banner-url")
 
 }
