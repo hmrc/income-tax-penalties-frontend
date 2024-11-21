@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.base.testData
+package uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail, ObligationIdentification}
 

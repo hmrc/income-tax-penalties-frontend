@@ -18,11 +18,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.{ImplicitDateFormatter, PagerDutyHelper, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, ImplicitDateFormatter, PagerDutyHelper, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.PagerDutyHelper.PagerDutyKeys
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -33,17 +33,17 @@ class CalculationPageHelper @Inject()(timeMachine: TimeMachine)
   def getCalculationRowForLPP(lpp: LPPDetails)(implicit messages: Messages): Option[Seq[String]] = {
     (lpp.LPP1LRCalculationAmount, lpp.LPP1HRCalculationAmount) match {
       case (Some(amountOnDay15), Some(amountOnDay31)) =>
-        val amountOnDay15ParsedAsString = CurrencyFormatter.parseBigDecimalToFriendlyValue(amountOnDay15)
-        val amountOnDay31ParsedAsString = CurrencyFormatter.parseBigDecimalToFriendlyValue(amountOnDay31)
-        val penaltyAmountOnDay15 = CurrencyFormatter.parseBigDecimalToFriendlyValue(amountOnDay15 * 0.02)
-        val penaltyAmountOnDay31 = CurrencyFormatter.parseBigDecimalToFriendlyValue(amountOnDay31 * 0.02)
+        val amountOnDay15ParsedAsString = f"$amountOnDay15%,.2f"
+        val amountOnDay31ParsedAsString = f"$amountOnDay31%,.2f"
+        val penaltyAmountOnDay15 = f"${amountOnDay15 * 0.02}%,.2f"
+        val penaltyAmountOnDay31 = f"${amountOnDay31 * 0.02}%,.2f"
         val firstCalculation = messages("calculation.key.2.text.remove.30.days",
           s"${lpp.LPP1LRPercentage.get}", amountOnDay15ParsedAsString, messages("calculation.lpp1.15days"), penaltyAmountOnDay15)
         val secondCalculation = messages("calculation.key.2.text.remove.30.days",
           s"${lpp.LPP1HRPercentage.get}", amountOnDay31ParsedAsString, messages("calculation.lpp1.30days"), penaltyAmountOnDay31)
         Some(Seq(firstCalculation, secondCalculation))
       case (Some(amountOnDay15), None) =>
-        val amountOnDay15ParsedAsString = CurrencyFormatter.parseBigDecimalToFriendlyValue(amountOnDay15)
+        val amountOnDay15ParsedAsString = f"$amountOnDay15%,.2f"
         val calculation = messages("calculation.key.2.text",
           s"${lpp.LPP1LRPercentage.get}", amountOnDay15ParsedAsString, messages("calculation.lpp1.15days"))
         Some(Seq(calculation))

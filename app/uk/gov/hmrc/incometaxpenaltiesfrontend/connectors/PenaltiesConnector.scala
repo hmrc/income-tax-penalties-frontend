@@ -23,15 +23,15 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.ComplianceDataResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.GetPenaltyDetailsResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
 
 import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
-                                   val appConfig: AppConfig)(implicit ec: ExecutionContext) extends FeatureSwitching {
-
+                                   val appConfig: AppConfig
+                                  )(implicit ec: ExecutionContext) extends FeatureSwitching {
 
   def getPenaltyDetails(enrolmentKey: String, optArn: Option[String] = None)
                        (implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
@@ -42,12 +42,12 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
       .execute[GetPenaltyDetailsResponse]
   }
 
-  def getObligationData(mtditid: String, fromDate: LocalDate, toDate: LocalDate)
+  def getObligationData(mtdItId: String, fromDate: LocalDate, toDate: LocalDate)
                        (implicit hc: HeaderCarrier): Future[ComplianceDataResponse] = {
-    logger.info(s"[PenaltiesConnector][getObligationData] - Requesting obligation data from backend for MTDITID $mtditid.")
+    logger.info(s"[PenaltiesConnector][getObligationData] - Requesting obligation data from backend for MTDITID $mtdItId.")
 
     httpClient
-      .get(url"${appConfig.penaltiesUrl + s"/compliance/des/compliance-data?mtditid=$mtditid&fromDate=$fromDate&toDate=$toDate"}")
+      .get(url"${appConfig.penaltiesUrl + s"/compliance/des/compliance-data?mtditid=$mtdItId&fromDate=$fromDate&toDate=$toDate"}")
       .execute[ComplianceDataResponse]
   }
 

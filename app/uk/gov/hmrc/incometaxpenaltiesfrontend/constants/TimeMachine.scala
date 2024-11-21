@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.constants
 
-object Logger {
+import java.time.LocalDate
+import javax.inject.{Inject, Singleton}
 
-  val logger: play.api.Logger = play.api.Logger("incomeTaxPenaltiesFrontendLogger")
+@Singleton
+class TimeMachine @Inject()() {
+
+  def getCurrentDate: LocalDate = LocalDate.now()
 
 }

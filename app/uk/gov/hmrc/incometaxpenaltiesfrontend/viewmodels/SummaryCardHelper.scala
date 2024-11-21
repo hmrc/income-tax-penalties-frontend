@@ -22,14 +22,13 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.ImplicitDateFormatter
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.User
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyStatusEnum.Posted
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.MainTransactionEnum._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, MainTransactionEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, ImplicitDateFormatter}
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -273,14 +272,16 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
 
   def pointsThresholdMet(threshold: Int, activePoints: Int): Boolean = activePoints >= threshold
 
-  def populateLatePaymentPenaltyCard(lpp: Option[Seq[LPPDetails]])
-                                    (implicit messages: Messages, user: User[_]): Option[Seq[LatePaymentPenaltySummaryCard]] = {
+  def populateLatePaymentPenaltyCard(lpp: Option[Seq[LPPDetails]],
+                                     mtdItId: String,
+                                     isAgent: Boolean)
+                                    (implicit messages: Messages): Option[Seq[LatePaymentPenaltySummaryCard]] = {
     lpp.map {
-      _.map(penalty => lppSummaryCard(penalty))
+      _.map(penalty => lppSummaryCard(penalty, mtdItId, isAgent))
     }
   }
 
-  def lppSummaryCard(lpp: LPPDetails)(implicit messages: Messages, user: User[_]): LatePaymentPenaltySummaryCard = {
+  def lppSummaryCard(lpp: LPPDetails, mtdItId: String, isAgent: Boolean)(implicit messages: Messages): LatePaymentPenaltySummaryCard = {
     val cardBody = {
       lpp.penaltyCategory match {
         case LPPPenaltyCategoryEnum.MANUAL => lppManual(lpp)
@@ -291,18 +292,18 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
     val isPaid = isPenaltyPaid(lpp)
     val isVatPaid = lpp.principalChargeLatestClearing.isDefined
     val appealInformationWithoutUnappealableStatus = lpp.appealInformation.map(_.filterNot(_.appealStatus.contains(AppealStatusEnum.Unappealable))).getOrElse(Seq.empty)
-    val isTTPActive = calculationPageHelper.isTTPActive(lpp, user.vrn)
+    val isTTPActive = calculationPageHelper.isTTPActive(lpp, mtdItId)
     if (appealInformationWithoutUnappealableStatus.nonEmpty) {
       buildLPPSummaryCard(cardBody :+ summaryListRow(
         messages("summaryCard.appeal.status"),
         returnAppealStatusMessageBasedOnPenalty(None, Some(lpp))
-      ), lpp, isPaid, isVatPaid, isTTPActive)
+      ), lpp, isPaid, isVatPaid, isTTPActive, isAgent)
     } else if (!isVatPaid && !lpp.penaltyCategory.equals(LPPPenaltyCategoryEnum.MANUAL)) {
       buildLPPSummaryCard(cardBody :+ SummaryListRow(),
-        lpp, isPaid, isVatPaid, isTTPActive)
+        lpp, isPaid, isVatPaid, isTTPActive, isAgent)
     } else {
       buildLPPSummaryCard(cardBody,
-        lpp, isPaid, isVatPaid, isTTPActive)
+        lpp, isPaid, isVatPaid, isTTPActive, isAgent)
     }
   }
 
@@ -330,8 +331,12 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
   )
 
   private def buildLPPSummaryCard(rows: Seq[SummaryListRow],
-                                  lpp: LPPDetails, isPaid: Boolean, isVatPaid: Boolean, isTTPActive: Boolean)
-                                 (implicit messages: Messages, user: User[_]): LatePaymentPenaltySummaryCard = {
+                                  lpp: LPPDetails,
+                                  isPaid: Boolean,
+                                  isVatPaid: Boolean,
+                                  isTTPActive: Boolean,
+                                  isAgent: Boolean)
+                                 (implicit messages: Messages): LatePaymentPenaltySummaryCard = {
     val amountDue = if (lpp.penaltyStatus == Posted) lpp.penaltyAmountPosted else lpp.penaltyAmountAccruing
     val appealStatus = lpp.appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
     val appealLevel = lpp.appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
@@ -352,7 +357,7 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
       dueDate = dateToString(lpp.principalChargeDueDate),
       taxPeriodStartDate = lpp.principalChargeBillingFrom.toString,
       taxPeriodEndDate = lpp.principalChargeBillingTo.toString,
-      isAgent = user.isAgent,
+      isAgent = isAgent,
       isCentralAssessment = isCentralAssessment,
       vatOutstandingAmountInPence = vatOustandingAmount,
       isTTPActive = isTTPActive
@@ -453,7 +458,7 @@ class SummaryCardHelper @Inject()(val appConfig: AppConfig, calculationPageHelpe
   def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: Option[BigDecimal], penaltyAmountPaid: BigDecimal)(implicit messages: Messages): Tag = (penaltyAmountOutstanding, penaltyAmountPaid) match {
     case (Some(outstanding), _) if outstanding == 0 => renderTag(messages("status.paid"))
     case (Some(outstanding), paid) if paid > 0 =>
-      renderTag(messages("status.partialPayment.due", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(outstanding)), "penalty-due-tag")
+      renderTag(messages("status.partialPayment.due", f"$outstanding".replace(".00", "")), "penalty-due-tag")
     case _ => renderTag(messages("status.due"), "penalty-due-tag")
   }
 

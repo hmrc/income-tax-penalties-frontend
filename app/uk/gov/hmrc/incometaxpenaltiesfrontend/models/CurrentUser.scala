@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models
 
-object SessionKeys {
-  val agentSessionVrn = "mtdVatvcClientVrn"
-  val pocAchievementDate = "pocAchievementDate"
-  val regimeThreshold = "regimeThreshold"
-
-  val allKeysExcludingAgentVRN = Seq(
-    pocAchievementDate,
-    regimeThreshold
-  )
+case class CurrentUser(mtdItId: String, arn: Option[String] = None) {
+  val isAgent: Boolean = arn.isDefined
 }

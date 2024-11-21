@@ -1,5 +1,5 @@
-@*
- * Copyright 2024 HM Revenue & Customs
+/*
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,16 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(main: MainTemplate)
+package uk.gov.hmrc.incometaxpenaltiesfrontend.constants
 
-@()(implicit request: RequestHeader, messages: Messages)
-
-@main(pageTitle = "Unauthorised") {
-    <h1 class="govuk-heading-xl">Unauthorised</h1>
-}
-
-@{
-    //$COVERAGE-OFF$
+object IncomeTaxSessionKeys {
+  val agentSessionMtditid = "ClientMTDID"
+  val pocAchievementDate = "pocAchievementDate"
+  val regimeThreshold = "regimeThreshold"
 }

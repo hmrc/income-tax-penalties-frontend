@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.constants
 
-trait CurrencyFormatter {
-  def currencyFormatAsNonHTMLString(amt: BigDecimal): String = f"£$amt%,1.2f".replace(".00", "")
+object Logger {
 
-  def parseBigDecimalToFriendlyValue(amount: BigDecimal): String = {
-    "%,.2f".format(amount)
-  }
+  val logger: play.api.Logger = play.api.Logger("incomeTaxPenaltiesFrontendLogger")
 
-  def parseBigDecimalNoPaddedZeroToFriendlyValue(amount: BigDecimal): String = {
-    "%,.2f".format(amount).replace(".00", "")
-  }
 }
-
-object CurrencyFormatter extends CurrencyFormatter

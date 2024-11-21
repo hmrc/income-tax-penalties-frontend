@@ -17,32 +17,35 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.mvc._
+import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.AuthPredicate
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.ImplicitDateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.ImplicitDateFormatter
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppealsController @Inject()(authorise: AuthPredicate,
+class AppealsController @Inject()(val authConnector: AuthConnector,
                                   mcc: MessagesControllerComponents
-                               )(implicit val appConfig: AppConfig, ec: ExecutionContext) extends FrontendController(mcc) with FeatureSwitching with ImplicitDateFormatter {
+                                 )(implicit val appConfig: AppConfig,
+                                   ec: ExecutionContext) extends AuthenticatedController(mcc) with FeatureSwitching with ImplicitDateFormatter {
 
   def redirectToAppeals(penaltyId: String,
                         isLPP: Boolean = false,
                         isFindOutHowToAppealLSP: Boolean = false,
                         isLPP2: Boolean = false): Action[AnyContent] =
-    authorise.async {
+    isAuthenticated {
+      implicit request =>
+        implicit currentUser =>
       logger.debug(s"[IndexController][redirectToAppeals] - Redirect to appeals frontend with id $penaltyId and is late payment penalty: $isLPP " +
         s"and cannot be appealed: $isFindOutHowToAppealLSP and is LPP2: $isLPP2")
       if (isFindOutHowToAppealLSP) {
-        Future(Redirect(s"${appConfig.penaltiesAppealsBaseUrl}" +
+        Future(Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}" +
           s"/initialise-appeal-against-the-obligation?penaltyId=$penaltyId"))
       } else {
-        Future(Redirect(s"${appConfig.penaltiesAppealsBaseUrl}/initialise-appeal?penaltyId=$penaltyId&isLPP=$isLPP&isAdditional=$isLPP2"))
+        Future(Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal?penaltyId=$penaltyId&isLPP=$isLPP&isAdditional=$isLPP2"))
       }
     }
 
@@ -52,9 +55,12 @@ class AppealsController @Inject()(authorise: AuthPredicate,
                                       vatPeriodStartDate: String,
                                       vatPeriodEndDate: String,
                                       isCa: Boolean = false): Action[AnyContent] =
-    authorise.async {
+    isAuthenticated {
+      implicit request =>
+        implicit currentUser =>
       logger.debug(s"[IndexController][redirectToFindOutHowToAppealLPP] - Redirect to appeals frontend with principleChargeReference: $principalChargeReference " +
         s"and has vatPeriodStartDate: $vatPeriodStartDate and has vatPeriodEndDate: $vatPeriodEndDate and has vatAmountInPence: $vatAmountInPence and is Ca: $isCa")
-      Future(Redirect(s"${appConfig.penaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&vatAmountInPence=$vatAmountInPence&vatPeriodStartDate=$vatPeriodStartDate&vatPeriodEndDate=$vatPeriodEndDate&isCa=$isCa"))
+      Future(Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&vatAmountInPence=$vatAmountInPence&vatPeriodStartDate=$vatPeriodStartDate&vatPeriodEndDate=$vatPeriodEndDate&isCa=$isCa"))
     }
+
 }

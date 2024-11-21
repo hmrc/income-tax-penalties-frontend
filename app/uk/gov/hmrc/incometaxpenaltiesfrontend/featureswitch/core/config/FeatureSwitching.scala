@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models.FeatureSwitch
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
 
 trait FeatureSwitching {
 

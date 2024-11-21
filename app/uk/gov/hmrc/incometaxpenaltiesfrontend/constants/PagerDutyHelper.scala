@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.constants
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import Logger.logger
 
 object PagerDutyHelper {
 

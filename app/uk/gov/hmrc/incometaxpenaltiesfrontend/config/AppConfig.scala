@@ -55,7 +55,7 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
       servicesConfig.getConfString(vatAgentClientLookupFrontendStartUrl, "") +
       s"?redirectUrl=${agentClientLookupRedirectUrl(uri)}"
 
-  lazy val penaltiesAppealsBaseUrl: String = config.get[String]("urls.penaltiesAppealsBaseurl") + "/penalties-appeals"
+  lazy val incomeTaxPenaltiesAppealsBaseUrl: String = config.get[String]("urls.penaltiesAppealsBaseurl") + "/penalties-appeals/income-tax"
 
 
 

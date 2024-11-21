@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.constants
 
-import java.time.LocalDate
-import javax.inject.{Inject, Singleton}
+import play.api.libs.json.{JsNull, JsObject, Json}
 
-@Singleton
-class TimeMachine @Inject()() {
-
-  def getCurrentDate: LocalDate = LocalDate.now()
-
+trait JsonUtils {
+  def jsonObjNoNulls(fields: (String, Json.JsValueWrapper)*): JsObject =
+    JsObject(Json.obj(fields:_*).fields.filterNot(_._2 == JsNull).filterNot(_._2 == Json.obj()))
 }

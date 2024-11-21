@@ -20,9 +20,9 @@ import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.PagerDutyHelper
+import PagerDutyHelper.PagerDutyKeys._
 
 object GetPenaltyDetailsParser {
 
