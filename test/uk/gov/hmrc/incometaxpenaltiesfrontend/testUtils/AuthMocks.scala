@@ -47,9 +47,9 @@ trait AuthMocks extends SpecBase  {
       new ~(Some(AffinityGroup.Organisation),
         Enrolments(
           Set(
-            Enrolment("HMRC-MTD-VAT",
+            Enrolment("HMRC-MTD-IT",
               Seq(
-                EnrolmentIdentifier("VRN", vrn)
+                EnrolmentIdentifier("MTDITID", vrn)
               ),
               "Activated"
             )
@@ -65,7 +65,7 @@ trait AuthMocks extends SpecBase  {
       Enrolments(
         Set(
           Enrolment(
-            "HMRC-AS-AGENT",
+            "HMRC-MTD-IT",
             Seq(EnrolmentIdentifier("AgentReferenceNumber", "1234567")),
             "Activated"
           )
@@ -94,7 +94,7 @@ trait AuthMocks extends SpecBase  {
       new ~(Some(AffinityGroup.Organisation),
         Enrolments(
           Set(
-            Enrolment("HMRC-MTD-VAT",
+            Enrolment("HMRC-MTD-IT",
               Seq(
                 EnrolmentIdentifier("VRN", vrn)
               ),
@@ -110,7 +110,7 @@ trait AuthMocks extends SpecBase  {
       new ~(None,
         Enrolments(
           Set(
-            Enrolment("HMRC-MTD-VAT",
+            Enrolment("HMRC-MTD-IT",
               Seq(
                 EnrolmentIdentifier("VRN", vrn)
               ),
@@ -150,9 +150,9 @@ trait AuthMocks extends SpecBase  {
                 EnrolmentIdentifier("UTR", "123456789")
               ),
               "Activated"),
-            Enrolment("HMRC-MTD-VAT",
+            Enrolment("HMRC-MTD-IT",
               Seq(
-                EnrolmentIdentifier("VRN", vrn)
+                EnrolmentIdentifier("MTDITID", vrn)
               ),
               "Activated"
             ),
