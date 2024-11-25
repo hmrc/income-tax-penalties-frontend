@@ -77,10 +77,11 @@ trait ComponentSpecHelper
     super.beforeEach()
   }
 
-  def get[T](uri: String, isAgent: Boolean = false, cookie: WSCookie = enLangCookie): WSResponse = {
+  def get[T](uri: String, isAgent: Boolean = false, cookie: WSCookie = enLangCookie, queryParams: Map[String, String] = Map.empty): WSResponse = {
     await(buildClient(uri)
       .withHttpHeaders("Authorization" -> "Bearer 123")
       .withCookies(cookie, mockSessionCookie(isAgent))
+      .withQueryStringParameters(queryParams.toSeq: _*)
       .get())
   }
 

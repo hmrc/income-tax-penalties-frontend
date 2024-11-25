@@ -29,74 +29,75 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub {
   "GET /appeal-penalty" should {
     "redirect the individual to the appeals service when the penalty is a LSP" in {
       stubAuth(OK, successfulIndividualAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234")
+
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234"))
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false")
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP1" in {
       stubAuth(OK, successfulIndividualAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234&isLPP=true")
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true"))
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false")
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP2" in {
       stubAuth(OK, successfulIndividualAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234&isLPP=true&isLPP2=true")
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true", "isLPP2" -> "true"))
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true")
     }
 
     "redirect the individual to the obligations appeals service when the penalty is a LSP" in {
       stubAuth(OK, successfulIndividualAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234&isFindOutHowToAppealLSP=true")
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isFindOutHowToAppealLSP" -> "true"))
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-against-the-obligation?penaltyId=1234"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-against-the-obligation?penaltyId=1234")
     }
 
     "redirect the agent to the appeals service when the penalty is a LSP" in {
       stubAuth(OK, successfulAgentAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234", isAgent = true)
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false")
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP1" in {
       stubAuth(OK, successfulAgentAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234&isLPP=true", isAgent = true)
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false")
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP2" in {
       stubAuth(OK, successfulAgentAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234&isLPP=true&isLPP2=true", isAgent = true)
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true", "isLPP2" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true")
     }
 
     "redirect the agent to the obligations appeals service when the penalty is a LSP" in {
       stubAuth(OK, successfulAgentAuthResponse)
-      val result = get("/appeal-penalty\\?penaltyId=1234&isFindOutHowToAppealLSP=true", isAgent = true)
+      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isFindOutHowToAppealLSP" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe "http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-against-the-obligation?penaltyId=1234"
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-against-the-obligation?penaltyId=1234")
     }
   }
 }

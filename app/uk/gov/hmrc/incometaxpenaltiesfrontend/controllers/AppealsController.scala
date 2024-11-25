@@ -33,9 +33,9 @@ class AppealsController @Inject()(val authConnector: AuthConnector,
                                    ec: ExecutionContext) extends AuthenticatedController(mcc) with FeatureSwitching with ImplicitDateFormatter {
 
   def redirectToAppeals(penaltyId: String,
-                        isLPP: Boolean = false,
-                        isFindOutHowToAppealLSP: Boolean = false,
-                        isLPP2: Boolean = false): Action[AnyContent] =
+                        isLPP: Boolean,
+                        isFindOutHowToAppealLSP: Boolean,
+                        isLPP2: Boolean): Action[AnyContent] =
     isAuthenticated {
       implicit request =>
         implicit currentUser =>
