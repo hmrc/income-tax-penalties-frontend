@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.constants
+package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
 import play.api.i18n.Messages
 

@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.stubs
 import play.api.http.HeaderNames
 import play.api.libs.json.{JsObject, Json, Writes}
 import play.api.test.Helpers.UNAUTHORIZED
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.EnrolmentUtil
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.WiremockMethods
 
 trait AuthStub extends WiremockMethods {

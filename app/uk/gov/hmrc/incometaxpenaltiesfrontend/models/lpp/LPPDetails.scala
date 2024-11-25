@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
 
 import play.api.libs.json._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.JsonUtils
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformationType
 
 import java.time.LocalDate

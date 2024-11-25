@@ -22,7 +22,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.auth.core.authorise.EmptyPredicate
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, Enrolment, EnrolmentIdentifier, Enrolments, InternalError, MissingBearerToken}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.EnrolmentUtil
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil
 
 import scala.concurrent.Future
 

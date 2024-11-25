@@ -19,10 +19,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.ImplicitDateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.ImplicitDateFormatter
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -54,7 +54,7 @@ class AppealsController @Inject()(val authConnector: AuthConnector,
                                       vatAmountInPence: Int,
                                       vatPeriodStartDate: String,
                                       vatPeriodEndDate: String,
-                                      isCa: Boolean = false): Action[AnyContent] =
+                                      isCa: Boolean): Action[AnyContent] =
     isAuthenticated {
       implicit request =>
         implicit currentUser =>

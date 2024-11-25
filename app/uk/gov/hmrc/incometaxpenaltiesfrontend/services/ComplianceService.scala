@@ -22,9 +22,9 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.{PagerDutyHelper, IncomeTaxSessionKeys}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.PagerDutyHelper.PagerDutyKeys.POC_ACHIEVEMENT_DATE_NOT_FOUND
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{PagerDutyHelper, IncomeTaxSessionKeys}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys.POC_ACHIEVEMENT_DATE_NOT_FOUND
 
 import java.time.LocalDate
 import javax.inject.Inject

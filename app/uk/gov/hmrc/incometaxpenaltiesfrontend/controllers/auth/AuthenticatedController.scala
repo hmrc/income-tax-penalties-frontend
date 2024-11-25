@@ -23,9 +23,9 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{affinityGroup, allEnrolment
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUser
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.EnrolmentUtil.{AuthReferenceExtractor, agentDelegatedAuthorityRule}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.IncomeTaxSessionKeys
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.{AuthReferenceExtractor, agentDelegatedAuthorityRule}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject

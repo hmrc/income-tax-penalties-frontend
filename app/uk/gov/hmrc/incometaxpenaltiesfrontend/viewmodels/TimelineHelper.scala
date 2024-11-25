@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.{ImplicitDateFormatter, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.Timeline

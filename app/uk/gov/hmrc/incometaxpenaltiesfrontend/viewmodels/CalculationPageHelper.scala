@@ -18,11 +18,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.{ImplicitDateFormatter, PagerDutyHelper, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, PagerDutyHelper, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.constants.PagerDutyHelper.PagerDutyKeys
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 
 import java.time.LocalDate
 import javax.inject.Inject
