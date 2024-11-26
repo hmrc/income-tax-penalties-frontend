@@ -23,7 +23,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.test.Helpers.fakeRequest
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.ComplianceDataTestData
@@ -33,7 +32,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.test.Helpers._
 
 class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData {
 
