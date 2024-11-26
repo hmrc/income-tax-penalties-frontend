@@ -40,15 +40,14 @@ individual.main.actions.to.remove.link = Actions to take to get your points remo
 session.expired.h1 = For your security, this service has been reset
 
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
-<<<<<<< HEAD
 
 whatIsOwed.lsp.onePoint = 1 late submission penalty point
 whatIsOwed.lsp.multiPoints = {0} late submission penalty points
 whatIsOwed.lsp.max = the maximum number of late submission penalty points
-=======
+
 calculations.view.calculations = View calculation
 calculation.h1 = {0} penalty for late payment
 calculation.p1 = This penalty applies if Income Tax has not been paid for 30 days.
 calculation.p2 = It is made up of 2 parts:
 calculation.return.link = Return to Self Assessment penalties and appeals
->>>>>>> main
+
