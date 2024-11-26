@@ -79,7 +79,7 @@ trait ViewSpecHelper {
 
     def getBanner: Elements = element.getElementsByClass("govuk-phase-banner__text")
 
-    lazy val getSignOutLink: String = element.select(".hmrc-sign-out-nav__link").attr("href")
+    lazy val getSignOutLink: String = element.select(".hmrc-account-menu__link").get(6).attr("href")
 
     lazy val getSignOutText: String = element.select(".hmrc-sign-out-nav__link").text
 

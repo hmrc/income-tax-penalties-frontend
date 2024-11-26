@@ -18,35 +18,62 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import org.jsoup.Jsoup
 import play.api.http.Status.OK
+import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
 
-class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper {
-
+class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub {
 
 
   "GET /" should {
+    "return an OK with a view" when {
+      "the user is an authorised individual" in {
+        stubAuth(OK, successfulIndividualAuthResponse)
+        val result = get("/")
 
-    val result = get("/")
-    val document = Jsoup.parse(result.body)
+        result.status shouldBe OK
+      }
 
-    "return an OK with a view" in {
+      "the user is an authorised agent" in {
+        stubAuth(OK, successfulAgentAuthResponse)
+        val result = get("/", isAgent = true)
 
-      result.status shouldBe OK
-
+        result.status shouldBe OK
+      }
     }
+    "have the correct page has correct elements" when {
+      "the user is an authorised individual" in {
+        stubAuth(OK, successfulIndividualAuthResponse)
+        val result = get("/")
 
+        val document = Jsoup.parse(result.body)
 
-    "have the correct page has correct elements" in {
+        document.getServiceName.text() shouldBe "Manage your Self Assessment"
+        document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
+        document.getH2Elements.get(0).text() shouldBe "Overview"
+        document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
+        document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
+        document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
+        document.getSubmitButton.text() shouldBe "Check amounts and pay"
+        document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
+      }
 
-      document.getServiceName.text() shouldBe "Manage your Self Assessment"
-      document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
-      document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-      document.getH2Elements.get(0).text() shouldBe "Overview"
-      document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-      document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
-      document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
-      document.getSubmitButton.text() shouldBe "Check amounts and pay"
+      "the user is an authorised agent" in {
+        stubAuth(OK, successfulAgentAuthResponse)
+        val result = get("/", isAgent = true)
 
+        val document = Jsoup.parse(result.body)
+
+        document.getServiceName.text() shouldBe "Manage your Self Assessment"
+        document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
+        document.getH2Elements.get(0).text() shouldBe "Overview"
+        document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
+        document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
+        document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
+        document.getSubmitButton.text() shouldBe "Check amounts and pay"
+        document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
+      }
     }
   }
 

@@ -14,12 +14,10 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accountmenu.{AccountMenu, AccountMessages, SignOut}
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accountmenu.{AccountMenu, AccountMessages, SignOut, _}
-@import uk.gov.hmrc.hmrcfrontend.views.Implicits.RichAccountMenu
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 
 
@@ -32,8 +30,7 @@
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
         hmrcStandardPage: HmrcStandardPage,
-        link: Link,
-        appConfig: AppConfig
+        link: Link
 )
 
 @(
@@ -42,7 +39,7 @@
         disableSessionExpired: Boolean = false,
         backLinkEnabled: Boolean = true,
         signOutUrl: Option[String] = None,
-)(content: Html)(implicit request: RequestHeader, messages: Messages)
+)(content: Html)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
 
 @headBlock = {
@@ -50,7 +47,7 @@
 
     @if(!disableSessionExpired){
         @hmrcTimeoutDialogHelper(
-            signOutUrl = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSignout().url,
+            signOutUrl = appConfig.survey,
             keepAliveUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSessionExpired().url)
         )
     }
@@ -58,7 +55,7 @@
 
 @accountMenu = @{
         hmrcAccountMenu(AccountMenu(
-            signOut = SignOut(href = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSignout().url),
+            signOut = SignOut(href = appConfig.survey),
             language = if(messages.lang.code == "cy") Cy else En,
             messages = AccountMessages(messageCount = None)
         ))

@@ -16,37 +16,42 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ServiceController @Inject()(mcc: MessagesControllerComponents,
-                                  individualMainView: IndividualMainView,
-                                  sessionExpired: SessionExpired)(appConfig: AppConfig) extends FrontendController(mcc) {
+class ServiceController @Inject()(val authConnector: AuthConnector,
+                                  mcc: MessagesControllerComponents,
+                                  individualMainView: IndividualMainView
+                                 )(implicit appConfig: AppConfig,
+                                   ec: ExecutionContext) extends AuthenticatedController(mcc) {
 
 
-  val individualMain: Action[AnyContent] = Action.async { implicit request =>
+  val individualMain: Action[AnyContent] = isAuthenticated {
+    implicit request =>
+      implicit currentUser =>
     Future.successful(Ok(individualMainView()))
   }
 
-  val serviceSignout: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(sessionExpired()).withNewSession)
+
+  val serviceSessionExpired: Action[AnyContent] = isAuthenticated {
+    implicit request =>
+      implicit currentUser =>
+      Future.successful(Redirect(appConfig.survey).withNewSession)
   }
 
-  val serviceSessionExpired: Action[AnyContent] = Action {
-    Redirect(appConfig.survey).withNewSession
+  val keepAlive: Action[AnyContent] = isAuthenticated {
+    implicit request =>
+      implicit currentUser =>
+      Future.successful(NoContent)
   }
 
-
-  val keepAlive: Action[AnyContent] = Action {
-    NoContent
-  }
 }
 
 

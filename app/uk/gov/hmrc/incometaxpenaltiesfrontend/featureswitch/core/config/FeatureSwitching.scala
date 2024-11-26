@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config
 
-import play.api.Logging
+
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models.FeatureSwitch
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 
-trait FeatureSwitching extends Logging {
+trait FeatureSwitching {
 
-  val config: AppConfig
+  val appConfig: AppConfig
 
   val FEATURE_SWITCH_ON = "true"
   val FEATURE_SWITCH_OFF = "false"
@@ -30,7 +31,7 @@ trait FeatureSwitching extends Logging {
   def isEnabled(featureSwitch: FeatureSwitch): Boolean =
     sys.props get featureSwitch.configName match {
       case Some(value) => value == FEATURE_SWITCH_ON
-      case None => config.getFeatureSwitchValue(featureSwitch.configName)
+      case None => appConfig.getFeatureSwitchValue(featureSwitch.configName)
     }
 
   def enable(featureSwitch: FeatureSwitch): Unit = {

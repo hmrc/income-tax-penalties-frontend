@@ -27,7 +27,7 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class FeatureSwitchApiController @Inject()(featureSwitchService: FeatureSwitchService,
-                                          val config: AppConfig) extends InjectedController with FeatureSwitching {
+                                          val appConfig: AppConfig) extends InjectedController with FeatureSwitching {
 
   def getFeatureSwitches: Action[AnyContent] = Action {
     Ok(Json.toJson(featureSwitchService.getFeatureSwitches()))

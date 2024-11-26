@@ -28,7 +28,7 @@ import scala.concurrent.Future
 @Singleton
 class PenaltyCalculationController @Inject()(mcc: MessagesControllerComponents,
                                              penaltyCalculationView: PenaltyCalculation,
-                                             sessionExpired: SessionExpired)(appConfig: AppConfig) extends FrontendController(mcc) {
+                                             sessionExpired: SessionExpired)(implicit appConfig: AppConfig) extends FrontendController(mcc) {
 
 
   val penaltyCalculationPage: Action[AnyContent] = Action.async { implicit request =>

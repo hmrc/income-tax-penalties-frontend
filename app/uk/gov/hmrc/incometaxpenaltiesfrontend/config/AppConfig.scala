@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import java.net.URLEncoder
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) {
@@ -30,10 +33,29 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
 
-  lazy val surveyOrigin: String =
-    servicesConfig.getString("exit-survey-origin")
-  val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
+  lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
+  lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
 
-  val alphaBannerUrl: String = servicesConfig.getString("alpha-banner-url")
+  lazy val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
+
+  lazy val penaltiesUrl: String = s"${servicesConfig.baseUrl("penalties")}/penalties"
+
+  lazy val signInUrl: String = config.get[String]("signIn.url")
+
+  val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
+  val vatAgentClientLookupFrontendStartUrl: String = "vat-agent-client-lookup-frontend.startUrl"
+  private lazy val platformHost = servicesConfig.getString("host")
+
+  private lazy val agentClientLookupRedirectUrl: String => String = uri => URLEncoder.encode(RedirectUrl(platformHost + uri).unsafeValue, "UTF-8")
+
+  private lazy val agentClientLookupHost = servicesConfig.getConfString(vatAgentClientLookupFrontendHost, "")
+
+  lazy val agentClientLookupStartUrl: String => String = (uri: String) =>
+    agentClientLookupHost +
+      servicesConfig.getConfString(vatAgentClientLookupFrontendStartUrl, "") +
+      s"?redirectUrl=${agentClientLookupRedirectUrl(uri)}"
+
+  lazy val incomeTaxPenaltiesAppealsBaseUrl: String = config.get[String]("urls.incomeTaxPenaltiesAppealsBaseUrl") + "/penalties-appeals/income-tax"
+
 
 }

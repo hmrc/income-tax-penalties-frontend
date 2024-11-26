@@ -23,6 +23,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.test.FakeRequest
 import play.api.inject.guice.GuiceApplicationBuilder
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.ErrorHandler
 
 class ErrorHandlerSpec extends AnyWordSpec
   with Matchers
