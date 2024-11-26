@@ -57,6 +57,10 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val incomeTaxPenaltiesAppealsBaseUrl: String = config.get[String]("urls.incomeTaxPenaltiesAppealsBaseUrl") + "/penalties-appeals/income-tax"
 
+<<<<<<< HEAD
 
+=======
+  val alphaBannerUrl: String = servicesConfig.getString("alpha-banner-url")
+>>>>>>> main
 
 }

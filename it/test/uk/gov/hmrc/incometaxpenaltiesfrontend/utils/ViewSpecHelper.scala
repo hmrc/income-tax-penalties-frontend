@@ -69,9 +69,9 @@ trait ViewSpecHelper {
 
     def getDetailsSummary: String = element.getElementsByClass("govuk-details__summary-text").text()
 
-    def getSummaryListQuestion: String = element.getElementsByClass("govuk-summary-list__key").text
+    def getSummaryListQuestion: Elements = element.getElementsByClass("govuk-summary-list__key")
 
-    def getSummaryListAnswer: String = element.getElementsByClass("govuk-summary-list__value").text
+    def getSummaryListAnswer: Elements = element.getElementsByClass("govuk-summary-list__value")
 
     def getSummaryListChangeLink: String = element.select("dd.govuk-summary-list__actions > a").attr("href")
 

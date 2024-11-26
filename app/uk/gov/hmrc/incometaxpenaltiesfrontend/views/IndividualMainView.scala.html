@@ -174,11 +174,20 @@
         </div>
     </div>
 }
+@calculationViewLink = {
+    @link(
+        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.PenaltyCalculationController.penaltyCalculationPage.url,
+        messageKey = messages("calculations.view.calculations"),
+        id = Some("viewCalculations")
+    )
+}
 
 @pastYearHtml = {
     @h2(msg = "general.main.lpp", elmId = "lppHeading")
 
     @p("general.main.no.lpp")
+
+    @calculationViewLink
 }
 
 @main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
