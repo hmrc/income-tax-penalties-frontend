@@ -51,16 +51,15 @@ class AppealsController @Inject()(val authConnector: AuthConnector,
 
 
   def redirectToFindOutHowToAppealLPP(principalChargeReference: String,
-                                      vatAmountInPence: Int,
-                                      vatPeriodStartDate: String,
-                                      vatPeriodEndDate: String,
-                                      isCa: Boolean): Action[AnyContent] =
+                                      itsaAmountInPence: Int,
+                                      itsaPeriodStartDate: String,
+                                      itsaPeriodEndDate: String): Action[AnyContent] =
     isAuthenticated {
       implicit request =>
         implicit currentUser =>
       logger.debug(s"[IndexController][redirectToFindOutHowToAppealLPP] - Redirect to appeals frontend with principleChargeReference: $principalChargeReference " +
-        s"and has vatPeriodStartDate: $vatPeriodStartDate and has vatPeriodEndDate: $vatPeriodEndDate and has vatAmountInPence: $vatAmountInPence and is Ca: $isCa")
-      Future(Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&vatAmountInPence=$vatAmountInPence&vatPeriodStartDate=$vatPeriodStartDate&vatPeriodEndDate=$vatPeriodEndDate&isCa=$isCa"))
+        s"and has itsaPeriodStartDate: $itsaPeriodStartDate and has itsaPeriodEndDate: $itsaPeriodEndDate and has itsaAmountInPence: $itsaAmountInPence")
+      Future(Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&itsaAmountInPence=$itsaAmountInPence&itsaPeriodStartDate=$itsaPeriodStartDate&itsaPeriodEndDate=$itsaPeriodEndDate"))
     }
 
 }

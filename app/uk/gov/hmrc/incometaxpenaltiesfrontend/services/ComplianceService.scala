@@ -30,15 +30,17 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit val appConfig: AppConfig) extends FeatureSwitching {
+class ComplianceService @Inject()(connector: PenaltiesConnector) (implicit ec: ExecutionContext) {
 
-  def getDESComplianceData(vrn: String)(implicit hc: HeaderCarrier, request: Request[_],
-                                        ec: ExecutionContext, pocAchievementDate: Option[LocalDate] = None): Future[Option[ComplianceData]] = {
+  def getDESComplianceData(mtdItId: String,
+                           pocAchievementDate: Option[LocalDate] = None
+                          )(implicit hc: HeaderCarrier,
+                            request: Request[_]): Future[Option[ComplianceData]] = {
     val pocAchievementDateFromSession: Option[LocalDate] = request.session.get(IncomeTaxSessionKeys.pocAchievementDate).map(LocalDate.parse(_))
     pocAchievementDate.orElse(pocAchievementDateFromSession) match {
       case Some(pocAchievementDate) => {
         val fromDate = pocAchievementDate.minusYears(2)
-        connector.getObligationData(vrn, fromDate, pocAchievementDate).map {
+        connector.getObligationData(mtdItId, fromDate, pocAchievementDate).map {
           _.fold(
             failure => {
               logger.error(s"[ComplianceService][getDESComplianceData] - Connector failure: ${failure.message}")

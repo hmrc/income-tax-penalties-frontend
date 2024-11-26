@@ -55,6 +55,7 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
         document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
         document.getSubmitButton.text() shouldBe "Check amounts and pay"
+        document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
 
       "the user is an authorised agent" in {
@@ -71,6 +72,7 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
         document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
         document.getSubmitButton.text() shouldBe "Check amounts and pay"
+        document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
     }
   }

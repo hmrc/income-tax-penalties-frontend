@@ -17,7 +17,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
-
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 
 @this(
         main: MainTemplate,
@@ -34,7 +34,7 @@
 
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 
 
@@ -54,8 +54,6 @@
         attrTarget = true,
         id = Some("actionsToRemoveLink")
     )
-
-    @* TODO - use summary card component here *@
 
     <div class="govuk-summary-card">
         <div class="govuk-summary-card__title-wrapper">

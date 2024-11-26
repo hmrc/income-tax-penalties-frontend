@@ -100,4 +100,26 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub {
       result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-against-the-obligation?penaltyId=1234")
     }
   }
+
+  "Get /find-out-how-to-appeal" should {
+
+    "redirect the individual to the find-out-how-to-appeal page" in {
+      stubAuth(OK, successfulIndividualAuthResponse)
+      val result = get("/find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"))
+
+      result.status shouldBe SEE_OTHER
+
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
+    }
+
+    "redirect the agent to the find-out-how-to-appeal page" in {
+      stubAuth(OK, successfulAgentAuthResponse)
+      val result = get("/find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"), isAgent = true)
+
+      result.status shouldBe SEE_OTHER
+
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/penalties-appeals/income-tax/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
+    }
+
+  }
 }

@@ -42,11 +42,6 @@ class ServiceController @Inject()(val authConnector: AuthConnector,
     Future.successful(Ok(individualMainView()))
   }
 
-  val serviceSignout: Action[AnyContent] = isAuthenticated {
-    implicit request =>
-      implicit currentUser =>
-      Future.successful(Ok(sessionExpired()).withNewSession)
-  }
 
   val serviceSessionExpired: Action[AnyContent] = isAuthenticated {
     implicit request =>
