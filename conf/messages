@@ -51,3 +51,11 @@ calculation.p1 = This penalty applies if Income Tax has not been paid for 30 day
 calculation.p2 = It is made up of 2 parts:
 calculation.return.link = Return to Self Assessment penalties and appeals
 
+
+compliance.timeline.individual.title  = Actions to take to get your points removed
+compliance.timeline.individual.maximum.penalty.points  = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
+compliance.timeline.individual.send.submission.listed  = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
+compliance.timeline.individual.more.information.link.text  = More information about how HMRC removes penalty points (opens in a new tab)
+compliance.timeline.individual.points.to.be.removed  = Points to be removed:
+compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points.
+compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals

@@ -13,6 +13,7 @@ GET        /keep-alive                          uk.gov.hmrc.incometaxpenaltiesfr
 GET        /appeal-penalty                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToAppeals(penaltyId: String, isLPP: Boolean ?= false, isFindOutHowToAppealLSP: Boolean ?= false, isLPP2: Boolean ?= false)
 GET        /find-out-how-to-appeal              uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToFindOutHowToAppealLPP(principalChargeReference: String, itsaAmountInPence: Int, itsaPeriodStartDate: String, itsaPeriodEndDate:String)
 GET        /calculation                         uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.PenaltyCalculationController.penaltyCalculationPage
+GET        /compliance-timeline                 uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage
 
 
 GET        /language/:lang                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)

@@ -1,0 +1,95 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.{H1, P, Link}
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.hmrcfrontend.views.html.components._
+
+@this(
+        main: MainTemplate,
+        h1: H1,
+        link: Link,
+        govukTag : GovukTag,
+        hmrcTimeline : HmrcTimeline,
+        p: P
+)
+
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+
+@exampleContent1 = {
+    <p class="govuk-body">We received your return. You claimed you were due a repayment of £50. We are checking your claim.</p>
+
+}
+@exampleContent2 = {
+    <p class="govuk-body">
+        @govukTag(Tag(
+            content = Text("Due"),
+            classes = "govuk-tag--red"
+        ))
+        Due on 5 November 2027. Send this missing submission now.
+    </p>
+
+}
+
+@main(pageTitle = messages("compliance.timeline.individual.title")) {
+
+    @h1("compliance.timeline.individual.title")
+    @p(msg = "compliance.timeline.individual.maximum.penalty.points", classes = Some("govuk-body-l"))
+    @p(msg = "compliance.timeline.individual.send.submission.listed", classes = Some("govuk-body-l"))
+
+    <div class="govuk-!-margin-bottom-8">
+        @link(
+            link = "#",
+            messageKey = messages("compliance.timeline.individual.more.information.link.text") + " " + messages("general.opens.in.new.tab"),
+            attrTarget = true,
+            id = Some("moreInformationLink")
+        )
+    </div>
+
+
+    @hmrcTimeline(Timeline(
+        events = Seq(
+            Event(
+                title = "Quarter: 6 July 2027 to 5 October 2027",
+                time = "",
+                content = "exampleContent2"
+            ),
+            Event(
+                title = "Quarter: 6 October 2027 to 5 January 2028",
+                time = "",
+                content = "exampleContent1",
+                datetime = Some("2020-07-14")
+            )
+        )
+    ))
+
+
+    <p class="govuk-body-l">@messages("compliance.timeline.individual.points.to.be.removed")<span class="govuk-!-font-weight-bold">March 2029</span></p>
+
+    @p(msg = "compliance.timeline.individual.if.you.missed.deadline", classes = Some("govuk-body-l"))
+
+    <div class="govuk-!-margin-bottom-8">
+        @link(
+            link = "#",
+            messageKey = messages("compliance.timeline.individual.return.to.sa.penalties") + " " + messages("general.opens.in.new.tab"),
+            attrTarget = true,
+            id = Some("returnToSA")
+        )
+    </div>
+
+}
