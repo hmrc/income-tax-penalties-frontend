@@ -17,22 +17,26 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ComplianceTimelineController @Inject()(mcc: MessagesControllerComponents,
                                              complianceTimelineView: ComplianceTimeline,
-                                             sessionExpired: SessionExpired)(implicit appConfig: AppConfig) extends FrontendController(mcc) {
+                                             val authConnector: AuthConnector,
+                                             sessionExpired: SessionExpired)(implicit appConfig: AppConfig, ec: ExecutionContext) extends AuthenticatedController(mcc) {
 
 
-  val complianceTimelinePage: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(complianceTimelineView()))
+
+  val complianceTimelinePage: Action[AnyContent] = isAuthenticated { implicit request =>
+    implicit currentUser =>
+    Future.successful(Ok(complianceTimelineView(currentUser.isAgent)))
   }
 
 }
