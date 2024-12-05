@@ -27,15 +27,15 @@
 )
 
 
-@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 
-@main(pageTitle = messages("general.main.h1"), backLinkEnabled = true) {
+@main(pageTitle = messages("calculation.individual.title", "First"), backLinkEnabled = true) {
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.h1", "First")</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.h1", "First")</h1>
 
-    @p("calculation.p1")
-    @p("calculation.p2")
+    @p("calculation.individual.p1")
+    @p("calculation.individual.p2")
 
     <ul class="govuk-list govuk-list--bullet">
         <li>2% of £20,000 (the unpaid Income Tax 15 days after the due date)</li>
@@ -46,7 +46,7 @@
     rows = Seq(
       SummaryListRow(
         key = Key(
-          content = Text("Penalty amount")
+          content = Text(messages("calculation.penalty.amount"))
         ),
         value = Value(
           content = Text("£800.00")
@@ -54,7 +54,7 @@
       ),
       SummaryListRow(
         key = Key(
-          content = Text("Amount received")
+          content = Text(messages("calculation.amount.received"))
         ),
         value = Value(
           content = Text("£800.00")
@@ -62,7 +62,7 @@
       ),
       SummaryListRow(
         key = Key(
-          content = Text("Left to pay")
+          content = Text(messages("calculation.left.to.pay"))
         ),
         value = Value(
             content = Text("£0.00")

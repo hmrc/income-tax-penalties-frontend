@@ -18,42 +18,37 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import org.jsoup.Jsoup
 import play.api.http.Status.OK
+import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
 
-class PenaltyCalculationControllerISpec extends ComponentSpecHelper with ViewSpecHelper {
-
+class PenaltyCalculationControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub {
 
 
   "GET /calculation" should {
+    "return an OK with a view" when {
+      "have the correct page has correct elements" in {
+        stubAuth(OK, successfulIndividualAuthResponse)
+        val result = get("/calculation")
+        result.status shouldBe OK
 
-    val result = get("/calculation")
-    val document = Jsoup.parse(result.body)
+        val document = Jsoup.parse(result.body)
 
-    "return an OK with a view" in {
+        document.getServiceName.text() shouldBe "Manage your Self Assessment"
+        document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "First penalty for late payment"
+        document.getParagraphs.get(1).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
+        document.getParagraphs.get(2).text() shouldBe "It is made up of 2 parts:"
+        document.getBulletPoints.get(7).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
+        document.getBulletPoints.get(8).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
+        document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
+        document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
+        document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
+        document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
+        document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
+        document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
+        document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
 
-      result.status shouldBe OK
-
-    }
-
-
-    "have the correct page has correct elements" in {
-
-      document.getServiceName.text() shouldBe "Manage your Self Assessment"
-      document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
-      document.getH1Elements.text() shouldBe "First penalty for late payment"
-      document.getParagraphs.get(1).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
-      document.getParagraphs.get(2).text() shouldBe "It is made up of 2 parts:"
-      document.getBulletPoints.get(7).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
-      document.getBulletPoints.get(8).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
-      document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
-      document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
-      document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
-      document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
-      document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
-      document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
-      document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
-
+      }
     }
   }
-
 }
