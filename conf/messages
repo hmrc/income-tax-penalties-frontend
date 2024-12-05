@@ -5,6 +5,7 @@ service.text = This is your new service
 label.service_name = Manage your Self Assessment
 
 general.opens.in.new.tab = (opens in new tab)
+general.tag.late = Late
 
 alphaBanner.message = This is a new service – your {0} will help us to improve it.
 alphaBanner.linkText = feedback
@@ -51,3 +52,21 @@ calculation.p1 = This penalty applies if Income Tax has not been paid for 30 day
 calculation.p2 = It is made up of 2 parts:
 calculation.return.link = Return to Self Assessment penalties and appeals
 
+
+compliance.timeline.individual.title  = Actions to take to get your points removed
+compliance.timeline.individual.maximum.penalty.points  = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
+compliance.timeline.individual.send.submission.listed  = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
+compliance.timeline.individual.more.information.link.text  = More information about how HMRC removes penalty points (opens in a new tab)
+compliance.timeline.individual.points.to.be.removed  = Points to be removed:
+compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points.
+compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals
+compliance.timeline.individual.quarter.heading = Quarter: {0} to {1}
+compliance.timeline.individual.tax.return.heading = Tax return: {0} to {1}
+compliance.timeline.individual.send.due.submission.now = Due on {0}. Send this missing submission now.
+compliance.timeline.individual.send.by = Send by {0}
+
+
+compliance.timeline.agent.title  = Actions your client must take to get their points removed
+compliance.timeline.agent.maximum.penalty.points  = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire.
+compliance.timeline.agent.send.submission.listed  = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline.
+compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points.

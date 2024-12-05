@@ -55,6 +55,8 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
         document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
         document.getSubmitButton.text() shouldBe "Check amounts and pay"
+        document.getLink("actionsToRemoveLink").text() shouldBe "Actions to take to get your points removed (opens in new tab)"
+        document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
         document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
 
@@ -72,6 +74,8 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getH2Elements.get(3).text() shouldBe "Late submission penalties"
         document.getH2Elements.get(6).text() shouldBe "Late payment penalties"
         document.getSubmitButton.text() shouldBe "Check amounts and pay"
+        document.getLink("actionsToRemoveLink").text() shouldBe "Actions to take to get your points removed (opens in new tab)"
+        document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
         document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
     }
