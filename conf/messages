@@ -47,10 +47,14 @@ whatIsOwed.lsp.multiPoints = {0} late submission penalty points
 whatIsOwed.lsp.max = the maximum number of late submission penalty points
 
 calculations.view.calculations = View calculation
-calculation.h1 = {0} penalty for late payment
-calculation.p1 = This penalty applies if Income Tax has not been paid for 30 days.
-calculation.p2 = It is made up of 2 parts:
+calculation.individual.title = {0} penalty for late payment
+calculation.individual.h1 = {0} penalty for late payment
+calculation.individual.p1 = This penalty applies if Income Tax has not been paid for 30 days.
+calculation.individual.p2 = It is made up of 2 parts:
 calculation.return.link = Return to Self Assessment penalties and appeals
+calculation.penalty.amount = Penalty amount
+calculation.amount.received = Amount received
+calculation.left.to.pay = Left to pay
 
 
 compliance.timeline.individual.title  = Actions to take to get your points removed
