@@ -20,7 +20,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndividualMainView
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,17 +28,16 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ServiceController @Inject()(val authConnector: AuthConnector,
                                   mcc: MessagesControllerComponents,
-                                  individualMainView: IndividualMainView
+                                  indexView: IndexView
                                  )(implicit appConfig: AppConfig,
                                    ec: ExecutionContext) extends AuthenticatedController(mcc) {
 
 
-  val individualMain: Action[AnyContent] = isAuthenticated {
+  val homePage: Action[AnyContent] = isAuthenticated {
     implicit request =>
       implicit currentUser =>
-    Future.successful(Ok(individualMainView()))
+    Future.successful(Ok(indexView(currentUser.isAgent)))
   }
-
 
   val serviceSessionExpired: Action[AnyContent] = isAuthenticated {
     implicit request =>
