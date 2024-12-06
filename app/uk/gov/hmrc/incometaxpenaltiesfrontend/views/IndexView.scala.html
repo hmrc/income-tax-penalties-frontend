@@ -23,6 +23,7 @@
         main: MainTemplate,
         h1: H1,
         h2: H2,
+        h3: H3,
         p: P,
         link: Link,
         warning: Warning,
@@ -34,23 +35,21 @@
 
 )
 
-@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
+@lspMainTab = {
 
-
-
-@pastMonthHtml = {
-    @h2(msg = "general.main.lsp", elmId = "lspHeading")
+    @h3(msg = "general.main.lsp", elmId = "lspHeading")
 
     <p class="govuk-body-l">@messages("general.main.penalty.point.total") <strong class="govuk-!-font-weight-bold">4</strong></p>
 
-    @warning(msg = "individual.main.warning.text", elmId = "financialWarningText")
+    @warning(msg = individualOrAgent + ".main.warning.text", elmId = "financialWarningText")
 
-    @p("individual.main.what.this.means")
+    @p(individualOrAgent + ".main.what.this.means")
 
     @link(
         link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ComplianceTimelineController.complianceTimelinePage.url,
-        messageKey = messages("individual.main.actions.to.remove.link") + " " + messages("general.opens.in.new.tab"),
+        messageKey = messages(individualOrAgent + ".main.actions.to.remove.link") + " " + messages("general.opens.in.new.tab"),
         attrTarget = true,
         id = Some("actionsToRemoveLink")
     )
@@ -61,7 +60,7 @@
                 Additional £200 penalty
             </h2>
             @govukTag(Tag(
-                content = Text("Due"),
+                content = Text("DUE"),
                 classes = "govuk-tag--red"
             ))
         </div>
@@ -125,7 +124,7 @@
                 Penalty point 1
             </h2>
             @govukTag(Tag(
-                content = Text("Active")
+                content = Text("ACTIVE")
             ))
         </div>
         <div class="govuk-summary-card__content">
@@ -182,13 +181,79 @@
     )
 }
 
-@pastYearHtml = {
-    @h2(msg = "general.main.lpp", elmId = "lppHeading")
+@lppMainTab = {
+    @h3(msg = "general.main.lpp", elmId = "lppHeading")
 
-    @p("general.main.no.lpp")
+    @p(individualOrAgent + ".main.pay.early.info")
 
-    @calculationViewLink
+    @link(
+        link = "https://www.gov.uk/guidance/how-late-payment-penalties-work-if-you-pay-vat-late",
+        messageKey = messages("general.main.penalty.summary.guidance.on.late.payments") + " " + messages("general.opens.in.new.tab"),
+        attrTarget = true,
+        id = Some("guidanceLatePaymentLink")
+    )
+
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">
+                £400.00 penalty
+            </h2>
+            @govukTag(Tag(
+                content = Text("ESTIMATE"),
+                classes = "govuk-tag--red"
+            ))
+        </div>
+        <div class="govuk-summary-card__content">
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    @messages("general.main.penalty.summary.penalty.type")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        First penalty for late payment
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    @messages("general.main.penalty.summary.overdue.charge")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Income Tax for 2026 to 2027 tax year
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    @messages("general.main.penalty.summary.income.tax.due")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        31 January 2028
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    @messages("general.main.penalty.summary.income.tax.paid")
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Payment not yet received
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="govuk-summary-card__title-wrapper">
+
+            @calculationViewLink
+
+            @link(
+                link = "#",
+                messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
+                id = Some("appealPenalty1Link")
+            )
+        </div>
+    </div>
 }
+
+@individualOrAgent = {@if(isAgent){agent} else {individual}}
 
 @main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
 
@@ -196,7 +261,7 @@
 
    @h2(msg = "general.main.overview.heading", elmId = "overviewHeading")
 
-   @p("individual.main.your.account.has")
+   @p(individualOrAgent + ".main.your.account.has")
 
    @list(Seq("individual.main.late.submission", "individual.main.maximum.late.submission"))
 
@@ -213,18 +278,17 @@
                 id = Some("lspTab"),
                 label = messages("general.main.lsp"),
                 panel = TabPanel(
-                    content = HtmlContent(pastMonthHtml)
+                    content = HtmlContent(lspMainTab)
                 )
             ),
             TabItem(
                 id = Some("lppTab"),
                 label = messages("general.main.lpp"),
                 panel = TabPanel(
-                    content = HtmlContent(pastYearHtml)
+                    content = HtmlContent(lppMainTab)
                 )
             )
         )
     ))
-
 
 }
