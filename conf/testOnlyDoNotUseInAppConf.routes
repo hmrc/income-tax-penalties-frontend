@@ -12,6 +12,8 @@
 # Add all the application routes to the prod.routes file
 ->         /                                                                     prod.Routes
 
+GET        /penalties/income-tax/test-only/add-agent-session/:mtdItId                     uk.gov.hmrc.incometaxpenaltiesfrontend.testOnly.controllers.AddAgentSessionController.addAgentSession(mtdItId: String)
+
 GET        /penalties/income-tax/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.show()
 POST       /penalties/income-tax/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.submit()
 GET        /penalties/income-tax/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.getFeatureSwitches()
