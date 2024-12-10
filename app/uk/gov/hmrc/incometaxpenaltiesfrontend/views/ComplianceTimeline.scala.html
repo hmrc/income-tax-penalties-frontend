@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 
 @this(
         main: MainTemplate,
@@ -27,7 +28,8 @@
         p: P
 )
 
-@(isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@(isAgent: Boolean, timelineEvents: Seq[TimelineEvent])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 
 @individualOrAgent = {@if(isAgent){agent} else {individual}}
@@ -48,60 +50,25 @@
     </div>
 
     <ol class="hmrc-timeline">
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.quarter.heading", "6 July 2027", "5 October 2027")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">
-                    @govukTag(Tag(
-                        content = Text(messages("general.tag.late")),
-                        classes = "govuk-tag--red"
-                    ))
-                    @messages("compliance.timeline.individual.send.due.submission.now", "5 November 2027")
-                </p>
-            </div>
-        </li>
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.quarter.heading", "6 October 2027", "5 January 2028")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">
-                    @govukTag(Tag(
-                        content = Text(messages("general.tag.late")),
-                        classes = "govuk-tag--red"
-                    ))
-                    @messages("compliance.timeline.individual.send.due.submission.now", "5 February 2028")
-                </p>
-            </div>
-        </li>
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.quarter.heading", "6 January 2028", "5 April 2028")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">@messages("compliance.timeline.individual.send.by", "5 May 2028")</p>
-            </div>
-        </li>
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.quarter.heading", "6 April 2028", "5 July 2028")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">@messages("compliance.timeline.individual.send.by", "5 August 2028")</p>
-            </div>
-        </li>
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.quarter.heading", "6 July 2028", "5 October 2028")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">@messages("compliance.timeline.individual.send.by", "5 November 2028")</p>
-            </div>
-        </li>
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.tax.return.heading", "2027", "2028")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">@messages("compliance.timeline.individual.send.by", "31 January 2029")</p>
-            </div>
-        </li>
-        <li class="hmrc-timeline__event">
-            <h2 class="hmrc-timeline__event-title">@messages("compliance.timeline.individual.quarter.heading", "6 October 2028", "5 January 2029")</h2>
-            <div class="hmrc-timeline__event-content">
-                <p class="govuk-body">@messages("compliance.timeline.individual.send.by", "5 February 2029")</p>
-            </div>
-        </li>
+        @for(timelineEvent <- timelineEvents) {
+            <li class="hmrc-timeline__event">
+                <h2 class="hmrc-timeline__event-title">@{timelineEvent.headerContent}</h2>
+                <div class="hmrc-timeline__event-content">
+
+                @{timelineEvent.tagContent match {
+                    case Some(tagContent) =>
+                        <p class="govuk-body">
+                            <strong class="govuk-tag govuk-tag--red">{tagContent}</strong>
+                            {timelineEvent.spanContent}
+                        </p>
+                    case None =>
+                        <p class="govuk-body">@timelineEvent.spanContent</p>
+                }
+                }
+
+                </div>
+            </li>
+        }
     </ol>
 
 

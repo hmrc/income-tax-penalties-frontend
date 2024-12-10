@@ -42,9 +42,9 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
       .execute[GetPenaltyDetailsResponse]
   }
 
-  def getObligationData(mtdItId: String, fromDate: LocalDate, toDate: LocalDate)
+  def getComplianceData(mtdItId: String, fromDate: LocalDate, toDate: LocalDate)
                        (implicit hc: HeaderCarrier): Future[ComplianceDataResponse] = {
-    logger.info(s"[PenaltiesConnector][getObligationData] - Requesting obligation data from backend for MTDITID $mtdItId.")
+    logger.info(s"[PenaltiesConnector][getComplianceData] - Requesting compliance data from backend for MTDITID $mtdItId.")
 
     httpClient
       .get(url"${appConfig.penaltiesUrl + s"/compliance/des/compliance-data?mtditid=$mtdItId&fromDate=$fromDate&toDate=$toDate"}")

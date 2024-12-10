@@ -38,7 +38,7 @@ class ComplianceService @Inject()(connector: PenaltiesConnector) (implicit ec: E
     pocAchievementDate.orElse(pocAchievementDateFromSession) match {
       case Some(pocAchievementDate) => {
         val fromDate = pocAchievementDate.minusYears(2)
-        connector.getObligationData(mtdItId, fromDate, pocAchievementDate).map {
+        connector.getComplianceData(mtdItId, fromDate, pocAchievementDate).map {
           _.fold(
             failure => {
               logger.error(s"[ComplianceService][getDESComplianceData] - Connector failure: ${failure.message}")
