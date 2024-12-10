@@ -28,7 +28,6 @@ import play.api.mvc.{Cookie, Session, SessionCookieBaker}
 import play.api.test.Helpers._
 import uk.gov.hmrc.crypto.PlainText
 import uk.gov.hmrc.http.SessionKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.play.bootstrap.frontend.filters.crypto.SessionCookieCrypto
 
 trait ComponentSpecHelper

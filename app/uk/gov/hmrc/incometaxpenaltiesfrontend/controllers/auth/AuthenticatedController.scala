@@ -57,7 +57,7 @@ abstract class AuthenticatedController @Inject()(mcc: MessagesControllerComponen
               }
             case _ => ??? // TODO handle this case by trying the new storage system for income tax
           }
-        case Some(AffinityGroup.Individual) ~ enrolments => // TODO check if we allow Organisations too
+        case Some(_) ~ enrolments  =>
           logger.debug("Auth check - Authorising user as Individual")
           enrolments.mtdItId match {
             case Some(mtdItId) =>
