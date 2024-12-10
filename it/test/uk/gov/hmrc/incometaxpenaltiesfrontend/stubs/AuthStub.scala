@@ -43,7 +43,7 @@ trait AuthStub extends WiremockMethods {
           "identifiers" -> Json.arr(
             Json.obj(
               "key" -> EnrolmentUtil.mtdItIdKey,
-              "value" -> "123456789",
+              "value" -> "1234567890",
               "state" -> "Activated"
             )
           )

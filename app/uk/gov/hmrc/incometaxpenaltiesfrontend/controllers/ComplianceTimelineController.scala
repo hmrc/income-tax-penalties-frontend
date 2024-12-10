@@ -18,25 +18,33 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AuthConnector
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
+import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{ComplianceService, TimelineBuilderService}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class ComplianceTimelineController @Inject()(mcc: MessagesControllerComponents,
                                              complianceTimelineView: ComplianceTimeline,
                                              val authConnector: AuthConnector,
-                                             sessionExpired: SessionExpired)(implicit appConfig: AppConfig, ec: ExecutionContext) extends AuthenticatedController(mcc) {
+                                             timelineBuilder: TimelineBuilderService,
+                                             complianceService: ComplianceService)
+                                            (implicit appConfig: AppConfig, ec: ExecutionContext) extends AuthenticatedController(mcc) {
 
 
 
-  val complianceTimelinePage: Action[AnyContent] = isAuthenticated { implicit request =>
+  val complianceTimelinePage: Action[AnyContent] = isAuthenticated {
+    implicit request =>
     implicit currentUser =>
-    Future.successful(Ok(complianceTimelineView(currentUser.isAgent)))
+      for{
+        optComplianceData <- complianceService.getDESComplianceData(currentUser.mtdItId)
+        complianceData = optComplianceData.getOrElse(throw new InternalServerException("[ComplianceTimelineController][complianceTimelinePage] no available compliance data"))
+        timelineEvents = timelineBuilder.buildTimeline(complianceData)
+      } yield {Ok(complianceTimelineView(currentUser.isAgent, timelineEvents))}
   }
 
 }

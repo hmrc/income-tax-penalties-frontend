@@ -22,7 +22,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.PenaltyCalculation
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

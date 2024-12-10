@@ -46,7 +46,7 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
 
   "getDESComplianceData" should {
     s"return a successful response and pass the result back to the controller (date provided as parameter)" in new Setup {
-      when(mockPenaltiesConnector.getObligationData(any(),
+      when(mockPenaltiesConnector.getComplianceData(any(),
         ArgumentMatchers.eq(LocalDate.of(2020, 1, 1)),
         ArgumentMatchers.eq(LocalDate.of(2022, 1, 1)))(any())).thenReturn(Future.successful(Right(sampleCompliancePayload)))
 
@@ -57,7 +57,7 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
     }
 
     s"return a successful response and pass the result back to the controller (date in session)" in new Setup {
-      when(mockPenaltiesConnector.getObligationData(any(),
+      when(mockPenaltiesConnector.getComplianceData(any(),
         ArgumentMatchers.eq(LocalDate.of(2020, 1, 1)),
         ArgumentMatchers.eq(LocalDate.of(2022, 1, 1)))(any())).thenReturn(Future.successful(Right(sampleCompliancePayload)))
 
@@ -76,7 +76,7 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
     }
 
     s"return an exception and pass the result back to the controller" in new Setup {
-      when(mockPenaltiesConnector.getObligationData(any(), any(), any())(any()))
+      when(mockPenaltiesConnector.getComplianceData(any(), any(), any())(any()))
         .thenReturn(Future.failed(UpstreamErrorResponse.apply("Upstream error", INTERNAL_SERVER_ERROR)))
 
       val result: Exception = intercept[Exception](await(service.getDESComplianceData(mtdItId)(HeaderCarrier(), FakeRequest().withSession(

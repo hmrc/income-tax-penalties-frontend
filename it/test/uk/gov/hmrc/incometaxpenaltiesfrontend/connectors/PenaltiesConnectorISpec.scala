@@ -26,10 +26,11 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.ComplianceStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
-class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with PenaltiesFixture{
+class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with PenaltiesFixture with ComplianceStub {
 
   val connector: PenaltiesConnector = app.injector.instanceOf[PenaltiesConnector]
 
@@ -119,52 +120,51 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
     }
   }
 
-  "getObligationData" should {
+  "getComplianceData" should {
     s"return a successful response when the call succeeds and the body can be parsed" in {
-      when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
-        .thenReturn(status = OK, body = sampleComplianceData)
 
-      val result: ComplianceDataResponse = await(connector.getObligationData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+      stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+
+      val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
       result shouldBe Right(sampleComplianceData)
     }
 
     "return a Left response" when {
       "the call returns a OK response however the body is not parsable as a model" in {
-        when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
-          .thenReturn(status = OK, body = Json.obj("invalid" -> "json"))
 
-        val result: ComplianceDataResponse = await(connector.getObligationData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(Json.obj("invalid" -> "json")))
+
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataMalformed)
       }
 
       "the call returns a Not Found status" in {
-        when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
-          .thenReturn(status = NOT_FOUND, body = Json.obj())
 
-        val result: ComplianceDataResponse = await(connector.getObligationData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(NOT_FOUND, Json.toJson(Json.obj()))
+
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataNoData)
       }
 
       "the call returns an unmatched response" in {
-        when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
-          .thenReturn(status = SERVICE_UNAVAILABLE, body = Json.obj())
 
-        val result: ComplianceDataResponse = await(connector.getObligationData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(SERVICE_UNAVAILABLE, Json.toJson(Json.obj()))
+
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataUnexpectedFailure(SERVICE_UNAVAILABLE))
       }
 
       "the call returns a UpstreamErrorResponse(4xx) exception" in {
-        when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
-          .thenReturn(status = BAD_REQUEST, body = Json.obj())
 
+        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(BAD_REQUEST, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result: ComplianceDataResponse = await(connector.getObligationData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(BAD_REQUEST))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -173,12 +173,12 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns a UpstreamErrorResponse(5xx) exception" in {
-        when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
-          .thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
+
+        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result: ComplianceDataResponse = await(connector.getObligationData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(INTERNAL_SERVER_ERROR))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true

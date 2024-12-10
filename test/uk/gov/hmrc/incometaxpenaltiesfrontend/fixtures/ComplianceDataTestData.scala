@@ -25,8 +25,8 @@ trait ComplianceDataTestData {
   val sampleCompliancePayload: ComplianceData = ComplianceData(
     identification = Some(ObligationIdentification(
       incomeSourceType = None,
-      referenceNumber = "123456789",
-      referenceType = "VRN"
+      referenceNumber = "1234567890",
+      referenceType = "MTDITID"
     )),
     obligationDetails = Seq(
       ObligationDetail(
@@ -36,6 +36,40 @@ trait ComplianceDataTestData {
         inboundCorrespondenceDateReceived = None,
         inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
         periodKey = "#001"
+      ),
+      ObligationDetail(
+        status = ComplianceStatusEnum.Fulfilled,
+        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(1920, 2, 29)),
+        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
+        periodKey = "#001"
+      )
+    )
+  )
+
+  val sampleCompliancePayloadTwoEvents: ComplianceData = ComplianceData(
+    identification = Some(ObligationIdentification(
+      incomeSourceType = None,
+      referenceNumber = "1234567890",
+      referenceType = "MTDITID"
+    )),
+    obligationDetails = Seq(
+      ObligationDetail(
+        status = ComplianceStatusEnum.Open,
+        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceDateReceived = None,
+        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
+        periodKey = "#001"
+      ),
+      ObligationDetail(
+        status = ComplianceStatusEnum.Open,
+        inboundCorrespondenceFromDate = LocalDate.of(1921, 2, 20),
+        inboundCorrespondenceToDate = LocalDate.of(1921, 2, 20),
+        inboundCorrespondenceDateReceived = None,
+        inboundCorrespondenceDueDate = LocalDate.of(1921, 2, 20),
+        periodKey = "#002"
       ),
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,

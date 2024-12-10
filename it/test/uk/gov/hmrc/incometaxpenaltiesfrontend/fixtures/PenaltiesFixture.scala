@@ -28,24 +28,58 @@ trait PenaltiesFixture {
   val sampleComplianceData: ComplianceData = ComplianceData(
     identification = Some(ObligationIdentification(
       incomeSourceType = None,
-      referenceNumber = "123456789",
-      referenceType = "VRN"
+      referenceNumber = "1234567890",
+      referenceType = "MTDITID"
     )),
     obligationDetails = Seq(
       ObligationDetail(
         status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
         inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
         periodKey = "#001"
       ),
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(1920, 2, 29)),
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(2023, 2, 28)),
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
+        periodKey = "#001"
+      )
+    )
+  )
+
+  val sampleComplianceDataTwoOpen: ComplianceData = ComplianceData(
+    identification = Some(ObligationIdentification(
+      incomeSourceType = None,
+      referenceNumber = "1234567890",
+      referenceType = "MTDITID"
+    )),
+    obligationDetails = Seq(
+      ObligationDetail(
+        status = ComplianceStatusEnum.Open,
+        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceDateReceived = None,
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
+        periodKey = "#001"
+      ),
+      ObligationDetail(
+        status = ComplianceStatusEnum.Open,
+        inboundCorrespondenceFromDate = LocalDate.of(2023, 5, 28),
+        inboundCorrespondenceToDate = LocalDate.of(2023, 5, 28),
+        inboundCorrespondenceDateReceived = None,
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 5, 28),
+        periodKey = "#002"
+      ),
+      ObligationDetail(
+        status = ComplianceStatusEnum.Fulfilled,
+        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(2023, 2, 28)),
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
         periodKey = "#001"
       )
     )
@@ -160,8 +194,8 @@ trait PenaltiesFixture {
 
   val testMtdItId: String = "1234567890"
   val testArn: String = "XARN1234567890"
-  val testFromDate: LocalDate = LocalDate.of(2020, 1, 1)
-  val testToDate: LocalDate = LocalDate.of(2020, 12, 1)
+  val testFromDate: LocalDate = LocalDate.of(2022, 12, 1)
+  val testToDate: LocalDate = LocalDate.of(2024, 12, 1)
 
   val sampleDate1: LocalDate = LocalDate.of(2021, 1, 1)
   val sampleDate2: LocalDate = LocalDate.of(2021, 2, 1)
@@ -332,8 +366,8 @@ trait PenaltiesFixture {
   val compliancePayload = ComplianceData(
     identification = Some(ObligationIdentification(
       incomeSourceType = None,
-      referenceNumber = "123456789",
-      referenceType = "VRN"
+      referenceNumber = "1234567890",
+      referenceType = "MTDITID"
     )),
     obligationDetails = Seq(
       ObligationDetail(

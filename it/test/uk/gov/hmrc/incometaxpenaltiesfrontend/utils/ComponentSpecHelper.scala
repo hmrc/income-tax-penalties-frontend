@@ -30,6 +30,8 @@ import uk.gov.hmrc.crypto.PlainText
 import uk.gov.hmrc.http.SessionKeys
 import uk.gov.hmrc.play.bootstrap.frontend.filters.crypto.SessionCookieCrypto
 
+import java.time.LocalDate
+
 trait ComponentSpecHelper
   extends AnyWordSpec
     with Matchers
@@ -84,6 +86,14 @@ trait ComponentSpecHelper
       .get())
   }
 
+  def getNoDateInSession[T](uri: String, isAgent: Boolean = false, cookie: WSCookie = enLangCookie, queryParams: Map[String, String] = Map.empty): WSResponse = {
+    await(buildClient(uri)
+      .withHttpHeaders("Authorization" -> "Bearer 123")
+      .withCookies(cookie, mockSessionCookie(isAgent, hasDateInSession = false))
+      .withQueryStringParameters(queryParams.toSeq: _*)
+      .get())
+  }
+
   def post[T](uri: String, isAgent: Boolean = false, cookie: WSCookie = enLangCookie)(body: T)(implicit writes: Writes[T]): WSResponse = {
     await(
       buildClient(uri)
@@ -118,7 +128,7 @@ trait ComponentSpecHelper
 
   val enLangCookie: WSCookie = DefaultWSCookie("PLAY_LANG", "en")
 
-  def mockSessionCookie(isAgent: Boolean): WSCookie = {
+  def mockSessionCookie(isAgent: Boolean, hasDateInSession: Boolean = true): WSCookie = {
 
     def makeSessionCookie(session: Session): Cookie = {
       val cookieCrypto = app.injector.instanceOf[SessionCookieCrypto]
@@ -132,7 +142,9 @@ trait ComponentSpecHelper
       SessionKeys.lastRequestTimestamp -> System.currentTimeMillis().toString,
       SessionKeys.authToken -> "mock-bearer-token",
       SessionKeys.sessionId -> "mock-sessionid"
-    )) ++ {if(isAgent) Map(IncomeTaxSessionKeys.agentSessionMtditid -> "123456789") else Map.empty}
+    ) ++ {if(isAgent) Map(IncomeTaxSessionKeys.agentSessionMtditid -> "1234567890") else Map.empty}
+      ++ {if(hasDateInSession) Map(IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.parse("2024-12-01").toString) else Map.empty}
+    )
 
     val cookie = makeSessionCookie(mockSession)
 
