@@ -19,14 +19,18 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import org.jsoup.Jsoup
 import play.api.libs.json.Json
 import play.api.test.Helpers._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, ComplianceStub}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
 
-class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub with PenaltiesFixture with ComplianceStub {
+class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub with PenaltiesFixture with ComplianceStub with FeatureSwitching {
+
+  override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   val serviceName = "Manage your Self Assessment"
-  val moreInformationLink = "More information about how HMRC removes penalty points (opens in a new tab) (opens in new tab)"
+  val moreInformationLink = "More information about how HMRC removes penalty points (opens in new tab)"
   val returnToSALink = "Return to Self Assessment penalties and appeals (opens in new tab)"
   val pointsToBeRemoved = "Points to be removed: March 2029"
   val quarter1 = "Quarter: 28 February 2023 to 28 February 2023"
@@ -44,10 +48,13 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
   val timeline6 =  "Send by 31 January 2029"
   val timeline7 =  "Send by 5 February 2029"
 
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(UseStubForBackend)
+  }
 
   "GET /compliance-timeline" should {
     "return an OK with an individual view" when {
-
       "the page has the correct elements for one entry in the compliance timeline" in {
         stubAuth(OK, successfulIndividualAuthResponse)
 
@@ -99,7 +106,6 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
     }
 
     "return an OK with an agent view" when {
-
       "the page has the correct elements for one entry in the compliance timeline" in {
 
         stubAuth(OK, successfulAgentAuthResponse)

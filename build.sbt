@@ -14,6 +14,7 @@ lazy val microservice = Project("income-tax-penalties-frontend", file("."))
     pipelineStages := Seq(gzip),
     PlayKeys.playDefaultPort := 9185
   )
+  .settings(Test/logBuffered := false)
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(TwirlKeys.templateImports ++= Seq(
@@ -21,10 +22,12 @@ lazy val microservice = Project("income-tax-penalties-frontend", file("."))
       "uk.gov.hmrc.hmrcfrontend.views.html.components._",
       "uk.gov.hmrc.hmrcfrontend.views.html.helpers._",
       "uk.gov.hmrc.govukfrontend.views.html.components.implicits._"
+
   ))
 
 lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
   .settings(DefaultBuildSettings.itSettings())
+  .settings(Test/logBuffered := false)
   .settings(libraryDependencies ++= AppDependencies.it)

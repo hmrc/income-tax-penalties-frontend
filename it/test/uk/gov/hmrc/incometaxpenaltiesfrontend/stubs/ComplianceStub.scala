@@ -25,7 +25,12 @@ import java.time.LocalDate
 trait ComplianceStub extends WiremockMethods {
 
   def stubGetComplianceData(testMtdItId: String, testFromDate: LocalDate, testToDate: LocalDate)(status: Int, body: JsValue = Json.obj()): StubMapping = {
-    when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtditid=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
+    when(GET, uri = s"/penalties/compliance/des/compliance-data\\?mtdItId=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
+      .thenReturn(status, body)
+  }
+
+  def stubGetComplianceDataFromStub(testMtdItId: String, testFromDate: LocalDate, testToDate: LocalDate)(status: Int, body: JsValue = Json.obj()): StubMapping = {
+    when(GET, uri = s"/income-tax-penalties-stubs/compliance/des/compliance-data\\?mtdItId=$testMtdItId&fromDate=${testFromDate.toString}&toDate=${testToDate.toString}")
       .thenReturn(status, body)
   }
 
