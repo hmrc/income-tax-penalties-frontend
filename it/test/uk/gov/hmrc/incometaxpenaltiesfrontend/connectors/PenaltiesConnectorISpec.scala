@@ -20,8 +20,10 @@ import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.{ComplianceDataMalformed, ComplianceDataNoData, ComplianceDataResponse, ComplianceDataUnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsBadRequest, GetPenaltyDetailsMalformed, GetPenaltyDetailsResponse, GetPenaltyDetailsUnexpectedFailure}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesFixture
@@ -30,9 +32,15 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.ComplianceStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
-class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with PenaltiesFixture with ComplianceStub {
+class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with PenaltiesFixture with ComplianceStub with FeatureSwitching {
 
   val connector: PenaltiesConnector = app.injector.instanceOf[PenaltiesConnector]
+  override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(UseStubForBackend)
+  }
 
   "getPenaltyDetails" should {
     "return a successful response when the call succeeds and the body can be parsed" when {
@@ -121,18 +129,29 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
   }
 
   "getComplianceData" should {
-    s"return a successful response when the call succeeds and the body can be parsed" in {
+    "return a successful response" when {
+      "the call succeeds and the body can be parsed" in {
+        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
 
-      stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
 
-      val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        result shouldBe Right(sampleComplianceData)
+      }
+    }
 
-      result shouldBe Right(sampleComplianceData)
+    "return a successful response" when {
+      "the stub succeeds and the body can be parsed" in {
+        enable(UseStubForBackend)
+        stubGetComplianceDataFromStub(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+
+        result shouldBe Right(sampleComplianceData)
+      }
     }
 
     "return a Left response" when {
       "the call returns a OK response however the body is not parsable as a model" in {
-
         stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(Json.obj("invalid" -> "json")))
 
         val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
@@ -141,7 +160,6 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns a Not Found status" in {
-
         stubGetComplianceData(testMtdItId, testFromDate, testToDate)(NOT_FOUND, Json.toJson(Json.obj()))
 
         val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
@@ -150,7 +168,6 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns an unmatched response" in {
-
         stubGetComplianceData(testMtdItId, testFromDate, testToDate)(SERVICE_UNAVAILABLE, Json.toJson(Json.obj()))
 
         val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
@@ -159,7 +176,6 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns a UpstreamErrorResponse(4xx) exception" in {
-
         stubGetComplianceData(testMtdItId, testFromDate, testToDate)(BAD_REQUEST, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
@@ -173,7 +189,6 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns a UpstreamErrorResponse(5xx) exception" in {
-
         stubGetComplianceData(testMtdItId, testFromDate, testToDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {

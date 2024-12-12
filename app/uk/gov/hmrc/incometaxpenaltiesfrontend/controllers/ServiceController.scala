@@ -20,8 +20,10 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 
+import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,19 +38,23 @@ class ServiceController @Inject()(val authConnector: AuthConnector,
   val homePage: Action[AnyContent] = isAuthenticated {
     implicit request =>
       implicit currentUser =>
-    Future.successful(Ok(indexView(currentUser.isAgent)))
+
+        Future.successful(
+          Ok(indexView(currentUser.isAgent))
+            .addingToSession(IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.now().toString)
+        )
   }
 
   val serviceSessionExpired: Action[AnyContent] = isAuthenticated {
     implicit request =>
       implicit currentUser =>
-      Future.successful(Redirect(appConfig.survey).withNewSession)
+        Future.successful(Redirect(appConfig.survey).withNewSession)
   }
 
   val keepAlive: Action[AnyContent] = isAuthenticated {
     implicit request =>
       implicit currentUser =>
-      Future.successful(NoContent)
+        Future.successful(NoContent)
   }
 
 }

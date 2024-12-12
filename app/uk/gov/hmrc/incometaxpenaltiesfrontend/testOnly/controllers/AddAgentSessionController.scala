@@ -17,11 +17,9 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.testOnly.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.{routes => mainRoutes}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter._
