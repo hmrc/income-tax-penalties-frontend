@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.Configuration
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -24,7 +25,10 @@ import java.net.URLEncoder
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) {
+class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends FeatureSwitching {
+
+  val appConfig: AppConfig = this
+
   val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
 
   def getFeatureSwitchValue(feature: String): Boolean = config.get[Boolean](feature)
@@ -38,7 +42,9 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
 
-  lazy val penaltiesUrl: String = s"${servicesConfig.baseUrl("penalties")}/penalties"
+  def penaltiesUrl: String =
+    if (isEnabled(UseStubForBackend)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
+    else s"${servicesConfig.baseUrl("penalties")}/penalties"
 
   lazy val signInUrl: String = config.get[String]("signIn.url")
 

@@ -28,7 +28,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ComplianceService @Inject()(connector: PenaltiesConnector) (implicit ec: ExecutionContext) {
+class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: ExecutionContext) {
 
   def getDESComplianceData(mtdItId: String,
                            pocAchievementDate: Option[LocalDate] = None
