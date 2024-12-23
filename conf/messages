@@ -32,7 +32,7 @@ general.main.penalty.summary.declaration.submitted.heading = Declaration submitt
 general.main.penalty.summary.point.due.expire.heading = Point due to expire
 general.main.penalty.summary.appeal.penalty.link = Appeal penalty
 general.main.penalty.summary.appeal.penalty.point.link = Appeal penalty point {0}
-general.main.penalty.summary.guidance.on.late.payments = Read the guidance about how late payment penalties are calculated (
+general.main.penalty.summary.guidance.on.late.payments = Read the guidance about how late payment penalties are calculated
 
 individual.main.your.account.has = Your account has:
 individual.main.late.submission = a late submission penalty

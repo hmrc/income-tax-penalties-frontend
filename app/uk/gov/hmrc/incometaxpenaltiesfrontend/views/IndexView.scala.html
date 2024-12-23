@@ -59,10 +59,12 @@
             <h2 class="govuk-summary-card__title">
                 Additional £200 penalty
             </h2>
-            @govukTag(Tag(
-                content = Text("DUE"),
-                classes = "govuk-tag--red"
-            ))
+            <div>
+                @govukTag(Tag(
+                    content = Text("DUE"),
+                    classes = "govuk-tag--red"
+                ))
+            </div>
         </div>
         <div class="govuk-summary-card__content">
             <dl class="govuk-summary-list">
@@ -123,9 +125,11 @@
             <h2 class="govuk-summary-card__title">
                 Penalty point 1
             </h2>
-            @govukTag(Tag(
-                content = Text("ACTIVE")
-            ))
+            <div>
+                @govukTag(Tag(
+                    content = Text("ACTIVE")
+                ))
+            </div>
         </div>
         <div class="govuk-summary-card__content">
             <dl class="govuk-summary-list">
@@ -177,6 +181,7 @@
     @link(
         link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.PenaltyCalculationController.penaltyCalculationPage.url,
         messageKey = messages("calculations.view.calculations"),
+        inParagraph = true,
         id = Some("viewCalculations")
     )
 }
@@ -198,10 +203,12 @@
             <h2 class="govuk-summary-card__title">
                 £400.00 penalty
             </h2>
-            @govukTag(Tag(
-                content = Text("ESTIMATE"),
-                classes = "govuk-tag--red"
-            ))
+            <div>
+                @govukTag(Tag(
+                    content = Text("ESTIMATE"),
+                    classes = "govuk-tag--red"
+                ))
+            </div>
         </div>
         <div class="govuk-summary-card__content">
             <dl class="govuk-summary-list">
@@ -242,13 +249,17 @@
 
         <div class="govuk-summary-card__title-wrapper">
 
-            @calculationViewLink
+            <div>
+                @calculationViewLink
 
-            @link(
-                link = "#",
-                messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
-                id = Some("appealPenalty1Link")
-            )
+                @link(
+                    link = "#",
+                    messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
+                    inParagraph = true,
+                    id = Some("appealPenalty1Link"),
+                    classes = Some("govuk-link govuk-!-display-inline-block govuk-!-margin-left-2")
+                )
+            </div>
         </div>
     </div>
 }
