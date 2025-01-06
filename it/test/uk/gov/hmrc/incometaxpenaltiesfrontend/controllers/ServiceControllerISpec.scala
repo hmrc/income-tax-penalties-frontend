@@ -59,6 +59,8 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getSubmitButton.text() shouldBe "Check amounts and pay"
         document.getLink("actionsToRemoveLink").text() shouldBe "Actions to take to get your points removed (opens in new tab)"
         document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
+        document.getLink("appealPenalty1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
+        document.getLink("appealPenaltyPoint1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
         document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
 
@@ -80,6 +82,8 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getSubmitButton.text() shouldBe "Check amounts and pay"
         document.getLink("actionsToRemoveLink").text() shouldBe "Actions your client must take to get their points removed (opens in new tab)"
         document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
+        document.getLink("appealPenalty1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
+        document.getLink("appealPenaltyPoint1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
         document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
     }
