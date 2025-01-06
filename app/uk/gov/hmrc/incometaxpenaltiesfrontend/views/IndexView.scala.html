@@ -113,7 +113,7 @@
 
         <div class="govuk-summary-card__title-wrapper">
             @link(
-                link = "#",
+                link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals("1").url,
                 messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
                 id = Some("appealPenalty1Link")
             )
@@ -170,7 +170,7 @@
 
         <div class="govuk-summary-card__title-wrapper">
             @link(
-                link = "#",
+                link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals("1").url,
                 messageKey = messages("general.main.penalty.summary.appeal.penalty.point.link", "1"),
                 id = Some("appealPenaltyPoint1Link")
             )
