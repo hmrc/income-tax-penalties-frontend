@@ -61,6 +61,8 @@ trait ComponentSpecHelper
     "microservice.services.income-tax-penalties-stubs.port" -> mockPort,
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
+    "microservice.services.business-tax-account.port" -> mockPort,
+    "microservice.services.business-tax-account.port" -> mockPort,
     "auditing.enabled" -> "true",
     "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck"
   )
