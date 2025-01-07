@@ -46,6 +46,10 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
     if (isEnabled(UseStubForBackend)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
     else s"${servicesConfig.baseUrl("penalties")}/penalties"
 
+  def messagesFrontendBaseUrl: String =
+    if (isEnabled(UseStubForBackend)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
+    else servicesConfig.baseUrl("message-frontend")
+
   lazy val signInUrl: String = config.get[String]("signIn.url")
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
