@@ -27,6 +27,9 @@ object PagerDutyHelper {
     final val INVALID_JSON_RECEIVED_FROM_MESSAGE_FRONTEND = Value
     final val RECEIVED_4XX_FROM_MESSAGE_FRONTEND = Value
     final val RECEIVED_5XX_FROM_MESSAGE_FRONTEND = Value
+    final val INVALID_JSON_RECEIVED_FROM_BTA = Value
+    final val RECEIVED_4XX_FROM_BTA = Value
+    final val RECEIVED_5XX_FROM_BTA = Value
     final val EMPTY_PENALTY_BODY = Value
     final val INVALID_DATA_RETURNED_FOR_CALCULATION_ROW = Value
     final val NO_DATA_RETURNED_FROM_COMPLIANCE = Value
