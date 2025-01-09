@@ -16,26 +16,24 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.SessionExpired
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.PenaltyCalculation
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PenaltyCalculationController @Inject()(mcc: MessagesControllerComponents,
+class PenaltyCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              penaltyCalculationView: PenaltyCalculation,
-                                             val authConnector: AuthConnector,
-                                             sessionExpired: SessionExpired)(implicit appConfig: AppConfig, ec: ExecutionContext) extends AuthenticatedController(mcc) {
+                                             authorised: AuthAction,
+                                             withNavBar: NavBarRetrievalAction)(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
 
-
-  val penaltyCalculationPage: Action[AnyContent] = isAuthenticated { implicit request =>
-    implicit currentUser =>
-    Future.successful(Ok(penaltyCalculationView(currentUser.isAgent)))
+  val penaltyCalculationPage: Action[AnyContent] =
+    (authorised andThen withNavBar) { implicit currentUserRequest =>
+      Ok(penaltyCalculationView(currentUserRequest.isAgent))
   }
 
 }

@@ -20,13 +20,14 @@ import play.api.http.HeaderNames
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.ComponentSpecHelper
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper}
 
-class AppealsControllerISpec extends ComponentSpecHelper with AuthStub {
+class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavBarTesterHelper {
 
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   "GET /appeal-penalty" should {
+
     "redirect the individual to the appeals service when the penalty is a LSP" in {
       stubAuth(OK, successfulIndividualAuthResponse)
 

@@ -17,12 +17,15 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import org.jsoup.Jsoup
-import play.api.http.Status.OK
+import play.api.http.Status.{NO_CONTENT, OK, SEE_OTHER}
+import play.api.test.Helpers.LOCATION
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
 
-class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub {
+import java.net.URLEncoder
 
+class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub {
 
   "GET /" should {
     "return an OK with a view" when {
@@ -51,7 +54,7 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
         document.getH2Elements.get(0).text() shouldBe "Overview"
-        document.getParagraphs.get(1).text() shouldBe "Your account has:"
+        document.getParagraphs.get(0).text() shouldBe "Your account has:"
         document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
         document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
         document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
@@ -61,7 +64,6 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
         document.getLink("appealPenalty1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
         document.getLink("appealPenaltyPoint1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
-        document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
 
       "the user is an authorised agent" in {
@@ -74,7 +76,7 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
         document.getH2Elements.get(0).text() shouldBe "Overview"
-        document.getParagraphs.get(1).text() shouldBe "Your client's account has:"
+        document.getParagraphs.get(0).text() shouldBe "Your client's account has:"
         document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
         document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
         document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
@@ -84,9 +86,31 @@ class ServiceControllerISpec extends ComponentSpecHelper with ViewSpecHelper wit
         document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
         document.getLink("appealPenalty1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
         document.getLink("appealPenaltyPoint1Link").attr("href") shouldBe "/penalties/income-tax/appeal-penalty?penaltyId=1"
-        document.getSignOutLink shouldBe "http://localhost:9514/feedback/ITSAPR"
       }
     }
   }
 
+  "GET /penalties/income-tax/sign-out" should {
+    "redirect to sign-out route with the continue URL set to the feedback survey" in {
+      val appConfig = app.injector.instanceOf[AppConfig]
+      stubAuth(OK, successfulIndividualAuthResponse)
+
+      val result = get("/sign-out")
+
+      val encodedContinueUrl = URLEncoder.encode(appConfig.survey, "UTF-8")
+      val expectedRedirectUrl = s"${appConfig.signOutUrl}?continue=$encodedContinueUrl"
+
+      result.status shouldBe SEE_OTHER
+      result.header(LOCATION) shouldBe Some(expectedRedirectUrl)
+    }
+  }
+
+  "GET /penalties/income-tax/keep-alive" should {
+    "return No-Content" in {
+      stubAuth(OK, successfulIndividualAuthResponse)
+
+      val result = get("/keep-alive")
+      result.status shouldBe NO_CONTENT
+    }
+  }
 }

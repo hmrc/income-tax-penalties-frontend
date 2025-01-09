@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models
 
-object IncomeTaxSessionKeys {
-  val origin = "Origin"
-  val agentSessionMtditid = "ClientMTDID"
-  val pocAchievementDate = "pocAchievementDate"
-  val regimeThreshold = "regimeThreshold"
+import play.api.mvc.{Request, WrappedRequest}
+import play.twirl.api.Html
+
+case class CurrentUserRequest[A](mtdItId: String,
+                                 arn: Option[String] = None,
+                                 override val navBar: Option[Html] = None)(implicit request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
+  val isAgent: Boolean = arn.isDefined
 }

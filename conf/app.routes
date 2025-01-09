@@ -7,7 +7,7 @@ GET        /assets/*file                        controllers.Assets.versioned(pat
 
 GET        /                                    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.homePage
 
-GET        /session-expired                     uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.serviceSessionExpired()
+GET        /sign-out                            uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.signOut()
 GET        /keep-alive                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.keepAlive()
 
 GET        /appeal-penalty                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToAppeals(penaltyId: String, isLPP: Boolean ?= false, isFindOutHowToAppealLSP: Boolean ?= false, isLPP2: Boolean ?= false)

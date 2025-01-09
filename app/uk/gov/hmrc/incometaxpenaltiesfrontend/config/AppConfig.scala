@@ -53,6 +53,7 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   def btaBaseUrl: String = servicesConfig.baseUrl("business-tax-account")
 
   lazy val signInUrl: String = config.get[String]("signIn.url")
+  lazy val signOutUrl: String = config.get[String]("signOut.url")
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendStartUrl: String = "vat-agent-client-lookup-frontend.startUrl"

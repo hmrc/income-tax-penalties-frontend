@@ -84,18 +84,26 @@ trait ComponentSpecHelper
     super.beforeEach()
   }
 
-  def get[T](uri: String, isAgent: Boolean = false, cookie: WSCookie = enLangCookie, queryParams: Map[String, String] = Map.empty): WSResponse = {
+  def get[T](uri: String,
+             isAgent: Boolean = false,
+             cookie: WSCookie = enLangCookie,
+             queryParams: Map[String, String] = Map.empty,
+             origin: Option[String] = None): WSResponse = {
     await(buildClient(uri)
       .withHttpHeaders("Authorization" -> "Bearer 123")
-      .withCookies(cookie, mockSessionCookie(isAgent))
+      .withCookies(cookie, mockSessionCookie(isAgent, origin = origin))
       .withQueryStringParameters(queryParams.toSeq: _*)
       .get())
   }
 
-  def getNoDateInSession[T](uri: String, isAgent: Boolean = false, cookie: WSCookie = enLangCookie, queryParams: Map[String, String] = Map.empty): WSResponse = {
+  def getNoDateInSession[T](uri: String,
+                            isAgent: Boolean = false,
+                            cookie: WSCookie = enLangCookie,
+                            queryParams: Map[String, String] = Map.empty,
+                            origin: Option[String] = None): WSResponse = {
     await(buildClient(uri)
       .withHttpHeaders("Authorization" -> "Bearer 123")
-      .withCookies(cookie, mockSessionCookie(isAgent, hasDateInSession = false))
+      .withCookies(cookie, mockSessionCookie(isAgent, hasDateInSession = false, origin = origin))
       .withQueryStringParameters(queryParams.toSeq: _*)
       .get())
   }
@@ -134,7 +142,7 @@ trait ComponentSpecHelper
 
   val enLangCookie: WSCookie = DefaultWSCookie("PLAY_LANG", "en")
 
-  def mockSessionCookie(isAgent: Boolean, hasDateInSession: Boolean = true): WSCookie = {
+  def mockSessionCookie(isAgent: Boolean, hasDateInSession: Boolean = true, origin: Option[String] = None): WSCookie = {
 
     def makeSessionCookie(session: Session): Cookie = {
       val cookieCrypto = app.injector.instanceOf[SessionCookieCrypto]
@@ -150,6 +158,7 @@ trait ComponentSpecHelper
       SessionKeys.sessionId -> "mock-sessionid"
     ) ++ {if(isAgent) Map(IncomeTaxSessionKeys.agentSessionMtditid -> "1234567890") else Map.empty}
       ++ {if(hasDateInSession) Map(IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.parse("2024-12-01").toString) else Map.empty}
+      ++ {if(origin.isDefined) Map(IncomeTaxSessionKeys.origin -> origin.get) else Map.empty}
     )
 
     val cookie = makeSessionCookie(mockSession)

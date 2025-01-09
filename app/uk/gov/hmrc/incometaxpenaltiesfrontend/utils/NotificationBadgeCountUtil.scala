@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,13 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-object IncomeTaxSessionKeys {
-  val origin = "Origin"
-  val agentSessionMtditid = "ClientMTDID"
-  val pocAchievementDate = "pocAchievementDate"
-  val regimeThreshold = "regimeThreshold"
+trait NotificationBadgeCountUtil {
+
+  def notificationBadgeCount(messageCount: Int): String =
+    messageCount match {
+      case count if count > 99 => "+99"
+      case _ => messageCount.toString
+    }
 }
+
+object NotificationBadgeCountUtil extends NotificationBadgeCountUtil
