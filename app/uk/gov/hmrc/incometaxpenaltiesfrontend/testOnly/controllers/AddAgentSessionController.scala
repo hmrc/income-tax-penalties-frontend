@@ -32,7 +32,7 @@ class AddAgentSessionController @Inject()(mcc: MessagesControllerComponents) ext
   def addAgentSession(mtdItId: String): Action[AnyContent] = Action.async {
     implicit request =>
       val session = request.session + (IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.now().format(ISO_DATE)) + (IncomeTaxSessionKeys.agentSessionMtditid -> mtdItId)
-      Future.successful(SeeOther(mainRoutes.ServiceController.homePage.url).withSession(session))
+      Future.successful(SeeOther(mainRoutes.IndexController.homePage.url).withSession(session))
   }
 
 }
