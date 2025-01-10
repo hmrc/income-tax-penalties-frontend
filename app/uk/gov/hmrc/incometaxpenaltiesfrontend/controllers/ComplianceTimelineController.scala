@@ -16,35 +16,34 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{ComplianceService, TimelineBuilderService}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ComplianceTimelineController @Inject()(mcc: MessagesControllerComponents,
+class ComplianceTimelineController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              complianceTimelineView: ComplianceTimeline,
-                                             val authConnector: AuthConnector,
+                                             authorised: AuthAction,
+                                             withNavBar: NavBarRetrievalAction,
                                              timelineBuilder: TimelineBuilderService,
                                              complianceService: ComplianceService)
-                                            (implicit appConfig: AppConfig, ec: ExecutionContext) extends AuthenticatedController(mcc) {
+                                            (implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-
-
-  val complianceTimelinePage: Action[AnyContent] = isAuthenticated {
-    implicit request =>
-    implicit currentUser =>
+  val complianceTimelinePage: Action[AnyContent] =
+    (authorised andThen withNavBar).async { implicit currentUserRequest =>
       for{
-        optComplianceData <- complianceService.getDESComplianceData(currentUser.mtdItId)
+        optComplianceData <- complianceService.getDESComplianceData(currentUserRequest.mtdItId)
         complianceData = optComplianceData.getOrElse(throw new InternalServerException("[ComplianceTimelineController][complianceTimelinePage] no available compliance data"))
         timelineEvents = timelineBuilder.buildTimeline(complianceData)
-      } yield {Ok(complianceTimelineView(currentUser.isAgent, timelineEvents))}
+      } yield {Ok(complianceTimelineView(currentUserRequest.isAgent, timelineEvents))}
   }
 
 }

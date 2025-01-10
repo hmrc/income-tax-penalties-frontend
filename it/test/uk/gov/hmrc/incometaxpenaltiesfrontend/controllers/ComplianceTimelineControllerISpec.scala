@@ -23,9 +23,10 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, ComplianceStub}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
 
-class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub with PenaltiesFixture with ComplianceStub with FeatureSwitching {
+class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub
+  with PenaltiesFixture with ComplianceStub with FeatureSwitching with NavBarTesterHelper {
 
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
@@ -54,6 +55,11 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
   }
 
   "GET /compliance-timeline" should {
+
+    testNavBar("/compliance-timeline") {
+      stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+    }
+
     "return an OK with an individual view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
         stubAuth(OK, successfulIndividualAuthResponse)
@@ -68,8 +74,8 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getServiceName.text() shouldBe serviceName
         document.title() shouldBe "Actions to take to get your points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions to take to get your points removed"
-        document.getParagraphs.get(1).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
-        document.getParagraphs.get(2).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
+        document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
+        document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
@@ -91,8 +97,8 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getServiceName.text() shouldBe serviceName
         document.title() shouldBe "Actions to take to get your points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions to take to get your points removed"
-        document.getParagraphs.get(1).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
-        document.getParagraphs.get(2).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
+        document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
+        document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
@@ -120,8 +126,8 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getServiceName.text() shouldBe serviceName
         document.title() shouldBe "Actions your client must take to get their points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions your client must take to get their points removed"
-        document.getParagraphs.get(1).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
-        document.getParagraphs.get(2).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
+        document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
+        document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
@@ -144,8 +150,8 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getServiceName.text() shouldBe serviceName
         document.title() shouldBe "Actions your client must take to get their points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions your client must take to get their points removed"
-        document.getParagraphs.get(1).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
-        document.getParagraphs.get(2).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
+        document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
+        document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,43 +14,38 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
+package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates
 
 import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.Results.Ok
+import play.api.mvc.{AnyContent, Request, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.AuthMocks
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
-class AuthenticatedControllerSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite with AuthMocks {
+class AuthActionSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite with AuthMocks {
 
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  object TestController extends AuthenticatedController(stubMessagesControllerComponents())(ExecutionContext.global, appConfig) {
+  val block: Request[AnyContent] => Result = { _ => Ok("ALL GOOD") }
 
-    val authConnector: AuthConnector = mockAuthConnector
+  val testAction = new AuthAction(
+    mcc = stubMessagesControllerComponents(),
+    appConfig = appConfig,
+    authConnector = mockAuthConnector
+  )(ExecutionContext.global)
 
-    def callAuthenticated: Action[AnyContent] = isAuthenticated {
-      _ =>
-        _ =>
-          Future.successful(Ok("ALL GOOD"))
-    }
-
-  }
-
-  "isAuthenticated" should {
+  ".apply()" should {
     "return 200 if user is Authenticated and has individual affinity" in {
       mockAuthenticatedIndividual()
 
-      val result = TestController.callAuthenticated(FakeRequest())
+      val result = testAction(block)(FakeRequest())
       status(result) shouldBe OK
       contentAsString(result) shouldBe "ALL GOOD"
     }
@@ -59,7 +54,7 @@ class AuthenticatedControllerSpec extends AnyWordSpec with should.Matchers with 
       mockAuthenticatedAgent()
       mockAuthenticatedAgentEnrolment("1234567890")
 
-      val result = TestController.callAuthenticated(FakeRequest().withSession(IncomeTaxSessionKeys.agentSessionMtditid -> "1234567890"))
+      val result = testAction(block)(FakeRequest().withSession(IncomeTaxSessionKeys.agentSessionMtditid -> "1234567890"))
       status(result) shouldBe OK
       contentAsString(result) shouldBe "ALL GOOD"
     }
@@ -67,7 +62,7 @@ class AuthenticatedControllerSpec extends AnyWordSpec with should.Matchers with 
     "return 303 to GG login if user is Authenticated and has no affinity group" in {
       mockAuthenticatedWithNoAffinityGroup()
 
-      val result = TestController.callAuthenticated(FakeRequest())
+      val result = testAction(block)(FakeRequest())
       status(result) shouldBe SEE_OTHER
       redirectLocation(result) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in")
     }
@@ -75,7 +70,7 @@ class AuthenticatedControllerSpec extends AnyWordSpec with should.Matchers with 
     "return 303 to GG login if user has No Active Session" in {
       mockAuthenticatedNoActiveSession()
 
-      val result = TestController.callAuthenticated(FakeRequest())
+      val result = testAction(block)(FakeRequest())
       status(result) shouldBe SEE_OTHER
       redirectLocation(result) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in")
     }
@@ -83,7 +78,7 @@ class AuthenticatedControllerSpec extends AnyWordSpec with should.Matchers with 
     "return 303 to GG login if user is Not Authenticated" in {
       mockAuthenticatedFailure()
 
-      val result = TestController.callAuthenticated(FakeRequest())
+      val result = testAction(block)(FakeRequest())
       status(result) shouldBe SEE_OTHER
       redirectLocation(result) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in")
     }

@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models
+package uk.gov.hmrc.incometaxpenaltiesfrontend.stubs
 
-case class CurrentUser(mtdItId: String, arn: Option[String] = None) {
-  val isAgent: Boolean = arn.isDefined
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.libs.json.{JsValue, Json}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.WiremockMethods
+
+trait BtaNavLinksStub extends WiremockMethods {
+
+  def stubBtaNavLinks()(status: Int, body: JsValue = Json.obj()): StubMapping =
+    when(GET, uri = s"/business-account/partial/nav-links").thenReturn(status, body)
+
 }

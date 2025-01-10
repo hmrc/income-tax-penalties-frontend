@@ -19,12 +19,15 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import org.jsoup.Jsoup
 import play.api.http.Status.OK
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
 
-class PenaltyCalculationControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub {
+class PenaltyCalculationControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub
+with NavBarTesterHelper {
 
+  "GET /calculation" when {
 
-  "GET /calculation" should {
+    testNavBar("/calculation")()
+
     "return an OK with a view" when {
       "have the correct page has correct elements" in {
         stubAuth(OK, successfulIndividualAuthResponse)
@@ -36,10 +39,10 @@ class PenaltyCalculationControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getServiceName.text() shouldBe "Manage your Self Assessment"
         document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "First penalty for late payment"
-        document.getParagraphs.get(1).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
-        document.getParagraphs.get(2).text() shouldBe "It is made up of 2 parts:"
-        document.getBulletPoints.get(7).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
-        document.getBulletPoints.get(8).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
+        document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
+        document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
+        document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
+        document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
         document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
         document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
         document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"

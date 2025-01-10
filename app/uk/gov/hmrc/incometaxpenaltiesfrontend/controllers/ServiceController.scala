@@ -16,46 +16,35 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.AuthenticatedController
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ServiceController @Inject()(val authConnector: AuthConnector,
-                                  mcc: MessagesControllerComponents,
+class ServiceController @Inject()(override val controllerComponents: MessagesControllerComponents,
+                                  authorised: AuthAction,
+                                  withNavBar: NavBarRetrievalAction,
                                   indexView: IndexView
-                                 )(implicit appConfig: AppConfig,
-                                   ec: ExecutionContext) extends AuthenticatedController(mcc) {
+                                 )(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
 
 
-  val homePage: Action[AnyContent] = isAuthenticated {
-    implicit request =>
-      implicit currentUser =>
-
-        Future.successful(
-          Ok(indexView(currentUser.isAgent))
-            .addingToSession(IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.now().toString)
-        )
+  val homePage: Action[AnyContent] = (authorised andThen withNavBar) { implicit currentUserRequest =>
+    Ok(indexView(currentUserRequest.isAgent))
+      .addingToSession(IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.now().toString)
   }
 
-  val serviceSessionExpired: Action[AnyContent] = isAuthenticated {
-    implicit request =>
-      implicit currentUser =>
-        Future.successful(Redirect(appConfig.survey).withNewSession)
+  val signOut: Action[AnyContent] = authorised {
+    Redirect(appConfig.signOutUrl, Map("continue" -> Seq(appConfig.survey)))
   }
 
-  val keepAlive: Action[AnyContent] = isAuthenticated {
-    implicit request =>
-      implicit currentUser =>
-        Future.successful(NoContent)
-  }
+  val keepAlive: Action[AnyContent] = authorised { _ => NoContent }
 
 }
 

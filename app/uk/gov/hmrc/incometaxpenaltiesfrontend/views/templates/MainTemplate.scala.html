@@ -15,17 +15,16 @@
  *@
 
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accountmenu.{AccountMenu, AccountMessages, SignOut}
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.RequestWithNavBar
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
-
+@import views.html.helper.CSPNonce
 
 @this(
         govukBackLink: GovukBackLink,
         alphaBanner: StandardAlphaBanner,
         hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
-        hmrcAccountMenu: HmrcAccountMenu,
         govukPhaseBanner: GovukPhaseBanner,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
@@ -48,22 +47,18 @@
     @if(!disableSessionExpired){
         @hmrcTimeoutDialogHelper(
             signOutUrl = appConfig.survey,
-            keepAliveUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.serviceSessionExpired().url)
+            keepAliveUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.keepAlive().url)
         )
     }
-}
 
-@accountMenu = @{
-        hmrcAccountMenu(AccountMenu(
-            signOut = SignOut(href = appConfig.survey),
-            language = if(messages.lang.code == "cy") Cy else En,
-            messages = AccountMessages(messageCount = None)
-        ))
-
+    <link href="@routes.Assets.versioned("stylesheets/application.css")" media="all" rel="stylesheet" type="text/css"@CSPNonce.get.map {n=> nonce="@n"} />
 }
 
 @beforeContent = {
-    @accountMenu
+    @{ request match {
+        case req: RequestWithNavBar => req.navBar.getOrElse(Html(""))
+        case _ => Html("")
+    }}
 
     @govukPhaseBanner(PhaseBanner(
         tag = Some(Tag(

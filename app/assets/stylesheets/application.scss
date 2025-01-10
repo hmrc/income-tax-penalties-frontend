@@ -1,1 +1,6 @@
 @import "lib/govuk-frontend/dist/govuk/base";
+
+//Temporary alignment fix for the notification badge until the HMRC frontend library is updated to fix this
+.hmrc-notification-badge {
+  margin-left: 5px;
+}
