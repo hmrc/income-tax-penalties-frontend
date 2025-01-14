@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures
+package fixtures
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail, ObligationIdentification}
@@ -159,8 +159,7 @@ trait PenaltiesFixture {
     appealInformation = None,
     chargeAmount = None,
     chargeOutstandingAmount = None,
-    chargeDueDate = None,
-    lspTypeEnum = Some(LSPTypeEnum.Point)
+    chargeDueDate = None
   )
 
 

@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import org.jsoup.Jsoup
 import play.api.http.Status.{NO_CONTENT, OK, SEE_OTHER}
 import play.api.test.Helpers.LOCATION
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig

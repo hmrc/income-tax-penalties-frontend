@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors
 
+import fixtures.PenaltiesFixture
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import play.api.libs.json.Json
 import play.api.test.Helpers._
@@ -24,11 +25,10 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.{ComplianceDataMalformed, ComplianceDataNoData, ComplianceDataResponse, ComplianceDataUnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsBadRequest, GetPenaltyDetailsMalformed, GetPenaltyDetailsResponse, GetPenaltyDetailsUnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.ComplianceStub
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 

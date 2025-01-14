@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
+import fixtures.BtaNavContentFixture
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -25,7 +26,6 @@ import uk.gov.hmrc.hmrcfrontend.views.viewmodels.language.{Cy, En}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.MockBtaNavLinksConnector
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.BtaNavContentFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.btaNavBar.ListLink
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.NotificationBadgeCountUtil.notificationBadgeCount
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.navBar.BtaNavBar

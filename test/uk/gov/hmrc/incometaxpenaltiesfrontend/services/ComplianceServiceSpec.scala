@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
+import fixtures.ComplianceDataTestData
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -25,7 +26,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.ComplianceDataTestData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 

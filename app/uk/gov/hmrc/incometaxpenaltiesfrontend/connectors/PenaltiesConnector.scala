@@ -35,7 +35,7 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
   def getPenaltyDetails(enrolmentKey: String, optArn: Option[String] = None)
                        (implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
-    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for VRN $enrolmentKey.")
+    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for Enrolment: $enrolmentKey.")
 
     httpClient
       .get(url"${appConfig.penaltiesUrl + s"/etmp/penalties/$enrolmentKey${optArn.map(arn => s"?arn=$arn").getOrElse("")}"}")

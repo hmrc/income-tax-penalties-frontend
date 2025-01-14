@@ -18,14 +18,14 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 
 import javax.inject.{Inject, Singleton}
 
 
 @Singleton
-class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends ImplicitDateFormatter {
+class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFormatter {
 
   def buildTimeline(complianceData: ComplianceData)(implicit messages: Messages): Seq[TimelineEvent] = {
     val filteredComplianceData = complianceData.obligationDetails.filter(_.status.equals(ComplianceStatusEnum.Open))

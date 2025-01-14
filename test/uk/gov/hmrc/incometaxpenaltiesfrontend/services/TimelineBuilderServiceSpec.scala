@@ -16,18 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
+import fixtures.ComplianceDataTestData
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.test.FakeRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.ComplianceDataTestData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ImplicitDateFormatter, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 
 import java.time.LocalDate
 
-class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with GuiceOneAppPerSuite with ImplicitDateFormatter {
+class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with GuiceOneAppPerSuite with DateFormatter {
 
 object FakeTimeMachine extends TimeMachine {
   override def getCurrentDate: LocalDate = LocalDate.parse("2023-04-13")
