@@ -34,6 +34,7 @@ lsp.updateSubmitted.key = Update submitted (Welsh)
 lsp.updateSubmitted.notReceived = Return not received (Welsh)
 lsp.expiry.key = Point due to expire (Welsh)
 lsp.expiryReason.key = Removed reason (Welsh)
+lsp.noPenalties = There are no late submission penalties. (Welsh)
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
@@ -47,6 +48,7 @@ lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year (Welsh)
 lpp.incomeTaxDue.key = Income Tax due (Welsh)
 lpp.incomeTaxPaymentDate.key = Income Tax paid (Welsh)
 lpp.paymentNotReceived = Payment not yet received (Welsh)
+lpp.noPenalties = There are no late payment penalties. (Welsh)
 
 # Appeal Status
 # =============
