@@ -148,8 +148,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    println(document.select("#lpp-view-calculation-link-1"))
-
                     document.select("h2").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.estimate
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
@@ -220,8 +218,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     ))
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
-
-                    println(document.select("#lpp-view-calculation-link-1"))
 
                     document.select("h2").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid

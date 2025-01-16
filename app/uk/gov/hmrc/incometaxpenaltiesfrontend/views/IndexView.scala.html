@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 
 @this(
         main: MainTemplate,
@@ -32,11 +33,13 @@
         govukTable : GovukTable,
         govukTag : GovukTag,
         list : List,
-        summaryCardLSP: SummaryCardLSP
+        summaryCardLSP: SummaryCardLSP,
+        summaryCardLPP: SummaryCardLPP
 )
 
 @(
         lspData: Seq[LateSubmissionPenaltySummaryCard],
+        lppData: Seq[LatePaymentPenaltySummaryCard],
         isAgent: Boolean
 )(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
@@ -61,14 +64,6 @@
         @summaryCardLSP(lsp)
     }
 }
-@calculationViewLink = {
-    @link(
-        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.PenaltyCalculationController.penaltyCalculationPage.url,
-        messageKey = messages("calculations.view.calculations"),
-        inParagraph = true,
-        id = Some("viewCalculations")
-    )
-}
 
 @lppMainTab(individualOrAgent: String) = {
     @h3(msg = "general.main.lpp", elmId = "lppHeading")
@@ -82,70 +77,9 @@
         id = Some("guidanceLatePaymentLink")
     )
 
-    <div class="govuk-summary-card">
-        <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title">
-                £400.00 penalty
-            </h2>
-            <div>
-                @govukTag(Tag(
-                    content = Text("ESTIMATE"),
-                    classes = "govuk-tag--red"
-                ))
-            </div>
-        </div>
-        <div class="govuk-summary-card__content">
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    @messages("general.main.penalty.summary.penalty.type")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        First penalty for late payment
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    @messages("general.main.penalty.summary.overdue.charge")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        Income Tax for 2026 to 2027 tax year
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    @messages("general.main.penalty.summary.income.tax.due")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        31 January 2028
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    @messages("general.main.penalty.summary.income.tax.paid")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        Payment not yet received
-                    </dd>
-                </div>
-            </dl>
-        </div>
-
-        <div class="govuk-summary-card__title-wrapper">
-
-            <div>
-                @calculationViewLink
-
-                @link(
-                    link = "#",
-                    messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
-                    inParagraph = true,
-                    id = Some("appealPenalty1Link"),
-                    classes = Some("govuk-link govuk-!-display-inline-block govuk-!-margin-left-2")
-                )
-            </div>
-        </div>
-    </div>
+    @lppData.map { lpp =>
+        @summaryCardLPP(lpp)
+    }
 }
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>

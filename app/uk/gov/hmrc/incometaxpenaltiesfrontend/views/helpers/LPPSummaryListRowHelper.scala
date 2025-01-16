@@ -45,8 +45,8 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       label = messages("lpp.incomeTaxPeriod.key"),
       value = Html(messages(
         "lpp.incomeTaxPeriod.value",
-        dateToString(penalty.principalChargeBillingFrom),
-        dateToString(penalty.principalChargeBillingTo)
+        penalty.principalChargeBillingFrom.getYear.toString,
+        penalty.principalChargeBillingTo.getYear.toString
       ))
     )
 

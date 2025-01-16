@@ -77,8 +77,8 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
               summaryListRow(
                 label = messagesForLanguage.incomeTaxPeriodKey,
                 value = Html(messagesForLanguage.overdueChargeValue(
-                  dateToString(samplePaidLPP1.principalChargeBillingFrom),
-                  dateToString(samplePaidLPP1.principalChargeBillingTo)
+                  samplePaidLPP1.principalChargeBillingFrom.getYear.toString,
+                  samplePaidLPP1.principalChargeBillingTo.getYear.toString
                 ))
               )
           }
