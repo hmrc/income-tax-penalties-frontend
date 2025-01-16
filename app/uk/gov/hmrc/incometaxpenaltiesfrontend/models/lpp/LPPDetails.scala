@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
 
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformationType
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealStatusEnum}
 
 import java.time.LocalDate
 
@@ -46,8 +46,15 @@ case class LPPDetails(principalChargeReference: String,
                        principalChargeDueDate: LocalDate,
                        penaltyChargeReference: Option[String],
                        principalChargeLatestClearing: Option[LocalDate],
-                       vatOutstandingAmount: Option[BigDecimal],
+                       vatOutstandingAmount: Option[BigDecimal], //TODO: Expect an API change to return a different name other than `vat` prefixed for the outstandingAmount
                        LPPDetailsMetadata: LPPDetailsMetadata) extends Ordered[LPPDetails] {
+
+  val appealStatus: Option[AppealStatusEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
+
+  //TODO: Expect an API change to return a different name other than `vat` prefixed for the outstandingAmount
+  val vatOutstandingAmountInPence: Int = vatOutstandingAmount.map(amount => (amount * 100).toInt).getOrElse(0)
+
+  val isPaid: Boolean = penaltyAmountPaid.contains(penaltyAmountPosted)
 
   override def compare(that: LPPDetails): Int = {
     (this.principalChargeBillingFrom, that.principalChargeBillingFrom,

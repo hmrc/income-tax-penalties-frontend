@@ -20,22 +20,31 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyStatusEnum.{Active, Inactive}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.CurrencyFormatter
 
 trait TagHelper {
 
   def getTagStatus(penalty: LSPDetails)(implicit messages: Messages): Tag =
     penalty.penaltyStatus match {
-      case Inactive =>
+      case LSPPenaltyStatusEnum.Inactive =>
         Tag(Text(messages(
           if (penalty.appealStatus.contains(AppealStatusEnum.Upheld)) messages("status.upheld") else messages("status.expired")
         )))
-      case Active if penalty.originalAmount > BigDecimal(0) =>
+      case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid)
       case _ =>
         Tag(Text(messages("status.active")))
+    }
+
+  def getTagStatus(penalty: LPPDetails)(implicit messages: Messages): Tag =
+    (penalty.appealStatus, penalty.penaltyStatus) match {
+      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.upheld")))
+      case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
+      case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
+      case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)))
     }
 
   private def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: BigDecimal, penaltyAmountPaid: BigDecimal)(implicit messages: Messages): Tag =
@@ -43,7 +52,7 @@ trait TagHelper {
       case (outstanding, _) if outstanding == 0 =>
         Tag(Text(messages("status.paid")), "govuk-tag--green")
       case (outstanding, paid) if paid > 0 =>
-        Tag(Text(messages("status.partialPaymentDue", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(outstanding))), "govuk-tag--red")
+        Tag(Text(messages("status.amountDue", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(outstanding))), "govuk-tag--red")
       case _ =>
         Tag(Text(messages("status.due")), "govuk-tag--red")
     }

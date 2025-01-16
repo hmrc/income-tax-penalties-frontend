@@ -40,7 +40,7 @@ trait LPPDetailsTestData {
     penaltyAmountPaid = None,
     penaltyAmountPosted = 0,
     penaltyAmountAccruing = 1001.45,
-    penaltyAmountOutstanding = None,
+    penaltyAmountOutstanding = Some(200),
     LPP1LRDays = Some("15"),
     LPP1HRDays = Some("31"),
     LPP2Days = Some("31"),
@@ -86,7 +86,6 @@ trait LPPDetailsTestData {
     ),
     penaltyAmountPaid = Some(10),
     penaltyAmountOutstanding = Some(200),
-    principalChargeLatestClearing = Some(lpp1PrincipleChargePaidDate),
     penaltyStatus = LPPPenaltyStatusEnum.Posted
   )
 

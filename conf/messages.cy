@@ -13,7 +13,8 @@ status.expired = EXPIRED (Welsh)
 status.active = ACTIVE (Welsh)
 status.due = DUE (Welsh)
 status.paid = PAID (Welsh)
-status.partialPaymentDue = £{0} DUE (Welsh)
+status.amountDue = £{0} DUE (Welsh)
+status.estimate = ESTIMATE (Welsh)
 
 # Card Title Content
 # ==================
@@ -58,10 +59,11 @@ expiryReason.RES = Reset (Welsh)
 
 # Card Footer Links
 # =================
-cardLinks.adjustedPoint.cannotAppeal = You cannot appeal this point (Welsh)
+cardLinks.cannotAppeal = You cannot appeal this point (Welsh)
 cardLinks.findOutHowToAppeal = Find out how to appeal (Welsh)
-cardLinks.appealNoPointNumber = Appeal penalty (Welsh)
+cardLinks.appealNoPointNumber = Appeal this penalty (Welsh)
 cardLinks.appeal = Appeal penalty point {0} (Welsh)
+cardLinks.viewCalculation = View calculation (Welsh)
 
 # Months
 # ======
