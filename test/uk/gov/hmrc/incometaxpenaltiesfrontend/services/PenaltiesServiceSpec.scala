@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
+import fixtures.PenaltiesDetailsTestData
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, reset, when}
 import org.scalatest.matchers.should.Matchers
@@ -23,16 +24,16 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status._
 import play.api.i18n.{Messages, MessagesApi}
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsBadRequest, GetPenaltyDetailsMalformed, GetPenaltyDetailsUnexpectedFailure}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesDetailsTestData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPDetailsMetadata, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, LatePaymentPenalty, MainTransactionEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LSPPenaltyCategoryEnum, LSPPenaltyStatusEnum, LSPSummary, LateSubmission, LateSubmissionPenalty, TaxReturnStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, PenaltyDetails, Totalisations}
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -100,6 +101,10 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
   )
 
   class Setup {
+
+    implicit val userRequest: CurrentUserRequest[AnyContentAsEmpty.type] = CurrentUserRequest("1234567890")(FakeRequest())
+    implicit val hc: HeaderCarrier = HeaderCarrier()
+
     val mockPenaltiesConnector: PenaltiesConnector = mock(classOf[PenaltiesConnector])
     val service: PenaltiesService = new PenaltiesService(mockPenaltiesConnector)
     val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
@@ -112,7 +117,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
         when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
           .thenReturn(Future.successful(Right(penaltyDetailsWithNoVATDue)))
 
-        val result = await(service.getPenaltyDataFromEnrolmentKey("1234567890", None)(HeaderCarrier()))
+        val result = await(service.getPenaltyDataForUser())
         
         result.isRight shouldBe true
         result shouldBe Right(penaltyDetailsWithNoVATDue)
@@ -124,7 +129,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
         when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
           .thenReturn(Future.successful(Right(PenaltyDetails(None, None, None, None))))
 
-        val result = await(service.getPenaltyDataFromEnrolmentKey("1234567890", None)(HeaderCarrier()))
+        val result = await(service.getPenaltyDataForUser())
         result.isRight shouldBe true
         result shouldBe Right(PenaltyDetails(None, None, None, None))
       }
@@ -134,7 +139,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
           when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
             .thenReturn(Future.successful(Left(GetPenaltyDetailsMalformed)))
 
-          val result = await(service.getPenaltyDataFromEnrolmentKey("1234567890", None)(HeaderCarrier()))
+          val result = await(service.getPenaltyDataForUser())
 
           result.isLeft shouldBe true
           result shouldBe Left(GetPenaltyDetailsMalformed)
@@ -146,7 +151,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
           when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
             .thenReturn(Future.successful(Left(GetPenaltyDetailsBadRequest)))
 
-          val result = await(service.getPenaltyDataFromEnrolmentKey("1234567890", None)(HeaderCarrier()))
+          val result = await(service.getPenaltyDataForUser())
           result.isLeft shouldBe true
           result shouldBe Left(GetPenaltyDetailsBadRequest)
         }
@@ -157,7 +162,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
           when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
             .thenReturn(Future.successful(Left(GetPenaltyDetailsUnexpectedFailure(INTERNAL_SERVER_ERROR))))
 
-          val result = await(service.getPenaltyDataFromEnrolmentKey("1234567890", None)(HeaderCarrier()))
+          val result = await(service.getPenaltyDataForUser())
           result.isLeft shouldBe true
           result shouldBe Left(GetPenaltyDetailsUnexpectedFailure(INTERNAL_SERVER_ERROR))
         }

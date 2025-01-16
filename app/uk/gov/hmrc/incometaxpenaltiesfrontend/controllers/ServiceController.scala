@@ -19,26 +19,15 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.AuthAction
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
-import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ServiceController @Inject()(override val controllerComponents: MessagesControllerComponents,
-                                  authorised: AuthAction,
-                                  withNavBar: NavBarRetrievalAction,
-                                  indexView: IndexView
+                                  authorised: AuthAction
                                  )(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
-
-
-  val homePage: Action[AnyContent] = (authorised andThen withNavBar) { implicit currentUserRequest =>
-    Ok(indexView(currentUserRequest.isAgent))
-      .addingToSession(IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.now().toString)
-  }
 
   val signOut: Action[AnyContent] = authorised {
     Redirect(appConfig.signOutUrl, Map("continue" -> Seq(appConfig.survey)))

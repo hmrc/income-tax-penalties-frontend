@@ -23,15 +23,16 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyD
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LatePaymentPenalty}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LateSubmissionPenalty, TaxReturnStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, PenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil
 
 import javax.inject.Inject
 import scala.concurrent.Future
 
 class PenaltiesService @Inject()(connector: PenaltiesConnector) {
 
-  def getPenaltyDataFromEnrolmentKey(enrolmentKey: String, optArn: Option[String])(implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] =
-    connector.getPenaltyDetails(enrolmentKey, optArn)
+  def getPenaltyDataForUser()(implicit user: CurrentUserRequest[_], hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] =
+    connector.getPenaltyDetails(EnrolmentUtil.constructMTDITEnrolmentKey(user.mtdItId), user.arn)
 
   def findInterestOnAccount(totalisations: Option[Totalisations]): BigDecimal = {
     val accruingInterest: BigDecimal = totalisations.flatMap(_.totalAccountAccruingInterest).getOrElse(0)

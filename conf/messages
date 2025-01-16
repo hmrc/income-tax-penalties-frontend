@@ -17,21 +17,11 @@ general.main.lsp = Late submission penalties
 general.main.lpp = Late payment penalties
 general.main.no.lpp = There are no late payment penalties.
 general.main.penalty.point.total = Penalty points total:
-general.main.penalty.summary.income.source.heading = Income source
 general.main.penalty.summary.penalty.type = Penalty type
 general.main.penalty.summary.overdue.charge = Overdue charge
 general.main.penalty.summary.income.tax.due = Income Tax due
 general.main.penalty.summary.income.tax.paid = Income Tax paid
-general.main.penalty.summary.quarter.heading = Quarter
-general.main.penalty.summary.update.due.heading = Update due
-general.main.penalty.summary.update.submitted.heading = Update submitted
-general.main.penalty.summary.points.due.expire.heading = Point due to expire
-general.main.penalty.summary.tax.year.heading = Tax year
-general.main.penalty.summary.declaration.due.heading = Declaration due
-general.main.penalty.summary.declaration.submitted.heading = Declaration submitted
-general.main.penalty.summary.point.due.expire.heading = Point due to expire
 general.main.penalty.summary.appeal.penalty.link = Appeal penalty
-general.main.penalty.summary.appeal.penalty.point.link = Appeal penalty point {0}
 general.main.penalty.summary.guidance.on.late.payments = Read the guidance about how late payment penalties are calculated
 
 individual.main.your.account.has = Your account has:
@@ -87,6 +77,63 @@ compliance.timeline.agent.title  = Actions your client must take to get their po
 compliance.timeline.agent.maximum.penalty.points  = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire.
 compliance.timeline.agent.send.submission.listed  = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline.
 compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points.
+
+# Penalty Status tags
+# ===================
+status.upheld = UPHELD
+status.expired = EXPIRED
+status.active = ACTIVE
+status.due = DUE
+status.paid = PAID
+status.partialPaymentDue = £{0} DUE
+
+# Card Title Content
+# ==================
+lsp.cardTitle.addedPoint = Penalty point {0}: adjustment point
+lsp.cardTitle.removedPoint = Penalty point
+lsp.cardTitle.financialPoint = Penalty point {0}: £{1} penalty
+lsp.cardTitle.point = Penalty point {0}
+
+# Late Submission Penalty - Summary Row Key/Values
+# ================================================
+lsp.addedOn.key = Added on
+lsp.quarter.key = Quarter
+lsp.quarter.value = {0} to {1}
+lsp.updateDue.key = Update due
+lsp.updateSubmitted.key = Update submitted
+lsp.updateSubmitted.notReceived = Return not received
+lsp.appealStatus.key = Appeal status
+lsp.expiry.key = Point due to expire
+lsp.expiryReason.key = Removed reason
+
+# Appeal Status
+# =============
+#TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
+appealStatus.A.01 = Under review by HMRC
+appealStatus.A.02 = Under review by the tax tribunal
+appealStatus.B.02 = Appeal accepted by tax tribunal
+appealStatus.B.01 = Appeal accepted
+appealStatus.C.01 = Appeal rejected
+appealStatus.C.02 = Appeal rejected by tax tribunal
+
+# Expiry Reason
+# =============
+#TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
+expiryReason.APP = Appeal
+expiryReason.FAP = Adjustment
+expiryReason.ICR = Reversal
+expiryReason.MAN = Manual
+expiryReason.NAT = Natural expiration
+expiryReason.NLT = Submission on time
+expiryReason.POC = Compliance
+expiryReason.RES = Reset
+
+# Card Footer Links
+# =================
+cardLinks.adjustedPoint.cannotAppeal = You cannot appeal this point
+cardLinks.findOutHowToAppeal = Find out how to appeal
+cardLinks.appealNoPointNumber = Appeal penalty
+cardLinks.appeal = Appeal penalty point {0}
 
 # Months
 # --------------------------

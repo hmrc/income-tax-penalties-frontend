@@ -17,7 +17,8 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealInformationType
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PenaltyPeriodHelper
 
 import java.time.LocalDate
 
@@ -34,8 +35,38 @@ case class LSPDetails(penaltyNumber: String,
                       appealInformation: Option[Seq[AppealInformationType]],
                       chargeAmount: Option[BigDecimal],
                       chargeOutstandingAmount: Option[BigDecimal],
-                      chargeDueDate: Option[LocalDate],
-                      lspTypeEnum: Option[LSPTypeEnum.Value] = None)
+                      chargeDueDate: Option[LocalDate]) {
+
+  val appealStatus: Option[AppealStatusEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
+  val appealLevel: Option[AppealLevelEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
+
+  val lspTypeEnum: LSPTypeEnum.Value =
+    (penaltyCategory, appealStatus) match {
+      case (Some(LSPPenaltyCategoryEnum.Threshold), _) => LSPTypeEnum.Financial
+      case (Some(LSPPenaltyCategoryEnum.Charge), _) => LSPTypeEnum.Financial
+      case (_, Some(AppealStatusEnum.Upheld)) if penaltyStatus == LSPPenaltyStatusEnum.Inactive => LSPTypeEnum.AppealedPoint
+      case (_, _) if FAPIndicator.contains("X") => if (penaltyStatus == LSPPenaltyStatusEnum.Active) LSPTypeEnum.AddedFAP else LSPTypeEnum.RemovedFAP
+      case (_, _) if penaltyStatus == LSPPenaltyStatusEnum.Inactive && expiryReason.isDefined => LSPTypeEnum.RemovedPoint
+      case _ => LSPTypeEnum.Point
+    }
+
+  val sortedLateSubmission: Option[LateSubmission] =
+    lateSubmissions.map(PenaltyPeriodHelper.sortedPenaltyPeriod).flatMap(_.headOption)
+
+  val isReturnSubmitted: Boolean =
+    sortedLateSubmission.exists(_.taxReturnStatus.contains(TaxReturnStatusEnum.Fulfilled))
+
+  val taxPeriodStartDate: Option[LocalDate] = sortedLateSubmission.flatMap(_.taxPeriodStartDate)
+  val taxPeriodEndDate: Option[LocalDate] = sortedLateSubmission.flatMap(_.taxPeriodEndDate)
+  val dueDate: Option[LocalDate] = sortedLateSubmission.flatMap(_.taxPeriodDueDate)
+  val receiptDate: Option[LocalDate] = sortedLateSubmission.flatMap(_.returnReceiptDate)
+
+  val isFAP: Boolean = expiryReason.exists(_.equals(ExpiryReasonEnum.Adjustment))
+
+  val originalAmount: BigDecimal = chargeAmount.getOrElse(BigDecimal(0))
+  val outstandingAmount: BigDecimal = chargeOutstandingAmount.getOrElse(BigDecimal(0))
+  val amountPaid: BigDecimal = originalAmount - outstandingAmount
+}
 
 object LSPDetails {
   implicit val format: OFormat[LSPDetails] = Json.format[LSPDetails]

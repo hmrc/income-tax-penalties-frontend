@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures
+package fixtures
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
@@ -52,8 +52,7 @@ trait LSPDetailsTestData {
     appealInformation = None,
     chargeAmount = None,
     chargeOutstandingAmount = None,
-    chargeDueDate = None,
-    lspTypeEnum = Some(LSPTypeEnum.Point)
+    chargeDueDate = None
   )
 
   val sampleLateSubmissionPenaltyCharge: LSPDetails = sampleLateSubmissionPoint.copy(
@@ -61,8 +60,7 @@ trait LSPDetailsTestData {
     penaltyOrder = Some("01"),
     chargeAmount = Some(200),
     chargeOutstandingAmount = Some(200),
-    chargeDueDate = Some(chargeDueDate),
-    lspTypeEnum = Some(LSPTypeEnum.Financial)
+    chargeDueDate = Some(chargeDueDate)
   )
 
   val sampleLateSubmissionPenaltyChargeWithMultiplePeriods: LSPDetails = sampleLateSubmissionPenaltyCharge.copy(
@@ -105,8 +103,7 @@ trait LSPDetailsTestData {
     penaltyStatus = LSPPenaltyStatusEnum.Inactive,
     penaltyOrder = None,
     FAPIndicator = Some("X"),
-    expiryReason = Some(ExpiryReasonEnum.Adjustment),
-    lspTypeEnum = Some(LSPTypeEnum.RemovedFAP)
+    expiryReason = Some(ExpiryReasonEnum.Adjustment)
   )
 
   val samplePenaltyPointNotSubmitted: LSPDetails = sampleLateSubmissionPoint.copy(

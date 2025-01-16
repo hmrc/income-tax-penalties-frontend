@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import fixtures.PenaltiesFixture
 import org.jsoup.Jsoup
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.PenaltiesFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, ComplianceStub}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
 

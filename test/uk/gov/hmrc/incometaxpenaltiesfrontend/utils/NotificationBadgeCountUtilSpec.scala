@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.util
+package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.NotificationBadgeCountUtil
 
-class NotificationBadgeCountUtil extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with ScalaFutures {
+class NotificationBadgeCountUtilSpec extends AnyWordSpec with Matchers {
 
-  "NotificationBadgeCountUtil" should {
+  "NotificationBadgeCount" should {
 
     "truncate any values greater than 99 to +99" in {
       NotificationBadgeCountUtil.notificationBadgeCount(100) shouldBe "+99"

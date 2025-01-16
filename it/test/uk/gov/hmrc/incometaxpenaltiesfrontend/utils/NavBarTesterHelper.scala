@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
+import fixtures.BtaNavContentFixture
 import org.jsoup.Jsoup
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status.OK
 import play.api.libs.json.Json
-import uk.gov.hmrc.incometaxpenaltiesfrontend.fixtures.BtaNavContentFixture
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, BtaNavLinksStub}
 
 trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with BtaNavContentFixture { _: ComponentSpecHelper with AuthStub =>

@@ -15,9 +15,10 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 
 @this(
         main: MainTemplate,
@@ -30,14 +31,16 @@
         govukTabs : GovukTabs,
         govukTable : GovukTable,
         govukTag : GovukTag,
-        summaryCard: SummaryCard,
-        list : List
-
+        list : List,
+        summaryCardLSP: SummaryCardLSP
 )
 
-@(isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(
+        lspData: Seq[LateSubmissionPenaltySummaryCard],
+        isAgent: Boolean
+)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@lspMainTab = {
+@lspMainTab(individualOrAgent: String) = {
 
     @h3(msg = "general.main.lsp", elmId = "lspHeading")
 
@@ -54,128 +57,9 @@
         id = Some("actionsToRemoveLink")
     )
 
-    <div class="govuk-summary-card">
-        <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title">
-                Additional £200 penalty
-            </h2>
-            <div>
-                @govukTag(Tag(
-                    content = Text("DUE"),
-                    classes = "govuk-tag--red"
-                ))
-            </div>
-        </div>
-        <div class="govuk-summary-card__content">
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.income.source.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        JB Painting and Decorating
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.quarter.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        6 October 2027 to 5 January 2028
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.update.due.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        7 February 2028
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.update.submitted.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        28 February 2028
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.points.due.expire.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        June 2030
-                    </dd>
-                </div>
-            </dl>
-        </div>
-
-        <div class="govuk-summary-card__title-wrapper">
-            @link(
-                link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals("1").url,
-                messageKey = messages("general.main.penalty.summary.appeal.penalty.link"),
-                id = Some("appealPenalty1Link")
-            )
-        </div>
-    </div>
-
-    <div class="govuk-summary-card">
-        <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title">
-                Penalty point 1
-            </h2>
-            <div>
-                @govukTag(Tag(
-                    content = Text("ACTIVE")
-                ))
-            </div>
-        </div>
-        <div class="govuk-summary-card__content">
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.tax.year.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        2026/27
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.declaration.due.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        31 January 2028
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.declaration.submitted.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        7 February 2028
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @messages("general.main.penalty.summary.point.due.expire.heading")
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        March 2029
-                    </dd>
-                </div>
-            </dl>
-        </div>
-
-        <div class="govuk-summary-card__title-wrapper">
-            @link(
-                link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.AppealsController.redirectToAppeals("1").url,
-                messageKey = messages("general.main.penalty.summary.appeal.penalty.point.link", "1"),
-                id = Some("appealPenaltyPoint1Link")
-            )
-        </div>
-    </div>
+    @lspData.map { lsp =>
+        @summaryCardLSP(lsp)
+    }
 }
 @calculationViewLink = {
     @link(
@@ -186,7 +70,7 @@
     )
 }
 
-@lppMainTab = {
+@lppMainTab(individualOrAgent: String) = {
     @h3(msg = "general.main.lpp", elmId = "lppHeading")
 
     @p(individualOrAgent + ".main.pay.early.info")
@@ -264,42 +148,39 @@
     </div>
 }
 
-@individualOrAgent = {@if(isAgent){agent} else {individual}}
+@defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
-@main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
+    @main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
 
-   @h1("general.main.h1")
+        @h1("general.main.h1")
 
-   @h2(msg = "general.main.overview.heading", elmId = "overviewHeading")
+        @h2(msg = "general.main.overview.heading", elmId = "overviewHeading")
 
-   @p(individualOrAgent + ".main.your.account.has")
+        @p(individualOrAgent + ".main.your.account.has")
 
-   @list(Seq("individual.main.late.submission", "individual.main.maximum.late.submission"))
+        @list(Seq("individual.main.late.submission", "individual.main.maximum.late.submission"))
 
+        @link(link = "#", messageKey = "individual.main.check.amount.button", classes = Some("govuk-button"), id = Some("checkAmountPayButton"))
 
-   @link(link = "#", messageKey = "individual.main.check.amount.button", classes = Some("govuk-button"), id = Some("checkAmountPayButton"))
+        @h2(msg = "general.main.penalties.appeal.heading", elmId = "appealDetailsHeading")
 
-
-    @h2(msg = "general.main.penalties.appeal.heading", elmId = "appealDetailsHeading")
-
-
-    @govukTabs(Tabs(
-        items = Seq(
-            TabItem(
-                id = Some("lspTab"),
-                label = messages("general.main.lsp"),
-                panel = TabPanel(
-                    content = HtmlContent(lspMainTab)
-                )
-            ),
-            TabItem(
-                id = Some("lppTab"),
-                label = messages("general.main.lpp"),
-                panel = TabPanel(
-                    content = HtmlContent(lppMainTab)
+        @govukTabs(Tabs(
+            items = Seq(
+                TabItem(
+                    id = Some("lspTab"),
+                    label = messages("general.main.lsp"),
+                    panel = TabPanel(
+                        content = HtmlContent(lspMainTab(individualOrAgent))
+                    )
+                ),
+                TabItem(
+                    id = Some("lppTab"),
+                    label = messages("general.main.lpp"),
+                    panel = TabPanel(
+                        content = HtmlContent(lppMainTab(individualOrAgent))
+                    )
                 )
             )
-        )
-    ))
-
+        ))
+    }
 }
