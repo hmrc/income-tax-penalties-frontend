@@ -32,7 +32,6 @@ object LSPCardMessages {
     val updateDueKey = "Update due"
     val updateSubmittedKey = "Update submitted"
     val returnNotReceived = "Return not received"
-    val appealStatusKey = "Appeal status"
     val expiryDateKey = "Point due to expire"
     val expiryReasonKey = "Removed reason"
 
@@ -59,7 +58,6 @@ object LSPCardMessages {
     override val updateDueKey = "Update due (Welsh)"
     override val updateSubmittedKey = "Update submitted (Welsh)"
     override val returnNotReceived = "Return not received (Welsh)"
-    override val appealStatusKey = "Appeal status (Welsh)"
     override val expiryDateKey = "Point due to expire (Welsh)"
     override val expiryReasonKey = "Removed reason (Welsh)"
 

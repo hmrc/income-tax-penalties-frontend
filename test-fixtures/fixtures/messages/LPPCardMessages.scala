@@ -16,6 +16,9 @@
 
 package fixtures.messages
 
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum.{LPP1, LPP2, MANUAL}
+
 object LPPCardMessages {
 
   sealed trait Messages { _: i18n =>
@@ -25,8 +28,14 @@ object LPPCardMessages {
 
     //Summary Row Messages
     val penaltyTypeKey = "Penalty type"
-    val overdueChargeKey = "Overdue charge"
+    val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
+      case LPP1   => "First penalty for late payment"
+      case LPP2   => "Second penalty for late payment"
+      case MANUAL => "Penalty for late payment - details are in the letter we sent you"
+    }
+    val incomeTaxPeriodKey = "Overdue charge"
     def overdueChargeValue(fromYear: String, toYear: String) = s"Income Tax for $fromYear to $toYear tax year"
+    val addedOnKey = "Added on"
     val incomeTaxDueKey = "Income Tax due"
     val incomeTaxPaidKey = "Income Tax paid"
     val paymentNotReceived = "Payment not yet received"
@@ -47,8 +56,14 @@ object LPPCardMessages {
 
     //Summary Row Messages
     override val penaltyTypeKey = "Penalty type (Welsh)"
-    override val overdueChargeKey = "Overdue charge (Welsh)"
+    override val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
+      case LPP1   => "First penalty for late payment (Welsh)"
+      case LPP2   => "Second penalty for late payment (Welsh)"
+      case MANUAL => "Penalty for late payment - details are in the letter we sent you (Welsh)"
+    }
+    override val incomeTaxPeriodKey = "Overdue charge (Welsh)"
     override def overdueChargeValue(fromYear: String, toYear: String) = s"Income Tax for $fromYear to $toYear tax year (Welsh)"
+    override val addedOnKey = "Added on (Welsh)"
     override val incomeTaxDueKey = "Income Tax due (Welsh)"
     override val incomeTaxPaidKey = "Income Tax paid (Welsh)"
     override val paymentNotReceived = "Payment not yet received (Welsh)"

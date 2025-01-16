@@ -32,12 +32,11 @@ case class LatePaymentPenaltySummaryCard(
                                           amountDue: BigDecimal = 0,
                                           appealStatus: Option[AppealStatusEnum.Value] = None,
                                           appealLevel: Option[AppealLevelEnum.Value] = None,
-                                          isIncomeTaxPaid: Boolean = false,
+                                          incomeTaxIsPaid: Boolean = false,
                                           penaltyCategory: LPPPenaltyCategoryEnum.Value,
                                           dueDate: String,
                                           taxPeriodStartDate: String,
                                           taxPeriodEndDate: String,
-                                          isAgent: Boolean = false,
                                           incomeTaxOutstandingAmountInPence: Int,
                                           isTTPActive: Boolean = false
                                         )

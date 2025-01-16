@@ -17,13 +17,12 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import fixtures.LSPDetailsTestData
-import fixtures.messages.{AppealStatusMessages, ExpiryReasonMessages, LSPCardMessages}
+import fixtures.messages.{ExpiryReasonMessages, LSPCardMessages}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.ExpiryReasonEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 
@@ -35,9 +34,9 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
   "LSPSummaryListRowHelper" when {
 
     Seq(
-      (LSPCardMessages.English, ExpiryReasonMessages.English, AppealStatusMessages.English),
-      (LSPCardMessages.Welsh, ExpiryReasonMessages.Welsh, AppealStatusMessages.Welsh)
-    ).foreach { case (messagesForLanguage, expiryMessages, appealStatusMessages) =>
+      (LSPCardMessages.English, ExpiryReasonMessages.English),
+      (LSPCardMessages.Welsh, ExpiryReasonMessages.Welsh)
+    ).foreach { case (messagesForLanguage, expiryMessages) =>
 
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
 
@@ -140,50 +139,6 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
                 messagesForLanguage.expiryDateKey,
                 Html(dateToMonthYearString(sampleLateSubmissionPoint.penaltyExpiryDate))
               )
-          }
-        }
-
-        "calling .appealStatusSummaryRow()" when {
-
-          "there is an appeal in progress" when {
-
-            "appeal status is NOT 'Unappealable'" should {
-
-              "construct a SummaryListRow model with the Appeal status with expected messages" in {
-
-                lspSummaryListRowHelper.appealStatusSummaryRow(sampleLateSubmissionPoint.copy(
-                  appealInformation = Some(Seq(AppealInformationType(
-                    appealStatus = Some(AppealStatusEnum.Under_Appeal),
-                    appealLevel = Some(AppealLevelEnum.HMRC)
-                  )))
-                )) shouldBe
-                  Some(summaryListRow(
-                    label = messagesForLanguage.appealStatusKey,
-                    value = Html(appealStatusMessages.underReviewHMRC)
-                  ))
-              }
-            }
-
-            "appeal status is 'Unappealable'" should {
-
-              "return None" in {
-
-                lspSummaryListRowHelper.appealStatusSummaryRow(sampleLateSubmissionPoint.copy(
-                  appealInformation = Some(Seq(AppealInformationType(
-                    appealStatus = Some(AppealStatusEnum.Unappealable),
-                    appealLevel = Some(AppealLevelEnum.HMRC)
-                  )))
-                )) shouldBe None
-              }
-            }
-          }
-
-          "there is NO appeal in progress" when {
-
-            "return None" in {
-
-              lspSummaryListRowHelper.appealStatusSummaryRow(sampleLateSubmissionPoint) shouldBe None
-            }
           }
         }
       }

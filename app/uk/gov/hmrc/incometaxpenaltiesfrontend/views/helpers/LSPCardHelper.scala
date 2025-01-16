@@ -78,7 +78,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
-        summaryRow.appealStatusSummaryRow(penalty)
+        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
       ).flatten,
       penalty = penalty
     )

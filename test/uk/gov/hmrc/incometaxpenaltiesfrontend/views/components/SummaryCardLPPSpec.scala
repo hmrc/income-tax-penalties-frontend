@@ -66,12 +66,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                   principalChargeReference = penalty.principalChargeReference,
                   isPenaltyPaid = penalty.isPaid,
                   amountDue = penalty.penaltyAmountPosted,
-                  isIncomeTaxPaid = penalty.principalChargeLatestClearing.isDefined,
+                  incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
                   penaltyCategory = penalty.penaltyCategory,
                   dueDate = dateToString(penalty.principalChargeDueDate),
                   taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                   taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                  incomeTaxOutstandingAmountInPence = penalty.vatOutstandingAmountInPence
+                  incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
                 ))
 
                 val document = Jsoup.parse(summaryCardHtml.toString)
@@ -103,12 +103,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
                       amountDue = penalty.penaltyAmountPosted,
-                      isIncomeTaxPaid = penalty.principalChargeLatestClearing.isDefined,
+                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
                       penaltyCategory = penalty.penaltyCategory,
                       dueDate = dateToString(penalty.principalChargeDueDate),
                       taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.vatOutstandingAmountInPence,
+                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                       appealLevel = Some(AppealLevelEnum.HMRC),
                       appealStatus = Some(AppealStatusEnum.Under_Appeal)
                     ))
@@ -138,12 +138,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
                       amountDue = penalty.penaltyAmountPosted,
-                      isIncomeTaxPaid = penalty.principalChargeLatestClearing.isDefined,
+                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
                       penaltyCategory = penalty.penaltyCategory,
                       dueDate = dateToString(penalty.principalChargeDueDate),
                       taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.vatOutstandingAmountInPence
+                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
                     ))
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
@@ -176,12 +176,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
                       amountDue = penalty.penaltyAmountPosted,
-                      isIncomeTaxPaid = penalty.principalChargeLatestClearing.isDefined,
+                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
                       penaltyCategory = penalty.penaltyCategory,
                       dueDate = dateToString(penalty.principalChargeDueDate),
                       taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.vatOutstandingAmountInPence,
+                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                       appealLevel = Some(AppealLevelEnum.HMRC),
                       appealStatus = Some(AppealStatusEnum.Under_Appeal)
                     ))
@@ -211,12 +211,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
                       amountDue = penalty.penaltyAmountPosted,
-                      isIncomeTaxPaid = penalty.principalChargeLatestClearing.isDefined,
+                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
                       penaltyCategory = penalty.penaltyCategory,
                       dueDate = dateToString(penalty.principalChargeDueDate),
                       taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.vatOutstandingAmountInPence
+                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
                     ))
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
