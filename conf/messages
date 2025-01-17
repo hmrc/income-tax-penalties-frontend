@@ -106,6 +106,7 @@ lsp.updateSubmitted.key = Update submitted
 lsp.updateSubmitted.notReceived = Return not received
 lsp.expiry.key = Point due to expire
 lsp.expiryReason.key = Removed reason
+lsp.noPenalties = There are no late submission penalties.
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
@@ -119,6 +120,7 @@ lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year
 lpp.incomeTaxDue.key = Income Tax due
 lpp.incomeTaxPaymentDate.key = Income Tax paid
 lpp.paymentNotReceived = Payment not yet received
+lpp.noPenalties = There are no late payment penalties.
 
 # Appeal Status
 # =============

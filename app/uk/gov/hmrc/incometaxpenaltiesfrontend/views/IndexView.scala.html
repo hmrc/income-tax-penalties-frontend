@@ -47,38 +47,48 @@
 
     @h3(msg = "general.main.lsp", elmId = "lspHeading")
 
-    <p class="govuk-body-l">@messages("general.main.penalty.point.total") <strong class="govuk-!-font-weight-bold">4</strong></p>
+    @if(lspData.isEmpty) {
+        @p("lsp.noPenalties")
+    } else {
 
-    @warning(msg = individualOrAgent + ".main.warning.text", elmId = "financialWarningText")
+        <p class="govuk-body-l">@messages("general.main.penalty.point.total") <strong class="govuk-!-font-weight-bold">4</strong></p>
 
-    @p(individualOrAgent + ".main.what.this.means")
+        @warning(msg = individualOrAgent + ".main.warning.text", elmId = "financialWarningText")
 
-    @link(
-        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ComplianceTimelineController.complianceTimelinePage.url,
-        messageKey = messages(individualOrAgent + ".main.actions.to.remove.link") + " " + messages("general.opens.in.new.tab"),
-        attrTarget = true,
-        id = Some("actionsToRemoveLink")
-    )
+        @p(individualOrAgent + ".main.what.this.means")
 
-    @lspData.map { lsp =>
-        @summaryCardLSP(lsp)
+        @link(
+            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ComplianceTimelineController.complianceTimelinePage.url,
+            messageKey = messages(individualOrAgent + ".main.actions.to.remove.link") + " " + messages("general.opens.in.new.tab"),
+            attrTarget = true,
+            id = Some("actionsToRemoveLink")
+        )
+
+        @lspData.map { lsp =>
+            @summaryCardLSP(lsp)
+        }
     }
 }
 
 @lppMainTab(individualOrAgent: String) = {
     @h3(msg = "general.main.lpp", elmId = "lppHeading")
 
-    @p(individualOrAgent + ".main.pay.early.info")
+    @if(lppData.isEmpty) {
+        @p("lpp.noPenalties")
+    } else {
 
-    @link(
-        link = "#",
-        messageKey = messages("general.main.penalty.summary.guidance.on.late.payments") + " " + messages("general.opens.in.new.tab"),
-        attrTarget = true,
-        id = Some("guidanceLatePaymentLink")
-    )
+        @p(individualOrAgent + ".main.pay.early.info")
 
-    @lppData.map { lpp =>
-        @summaryCardLPP(lpp)
+        @link(
+            link = "#", //TODO: Add link as part of future story,
+            messageKey = messages("general.main.penalty.summary.guidance.on.late.payments") + " " + messages("general.opens.in.new.tab"),
+            attrTarget = true,
+            id = Some("guidanceLatePaymentLink")
+        )
+
+        @lppData.map { lpp =>
+            @summaryCardLPP(lpp)
+        }
     }
 }
 
