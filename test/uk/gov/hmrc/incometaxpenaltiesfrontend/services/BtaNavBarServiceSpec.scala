@@ -30,18 +30,18 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.btaNavBar.ListLink
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.NotificationBadgeCountUtil.notificationBadgeCount
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.navBar.BtaNavBar
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
 class BtaNavBarServiceSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
   with MockBtaNavLinksConnector
   with BtaNavContentFixture {
 
-  lazy val btaNavBar = app.injector.instanceOf[BtaNavBar]
-  lazy val appConfig = app.injector.instanceOf[AppConfig]
-  lazy val messagesApi = app.injector.instanceOf[MessagesApi]
+  lazy val btaNavBar: BtaNavBar = app.injector.instanceOf[BtaNavBar]
+  lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
 
-  lazy implicit val hc = HeaderCarrier()
-  lazy implicit val ec = ExecutionContext.global
+  lazy implicit val hc: HeaderCarrier = HeaderCarrier()
+  lazy implicit val ec: ExecutionContextExecutor = ExecutionContext.global
 
   lazy val service: BtaNavBarService = new BtaNavBarService(mockBtaNavLinksConnector, btaNavBar)(appConfig)
 

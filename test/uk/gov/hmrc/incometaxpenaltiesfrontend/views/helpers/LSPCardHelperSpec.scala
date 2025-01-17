@@ -220,7 +220,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
               mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
               mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
-              mockAppealStatusSummaryRow(penalty1)(Some(testAppealStatusRow))
+              mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
 
               lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPenaltyCharge), 1, 1) shouldBe
                 Seq(LateSubmissionPenaltySummaryCard(

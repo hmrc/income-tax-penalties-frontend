@@ -1,0 +1,77 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum.{LPP2, MANUAL}
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.Link
+
+@this(
+        govukSummaryList: GovukSummaryList,
+        govukTag: GovukTag,
+        link: Link
+)
+
+@(summaryCard: LatePaymentPenaltySummaryCard)(implicit messages: Messages)
+
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">
+            @summaryCard.cardTitle
+        </h2>
+        <div id="lpp-status-@{summaryCard.index}">
+            @govukTag(summaryCard.status)
+        </div>
+    </div>
+    <div class="govuk-summary-card__content">
+        @govukSummaryList(
+            SummaryList(summaryCard.cardRows)
+        )
+    </div>
+    <div id="lpp-actions-@{summaryCard.index}" class="govuk-summary-card__title-wrapper">
+        @{
+            if(summaryCard.penaltyCategory.equals(MANUAL)) {
+                <span class="govuk-body">{messages("cardLinks.cannotAppeal")}</span>
+            } else {
+                <ul class="govuk-summary-card__actions">
+                    <li class="govuk-summary-card__action no-border not-bold">
+                        <a id={"lpp-view-calculation-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.PenaltyCalculationController.penaltyCalculationPage.url}>
+                            {messages("cardLinks.viewCalculation")}
+                        </a>
+                    </li>
+                    {if(summaryCard.incomeTaxIsPaid || summaryCard.isTTPActive) {
+                        if(summaryCard.appealStatus.isEmpty && summaryCard.penaltyChargeReference.isDefined) {
+                            <li class="govuk-summary-card__action no-border not-bold">
+                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
+                                    {messages("cardLinks.appealNoPointNumber")}
+                                </a>
+                            </li>
+                        }
+                    } else {
+                        if(summaryCard.appealStatus.isEmpty) {
+                            <li class="govuk-summary-card__action no-border not-bold">
+                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToFindOutHowToAppealLPP(summaryCard.principalChargeReference, summaryCard.incomeTaxOutstandingAmountInPence, summaryCard.taxPeriodStartDate, summaryCard.taxPeriodEndDate).url}>
+                                    {messages("cardLinks.findOutHowToAppeal")}
+                                </a>
+                            </li>
+                        }
+                    }}
+                </ul>
+            }
+        }
+    </div>
+</div>

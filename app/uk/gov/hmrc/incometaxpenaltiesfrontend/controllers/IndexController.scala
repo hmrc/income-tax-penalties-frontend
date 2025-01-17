@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, Penalt
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LSPCardHelper
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
@@ -39,6 +39,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
                                 penaltiesService: PenaltiesService,
                                 errorHandler: ErrorHandler,
                                 lspCardHelper: LSPCardHelper,
+                                lppCardHelper: LPPCardHelper,
                                 indexView: IndexView)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val homePage: Action[AnyContent] = (authorised andThen withNavBar).async { implicit currentUserRequest =>
@@ -52,9 +53,12 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
         activePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
       )
 
+      val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
+      val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex)
+
       Future(
         updateSessionCookie(penaltyData) {
-          Ok(indexView(lspSummaryCards, currentUserRequest.isAgent))
+          Ok(indexView(lspSummaryCards, lppSummaryCards, currentUserRequest.isAgent))
         }
       )
     }

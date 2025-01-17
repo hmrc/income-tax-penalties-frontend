@@ -64,15 +64,4 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       messages("lsp.expiry.key"),
       Html(dateToMonthYearString(penalty.penaltyExpiryDate))
     )
-
-  def appealStatusSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
-    (penalty.appealStatus, penalty.appealLevel) match {
-      case (Some(status), Some(level)) if status != AppealStatusEnum.Unappealable =>
-        Some(summaryListRow(
-          label = messages("lsp.appealStatus.key"),
-          value = Html(messages(s"appealStatus.$status.$level"))
-        ))
-      case _ =>
-        None
-    }
 }

@@ -16,11 +16,25 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
+import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow, Value}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 
 trait SummaryListRowHelper {
+
+  def appealStatusRow(appealStatus: Option[AppealStatusEnum.Value],
+                      appealLevel: Option[AppealLevelEnum.Value])(implicit messages: Messages): Option[SummaryListRow] =
+    (appealStatus, appealLevel) match {
+      case (Some(status), Some(level)) if status != AppealStatusEnum.Unappealable =>
+        Some(summaryListRow(
+          label = messages("appealStatus.key"),
+          value = Html(messages(s"appealStatus.$status.$level"))
+        ))
+      case _ =>
+        None
+    }
 
   def summaryListRow(label: String, value: Html): SummaryListRow = SummaryListRow(
     key = Key(

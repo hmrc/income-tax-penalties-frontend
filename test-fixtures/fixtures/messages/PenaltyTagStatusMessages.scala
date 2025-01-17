@@ -23,8 +23,9 @@ object PenaltyTagStatusMessages {
     val expired: String = "EXPIRED"
     val upheld: String = "UPHELD"
     val due: String = "DUE"
-    val partiallyPaid: String => String = amount => s"£$amount $due"
+    val amountDue: String => String = amount => s"£$amount $due"
     val paid = "PAID"
+    val estimate = "ESTIMATE"
   }
 
   object English extends Messages with En
@@ -34,7 +35,8 @@ object PenaltyTagStatusMessages {
     override val expired: String = "EXPIRED (Welsh)"
     override val upheld: String = "UPHELD (Welsh)"
     override val due: String = "DUE (Welsh)"
-    override val partiallyPaid: String => String = amount => s"£$amount $due"
+    override val amountDue: String => String = amount => s"£$amount $due"
     override val paid = "PAID (Welsh)"
+    override val estimate = "ESTIMATE (Welsh)"
   }
 }

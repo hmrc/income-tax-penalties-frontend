@@ -19,6 +19,7 @@ package fixtures.messages
 object AppealStatusMessages {
 
   sealed trait Messages { _: i18n =>
+    val appealStatusKey = "Appeal status"
     val underReviewHMRC = "Under review by HMRC"
     val underReviewTaxTribunal = "Under review by the tax tribunal"
     val acceptedTaxTribunal = "Appeal accepted by tax tribunal"
@@ -30,6 +31,7 @@ object AppealStatusMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
+    override val appealStatusKey = "Appeal status (Welsh)"
     override val underReviewHMRC = "Under review by HMRC (Welsh)"
     override val underReviewTaxTribunal = "Under review by the tax tribunal (Welsh)"
     override val acceptedTaxTribunal = "Appeal accepted by tax tribunal (Welsh)"
