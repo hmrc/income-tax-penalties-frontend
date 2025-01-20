@@ -40,7 +40,7 @@ class AppealsController @Inject()(val authorised: AuthAction,
       if (isFindOutHowToAppealLSP) {
         Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}" + s"/initialise-appeal-against-the-obligation?penaltyId=$penaltyId")
       } else {
-        Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/appeal-start?penaltyId=$penaltyId&isLPP=$isLPP&isAdditional=$isLPP2")
+        Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal?penaltyId=$penaltyId&isLPP=$isLPP&isAdditional=$isLPP2")
       }
     }
 
