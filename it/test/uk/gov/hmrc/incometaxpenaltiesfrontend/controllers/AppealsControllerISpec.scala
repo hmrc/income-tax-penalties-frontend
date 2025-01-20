@@ -35,7 +35,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/appeal-start?penaltyId=1234&isLPP=false&isAdditional=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false")
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP1" in {
@@ -44,7 +44,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/appeal-start?penaltyId=1234&isLPP=true&isAdditional=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false")
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP2" in {
@@ -53,7 +53,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/appeal-start?penaltyId=1234&isLPP=true&isAdditional=true")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true")
     }
 
     "redirect the individual to the obligations appeals service when the penalty is a LSP" in {
@@ -71,7 +71,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/appeal-start?penaltyId=1234&isLPP=false&isAdditional=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false")
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP1" in {
@@ -80,7 +80,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/appeal-start?penaltyId=1234&isLPP=true&isAdditional=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false")
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP2" in {
@@ -89,7 +89,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/appeal-start?penaltyId=1234&isLPP=true&isAdditional=true")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true")
     }
 
     "redirect the agent to the obligations appeals service when the penalty is a LSP" in {
