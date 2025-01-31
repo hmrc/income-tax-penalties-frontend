@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.views
 
-import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
+object ViewUtils {
 
-case class LatePaymentPenalty(details: Seq[LPPDetails]) {
-
-  val withoutAppealedPenalties: Seq[LPPDetails] =
-    details.filterNot(details => details.appealInformation.exists(_.exists(_.appealStatus.contains(AppealStatusEnum.Upheld))))
-}
-
-object LatePaymentPenalty {
-  implicit val format: Format[LatePaymentPenalty] = Json.format[LatePaymentPenalty]
+  def pluralOrSingular(key: String, n: Int): String =
+    key + (if(n == 1) ".singular" else ".plural")
 }

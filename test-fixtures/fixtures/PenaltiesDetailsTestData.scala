@@ -23,7 +23,15 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisati
 import java.time.LocalDate
 
 trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestData {
+
   val sampleDate: LocalDate = LocalDate.of(2021, 1, 1)
+
+  val emptyPenaltyDetailsModel: PenaltyDetails = PenaltyDetails(
+    totalisations = None,
+    lateSubmissionPenalty = None,
+    latePaymentPenalty = None,
+    breathingSpace = None
+  )
 
   val samplePenaltyDetailsModel: PenaltyDetails = PenaltyDetails(
     totalisations = Some(Totalisations(

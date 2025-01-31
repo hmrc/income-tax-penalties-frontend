@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, Penalt
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -58,7 +59,12 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
 
       Future(
         updateSessionCookie(penaltyData) {
-          Ok(indexView(lspSummaryCards, lppSummaryCards, currentUserRequest.isAgent))
+          Ok(indexView(
+            lspData = lspSummaryCards,
+            lppData = lppSummaryCards,
+            penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
+            isAgent = currentUserRequest.isAgent
+          ))
         }
       )
     }
