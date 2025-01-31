@@ -46,7 +46,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         case LSPTypeEnum.AppealedPoint | LSPTypeEnum.Point =>
           pointSummaryCard(penaltyWithPoints, activePoints >= threshold)
         case _ =>
-          financialSummaryCard(penaltyWithPoints)
+          financialSummaryCard(penaltyWithPoints, threshold)
       }
     }
   }
@@ -67,13 +67,15 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     )
   }
 
-  def financialSummaryCard(penalty: LSPDetails)(implicit messages: Messages): LateSubmissionPenaltySummaryCard =
+  def financialSummaryCard(penalty: LSPDetails, threshold: Int)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+    val cardTitle =
+      if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
+        messages("lsp.cardTitle.additionalFinancialPoint", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount))
+      } else {
+        messages("lsp.cardTitle.financialPoint", penalty.penaltyOrder.getOrElse(""), CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount))
+      }
     buildLSPSummaryCard(
-      cardTitle = messages(
-        "lsp.cardTitle.financialPoint",
-        penalty.penaltyOrder.getOrElse(""),
-        CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
-      ),
+      cardTitle,
       rows = Seq(
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
@@ -82,6 +84,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       ).flatten,
       penalty = penalty
     )
+  }
 
 
   def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {

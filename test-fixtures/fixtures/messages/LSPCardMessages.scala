@@ -23,6 +23,7 @@ object LSPCardMessages {
     val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: adjustment point"
     val cardTitleRemovedPoint = "Penalty point"
     def cardTitleFinancialPoint(point: Int, amount: String) = s"Penalty point $point: £$amount penalty"
+    def cardTitleAdditionalFinancialPoint(amount: String) = s"Additional £$amount penalty"
     val cardTitlePoint: Int => String = point => "Penalty point " + point
 
     //Summary Row Messages
@@ -49,6 +50,7 @@ object LSPCardMessages {
     override val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: adjustment point (Welsh)"
     override val cardTitleRemovedPoint = "Penalty point (Welsh)"
     override def cardTitleFinancialPoint(point: Int, amount: String) = s"Penalty point $point: £$amount penalty (Welsh)"
+    override def cardTitleAdditionalFinancialPoint(amount: String) = s"Additional £$amount penalty (Welsh)"
     override val cardTitlePoint: Int => String = point => s"Penalty point $point (Welsh)"
 
     //Summary Row Messages
