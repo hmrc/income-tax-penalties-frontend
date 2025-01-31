@@ -93,6 +93,7 @@ status.amountDue = £{0} DUE
 lsp.cardTitle.addedPoint = Penalty point {0}: adjustment point
 lsp.cardTitle.removedPoint = Penalty point
 lsp.cardTitle.financialPoint = Penalty point {0}: £{1} penalty
+lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty
 lsp.cardTitle.point = Penalty point {0}
 lpp.cardTitle = £{0} penalty
 

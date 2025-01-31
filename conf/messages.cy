@@ -21,6 +21,7 @@ status.estimate = ESTIMATE (Welsh)
 lsp.cardTitle.addedPoint = Penalty point {0}: adjustment point (Welsh)
 lsp.cardTitle.removedPoint = Penalty point (Welsh)
 lsp.cardTitle.financialPoint = Penalty point {0}: £{1} penalty (Welsh)
+lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty (Welsh)
 lsp.cardTitle.point = Penalty point {0} (Welsh)
 lpp.cardTitle = £{0} penalty (Welsh)
 
