@@ -40,7 +40,7 @@ class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFor
             spanContent =
               if (isReturnLate) messages("compliance.timeline.submission.due.now", dateToString(data.inboundCorrespondenceDueDate))
               else messages("compliance.timeline.send.by", dateToString(data.inboundCorrespondenceDueDate)),
-            tagContent = if (isReturnLate) Some(messages("general.tag.late")) else None
+            tagContent = if (isReturnLate) Some(messages("common.late")) else None
           )
       }
     }

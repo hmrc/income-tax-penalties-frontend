@@ -43,7 +43,7 @@
     <div class="govuk-!-margin-bottom-8">
         @link(
             link = "#",
-            messageKey = messages("compliance.timeline.individual.more.information.link.text") + " " + messages("general.opens.in.new.tab"),
+            messageKey = messages("compliance.timeline.individual.more.information.link.text") + " " + messages("common.opensInNewTab"),
             attrTarget = true,
             id = Some("moreInformationLink")
         )
@@ -62,9 +62,8 @@
                             {timelineEvent.spanContent}
                         </p>
                     case None =>
-                        <p class="govuk-body">@timelineEvent.spanContent</p>
-                }
-                }
+                        <p class="govuk-body">{timelineEvent.spanContent}</p>
+                }}
 
                 </div>
             </li>
@@ -79,7 +78,7 @@
     <div class="govuk-!-margin-bottom-8">
         @link(
             link = "#",
-            messageKey = messages("compliance.timeline.individual.return.to.sa.penalties") + " " + messages("general.opens.in.new.tab"),
+            messageKey = messages("compliance.timeline.individual.return.to.sa.penalties") + " " + messages("common.opensInNewTab"),
             attrTarget = true,
             id = Some("returnToSA")
         )

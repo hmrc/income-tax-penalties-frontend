@@ -33,6 +33,21 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     breathingSpace = None
   )
 
+  val lateSubmissionPenalty: LateSubmissionPenalty = LateSubmissionPenalty(
+    summary = LSPSummary(
+      activePenaltyPoints = 1,
+      inactivePenaltyPoints = 0,
+      regimeThreshold = 4,
+      penaltyChargeAmount = 200,
+      PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+    ),
+    details = Seq(sampleLateSubmissionPoint)
+  )
+
+  val latePaymentPenalty: LatePaymentPenalty = LatePaymentPenalty(Seq(
+    sampleUnpaidLPP1.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnFirstLPP), outstandingAmount = Some(20), timeToPay = None))
+  ))
+
   val samplePenaltyDetailsModel: PenaltyDetails = PenaltyDetails(
     totalisations = Some(Totalisations(
       LSPTotalValue = Some(200),
@@ -43,18 +58,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       totalAccountPostedInterest = None,
       totalAccountAccruingInterest = None
     )),
-    lateSubmissionPenalty = Some(LateSubmissionPenalty(
-      summary = LSPSummary(
-        activePenaltyPoints = 1, inactivePenaltyPoints = 0, regimeThreshold = 4, penaltyChargeAmount = 200, PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
-      ),
-      details = Seq(sampleLateSubmissionPoint))),
-    latePaymentPenalty = Some(
-      LatePaymentPenalty(
-        Seq(
-          sampleUnpaidLPP1.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnFirstLPP), outstandingAmount = Some(20), timeToPay = None))
-        )
-      )
-    ),
+    lateSubmissionPenalty = Some(lateSubmissionPenalty),
+    latePaymentPenalty = Some(latePaymentPenalty),
     breathingSpace = None
   )
 

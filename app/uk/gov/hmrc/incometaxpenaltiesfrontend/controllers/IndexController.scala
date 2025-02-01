@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, Penalt
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -47,11 +47,13 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     withPenaltyData { penaltyData =>
 
       val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
+      val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
+      val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
 
       val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(
         penalties = sortPointsInDescendingOrder(lsp),
-        threshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0),
-        activePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
+        threshold = lspThreshold,
+        activePoints = lspActivePoints
       )
 
       val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
@@ -60,8 +62,9 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
       Future(
         updateSessionCookie(penaltyData) {
           Ok(indexView(
-            lspData = lspSummaryCards,
-            lppData = lppSummaryCards,
+            lspOverviewData = penaltyData.lateSubmissionPenalty.map(LSPOverviewViewModel.apply),
+            lspCardData = lspSummaryCards,
+            lppCardData = lppSummaryCards,
             penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
             isAgent = currentUserRequest.isAgent
           ))

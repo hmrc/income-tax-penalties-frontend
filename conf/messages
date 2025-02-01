@@ -1,51 +1,65 @@
 service.name = Manage your Self Assessment
-service.text = This is your new service
 
-
-label.service_name = Manage your Self Assessment
-
-general.opens.in.new.tab = (opens in new tab)
-general.tag.late = Late
+common.opensInNewTab = (opens in new tab)
+common.late = Late
 
 alphaBanner.message = This is a new service – your {0} will help us to improve it.
 alphaBanner.linkText = feedback
 
-general.main.h1 = Self Assessment penalties and appeals
-general.main.penalties.appeal.heading = Penalty and appeal details
-general.main.lsp = Late submission penalties
-general.main.lpp = Late payment penalties
-general.main.penalty.point.total = Penalty points total:
-general.main.penalty.summary.guidance.on.late.payments = Read the guidance about how late payment penalties are calculated
+# Index View
+# ==========
+index.h1 = Self Assessment penalties and appeals
+index.h2 = Penalty and appeal details
 
+# --- Overview Content
+index.overview.h2 = Overview
+individual.index.overview.p1 = Your account has:
+individual.index.overview.p1.noBullets = Your account has {0}
+agent.index.overview.p1 = Your client’s account has:
+agent.index.overview.p1.noBullets = Your client’s account has {0}
+index.overview.unpaidReturnCharges.bullet = overdue Income Tax charges
+index.overview.unpaidInterest.bullet = unpaid interest
+index.overview.lpp.bullet.penalties.singular = a late payment penalty
+index.overview.lpp.bullet.penalties.plural = late payment penalties
+index.overview.lsp.bullet.penalties.singular = a late submission penalty
+index.overview.lsp.bullet.penalties.plural = late submission penalties
+index.overview.lsp.bullet.points.singular = 1 late submission penalty point
+index.overview.lsp.bullet.points.plural = {0} late submission penalty points
+index.overview.lsp.bullet.points.max = the maximum number of late submission penalty points
+individual.index.overview.checkAmount.button = Check amounts and pay
+agent.index.overview.checkAmount.button = Check amounts
 
-individual.main.warning.text = You have reached the financial penalty threshold.
-individual.main.what.this.means = This means you have to pay a £200 penalty every time you send a late update, until we remove your penalty points.
-individual.main.actions.to.remove.link = Actions to take to get your points removed
-individual.main.pay.early.info = The earlier you pay your Income Tax, the lower your penalties and interest will be.
+# --- LSP Tab Content
+index.lsp.tab.h3 = Late submission penalties
+index.lsp.tab.overview.penalty.warningPointTotal = Penalty points total:
+individual.index.lsp.tab.overview.pointsAccruing.p1.singular = You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven’t already.
+individual.index.lsp.tab.overview.pointsAccruing.p1.plural = You have {0} penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven’t already.
+individual.index.lsp.tab.overview.pointsAccruing.p2 = You’ll get another point if you send another submission after a deadline has passed.
+individual.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if you keep sending late submissions. If you reach {0} points, you’ll have to pay a £200 penalty.
+individual.index.lsp.tab.overview.pointsAccruing.warning = You’ll get a £200 penalty if you send another late submission.
+agent.index.lsp.tab.overview.pointsAccruing.p1.singular = Your client has 1 penalty point for sending a late submission. They should send this missing submission as soon as possible if they haven’t already.
+agent.index.lsp.tab.overview.pointsAccruing.p1.plural = Your client has {0} penalty points for sending late submissions. They should send any missing submissions as soon as possible if they haven’t already.
+agent.index.lsp.tab.overview.pointsAccruing.p2 = They’ll get another point if they send another submission after a deadline has passed.
+agent.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if they keep sending late submissions. If they reach {0} points, they’ll have to pay a £200 penalty.
+agent.index.lsp.tab.overview.pointsAccruing.warning = Your client will get a £200 penalty if they send another late submission.
+individual.index.lsp.tab.overview.penalty.warning = You have been given a £200 penalty for reaching the penalty threshold.
+individual.index.lsp.tab.overview.penalty.p1 = You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already.
+agent.index.lsp.tab.overview.penalty.warning = Your client has been given a £200 penalty for reaching the penalty threshold.
+agent.index.lsp.tab.overview.penalty.p1 = They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already.
+individual.index.lsp.tab.overview.additionalPenalty.warning = You have been given an additional £200 penalty.
+individual.index.lsp.tab.overview.additionalPenalty.p1 = You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already.
+agent.index.lsp.tab.overview.additionalPenalty.warning = Your client has been given an additional £200 penalty.
+agent.index.lsp.tab.overview.additionalPenalty.p1 = They will get another £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already.
+index.lsp.tab.overview.pointsGuidanceLink = Read the guidance about late submission penalties
+individual.index.lsp.tab.overview.actionsToRemoveLink = Actions to take to get your points removed
+agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed
 
-agent.main.warning.text = Your client has been given a £200 penalty for reaching the penalty threshold.
-agent.main.what.this.means = They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven''t already.
-agent.main.actions.to.remove.link = Actions your client must take to get their points removed
-agent.main.pay.early.info = The earlier your client pays their Income Tax, the lower their penalties and interest will be.
+# --- LPP Tab Content
+index.lpp.tab.h3 = Late payment penalties
+index.lpp.tab.guidanceOnLatePayments = Read the guidance about how late payment penalties are calculated
+individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the lower your penalties and interest will be.
+agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax, the lower their penalties and interest will be.
 
-# Penalties Overview Summary
-# ==========================
-overview.heading = Overview
-individual.overview.p1 = Your account has:
-individual.overview.p1.noBullets = Your account has {0}
-agent.overview.p1 = Your client’s account has:
-agent.overview.p1.noBullets = Your client’s account has {0}
-overview.unpaidReturnCharges.bullet = overdue Income Tax charges
-overview.unpaidInterest.bullet = unpaid interest
-overview.lpp.bullet.penalties.singular = a late payment penalty
-overview.lpp.bullet.penalties.plural = late payment penalties
-overview.lsp.bullet.penalties.singular = a late submission penalty
-overview.lsp.bullet.penalties.plural = late submission penalties
-overview.lsp.bullet.points.singular = 1 late submission penalty point
-overview.lsp.bullet.points.plural = {0} late submission penalty points
-overview.lsp.bullet.points.max = the maximum number of late submission penalty points
-individual.overview.checkAmount.button = Check amounts and pay
-agent.overview.checkAmount.button = Check amounts
 
 session.expired.h1 = For your security, this service has been reset
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
@@ -61,11 +75,11 @@ calculation.amount.received = Amount received
 calculation.left.to.pay = Left to pay
 
 
-compliance.timeline.individual.title  = Actions to take to get your points removed
-compliance.timeline.individual.maximum.penalty.points  = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
-compliance.timeline.individual.send.submission.listed  = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
-compliance.timeline.individual.more.information.link.text  = More information about how HMRC removes penalty points
-compliance.timeline.individual.points.to.be.removed  = Points to be removed:
+compliance.timeline.individual.title = Actions to take to get your points removed
+compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
+compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
+compliance.timeline.individual.more.information.link.text = More information about how HMRC removes penalty points
+compliance.timeline.individual.points.to.be.removed = Points to be removed:
 compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points.
 compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals
 compliance.timeline.quarter.heading = Quarter: {0} to {1}
@@ -74,9 +88,9 @@ compliance.timeline.submission.due.now = Due on {0}. Send this missing submissio
 compliance.timeline.send.by = Send by {0}
 
 
-compliance.timeline.agent.title  = Actions your client must take to get their points removed
-compliance.timeline.agent.maximum.penalty.points  = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire.
-compliance.timeline.agent.send.submission.listed  = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline.
+compliance.timeline.agent.title = Actions your client must take to get their points removed
+compliance.timeline.agent.maximum.penalty.points = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire.
+compliance.timeline.agent.send.submission.listed = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline.
 compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points.
 
 # Penalty Status tags

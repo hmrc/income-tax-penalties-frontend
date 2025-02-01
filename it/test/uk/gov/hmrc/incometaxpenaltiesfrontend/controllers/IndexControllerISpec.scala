@@ -54,10 +54,7 @@ class IndexControllerISpec extends ComponentSpecHelper with ViewSpecHelper with 
           document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
           document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
-          document.getElementById("financialWarningText").text() shouldBe "! Warning You have reached the financial penalty threshold."
           document.getSubmitButton.text() shouldBe "Check amounts and pay"
-          document.getLink("actionsToRemoveLink").text() shouldBe "Actions to take to get your points removed (opens in new tab)"
-          document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
         }
       }
 
@@ -78,10 +75,7 @@ class IndexControllerISpec extends ComponentSpecHelper with ViewSpecHelper with 
           document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
           document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
-          document.getElementById("financialWarningText").text() shouldBe "! Warning Your client has been given a £200 penalty for reaching the penalty threshold."
           document.getSubmitButton.text() shouldBe "Check amounts"
-          document.getLink("actionsToRemoveLink").text() shouldBe "Actions your client must take to get their points removed (opens in new tab)"
-          document.getLink("actionsToRemoveLink").attr("href") shouldBe "/penalties/income-tax/compliance-timeline"
         }
       }
     }

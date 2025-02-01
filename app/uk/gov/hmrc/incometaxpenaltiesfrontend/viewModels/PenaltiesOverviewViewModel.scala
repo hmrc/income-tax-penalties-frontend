@@ -29,22 +29,22 @@ object PenaltiesOverviewViewModel {
     PenaltiesOverviewViewModel(
       content = Seq(
         Option.when(unpaidIncomeTax > 0)(
-          messages("overview.unpaidReturnCharges.bullet")
+          messages("index.overview.unpaidReturnCharges.bullet")
         ),
         Option.when(totalInterest > 0)(
-          messages("overview.unpaidInterest.bullet")
+          messages("index.overview.unpaidInterest.bullet")
         ),
         Option.when(countLPPNotPaidOrAppealed > 0)(
-          messages(pluralOrSingular("overview.lpp.bullet.penalties", countLPPNotPaidOrAppealed), countLPPNotPaidOrAppealed)
+          messages(pluralOrSingular("index.overview.lpp.bullet.penalties", countLPPNotPaidOrAppealed), countLPPNotPaidOrAppealed)
         ),
         Option.when(countLSPNotPaidOrAppealed > 0)(
-          messages(pluralOrSingular("overview.lsp.bullet.penalties", countLSPNotPaidOrAppealed), countLSPNotPaidOrAppealed)
+          messages(pluralOrSingular("index.overview.lsp.bullet.penalties", countLSPNotPaidOrAppealed), countLSPNotPaidOrAppealed)
         ),
         Option.when(lspPointsActive > 0)(
           if(lspPointsActive < lspThreshold) {
-            messages(pluralOrSingular("overview.lsp.bullet.points", lspPointsActive), lspPointsActive)
+            messages(pluralOrSingular("index.overview.lsp.bullet.points", lspPointsActive), lspPointsActive)
           } else {
-            messages("overview.lsp.bullet.points.max")
+            messages("index.overview.lsp.bullet.points.max")
           }
         )
       ).flatten,
