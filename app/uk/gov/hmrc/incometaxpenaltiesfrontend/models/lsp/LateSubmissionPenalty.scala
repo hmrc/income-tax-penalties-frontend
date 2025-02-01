@@ -17,9 +17,14 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
 
 import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
 
 case class LateSubmissionPenalty(summary: LSPSummary,
-                                 details: Seq[LSPDetails])
+                                 details: Seq[LSPDetails]) {
+
+  val withoutAppealedPenalties: Seq[LSPDetails] =
+    details.filterNot(details => details.appealInformation.exists(_.exists(_.appealStatus.contains(AppealStatusEnum.Upheld))))
+}
 
 object LateSubmissionPenalty {
   implicit val format: Format[LateSubmissionPenalty] = Json.format[LateSubmissionPenalty]

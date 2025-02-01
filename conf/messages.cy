@@ -6,6 +6,26 @@ label.service_name = Manage your Self Assessment (Welsh)
 
 individual.main.h1 = Self Assessment penalties and appeals (Welsh)
 
+# Penalties Overview Summary
+# ==========================
+overview.heading = Trosolwg
+individual.overview.p1 = Mae gan eich cyfrif y canlynol:
+individual.overview.p1.noBullets = Mae gan eich cyfrif y canlynol {0}
+agent.overview.p1 = Mae gan gyfrif eich cleient y canlynol:
+agent.overview.p1.noBullets = Mae gan gyfrif eich cleient y canlynol {0}
+overview.unpaidReturnCharges.bullet = overdue Income Tax charges (Welsh)
+overview.unpaidInterest.bullet = llog sydd heb ei dalu
+overview.lpp.bullet.penalties.singular = cosb am dalu’n hwyr
+overview.lpp.bullet.penalties.plural = cosbau am dalu’n hwyr
+overview.lsp.bullet.penalties.singular = cosb am gyflwyno’n hwyr
+overview.lsp.bullet.penalties.plural = cosbau am gyflwyno’n hwyr
+overview.lsp.bullet.points.singular = 1 pwynt cosb am gyflwyno’n hwyr
+overview.lsp.bullet.points.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
+overview.lsp.bullet.points.max = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
+individual.overview.checkAmount.button = Gwirio’r symiau a thalu
+agent.overview.checkAmount.button = Gwirio’r symiau
+
+
 # Status tags
 # ===========
 status.upheld = UPHELD (Welsh)

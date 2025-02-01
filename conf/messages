@@ -11,43 +11,44 @@ alphaBanner.message = This is a new service – your {0} will help us to improve
 alphaBanner.linkText = feedback
 
 general.main.h1 = Self Assessment penalties and appeals
-general.main.overview.heading = Overview
 general.main.penalties.appeal.heading = Penalty and appeal details
 general.main.lsp = Late submission penalties
 general.main.lpp = Late payment penalties
-general.main.no.lpp = There are no late payment penalties.
 general.main.penalty.point.total = Penalty points total:
-general.main.penalty.summary.penalty.type = Penalty type
-general.main.penalty.summary.overdue.charge = Overdue charge
-general.main.penalty.summary.income.tax.due = Income Tax due
-general.main.penalty.summary.income.tax.paid = Income Tax paid
-general.main.penalty.summary.appeal.penalty.link = Appeal penalty
 general.main.penalty.summary.guidance.on.late.payments = Read the guidance about how late payment penalties are calculated
 
-individual.main.your.account.has = Your account has:
-individual.main.late.submission = a late submission penalty
-individual.main.maximum.late.submission = the maximum number of late submission penalty points
-individual.main.check.amount.button = Check amounts and pay
+
 individual.main.warning.text = You have reached the financial penalty threshold.
 individual.main.what.this.means = This means you have to pay a £200 penalty every time you send a late update, until we remove your penalty points.
 individual.main.actions.to.remove.link = Actions to take to get your points removed
 individual.main.pay.early.info = The earlier you pay your Income Tax, the lower your penalties and interest will be.
 
-agent.main.your.account.has = Your client''s account has:
 agent.main.warning.text = Your client has been given a £200 penalty for reaching the penalty threshold.
 agent.main.what.this.means = They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven''t already.
 agent.main.actions.to.remove.link = Actions your client must take to get their points removed
 agent.main.pay.early.info = The earlier your client pays their Income Tax, the lower their penalties and interest will be.
 
-
+# Penalties Overview Summary
+# ==========================
+overview.heading = Overview
+individual.overview.p1 = Your account has:
+individual.overview.p1.noBullets = Your account has {0}
+agent.overview.p1 = Your client’s account has:
+agent.overview.p1.noBullets = Your client’s account has {0}
+overview.unpaidReturnCharges.bullet = overdue Income Tax charges
+overview.unpaidInterest.bullet = unpaid interest
+overview.lpp.bullet.penalties.singular = a late payment penalty
+overview.lpp.bullet.penalties.plural = late payment penalties
+overview.lsp.bullet.penalties.singular = a late submission penalty
+overview.lsp.bullet.penalties.plural = late submission penalties
+overview.lsp.bullet.points.singular = 1 late submission penalty point
+overview.lsp.bullet.points.plural = {0} late submission penalty points
+overview.lsp.bullet.points.max = the maximum number of late submission penalty points
+individual.overview.checkAmount.button = Check amounts and pay
+agent.overview.checkAmount.button = Check amounts
 
 session.expired.h1 = For your security, this service has been reset
-
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
-
-whatIsOwed.lsp.onePoint = 1 late submission penalty point
-whatIsOwed.lsp.multiPoints = {0} late submission penalty points
-whatIsOwed.lsp.max = the maximum number of late submission penalty points
 
 calculations.view.calculations = View calculation
 calculation.individual.title = {0} penalty for late payment
