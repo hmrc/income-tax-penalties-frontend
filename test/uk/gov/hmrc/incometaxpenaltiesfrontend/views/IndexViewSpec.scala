@@ -113,7 +113,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                   Selectors.overviewP1 -> messagesForLanguage.overviewP1(isAgent),
                   Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPFinancial(1),
                   Selectors.overviewBullet(2) -> messagesForLanguage.overviewLSPPointsMax,
-                  Selectors.overviewButton -> messagesForLanguage.overviewButton(isAgent)
+                  Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay(isAgent)
                 )
               }
             }

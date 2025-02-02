@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 

@@ -70,5 +70,10 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val incomeTaxPenaltiesAppealsBaseUrl: String = config.get[String]("urls.incomeTaxPenaltiesAppealsBaseUrl") + "/view-or-appeal-penalty/self-assessment"
 
+  lazy val viewAndChangeBaseUrl: String = config.get[String]("urls.viewAndChangeBaseUrl")
 
+  def checkAmountAndPayUrl(isAgent: Boolean): String = viewAndChangeBaseUrl + {
+    if(isAgent) "/report-quarterly/income-and-expenses/view/agents/what-your-client-owes"
+    else "/report-quarterly/income-and-expenses/view/what-you-owe"
+  }
 }

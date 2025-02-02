@@ -16,12 +16,14 @@
 
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 
 @this(
         list: components.List,
         h2: components.H2,
         p: components.P,
-        link: components.Link
+        link: components.Link,
+        appConfig: AppConfig
 )
 
 @(penaltiesOverviewViewModel: PenaltiesOverviewViewModel, isAgent: Boolean)(implicit messages: Messages)
@@ -39,8 +41,12 @@
             }
 
             @if(penaltiesOverviewViewModel.hasFinancialCharge) {
-                <!--TODO: Update link as part of future story-->
-                @link(link = "#", messageKey = s"$individualOrAgent.overview.checkAmount.button", classes = Some("govuk-button"), id = Some("checkAmountPayButton"))
+                @link(
+                    link = appConfig.checkAmountAndPayUrl(isAgent),
+                    messageKey = s"$individualOrAgent.overview.checkAmount.button",
+                    classes = Some("govuk-button"),
+                    id = Some("checkAmountPayButton")
+                )
             }
         </div>
     }

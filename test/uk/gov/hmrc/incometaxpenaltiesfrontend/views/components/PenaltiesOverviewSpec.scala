@@ -18,10 +18,12 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.components
 
 import fixtures.messages.IndexViewMessages
 import fixtures.views.BaseSelectors
+import org.jsoup.nodes.Document
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewBehaviours
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.PenaltiesOverview
@@ -29,6 +31,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.PenaltiesOve
 class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with ViewBehaviours {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val penaltiesOverview: PenaltiesOverview = app.injector.instanceOf[PenaltiesOverview]
 
   object Selectors extends BaseSelectors {
@@ -60,7 +63,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
                   isAgent
                 )
 
-                implicit val document = asDocument(penaltiesOverviewHtml)
+                implicit val document: Document = asDocument(penaltiesOverviewHtml)
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
@@ -88,15 +91,23 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
                   isAgent
                 )
 
-                implicit val document = asDocument(penaltiesOverviewHtml)
+                implicit val document: Document = asDocument(penaltiesOverviewHtml)
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
                   Selectors.overviewP1 -> messagesForLanguage.overviewP1(isAgent),
                   Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPPoints(1),
                   Selectors.overviewBullet(2) -> messagesForLanguage.overviewLPP(1),
-                  Selectors.overviewButton -> messagesForLanguage.overviewButton(isAgent)
+                  Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay(isAgent)
                 )
+
+                "has a link to the check and pay page" in {
+                  val expectedPath: String =
+                    if (isAgent) "/report-quarterly/income-and-expenses/view/agents/what-your-client-owes"
+                    else "/report-quarterly/income-and-expenses/view/what-you-owe"
+
+                  document.select(Selectors.overviewButton).attr("href") shouldBe appConfig.viewAndChangeBaseUrl + expectedPath
+                }
               }
             }
           }
