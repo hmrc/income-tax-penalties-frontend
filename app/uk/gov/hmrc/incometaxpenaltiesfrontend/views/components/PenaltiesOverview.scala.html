@@ -30,7 +30,7 @@
 
 @if(penaltiesOverviewViewModel.content.nonEmpty) {
     @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
-        <div class="govuk-form-group" id="penaltiesOverview">
+        <div id="penaltiesOverview">
             @h2(msg = "overview.heading", elmId = "overviewHeading")
 
             @if(penaltiesOverviewViewModel.content.size > 1) {
