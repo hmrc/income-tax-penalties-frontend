@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views
 
-import fixtures.messages.IndexViewMessages
+import fixtures.PenaltiesDetailsTestData
+import fixtures.messages.{IndexViewMessages, LSPOverviewMessages}
 import fixtures.views.BaseSelectors
 import org.jsoup.nodes.Document
 import org.scalatest.concurrent.ScalaFutures
@@ -27,10 +28,10 @@ import play.api.i18n.{Lang, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 
-class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with ScalaFutures with ViewBehaviours {
+class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with ScalaFutures with PenaltiesDetailsTestData with ViewBehaviours {
 
   lazy val indexView: IndexView = app.injector.instanceOf[IndexView]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
@@ -49,7 +50,10 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
   "indexView" when {
 
-    Seq(IndexViewMessages.English, IndexViewMessages.Welsh).foreach { messagesForLanguage =>
+    Seq(
+      IndexViewMessages.English -> LSPOverviewMessages.English,
+      IndexViewMessages.Welsh  -> LSPOverviewMessages.Welsh
+    ).foreach { case (messagesForLanguage, lspMessages) =>
 
       implicit val msgs = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
 
@@ -61,7 +65,13 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
             "there are no Late Submission or Late Payment penalties" should {
 
-              lazy val html = indexView(Seq(), Seq(), PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false), isAgent = isAgent)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = Seq(),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false),
+                isAgent = isAgent
+              )
               implicit lazy val document: Document = asDocument(html)
 
               behave like pageWithExpectedElementsAndMessages(
@@ -73,9 +83,10 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
             "there is a Late Submission Point (no financial amount)" should {
 
               lazy val html = indexView(
-                Seq(),
-                Seq(),
-                PenaltiesOverviewViewModel(Seq(messagesForLanguage.overviewLSPPoints(1)), hasFinancialCharge = false),
+                lspOverviewData = Some(LSPOverviewViewModel(lateSubmissionPenalty)),
+                lspCardData = Seq(),
+                lppCardData = Seq(),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(messagesForLanguage.overviewLSPPoints(1)), hasFinancialCharge = false),
                 isAgent = isAgent
               )
               implicit lazy val document: Document = asDocument(html)
@@ -84,7 +95,12 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewP1NoBullets(isAgent)(messagesForLanguage.overviewLSPPoints(1))
+                  Selectors.overviewP1 -> messagesForLanguage.overviewP1NoBullets(isAgent)(messagesForLanguage.overviewLSPPoints(1)),
+                  concat(Selectors.lspTab, Selectors.p(1)) -> lspMessages.pointsTotal(1),
+                  concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.pointsAccruingP1(isAgent)(1),
+                  concat(Selectors.lspTab, Selectors.p(3)) -> lspMessages.pointsAccruingP2(isAgent),
+                  concat(Selectors.lspTab, Selectors.p(4)) -> lspMessages.pointsAccruingP3(isAgent)(4),
+                  concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.pointsGuidanceLink
                 )
 
                 behave like pageWithoutElementsRendered(
@@ -93,12 +109,18 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               }
             }
 
-            "there are multiple Late Submission Point, including financial" should {
+            "there are multiple Late Submission Points, including financial" should {
 
               lazy val html = indexView(
-                Seq(),
-                Seq(),
-                PenaltiesOverviewViewModel(Seq(
+                lspOverviewData = Some(LSPOverviewViewModel(lateSubmissionPenalty.copy(
+                  summary = lateSubmissionPenalty.summary.copy(
+                    activePenaltyPoints = 4
+                  ),
+                  details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge)
+                ))),
+                lspCardData = Seq(),
+                lppCardData = Seq(),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(
                   messagesForLanguage.overviewLSPFinancial(1),
                   messagesForLanguage.overviewLSPPointsMax
                 ), hasFinancialCharge = true),
@@ -113,7 +135,11 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                   Selectors.overviewP1 -> messagesForLanguage.overviewP1(isAgent),
                   Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPFinancial(1),
                   Selectors.overviewBullet(2) -> messagesForLanguage.overviewLSPPointsMax,
-                  Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay(isAgent)
+                  Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay(isAgent),
+                  concat(Selectors.lspTab, Selectors.p(1)) -> lspMessages.pointsTotal(4),
+                  concat(Selectors.lspTab, Selectors.warning) -> lspMessages.penaltyWarning(isAgent),
+                  concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.penaltyP1(isAgent),
+                  concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.actionsLink(isAgent)
                 )
               }
             }

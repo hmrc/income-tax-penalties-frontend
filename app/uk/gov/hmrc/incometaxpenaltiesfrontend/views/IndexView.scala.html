@@ -21,6 +21,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 
 @this(
         main: MainTemplate,
@@ -36,59 +37,45 @@
         list : List,
         summaryCardLSP: SummaryCardLSP,
         summaryCardLPP: SummaryCardLPP,
-        penaltiesOverview: PenaltiesOverview
+        penaltiesOverview: PenaltiesOverview,
+        lspTabOverview: LSPTabOverview
 )
 @(
-        lspData: Seq[LateSubmissionPenaltySummaryCard],
-        lppData: Seq[LatePaymentPenaltySummaryCard],
+        lspOverviewData: Option[LSPOverviewViewModel],
+        lspCardData: Seq[LateSubmissionPenaltySummaryCard],
+        lppCardData: Seq[LatePaymentPenaltySummaryCard],
         penaltiesOverviewViewModel: PenaltiesOverviewViewModel,
         isAgent: Boolean
 )(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@lspMainTab(individualOrAgent: String) = {
+@lspMainTab = {
 
-    @h3(msg = "general.main.lsp", elmId = "lspHeading")
+    @h3(msg = "index.lsp.tab.h3", elmId = "lspHeading")
 
-    @if(lspData.isEmpty) {
+    @if(lspCardData.isEmpty && lspOverviewData.isEmpty) {
         @p("lsp.noPenalties")
-    } else {
-
-        <p class="govuk-body-l">@messages("general.main.penalty.point.total") <strong class="govuk-!-font-weight-bold">4</strong></p>
-
-        @warning(msg = individualOrAgent + ".main.warning.text", elmId = "financialWarningText")
-
-        @p(individualOrAgent + ".main.what.this.means")
-
-        @link(
-            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ComplianceTimelineController.complianceTimelinePage.url,
-            messageKey = messages(individualOrAgent + ".main.actions.to.remove.link") + " " + messages("general.opens.in.new.tab"),
-            attrTarget = true,
-            id = Some("actionsToRemoveLink")
-        )
-
-        @lspData.map { lsp =>
-            @summaryCardLSP(lsp)
-        }
     }
+    @lspOverviewData.map(lspTabOverview(_, isAgent))
+    @lspCardData.map(summaryCardLSP(_))
 }
 
 @lppMainTab(individualOrAgent: String) = {
-    @h3(msg = "general.main.lpp", elmId = "lppHeading")
+    @h3(msg = "index.lpp.tab.h3", elmId = "lppHeading")
 
-    @if(lppData.isEmpty) {
+    @if(lppCardData.isEmpty) {
         @p("lpp.noPenalties")
     } else {
 
-        @p(individualOrAgent + ".main.pay.early.info")
+        @p(individualOrAgent + ".index.lpp.tab.payEarlyInfo")
 
         @link(
             link = "#", //TODO: Add link as part of future story,
-            messageKey = messages("general.main.penalty.summary.guidance.on.late.payments") + " " + messages("general.opens.in.new.tab"),
+            messageKey = messages("index.lpp.tab.guidanceOnLatePayments") + " " + messages("common.opensInNewTab"),
             attrTarget = true,
             id = Some("guidanceLatePaymentLink")
         )
 
-        @lppData.map { lpp =>
+        @lppCardData.map { lpp =>
             @summaryCardLPP(lpp)
         }
     }
@@ -96,26 +83,26 @@
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
-    @main(pageTitle = messages("general.main.h1"), backLinkEnabled = false) {
+    @main(pageTitle = messages("index.h1"), backLinkEnabled = false) {
 
-        @h1("general.main.h1")
+        @h1("index.h1")
 
         @penaltiesOverview(penaltiesOverviewViewModel, isAgent)
 
-        @h2(msg = "general.main.penalties.appeal.heading", elmId = "appealDetailsHeading")
+        @h2(msg = "index.h2", elmId = "appealDetailsHeading")
 
         @govukTabs(Tabs(
             items = Seq(
                 TabItem(
                     id = Some("lspTab"),
-                    label = messages("general.main.lsp"),
+                    label = messages("index.lsp.tab.h3"),
                     panel = TabPanel(
-                        content = HtmlContent(lspMainTab(individualOrAgent))
+                        content = HtmlContent(lspMainTab)
                     )
                 ),
                 TabItem(
                     id = Some("lppTab"),
-                    label = messages("general.main.lpp"),
+                    label = messages("index.lpp.tab.h3"),
                     panel = TabPanel(
                         content = HtmlContent(lppMainTab(individualOrAgent))
                     )

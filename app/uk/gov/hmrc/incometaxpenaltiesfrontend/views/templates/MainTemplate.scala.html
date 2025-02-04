@@ -92,7 +92,7 @@
     @hmrcReportTechnicalIssueHelper()
 }
 
-@fullPageTitle = {@pageTitle - @Messages("label.service_name") - GOV.UK}
+@fullPageTitle = {@pageTitle - @Messages("service.name") - GOV.UK}
 
 
 @hmrcStandardPage(
@@ -101,7 +101,7 @@
             serviceUrl = Some(appConfig.ITSAPenaltiesHomeUrl),
             signOutUrl = None
         ),
-        serviceName = Some(messages("label.service_name")),
+        serviceName = Some(messages("service.name")),
         pageTitle = Some(fullPageTitle.toString()),
         isWelshTranslationAvailable = true,
         templateOverrides = TemplateOverrides(

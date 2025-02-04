@@ -31,19 +31,19 @@
 @if(penaltiesOverviewViewModel.content.nonEmpty) {
     @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
         <div id="penaltiesOverview">
-            @h2(msg = "overview.heading", elmId = "overviewHeading")
+            @h2(msg = "index.overview.h2", elmId = "overviewHeading")
 
             @if(penaltiesOverviewViewModel.content.size > 1) {
-                @p(s"$individualOrAgent.overview.p1")
+                @p(s"$individualOrAgent.index.overview.p1")
                 @list(penaltiesOverviewViewModel.content)
             } else {
-                @p(messages(s"$individualOrAgent.overview.p1.noBullets", penaltiesOverviewViewModel.content.head))
+                @p(messages(s"$individualOrAgent.index.overview.p1.noBullets", penaltiesOverviewViewModel.content.head))
             }
 
             @if(penaltiesOverviewViewModel.hasFinancialCharge) {
                 @link(
                     link = appConfig.checkAmountAndPayUrl(isAgent),
-                    messageKey = s"$individualOrAgent.overview.checkAmount.button",
+                    messageKey = s"$individualOrAgent.index.overview.checkAmount.button",
                     classes = Some("govuk-button"),
                     id = Some("checkAmountPayButton")
                 )

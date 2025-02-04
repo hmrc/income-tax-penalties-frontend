@@ -1,29 +1,58 @@
-service.name = income-tax-penalties-frontend
-service.text = This is your new service
+service.name = Manage your Self Assessment (Welsh)
 
+# Index View
+# ==========
+index.h1 = Self Assessment penalties and appeals (Welsh)
+index.h2 = Penalty and appeal details (Welsh)
 
-label.service_name = Manage your Self Assessment (Welsh)
+# --- Overview Content
+index.overview.h2 = Trosolwg
+individual.index.overview.p1 = Mae gan eich cyfrif y canlynol:
+individual.index.overview.p1.noBullets = Mae gan eich cyfrif y canlynol {0}
+agent.index.overview.p1 = Mae gan gyfrif eich cleient y canlynol:
+agent.index.overview.p1.noBullets = Mae gan gyfrif eich cleient y canlynol {0}
+index.overview.unpaidReturnCharges.bullet = overdue Income Tax charges (Welsh)
+index.overview.unpaidInterest.bullet = llog sydd heb ei dalu
+index.overview.lpp.bullet.penalties.singular = cosb am dalu’n hwyr
+index.overview.lpp.bullet.penalties.plural = cosbau am dalu’n hwyr
+index.overview.lsp.bullet.penalties.singular = cosb am gyflwyno’n hwyr
+index.overview.lsp.bullet.penalties.plural = cosbau am gyflwyno’n hwyr
+index.overview.lsp.bullet.points.singular = 1 pwynt cosb am gyflwyno’n hwyr
+index.overview.lsp.bullet.points.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
+index.overview.lsp.bullet.points.max = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
+individual.index.overview.checkAmount.button = Gwirio’r symiau a thalu
+agent.index.overview.checkAmount.button = Gwirio’r symiau
 
-individual.main.h1 = Self Assessment penalties and appeals (Welsh)
+# --- LSP Tab Content
+index.lsp.tab.h3 = Late submission penalties (Welsh)
+index.lsp.tab.overview.penalty.warningPointTotal = Penalty points total: (Welsh)
+individual.index.lsp.tab.overview.pointsAccruing.p1.singular = You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven’t already. (Welsh)
+individual.index.lsp.tab.overview.pointsAccruing.p1.plural = You have {0} penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven’t already. (Welsh)
+individual.index.lsp.tab.overview.pointsAccruing.p2 = You’ll get another point if you send another submission after a deadline has passed. (Welsh)
+individual.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if you keep sending late submissions. If you reach {0} points, you’ll have to pay a £200 penalty. (Welsh)
+individual.index.lsp.tab.overview.pointsAccruing.warning = You’ll get a £200 penalty if you send another late submission. (Welsh)
+agent.index.lsp.tab.overview.pointsAccruing.p1.singular = Your client has 1 penalty point for sending a late submission. They should send this missing submission as soon as possible if they haven’t already. (Welsh)
+agent.index.lsp.tab.overview.pointsAccruing.p1.plural = Your client has {0} penalty points for sending late submissions. They should send any missing submissions as soon as possible if they haven’t already. (Welsh)
+agent.index.lsp.tab.overview.pointsAccruing.p2 = They’ll get another point if they send another submission after a deadline has passed. (Welsh)
+agent.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if they keep sending late submissions. If they reach {0} points, they’ll have to pay a £200 penalty. (Welsh)
+agent.index.lsp.tab.overview.pointsAccruing.warning = Your client will get a £200 penalty if they send another late submission. (Welsh)
+individual.index.lsp.tab.overview.penalty.warning = You have been given a £200 penalty for reaching the penalty threshold. (Welsh)
+individual.index.lsp.tab.overview.penalty.p1 = You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already. (Welsh)
+agent.index.lsp.tab.overview.penalty.warning = Your client has been given a £200 penalty for reaching the penalty threshold. (Welsh)
+agent.index.lsp.tab.overview.penalty.p1 = They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already. (Welsh)
+individual.index.lsp.tab.overview.additionalPenalty.warning = You have been given an additional £200 penalty. (Welsh)
+individual.index.lsp.tab.overview.additionalPenalty.p1 = You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already. (Welsh)
+agent.index.lsp.tab.overview.additionalPenalty.warning = Your client has been given an additional £200 penalty. (Welsh)
+agent.index.lsp.tab.overview.additionalPenalty.p1 = They will get another £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already. (Welsh)
+index.lsp.tab.overview.pointsGuidanceLink = Read the guidance about late submission penalties (Welsh)
+individual.index.lsp.tab.overview.actionsToRemoveLink = Actions to take to get your points removed (Welsh)
+agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed (Welsh)
 
-# Penalties Overview Summary
-# ==========================
-overview.heading = Trosolwg
-individual.overview.p1 = Mae gan eich cyfrif y canlynol:
-individual.overview.p1.noBullets = Mae gan eich cyfrif y canlynol {0}
-agent.overview.p1 = Mae gan gyfrif eich cleient y canlynol:
-agent.overview.p1.noBullets = Mae gan gyfrif eich cleient y canlynol {0}
-overview.unpaidReturnCharges.bullet = overdue Income Tax charges (Welsh)
-overview.unpaidInterest.bullet = llog sydd heb ei dalu
-overview.lpp.bullet.penalties.singular = cosb am dalu’n hwyr
-overview.lpp.bullet.penalties.plural = cosbau am dalu’n hwyr
-overview.lsp.bullet.penalties.singular = cosb am gyflwyno’n hwyr
-overview.lsp.bullet.penalties.plural = cosbau am gyflwyno’n hwyr
-overview.lsp.bullet.points.singular = 1 pwynt cosb am gyflwyno’n hwyr
-overview.lsp.bullet.points.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
-overview.lsp.bullet.points.max = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
-individual.overview.checkAmount.button = Gwirio’r symiau a thalu
-agent.overview.checkAmount.button = Gwirio’r symiau
+# --- LPP Tab Content
+index.lpp.tab.h3 = Late payment penalties (Welsh)
+index.lpp.tab.guidanceOnLatePayments = Read the guidance about how late payment penalties are calculated (Welsh)
+individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the lower your penalties and interest will be. (Welsh)
+agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax, the lower their penalties and interest will be. (Welsh)
 
 
 # Status tags
