@@ -39,14 +39,16 @@ class DateFormatterSpec extends AnyWordSpec with Matchers with DateFormatter wit
         "calling .dateToString()" should {
 
           "format to d MMMMM yyyy" in {
-            DateFormatter.dateToString(LocalDate.of(2025, 1, 1)) shouldBe s"1 ${messagesForLanguage.january} 2025"
+            val dateNonBreaking = s"1 ${messagesForLanguage.january} 2025".replace(" ", "\u00A0")
+            DateFormatter.dateToString(LocalDate.of(2025, 1, 1)) shouldBe dateNonBreaking
           }
         }
 
         "calling .dateToMonthYearString()" should {
 
           "format to MMMMM yyyy" in {
-            DateFormatter.dateToMonthYearString(LocalDate.of(2025, 1, 1)) shouldBe s"${messagesForLanguage.january} 2025"
+            val dateNonBreaking = s"${messagesForLanguage.january} 2025".replace(" ", "\u00A0")
+            DateFormatter.dateToMonthYearString(LocalDate.of(2025, 1, 1)) shouldBe dateNonBreaking
           }
         }
       }

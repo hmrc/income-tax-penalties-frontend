@@ -29,7 +29,7 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       case (Some(startDate), Some(endDate)) =>
         Some(summaryListRow(
           label = messages("lsp.quarter.key"),
-          value = Html(messages("lsp.quarter.value", dateToString(startDate), dateToString(endDate)))
+          value = Html(Dates.dateNonBreakingSpaceMultiple("lsp.quarter.value", dateToString(startDate), dateToString(endDate)))
         ))
       case _ => None
     }
@@ -38,7 +38,7 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     penalty.dueDate.map { dueDate =>
       summaryListRow(
         label = messages("lsp.updateDue.key"),
-        value = Html(dateToString(dueDate))
+        value = Html(Dates.dateNonBreakingSpaceSingle(dateToString(dueDate)))
       )
     }
 
@@ -54,13 +54,13 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     summaryListRow(
       label = messages("lsp.updateSubmitted.key"),
       value = Html(
-        penalty.receiptDate.fold(messages("lsp.updateSubmitted.notReceived"))(dateToString(_))
+        penalty.receiptDate.fold(messages("lsp.updateSubmitted.notReceived"))(dateToString(_).replace(" ", "\u00A0"))
       )
     )
 
   def pointExpiryDate(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
       messages("lsp.expiry.key"),
-      Html(dateToMonthYearString(penalty.penaltyExpiryDate))
+      Html(Dates.dateNonBreakingSpaceSingle(dateToMonthYearString(penalty.penaltyExpiryDate)))
     )
 }
