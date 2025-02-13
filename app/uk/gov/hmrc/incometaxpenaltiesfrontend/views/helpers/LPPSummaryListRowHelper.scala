@@ -22,6 +22,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
+
 class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
   def penaltyTypeRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
@@ -34,7 +35,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     penalty.penaltyChargeCreationDate.map { creationDate =>
       summaryListRow(
         label = messages("lpp.addedOn.key"),
-        value = Html(Dates.dateNonBreakingSpaceSingle(dateToString(creationDate)))
+        value = Html(DateFormatter.dateNonBreakingSpaceSingle(dateToString(creationDate)))
       )
     }
 
@@ -51,7 +52,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
   def incomeTaxDueRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
       label = messages("lpp.incomeTaxDue.key"),
-      value = Html(Dates.dateNonBreakingSpaceSingle(dateToString(penalty.principalChargeDueDate)))
+      value = Html(DateFormatter.dateNonBreakingSpaceSingle(dateToString(penalty.principalChargeDueDate)))
     )
 
   def incomeTaxPaymentDateRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
@@ -59,7 +60,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       messages("lpp.incomeTaxPaymentDate.key"),
       Html(
         if (penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Posted) && penalty.principalChargeLatestClearing.isDefined) {
-          Dates.dateNonBreakingSpaceSingle(dateToString(penalty.principalChargeLatestClearing.get))
+          DateFormatter.dateNonBreakingSpaceSingle(dateToString(penalty.principalChargeLatestClearing.get))
         } else {
           messages("lpp.paymentNotReceived")
         }
