@@ -45,7 +45,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
   "getPenaltyDetails" should {
     "return a successful response when the call succeeds and the body can be parsed" when {
       "an individual has Late Payment Metadata" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId").thenReturn(status = OK, body = samplePenaltyDetailsModel)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = OK, body = samplePenaltyDetailsModel)
 
         val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
 
@@ -53,7 +53,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "a client has Late Payment Metadata" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModel)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModel)
 
         val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testMtdItId, Some(testArn))(HeaderCarrier()))
 
@@ -61,7 +61,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "an individual does not have metadata" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
 
         val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
 
@@ -69,7 +69,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "a client does not have metadata" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
 
         val result = await(connector.getPenaltyDetails(testMtdItId, Some(testArn))(HeaderCarrier()))
 
@@ -77,7 +77,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "an individual does not have any penalty details" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId").thenReturn(status = NO_CONTENT, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = NO_CONTENT, body = Json.obj())
 
         val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
 
@@ -85,7 +85,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "a client does not have any penalty details" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId\\?arn=$testArn").thenReturn(status = NO_CONTENT, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId\\?arn=$testArn").thenReturn(status = NO_CONTENT, body = Json.obj())
 
         val result = await(connector.getPenaltyDetails(testMtdItId, Some(testArn))(HeaderCarrier()))
 
@@ -95,7 +95,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
 
     "return a Left when" when {
       "an exception with status 4xx occurs upstream" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId").thenReturn(status = BAD_REQUEST, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = BAD_REQUEST, body = Json.obj())
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
@@ -107,7 +107,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "invalid Json is returned" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId").thenReturn(status = OK, body = "")
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = OK, body = "")
 
         val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
 
@@ -115,7 +115,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "an exception with status 5xx occurs upstream is returned" in {
-        when(GET, uri = s"/penalties/etmp/penalties/$testMtdItId").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
 
         withCaptureOfLoggingFrom(logger) {
           logs => {

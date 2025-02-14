@@ -32,8 +32,6 @@ object EnrolmentUtil {
         .withIdentifier(mtdItIdKey, mtdItId)
         .withDelegatedAuthRule(agentDelegatedAuthRuleKey)
 
-  def constructMTDITEnrolmentKey(mtditid: String): String = s"$incomeTaxEnrolmentKey~$mtdItIdKey~$mtditid"
-
   implicit class AuthReferenceExtractor(enrolments: Enrolments) {
 
     def agentReferenceNumber: Option[String] =

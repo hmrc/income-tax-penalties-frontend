@@ -20,7 +20,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.GetPenaltyDetailsResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil
 
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -28,7 +27,7 @@ import scala.concurrent.Future
 class PenaltiesService @Inject()(connector: PenaltiesConnector) {
 
   def getPenaltyDataForUser()(implicit user: CurrentUserRequest[_], hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] =
-    connector.getPenaltyDetails(EnrolmentUtil.constructMTDITEnrolmentKey(user.mtdItId), user.arn)
+    connector.getPenaltyDetails(user.mtdItId, user.arn)
 
 }
 
