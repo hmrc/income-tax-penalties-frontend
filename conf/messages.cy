@@ -1,5 +1,9 @@
 service.name = Manage your Self Assessment (Welsh)
 
+phaseBanner.tag = Beta (Welsh)
+phaseBanner.message = This is a new service – your {0} will help us to improve it. (Welsh)
+phaseBanner.linkText = feedback (Welsh)
+
 # Index View
 # ==========
 index.h1 = Self Assessment penalties and appeals (Welsh)
