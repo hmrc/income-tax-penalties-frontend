@@ -134,6 +134,7 @@ cardLinks.findOutHowToAppeal = Find out how to appeal (Welsh)
 cardLinks.appealNoPointNumber = Appeal this penalty (Welsh)
 cardLinks.appeal = Appeal penalty point {0} (Welsh)
 cardLinks.viewCalculation = View calculation (Welsh)
+cardLinks.reviewAppeal = Ask for review (Welsh)
 
 # Months
 # ======

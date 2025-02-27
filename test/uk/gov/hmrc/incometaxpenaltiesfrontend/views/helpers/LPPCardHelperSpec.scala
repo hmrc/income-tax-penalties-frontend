@@ -89,7 +89,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
               "construct a card with correct messages and summary rows including an Appeal Status" in {
 
-                val penalty1 = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.HMRC)
+                val penalty1 = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
 
                 mockPenaltyTypeRow(penalty1)(testPenaltyType)
                 mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)

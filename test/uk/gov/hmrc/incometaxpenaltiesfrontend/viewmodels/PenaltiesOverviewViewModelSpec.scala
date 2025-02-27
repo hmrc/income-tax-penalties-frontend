@@ -131,7 +131,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                       sampleLateSubmissionPoint,
                       sampleLateSubmissionPoint.copy(penaltyStatus = LSPPenaltyStatusEnum.Inactive),
                       sampleLateSubmissionPoint,
-                      samplePenaltyPointAppeal(AppealStatusEnum.Upheld, AppealLevelEnum.HMRC)
+                      samplePenaltyPointAppeal(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
                     )
                   ))
                 )
@@ -160,7 +160,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                       sampleLateSubmissionPoint,
                       sampleLateSubmissionPoint.copy(penaltyStatus = LSPPenaltyStatusEnum.Inactive),
                       sampleLateSubmissionPoint,
-                      samplePenaltyPointAppeal(AppealStatusEnum.Upheld, AppealLevelEnum.HMRC)
+                      samplePenaltyPointAppeal(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
                     )
                   ))
                 )
@@ -295,7 +295,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 latePaymentPenalty = samplePenaltyDetailsModel.latePaymentPenalty.map(_.copy(
                   details = Seq(
                     sampleUnpaidLPP1,
-                    sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.HMRC)
+                    sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
                   )
                 ))
               )) shouldBe
