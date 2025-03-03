@@ -247,7 +247,7 @@ trait PenaltiesFixture {
     penaltyChargeDueDate = Some(LocalDate.parse("2021-03-08")),
     appealInformation = Some(Seq(AppealInformationType(
       appealStatus = Some(AppealStatusEnum.Unappealable),
-      appealLevel = Some(AppealLevelEnum.HMRC)
+      appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
     ))),
     principalChargeBillingFrom = LocalDate.parse("2021-01-01"),
     principalChargeBillingTo = LocalDate.parse("2021-02-01"),
@@ -566,7 +566,7 @@ trait PenaltiesFixture {
       principalChargeLatestClearing = Some(sampleDate1.plusMonths(2).plusDays(7)),
       appealInformation = Some(Seq(AppealInformationType(
         appealStatus = Some(AppealStatusEnum.Under_Appeal),
-        appealLevel = Some(AppealLevelEnum.HMRC))))
+        appealLevel = Some(AppealLevelEnum.FirstStageAppeal))))
     )
   )))
 

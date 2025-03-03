@@ -169,6 +169,7 @@ cardLinks.findOutHowToAppeal = Find out how to appeal
 cardLinks.appealNoPointNumber = Appeal this penalty
 cardLinks.appeal = Appeal penalty point {0}
 cardLinks.viewCalculation = View calculation
+cardLinks.reviewAppeal = Ask for review
 
 # Months
 # --------------------------

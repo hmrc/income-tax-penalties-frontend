@@ -49,7 +49,7 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
                 summaryListRowHelper.appealStatusRow(
                   Some(AppealStatusEnum.Under_Appeal),
-                  Some(AppealLevelEnum.HMRC)
+                  Some(AppealLevelEnum.FirstStageAppeal)
                 ) shouldBe
                   Some(summaryListRowHelper.summaryListRow(
                     label = appealStatusMessages.appealStatusKey,
@@ -64,7 +64,7 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
                 summaryListRowHelper.appealStatusRow(
                   Some(AppealStatusEnum.Unappealable),
-                  Some(AppealLevelEnum.HMRC)
+                  Some(AppealLevelEnum.FirstStageAppeal)
                 ) shouldBe None
               }
             }

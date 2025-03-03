@@ -43,6 +43,7 @@ object LPPCardMessages {
     //Card Footer Links
     val cardLinksViewCalculation = "View calculation"
     val cardLinksAppealThisPenalty = "Appeal this penalty"
+    val cardLinksReviewAppeal = "Ask for review"
     val cardLinksFindOutHowToAppeal = "Find out how to appeal"
     val cannotAppeal = "You cannot appeal this point"
   }
@@ -72,6 +73,7 @@ object LPPCardMessages {
     override val cardLinksViewCalculation = "View calculation (Welsh)"
     override val cardLinksAppealThisPenalty = "Appeal this penalty (Welsh)"
     override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
+    override val cardLinksReviewAppeal = "Ask for review (Welsh)"
     override val cannotAppeal = "You cannot appeal this point (Welsh)"
   }
 }

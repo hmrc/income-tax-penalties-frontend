@@ -84,7 +84,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 val penalty = sampleLateSubmissionPoint.copy(
                   appealInformation = Some(Seq(AppealInformationType(
                     appealStatus = Some(AppealStatusEnum.Upheld),
-                    appealLevel = Some(AppealLevelEnum.HMRC)
+                    appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
                   )))
                 )
                 val penalty1 = penalty.copy(penaltyOrder = Some("1"))
@@ -108,7 +108,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     penaltyCategory = penalty1.penaltyCategory,
                     isAppealedPoint = true,
                     appealStatus = Some(AppealStatusEnum.Upheld),
-                    appealLevel = Some(AppealLevelEnum.HMRC),
+                    appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
                     dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }

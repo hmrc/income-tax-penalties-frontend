@@ -69,7 +69,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                       appealInformation = Some(Seq(
                         AppealInformationType(
                           appealStatus = Some(AppealStatusEnum.Upheld),
-                          appealLevel = Some(AppealLevelEnum.HMRC)
+                          appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
                         )
                       ))
                     ))
@@ -157,7 +157,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                       appealInformation = Some(Seq(
                         AppealInformationType(
                           appealStatus = Some(AppealStatusEnum.Upheld),
-                          appealLevel = Some(AppealLevelEnum.HMRC)
+                          appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
                         )
                       ))
                     ))
@@ -190,7 +190,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
               "generate a Paid tag model with correct message and class" in {
 
-                val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.HMRC))
+                val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal))
 
                 tag.classes shouldBe ""
                 tag.content shouldBe Text(messagesForLanguage.upheld)

@@ -41,6 +41,7 @@ object LSPCardMessages {
     val cardLinksFindOutHowToAppeal = "Find out how to appeal"
     val cardLinksAppealNoPointNumber = "Appeal penalty"
     val cardLinksAppeal: Int => String = point => s"Appeal penalty point $point"
+    val cardLinksReviewAppeal: String = "Ask for review"
   }
 
   object English extends Messages with En
@@ -68,5 +69,6 @@ object LSPCardMessages {
     override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
     override val cardLinksAppealNoPointNumber = "Appeal penalty (Welsh)"
     override val cardLinksAppeal: Int => String = point => s"Appeal penalty point $point (Welsh)"
+    override val cardLinksReviewAppeal: String = "Ask for review (Welsh)"
   }
 }
