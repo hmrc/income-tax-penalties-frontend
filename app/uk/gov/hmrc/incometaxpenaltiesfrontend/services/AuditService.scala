@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
+import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.AuditModel
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -25,7 +26,7 @@ import scala.concurrent.ExecutionContext
 
 class AuditService @Inject()(auditConnector: AuditConnector)(implicit ec: ExecutionContext) {
 
-  def audit(auditModel: AuditModel)(implicit hc: HeaderCarrier): Unit =
+  def audit[T](auditModel: AuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[T]): Unit =
     auditConnector.sendExplicitAudit(auditModel.auditType, auditModel.detail)
 
 }

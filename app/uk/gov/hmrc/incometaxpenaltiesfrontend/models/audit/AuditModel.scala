@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
-import play.api.libs.json.JsValue
-
-trait AuditModel {
+trait AuditModel[T] {
   val auditType: String
-  val detail: JsValue
+  val detail: T
 }

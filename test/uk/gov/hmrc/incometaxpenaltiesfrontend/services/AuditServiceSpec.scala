@@ -21,7 +21,7 @@ import org.mockito.Mockito.{times, verify}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.AuditModel
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -36,9 +36,14 @@ class AuditServiceSpec extends AnyWordSpec with Matchers with MockitoSugar {
   val auditConnector: AuditConnector = mock[AuditConnector]
   val service = new AuditService(auditConnector)
 
-  val testAuditModel: AuditModel = new AuditModel {
+  case class TestModel(foo: String, bar: String)
+  object TestModel {
+    implicit val writes: Writes[TestModel] = Json.writes[TestModel]
+  }
+
+  val testAuditModel: AuditModel[TestModel] = new AuditModel[TestModel] {
     override val auditType: String = "auditType"
-    override val detail: JsValue = Json.obj("key" -> "value")
+    override val detail: TestModel = TestModel("foo", "bar")
   }
 
   "AuditService" should {
@@ -50,7 +55,7 @@ class AuditServiceSpec extends AnyWordSpec with Matchers with MockitoSugar {
       verify(auditConnector, times(1)).sendExplicitAudit(
         auditType = eqTo(testAuditModel.auditType),
         detail = eqTo(testAuditModel.detail)
-      )(any(), any(), any())
+      )(any(), any(), eqTo(TestModel.writes))
     }
   }
 }
