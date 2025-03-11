@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
-import play.api.i18n.Messages
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.AuditModel
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
-import java.time.LocalDate
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
-trait DateFormatter {
+class AuditService @Inject()(auditConnector: AuditConnector)(implicit ec: ExecutionContext) {
 
-  private val htmlNonBroken: String => String = _.replace(" ", "\u00A0")
+  def audit(auditModel: AuditModel)(implicit hc: HeaderCarrier): Unit =
+    auditConnector.sendExplicitAudit(auditModel.auditType, auditModel.detail)
 
-  def dateToString(date: LocalDate)(implicit messages: Messages): String =
-    htmlNonBroken(s"${date.getDayOfMonth} ${messages(s"month.${date.getMonthValue}")} ${date.getYear}")
-
-  def dateToMonthYearString(date: LocalDate)(implicit messages: Messages): String =
-    htmlNonBroken(s"${messages(s"month.${date.getMonthValue}")} ${date.getYear}")
 }
-
-object DateFormatter extends DateFormatter

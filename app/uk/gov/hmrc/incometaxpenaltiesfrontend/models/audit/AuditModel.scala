@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
-import play.api.i18n.Messages
+import play.api.libs.json.JsValue
 
-import java.time.LocalDate
-
-trait DateFormatter {
-
-  private val htmlNonBroken: String => String = _.replace(" ", "\u00A0")
-
-  def dateToString(date: LocalDate)(implicit messages: Messages): String =
-    htmlNonBroken(s"${date.getDayOfMonth} ${messages(s"month.${date.getMonthValue}")} ${date.getYear}")
-
-  def dateToMonthYearString(date: LocalDate)(implicit messages: Messages): String =
-    htmlNonBroken(s"${messages(s"month.${date.getMonthValue}")} ${date.getYear}")
+trait AuditModel {
+  val auditType: String
+  val detail: JsValue
 }
-
-object DateFormatter extends DateFormatter
