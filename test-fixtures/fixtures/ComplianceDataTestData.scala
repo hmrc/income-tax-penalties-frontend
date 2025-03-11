@@ -22,30 +22,32 @@ import java.time.LocalDate
 
 trait ComplianceDataTestData {
 
+  val obligationDetail: Seq[ObligationDetail] = Seq(
+    ObligationDetail(
+      status = ComplianceStatusEnum.Open,
+      inboundCorrespondenceFromDate = LocalDate.of(2021, 4, 6),
+      inboundCorrespondenceToDate = LocalDate.of(2022, 4, 5),
+      inboundCorrespondenceDateReceived = None,
+      inboundCorrespondenceDueDate = LocalDate.of(2023, 1, 31),
+      periodKey = "22P0"
+    ),
+    ObligationDetail(
+      status = ComplianceStatusEnum.Fulfilled,
+      inboundCorrespondenceFromDate = LocalDate.of(2022, 4, 6),
+      inboundCorrespondenceToDate = LocalDate.of(2022, 6, 30),
+      inboundCorrespondenceDateReceived = Some(LocalDate.of(2022, 7, 1)),
+      inboundCorrespondenceDueDate = LocalDate.of(2022, 7, 31),
+      periodKey = "23P1"
+    )
+  )
+
   val sampleCompliancePayload: ComplianceData = ComplianceData(
     identification = Some(ObligationIdentification(
       incomeSourceType = None,
       referenceNumber = "1234567890",
       referenceType = "MTDITID"
     )),
-    obligationDetails = Seq(
-      ObligationDetail(
-        status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(2021, 4, 6),
-        inboundCorrespondenceToDate = LocalDate.of(2022, 4, 5),
-        inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(2023, 1, 31),
-        periodKey = "22P0"
-      ),
-      ObligationDetail(
-        status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(2022, 4, 6),
-        inboundCorrespondenceToDate = LocalDate.of(2022, 6, 30),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(2022, 7, 1)),
-        inboundCorrespondenceDueDate = LocalDate.of(2022, 7, 31),
-        periodKey = "23P1"
-      )
-    )
+    obligationDetails = obligationDetail
   )
 
   val sampleCompliancePayloadTwoOpen: ComplianceData = ComplianceData(
