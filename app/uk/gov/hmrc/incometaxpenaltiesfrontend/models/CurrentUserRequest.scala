@@ -16,11 +16,19 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models
 
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Request, WrappedRequest}
 import play.twirl.api.Html
 
 case class CurrentUserRequest[A](mtdItId: String,
                                  arn: Option[String] = None,
                                  override val navBar: Option[Html] = None)(implicit request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
+
   val isAgent: Boolean = arn.isDefined
+
+  val auditJson: JsObject = Json.obj(
+      "identifierType" -> "MTDITID",
+      "taxIdentifier" -> mtdItId
+  ) ++ arn.fold(Json.obj())(arn => Json.obj("agentReferenceNumber" -> arn))
+
 }
