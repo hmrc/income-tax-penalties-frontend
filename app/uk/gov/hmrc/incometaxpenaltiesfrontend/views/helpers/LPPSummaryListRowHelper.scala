@@ -35,7 +35,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     penalty.penaltyChargeCreationDate.map { creationDate =>
       summaryListRow(
         label = messages("lpp.addedOn.key"),
-        value = Html(DateFormatter.dateNonBreakingSpaceSingle(dateToString(creationDate)))
+        value = Html(dateToString(creationDate))
       )
     }
 
@@ -52,7 +52,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
   def incomeTaxDueRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
       label = messages("lpp.incomeTaxDue.key"),
-      value = Html(DateFormatter.dateNonBreakingSpaceSingle(dateToString(penalty.principalChargeDueDate)))
+      value = Html(dateToString(penalty.principalChargeDueDate))
     )
 
   def incomeTaxPaymentDateRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
@@ -60,7 +60,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       messages("lpp.incomeTaxPaymentDate.key"),
       Html(
         if (penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Posted) && penalty.principalChargeLatestClearing.isDefined) {
-          DateFormatter.dateNonBreakingSpaceSingle(dateToString(penalty.principalChargeLatestClearing.get))
+          dateToString(penalty.principalChargeLatestClearing.get)
         } else {
           messages("lpp.paymentNotReceived")
         }
