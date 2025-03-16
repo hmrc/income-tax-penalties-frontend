@@ -30,6 +30,9 @@ object PagerDutyHelper {
     final val INVALID_JSON_RECEIVED_FROM_BTA = Value
     final val RECEIVED_4XX_FROM_BTA = Value
     final val RECEIVED_5XX_FROM_BTA = Value
+    final val RECEIVED_4XX_FROM_INCOME_TAX_SESSION_DATA = Value
+    final val RECEIVED_5XX_FROM_INCOME_TAX_SESSION_DATA = Value
+    final val INVALID_JSON_RECEIVED_FROM_INCOME_TAX_SESSION_DATA = Value
     final val EMPTY_PENALTY_BODY = Value
     final val INVALID_DATA_RETURNED_FOR_CALCULATION_ROW = Value
     final val NO_DATA_RETURNED_FROM_COMPLIANCE = Value
@@ -38,15 +41,22 @@ object PagerDutyHelper {
     final val TTP_END_DATE_MISSING = Value
   }
 
-  def log(fileAndMethodName: String, pagerDutyKey: PagerDutyKeys.Value): Unit = {
-    logger.warn(s"$pagerDutyKey - $fileAndMethodName")
+  def log(className: String,
+          methodName: String,
+          pagerDutyKey: PagerDutyKeys.Value,
+          identifiers: Map[String, String] = Map()): Unit = {
+    val ids: String = identifiers.map { case (key, value) => s"$key: $value" }.mkString(", ")
+    logger.warn(s"[$pagerDutyKey][$className][$methodName] $ids")
   }
 
-  def logStatusCode(fileAndMethodName: String, code: Int)(keyOn4xx: PagerDutyKeys.Value, keyOn5xx: PagerDutyKeys.Value): Unit = {
+  def logStatusCode(className: String,
+                    methodName: String,
+                    code: Int,
+                    identifiers: Map[String, String] = Map())(keyOn4xx: PagerDutyKeys.Value, keyOn5xx: PagerDutyKeys.Value): Unit =
     code match {
-      case code if code >= 400 && code <= 499 => log(fileAndMethodName, keyOn4xx)
-      case code if code >= 500 => log(fileAndMethodName, keyOn5xx)
+      case code if code >= 400 && code <= 499 => log(className, methodName, keyOn4xx, identifiers)
+      case code if code >= 500 => log(className, methodName, keyOn5xx, identifiers)
       case _ =>
     }
-  }
+
 }

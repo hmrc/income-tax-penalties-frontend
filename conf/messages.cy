@@ -150,3 +150,18 @@ month.9 = Medi
 month.10 = Hydref
 month.11 = Tachwedd
 month.12 = Rhagfyr
+
+# Compliance Timeline 
+compliance.timeline.individual.title = Actions to take to get your points removed (Welsh)
+compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire. (Welsh)
+compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline. (Welsh)
+compliance.timeline.individual.more.information.link.text = More information about how HMRC removes penalty points (Welsh)
+compliance.timeline.individual.points.to.be.removed = Points to be removed: (Welsh)
+compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points. (Welsh)
+compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals (Welsh)
+compliance.timeline.quarter.heading = Quarter: {0} to {1} (Welsh)
+compliance.timeline.tax.return.heading = Tax return: {0} to {1} (Welsh)
+compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now. (Welsh)
+compliance.timeline.send.by = Send by {0} (Welsh)
+
+## TODO - check welsh content keys exist for all pages
