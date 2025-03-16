@@ -28,22 +28,27 @@ import javax.inject.{Inject, Singleton}
 class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFormatter {
 
   def buildTimeline(complianceData: ComplianceData)(implicit messages: Messages): Seq[TimelineEvent] = {
-    val filteredComplianceData = complianceData.obligationDetails.filter(_.status.equals(ComplianceStatusEnum.Open))
-    if (filteredComplianceData.nonEmpty) {
-      filteredComplianceData.map {
-        data =>
-          val isReturnLate = data.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate)
+    complianceData.obligationDetails.filter(_.status == ComplianceStatusEnum.Open).map {
+      data =>
+        val isReturnLate = data.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate)
+        val isTaxYear = data.periodKey.contains("P0")
+        // 17P0 signifies the tax return for 2017
+        // 17P1 or 17G1 signifies the first quarter for 2017
+        // 17P2 or 17G2 signifies the second quarter for 2017 etc
 
-          TimelineEvent(
-            headerContent = messages("compliance.timeline.quarter.heading", dateToString(data.inboundCorrespondenceFromDate),
-              dateToString(data.inboundCorrespondenceToDate)),
-            spanContent =
-              if (isReturnLate) messages("compliance.timeline.submission.due.now", dateToString(data.inboundCorrespondenceDueDate))
-              else messages("compliance.timeline.send.by", dateToString(data.inboundCorrespondenceDueDate)),
-            tagContent = if (isReturnLate) Some(messages("common.late")) else None
-          )
-      }
+        TimelineEvent(
+          headerContent =
+            if (isTaxYear)
+              messages("compliance.timeline.tax.return.heading", dateToString(data.inboundCorrespondenceFromDate), dateToString(data.inboundCorrespondenceToDate))
+            else
+              messages("compliance.timeline.quarter.heading", dateToString(data.inboundCorrespondenceFromDate), dateToString(data.inboundCorrespondenceToDate)),
+          spanContent =
+            if (isReturnLate)
+              messages("compliance.timeline.submission.due.now", dateToString(data.inboundCorrespondenceDueDate))
+            else
+              messages("compliance.timeline.send.by", dateToString(data.inboundCorrespondenceDueDate)),
+          tagContent = if (isReturnLate) Some(messages("common.late")) else None
+        )
     }
-    else { Seq.empty }
   }
 }

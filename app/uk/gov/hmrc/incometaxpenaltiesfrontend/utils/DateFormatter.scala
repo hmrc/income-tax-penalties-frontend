@@ -39,7 +39,7 @@ trait DateFormatter {
       htmlNonBroken(to).format(to)
     )
 
-  def dateNonBreakingSpaceSingle(date: String)(implicit messages: Messages): String = htmlNonBroken(date).format(date)
+  def dateNonBreakingSpaceSingle(date: String): String = htmlNonBroken(date).format(date)
 
   def htmlNonBroken(string: String): String =
     string.replace(" ", "\u00A0")
