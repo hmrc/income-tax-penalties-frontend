@@ -36,4 +36,9 @@ object ComplianceStatusEnum extends Enumeration {
     }
   }
 
+  val auditWrites: Writes[Value] = Writes[ComplianceStatusEnum.Value] {
+    case Open => JsString("Open")
+    case _ =>    JsString("Fulfilled")
+  }
+
 }

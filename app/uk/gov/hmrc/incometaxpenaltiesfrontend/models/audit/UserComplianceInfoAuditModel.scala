@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.ITSAStatus.ITSAStatus
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ObligationDetail
@@ -31,6 +31,6 @@ case class UserComplianceInfoAuditModel(mandationStatus: ITSAStatus,
     "mandationStatus" -> mandationStatus,
     "complianceWindow" -> complianceWindow,
     "isPenaltyLate" -> isPenaltyLate,
-    "complianceData" -> complianceData
+    "complianceData" -> Json.toJson(complianceData)(Writes.seq(ObligationDetail.auditWrites))
   )
 }
