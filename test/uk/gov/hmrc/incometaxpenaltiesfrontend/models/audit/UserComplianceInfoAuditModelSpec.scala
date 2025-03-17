@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
 import fixtures.ComplianceDataTestData
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserComplianceInfoAuditModel
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, ITSAStatus}
 
 class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with ComplianceDataTestData {
 
@@ -53,14 +53,14 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
           "isPenaltyLate" -> true,
           "complianceData" -> Json.arr(
             Json.obj(
-              "status" -> "O",
+              "status" -> "Open",
               "inboundCorrespondenceFromDate" -> "1920-02-29",
               "inboundCorrespondenceToDate" -> "1920-02-29",
               "inboundCorrespondenceDueDate" -> "1920-02-29",
               "periodKey" -> "#001"
             ),
             Json.obj(
-              "status" -> "F",
+              "status" -> "Fulfilled",
               "inboundCorrespondenceFromDate" -> "1920-02-29",
               "inboundCorrespondenceToDate" -> "1920-02-29",
               "inboundCorrespondenceDueDate" -> "1920-02-29",
@@ -96,14 +96,14 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
           "isPenaltyLate" -> true,
           "complianceData" -> Json.arr(
             Json.obj(
-              "status" -> "O",
+              "status" -> "Open",
               "inboundCorrespondenceFromDate" -> "1920-02-29",
               "inboundCorrespondenceToDate" -> "1920-02-29",
               "inboundCorrespondenceDueDate" -> "1920-02-29",
               "periodKey" -> "#001"
             ),
             Json.obj(
-              "status" -> "F",
+              "status" -> "Fulfilled",
               "inboundCorrespondenceFromDate" -> "1920-02-29",
               "inboundCorrespondenceToDate" -> "1920-02-29",
               "inboundCorrespondenceDueDate" -> "1920-02-29",
