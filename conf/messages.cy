@@ -1,5 +1,7 @@
 service.name = Manage your Self Assessment (Welsh)
 
+common.late = Late (Welsh)
+
 phaseBanner.tag = Beta (Welsh)
 phaseBanner.message = This is a new service – your {0} will help us to improve it. (Welsh)
 phaseBanner.linkText = feedback (Welsh)
@@ -164,4 +166,8 @@ compliance.timeline.tax.return.heading = Tax return: {0} to {1} (Welsh)
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now. (Welsh)
 compliance.timeline.send.by = Send by {0} (Welsh)
 
-## TODO - check welsh content keys exist for all pages
+
+compliance.timeline.agent.title = Actions your client must take to get their points removed (Welsh)
+compliance.timeline.agent.maximum.penalty.points = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire. (Welsh)
+compliance.timeline.agent.send.submission.listed = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline. (Welsh)
+compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points. (Welsh)

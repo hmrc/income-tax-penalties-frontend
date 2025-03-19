@@ -27,8 +27,8 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFormatter {
 
-  def buildTimeline(complianceData: ComplianceData)(implicit messages: Messages): Seq[TimelineEvent] = {
-    complianceData.obligationDetails.filter(_.status == ComplianceStatusEnum.Open).map {
+  def buildTimeline(complianceData: Option[ComplianceData])(implicit messages: Messages): Seq[TimelineEvent] =
+    complianceData.fold(Seq.empty[TimelineEvent])(_.obligationDetails.filter(_.status == ComplianceStatusEnum.Open).map {
       data =>
         val isReturnLate = data.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate)
         val isTaxYear = data.periodKey.contains("P0")
@@ -37,18 +37,15 @@ class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFor
         // 17P2 or 17G2 signifies the second quarter for 2017 etc
 
         TimelineEvent(
-          headerContent =
-            if (isTaxYear)
-              messages("compliance.timeline.tax.return.heading", dateToString(data.inboundCorrespondenceFromDate), dateToString(data.inboundCorrespondenceToDate))
-            else
-              messages("compliance.timeline.quarter.heading", dateToString(data.inboundCorrespondenceFromDate), dateToString(data.inboundCorrespondenceToDate)),
-          spanContent =
-            if (isReturnLate)
-              messages("compliance.timeline.submission.due.now", dateToString(data.inboundCorrespondenceDueDate))
-            else
-              messages("compliance.timeline.send.by", dateToString(data.inboundCorrespondenceDueDate)),
-          tagContent = if (isReturnLate) Some(messages("common.late")) else None
+          headerContent = {
+            val infix = if (isTaxYear) "tax.return" else "quarter"
+            messages(s"compliance.timeline.$infix.heading", dateToString(data.inboundCorrespondenceFromDate), dateToString(data.inboundCorrespondenceToDate))
+          },
+          spanContent = {
+            val suffix = if (isReturnLate) "submission.due.now" else "send.by"
+            messages(s"compliance.timeline.$suffix", dateToString(data.inboundCorrespondenceDueDate))
+          },
+          tagContent = Option.when(isReturnLate)(messages("common.late"))
         )
-    }
-  }
+    })
 }

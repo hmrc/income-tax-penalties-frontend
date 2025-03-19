@@ -18,11 +18,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.IncomeTaxSessionDataConnector
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{ComplianceService, TimelineBuilderService}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
@@ -36,24 +35,22 @@ class ComplianceTimelineController @Inject()(override val controllerComponents: 
                                              withNavBar: NavBarRetrievalAction,
                                              timelineBuilder: TimelineBuilderService,
                                              complianceService: ComplianceService,
-                                             incomeTaxSessionDataConnector: IncomeTaxSessionDataConnector
+                                             errorHandler: ErrorHandler
                                             )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val complianceTimelinePage: Action[AnyContent] =
     (authorised andThen withNavBar).async { implicit currentUserRequest =>
-      for {
-        mandationStatus <- incomeTaxSessionDataConnector.getSessionData().collect { case Right(Some(value)) => value.mandationStatus }
-        // TODO handle this failing?
-        complianceWindow <- complianceService.calculateComplianceWindow(mandationStatus)
-        optComplianceData <- complianceService.getDESComplianceData(currentUserRequest.mtdItId, complianceWindow._1, complianceWindow._2)
-        complianceData = optComplianceData.getOrElse(throw new InternalServerException("[ComplianceTimelineController][complianceTimelinePage] no available compliance data"))
-        timelineEvents = timelineBuilder.buildTimeline(complianceData)
-      } yield {
-        Ok(complianceTimelineView(currentUserRequest.isAgent, timelineEvents, complianceWindow._2))
-        // TODO check appearance of Tax Return event on timeline is correct against prototype
-        // TODO stub data may need tweaking so that dates are correct and the timeline makes sense
+      complianceService.calculateComplianceWindow() match {
+        case Some((fromDate, toDate)) =>
+          for {
+            optComplianceData <- complianceService.getDESComplianceData(currentUserRequest.mtdItId, fromDate, toDate)
+            timelineEvents = timelineBuilder.buildTimeline(optComplianceData)
+            result = Ok(complianceTimelineView(currentUserRequest.isAgent, timelineEvents, toDate))
+          } yield result
+        case _ =>
+          logger.warn("[ComplianceTimelineController][complianceTimelinePage] - No compliance window calculated, rendering ISE")
+          errorHandler.showInternalServerError()
       }
     }
-// TODO Add and/or fix tests for everything new
 }
 

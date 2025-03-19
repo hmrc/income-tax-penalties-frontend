@@ -17,9 +17,9 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import play.api.mvc.Request
-import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, MandationStatus}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 
@@ -29,40 +29,21 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: ExecutionContext) {
 
-  def calculateComplianceWindow(mandationStatus: MandationStatus)(implicit request: Request[_]): Future[(LocalDate, LocalDate)] = {
-    request.session.get(IncomeTaxSessionKeys.pocAchievementDate) match {
+  def calculateComplianceWindow()(implicit request: Request[_]): Option[(LocalDate, LocalDate)] =
+    request.session.get(IncomeTaxSessionKeys.pocAchievementDate).map(LocalDate.parse) match {
+      case Some(pocDate) if pocDate.getYear == 9999 =>
+        logger.info("[ComplianceService][calculateComplianceWindow] - User does not have a compliance window, PoC year was 9999")
+        None
       case Some(pocDate) =>
-        val parsedDate = LocalDate.parse(pocDate)
-        if (parsedDate.getYear == 9999) {
-          logger.error("[ComplianceService][calculateComplianceWindow] - User does not have a compliance window")
-          throw new InternalServerException("[ComplianceService][calculateComplianceWindow] - User does not have any compliance issues - date was defaulted to '9999-12-31'")
-        } else {
-          mandationStatus.toString match {
-            case "MTD Mandated" =>
-              logger.info("[ComplianceService][calculateComplianceWindow] - User has a 12 month window due to mandation status")
-              Future.successful( parsedDate.minusYears(1) -> parsedDate)
-            case "MTD Voluntary" | "Annual" | "Non Digital" | "MTD Exempt" =>
-              logger.info("[ComplianceService][calculateComplianceWindow] - User has a 24 month window due to mandation status")
-              Future.successful(parsedDate.minusYears(2) -> parsedDate)
-            case status =>
-              throw new InternalServerException(s"Invalid Mandation Status - $status does not have a compliance window")
-          }
-        }
+        Some(pocDate.minusYears(2) -> pocDate)
       case None =>
-        logger.error("[ComplianceService][calculateComplianceWindow] - User does not have a compliance window")
-        throw new InternalServerException("User does not have any compliance issues - no PoC Achievement Date was returned")
+        logger.info("[ComplianceService][calculateComplianceWindow] - User does not have a PoC Achievement Date in session")
+        None
     }
-    // TODO
-    //  - confirm this logic with Andrew as both dates may end being specified
-    //  - is mandation status still needed if that is the case?
-    //  - handle the no compliance window scenarios gracefully, perhaps with an error page or redirection? Design input needed?
-
-  }
 
   def getDESComplianceData(mtdItId: String,
                            startDate: LocalDate,
-                           endDate: LocalDate
-                          )(implicit hc: HeaderCarrier): Future[Option[ComplianceData]] =
+                           endDate: LocalDate)(implicit hc: HeaderCarrier): Future[Option[ComplianceData]] =
     connector.getComplianceData(mtdItId, startDate, endDate).map {
       case Right(obligationData) =>
         logger.debug(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data,  obligation data = $obligationData")

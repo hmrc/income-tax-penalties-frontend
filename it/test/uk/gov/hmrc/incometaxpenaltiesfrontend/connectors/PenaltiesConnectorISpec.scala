@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors
 
-import fixtures.PenaltiesFixture
+import fixtures.{ComplianceDataTestData, PenaltiesFixture}
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import play.api.libs.json.Json
 import play.api.test.Helpers._
@@ -32,7 +32,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKey
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
-class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with PenaltiesFixture with ComplianceStub with FeatureSwitching {
+class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with
+  PenaltiesFixture with ComplianceDataTestData with ComplianceStub with FeatureSwitching {
 
   val connector: PenaltiesConnector = app.injector.instanceOf[PenaltiesConnector]
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
@@ -131,56 +132,56 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
   "getComplianceData" should {
     "return a successful response" when {
       "the call succeeds and the body can be parsed" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
-        result shouldBe Right(sampleComplianceData)
+        result shouldBe Right(sampleCompliancePayload)
       }
     }
 
     "return a successful response" when {
       "the stub succeeds and the body can be parsed" in {
         enable(UseStubForBackend)
-        stubGetComplianceDataFromStub(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+        stubGetComplianceDataFromStub(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
-        result shouldBe Right(sampleComplianceData)
+        result shouldBe Right(sampleCompliancePayload)
       }
     }
 
     "return a Left response" when {
       "the call returns a OK response however the body is not parsable as a model" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(Json.obj("invalid" -> "json")))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(Json.obj("invalid" -> "json")))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataMalformed)
       }
 
       "the call returns a Not Found status" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(NOT_FOUND, Json.toJson(Json.obj()))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(NOT_FOUND, Json.toJson(Json.obj()))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataNoData)
       }
 
       "the call returns an unmatched response" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(SERVICE_UNAVAILABLE, Json.toJson(Json.obj()))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(SERVICE_UNAVAILABLE, Json.toJson(Json.obj()))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataUnexpectedFailure(SERVICE_UNAVAILABLE))
       }
 
       "the call returns a UpstreamErrorResponse(4xx) exception" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(BAD_REQUEST, Json.toJson(Json.obj()))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(BAD_REQUEST, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(BAD_REQUEST))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -189,11 +190,11 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns a UpstreamErrorResponse(5xx) exception" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testToDate)(HeaderCarrier()))
+            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(INTERNAL_SERVER_ERROR))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true

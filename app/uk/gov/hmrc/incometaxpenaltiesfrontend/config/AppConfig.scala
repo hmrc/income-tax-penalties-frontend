@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.Configuration
-import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, StubIncomeTaxSessionData, UseStubForBackend}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -76,9 +76,4 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
     if(isAgent) "/report-quarterly/income-and-expenses/view/agents/what-your-client-owes"
     else "/report-quarterly/income-and-expenses/view/what-you-owe"
   }
-
-  def incomeTaxSessionDataBaseUrl: String =
-    if (isEnabled(StubIncomeTaxSessionData)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
-    else servicesConfig.baseUrl("income-tax-session-data")
-
 }

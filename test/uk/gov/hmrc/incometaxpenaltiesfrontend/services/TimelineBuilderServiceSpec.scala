@@ -17,11 +17,11 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import fixtures.ComplianceDataTestData
+import fixtures.messages.ComplianceTimelineMessages
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.test.FakeRequest
+import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 
@@ -29,36 +29,98 @@ import java.time.LocalDate
 
 class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with GuiceOneAppPerSuite with DateFormatter {
 
-object FakeTimeMachine extends TimeMachine {
-  override def getCurrentDate: LocalDate = LocalDate.parse("2023-04-13")
-}
-    val service: TimelineBuilderService = new TimelineBuilderService(FakeTimeMachine)
-    lazy val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
-
-  "buildTimeline" should {
-    "return a sequence of timeline events " when {
-      "there is one open event" in {
-        val result = service.buildTimeline(sampleCompliancePayload)(messages)
-        val testDate = dateToString(LocalDate.of(1920, 2, 29))(messages)
-        val expected = Seq(TimelineEvent(s"Quarter: $testDate to $testDate", s"Due on $testDate. Send this missing submission now.", Some("Late")))
-        result shouldBe expected
-      }
-
-      "there are two open events" in {
-        val result = service.buildTimeline(sampleCompliancePayloadTwoEvents)(messages)
-        val testDate = dateToString(LocalDate.of(1920, 2, 29))(messages)
-        val testDateTwo = dateToString(LocalDate.of(1921, 2, 20))(messages)
-        val expected = Seq(TimelineEvent(s"Quarter: $testDate to $testDate", s"Due on $testDate. Send this missing submission now.", Some("Late")),
-          TimelineEvent(s"Quarter: $testDateTwo to $testDateTwo", s"Due on $testDateTwo. Send this missing submission now.", Some("Late")))
-        result shouldBe expected
-      }
+  class Setup(runDate: LocalDate = LocalDate.of(2023,4,13)) {
+    object FakeTimeMachine extends TimeMachine {
+      override def getCurrentDate: LocalDate = runDate
     }
+    val service: TimelineBuilderService = new TimelineBuilderService(FakeTimeMachine)
+  }
 
-    "return an empty sequence" when {
-      "there are no open events" in {
-        val result = service.buildTimeline(compliancePayloadObligationsFulfilled)(messages)
-        val expected = Seq()
-        result shouldBe expected
+  Seq(ComplianceTimelineMessages.English, ComplianceTimelineMessages.Welsh).foreach { messagesForLang =>
+
+    s"rendering in language of '${messagesForLang.lang.name}'" when {
+
+      implicit lazy val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(Seq(Lang(messagesForLang.lang.code)))
+
+      "buildTimeline" should {
+        "return a sequence of timeline events " when {
+          "there is one open event (late)" in new Setup() {
+            val result = service.buildTimeline(Some(sampleCompliancePayload))
+            val expected = Seq(
+              TimelineEvent(
+                headerContent = messagesForLang.taxReturn(LocalDate.of(2021, 4, 6), LocalDate.of(2022, 4, 5)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2023, 1, 31), isLate = true),
+                tagContent = Some(messagesForLang.late),
+              )
+            )
+            result shouldBe expected
+          }
+
+          "there are two open events (both late)" in new Setup() {
+            val result = service.buildTimeline(Some(sampleCompliancePayloadTwoOpen))
+            val expected = Seq(
+              TimelineEvent(
+                headerContent = messagesForLang.taxReturn(LocalDate.of(2021, 4, 6), LocalDate.of(2022, 4, 5)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2023, 1, 31), isLate = true),
+                tagContent = Some(messagesForLang.late),
+              ),
+              TimelineEvent(
+                headerContent = messagesForLang.quarter(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2022, 10, 31), isLate = true),
+                tagContent = Some(messagesForLang.late)
+              )
+            )
+            result shouldBe expected
+          }
+
+          "there are two open events (one late)" in new Setup(LocalDate.of(2022,11,1)) {
+            val result = service.buildTimeline(Some(sampleCompliancePayloadTwoOpen))
+            val expected = Seq(
+              TimelineEvent(
+                headerContent = messagesForLang.taxReturn(LocalDate.of(2021, 4, 6), LocalDate.of(2022, 4, 5)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2023, 1, 31), isLate = false),
+                tagContent = None
+              ),
+              TimelineEvent(
+                headerContent = messagesForLang.quarter(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2022, 10, 31), isLate = true),
+                tagContent = Some(messagesForLang.late)
+              )
+            )
+            result shouldBe expected
+          }
+
+          "there are two open events (neither late)" in new Setup(LocalDate.of(2022,10,31)) {
+            val result = service.buildTimeline(Some(sampleCompliancePayloadTwoOpen))
+            val expected = Seq(
+              TimelineEvent(
+                headerContent = messagesForLang.taxReturn(LocalDate.of(2021, 4, 6), LocalDate.of(2022, 4, 5)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2023, 1, 31), isLate = false),
+                tagContent = None
+              ),
+              TimelineEvent(
+                headerContent = messagesForLang.quarter(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
+                spanContent = messagesForLang.dueDate(LocalDate.of(2022, 10, 31), isLate = false),
+                tagContent = None
+              )
+            )
+            result shouldBe expected
+          }
+        }
+
+        "return an empty sequence" when {
+          "there are no open events" in new Setup() {
+            val result = service.buildTimeline(Some(compliancePayloadObligationsFulfilled))
+            val expected = Seq()
+            result shouldBe expected
+          }
+
+          "there is no Compliance Obligation data to render" in new Setup() {
+            val result = service.buildTimeline(None)
+            val expected = Seq()
+            result shouldBe expected
+          }
+        }
       }
     }
   }

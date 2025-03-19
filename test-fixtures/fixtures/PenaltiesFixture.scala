@@ -17,7 +17,6 @@
 package fixtures
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail, ObligationIdentification}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
@@ -25,65 +24,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisati
 import java.time.LocalDate
 
 trait PenaltiesFixture {
-  val sampleComplianceData: ComplianceData = ComplianceData(
-    identification = Some(ObligationIdentification(
-      incomeSourceType = None,
-      referenceNumber = "1234567890",
-      referenceType = "MTDITID"
-    )),
-    obligationDetails = Seq(
-      ObligationDetail(
-        status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
-        periodKey = "#001"
-      ),
-      ObligationDetail(
-        status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(2023, 2, 28)),
-        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
-        periodKey = "#001"
-      )
-    )
-  )
-
-  val sampleComplianceDataTwoOpen: ComplianceData = ComplianceData(
-    identification = Some(ObligationIdentification(
-      incomeSourceType = None,
-      referenceNumber = "1234567890",
-      referenceType = "MTDITID"
-    )),
-    obligationDetails = Seq(
-      ObligationDetail(
-        status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
-        periodKey = "#001"
-      ),
-      ObligationDetail(
-        status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(2023, 5, 28),
-        inboundCorrespondenceToDate = LocalDate.of(2023, 5, 28),
-        inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(2023, 5, 28),
-        periodKey = "#002"
-      ),
-      ObligationDetail(
-        status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceToDate = LocalDate.of(2023, 2, 28),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(2023, 2, 28)),
-        inboundCorrespondenceDueDate = LocalDate.of(2023, 2, 28),
-        periodKey = "#001"
-      )
-    )
-  )
 
   val principleChargeBillingStartDate: LocalDate = LocalDate.of(2021, 5, 1) //2021-05-01 All other dates based off this date
   val principleChargeBillingEndDate: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-06-01
@@ -193,8 +133,8 @@ trait PenaltiesFixture {
 
   val testMtdItId: String = "1234567890"
   val testArn: String = "XARN1234567890"
-  val testFromDate: LocalDate = LocalDate.of(2022, 12, 1)
-  val testToDate: LocalDate = LocalDate.of(2024, 12, 1)
+  val testPoCAchievementDate: LocalDate = LocalDate.of(2024, 12, 1)
+  val testFromDate: LocalDate = testPoCAchievementDate.minusYears(2)
 
   val sampleDate1: LocalDate = LocalDate.of(2021, 1, 1)
   val sampleDate2: LocalDate = LocalDate.of(2021, 2, 1)
@@ -360,24 +300,6 @@ trait PenaltiesFixture {
     ),
     latePaymentPenalty = None,
     breathingSpace = None
-  )
-
-  val compliancePayload = ComplianceData(
-    identification = Some(ObligationIdentification(
-      incomeSourceType = None,
-      referenceNumber = "1234567890",
-      referenceType = "MTDITID"
-    )),
-    obligationDetails = Seq(
-      ObligationDetail(
-        status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(2021, 12, 1),
-        inboundCorrespondenceToDate = LocalDate.of(2021, 12, 31),
-        inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(2022, 2, 7),
-        periodKey = "#001"
-      )
-    )
   )
 
   val getPenaltyDetailsPayloadWithRemovedPoints = PenaltyDetails(
