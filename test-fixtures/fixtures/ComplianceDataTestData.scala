@@ -31,24 +31,24 @@ trait ComplianceDataTestData {
     obligationDetails = Seq(
       ObligationDetail(
         status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceFromDate = LocalDate.of(2021, 4, 6),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 4, 5),
         inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
-        periodKey = "#001"
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 1, 31),
+        periodKey = "22P0"
       ),
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(1920, 2, 29)),
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
-        periodKey = "#001"
+        inboundCorrespondenceFromDate = LocalDate.of(2022, 4, 6),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 6, 30),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(2022, 7, 1)),
+        inboundCorrespondenceDueDate = LocalDate.of(2022, 7, 31),
+        periodKey = "23P1"
       )
     )
   )
 
-  val sampleCompliancePayloadTwoEvents: ComplianceData = ComplianceData(
+  val sampleCompliancePayloadTwoOpen: ComplianceData = ComplianceData(
     identification = Some(ObligationIdentification(
       incomeSourceType = None,
       referenceNumber = "1234567890",
@@ -57,27 +57,27 @@ trait ComplianceDataTestData {
     obligationDetails = Seq(
       ObligationDetail(
         status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
+        inboundCorrespondenceFromDate = LocalDate.of(2021, 4, 6),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 4, 5),
         inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
-        periodKey = "#001"
-      ),
-      ObligationDetail(
-        status = ComplianceStatusEnum.Open,
-        inboundCorrespondenceFromDate = LocalDate.of(1921, 2, 20),
-        inboundCorrespondenceToDate = LocalDate.of(1921, 2, 20),
-        inboundCorrespondenceDateReceived = None,
-        inboundCorrespondenceDueDate = LocalDate.of(1921, 2, 20),
-        periodKey = "#002"
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 1, 31),
+        periodKey = "22P0"
       ),
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(1920, 2, 29)),
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
-        periodKey = "#001"
+        inboundCorrespondenceFromDate = LocalDate.of(2022, 4, 6),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 6, 30),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(2022, 7, 1)),
+        inboundCorrespondenceDueDate = LocalDate.of(2022, 7, 31),
+        periodKey = "23P1"
+      ),
+      ObligationDetail(
+        status = ComplianceStatusEnum.Open,
+        inboundCorrespondenceFromDate = LocalDate.of(2022, 7, 1),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 9, 30),
+        inboundCorrespondenceDateReceived = None,
+        inboundCorrespondenceDueDate = LocalDate.of(2022, 10, 31),
+        periodKey = "23P2"
       )
     )
   )
@@ -86,20 +86,20 @@ trait ComplianceDataTestData {
     obligationDetails = Seq(
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(1920, 2, 29)),
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
-        periodKey = "#001"
+        inboundCorrespondenceFromDate = LocalDate.of(2021, 4, 6),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 4, 5),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(2023, 1, 30)),
+        inboundCorrespondenceDueDate = LocalDate.of(2023, 1, 31),
+        periodKey = "22P0"
       ),
       ObligationDetail(
         status = ComplianceStatusEnum.Fulfilled,
-        inboundCorrespondenceFromDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceToDate = LocalDate.of(1920, 2, 29),
-        inboundCorrespondenceDateReceived = Some(LocalDate.of(1920, 2, 29)),
-        inboundCorrespondenceDueDate = LocalDate.of(1920, 2, 29),
-        periodKey = "#001"
-      ),
+        inboundCorrespondenceFromDate = LocalDate.of(2022, 4, 6),
+        inboundCorrespondenceToDate = LocalDate.of(2022, 6, 30),
+        inboundCorrespondenceDateReceived = Some(LocalDate.of(2022, 7, 1)),
+        inboundCorrespondenceDueDate = LocalDate.of(2022, 7, 31),
+        periodKey = "23P1"
+      )
     )
   )
 }

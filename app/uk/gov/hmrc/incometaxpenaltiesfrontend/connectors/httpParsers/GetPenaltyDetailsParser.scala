@@ -57,7 +57,7 @@ object GetPenaltyDetailsParser {
             case JsError(errors) =>
               logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $errors")
               logger.error("[GetPenaltyDetailsResponseReads][read]: Failed to parse to model")
-              PagerDutyHelper.log("PenaltiesConnectorParser: GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
+              PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
               Left(GetPenaltyDetailsMalformed)
           }
 
@@ -67,12 +67,12 @@ object GetPenaltyDetailsParser {
 
         case BAD_REQUEST =>
           logger.error(s"[GetPenaltyDetailsResponseReads][read]: Bad request returned with reason: ${response.body}")
-          PagerDutyHelper.log("PenaltiesConnectorParser: GetPenaltyDetailsResponseReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
+          PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
           Left(GetPenaltyDetailsBadRequest)
 
         case status =>
           logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned with reason: ${response.body}")
-          PagerDutyHelper.logStatusCode("PenaltiesConnectorParser: GetPenaltyDetailsResponseReads", status)(
+          PagerDutyHelper.logStatusCode("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", status)(
             RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
           Left(GetPenaltyDetailsUnexpectedFailure(status))
       }

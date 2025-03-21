@@ -22,12 +22,10 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,48 +38,35 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
 
   class Setup {
     val service: ComplianceService = new ComplianceService(mockPenaltiesConnector)
-
     reset(mockPenaltiesConnector)
   }
 
   "getDESComplianceData" should {
-    s"return a successful response and pass the result back to the controller (date provided as parameter)" in new Setup {
+    s"return a successful response and pass the result back to the controller" in new Setup {
+
       when(mockPenaltiesConnector.getComplianceData(any(),
         ArgumentMatchers.eq(LocalDate.of(2020, 1, 1)),
         ArgumentMatchers.eq(LocalDate.of(2022, 1, 1)))(any())).thenReturn(Future.successful(Right(sampleCompliancePayload)))
 
-      val result: Option[ComplianceData] = await(service.getDESComplianceData(mtdItId, Some(LocalDate.of(2022, 1, 1)))(HeaderCarrier(), FakeRequest()))
+      val result: Option[ComplianceData] = await(service.getDESComplianceData(
+        mtdItId = mtdItId,
+        startDate = LocalDate.of(2020, 1, 1),
+        endDate = LocalDate.of(2022, 1, 1)
+      )(HeaderCarrier()))
 
       result.isDefined shouldBe true
       result.get shouldBe sampleCompliancePayload
-    }
-
-    s"return a successful response and pass the result back to the controller (date in session)" in new Setup {
-      when(mockPenaltiesConnector.getComplianceData(any(),
-        ArgumentMatchers.eq(LocalDate.of(2020, 1, 1)),
-        ArgumentMatchers.eq(LocalDate.of(2022, 1, 1)))(any())).thenReturn(Future.successful(Right(sampleCompliancePayload)))
-
-      val result: Option[ComplianceData] = await(service.getDESComplianceData(mtdItId)(HeaderCarrier(),FakeRequest().withSession(
-        IncomeTaxSessionKeys.pocAchievementDate -> "2022-01-01"
-      )))
-
-      result.isDefined shouldBe true
-      result.get shouldBe sampleCompliancePayload
-    }
-
-    "return None when the session keys are not present" in new Setup {
-      val result: Option[ComplianceData] = await(service.getDESComplianceData(mtdItId)(HeaderCarrier(),FakeRequest()))
-
-      result shouldBe None
     }
 
     s"return an exception and pass the result back to the controller" in new Setup {
       when(mockPenaltiesConnector.getComplianceData(any(), any(), any())(any()))
         .thenReturn(Future.failed(UpstreamErrorResponse.apply("Upstream error", INTERNAL_SERVER_ERROR)))
 
-      val result: Exception = intercept[Exception](await(service.getDESComplianceData(mtdItId)(HeaderCarrier(), FakeRequest().withSession(
-        IncomeTaxSessionKeys.pocAchievementDate -> "2022-01-01"
-      ))))
+      val result: Exception = intercept[Exception](await(service.getDESComplianceData(
+        mtdItId = mtdItId,
+        startDate = LocalDate.of(2020, 1, 1),
+        endDate = LocalDate.of(2022, 1, 1)
+      )(HeaderCarrier())))
 
       result.getMessage shouldBe "Upstream error"
     }

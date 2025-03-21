@@ -85,8 +85,8 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
       )
       .addingToSession(
         Seq(
-          Option.when(optPOCAchievementDate.isDefined)(IncomeTaxSessionKeys.pocAchievementDate -> optPOCAchievementDate.get),
-          Option.when(optRegimeThreshold.isDefined)(IncomeTaxSessionKeys.regimeThreshold -> optRegimeThreshold.get)
+          optPOCAchievementDate.map(IncomeTaxSessionKeys.pocAchievementDate -> _),
+          optRegimeThreshold.map(IncomeTaxSessionKeys.regimeThreshold -> _)
         ).flatten:_*
       )
   }

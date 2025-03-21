@@ -20,9 +20,8 @@ import play.api.mvc.Request
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys.POC_ACHIEVEMENT_DATE_NOT_FOUND
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{IncomeTaxSessionKeys, PagerDutyHelper}
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -30,34 +29,30 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: ExecutionContext) {
 
-  def getDESComplianceData(mtdItId: String,
-                           pocAchievementDate: Option[LocalDate] = None
-                          )(implicit hc: HeaderCarrier,
-                            request: Request[_]): Future[Option[ComplianceData]] = {
-    val pocAchievementDateFromSession: Option[LocalDate] = request.session.get(IncomeTaxSessionKeys.pocAchievementDate).map(LocalDate.parse(_))
-    pocAchievementDate.orElse(pocAchievementDateFromSession) match {
-      case Some(pocAchievementDate) => {
-        val fromDate = pocAchievementDate.minusYears(2)
-        connector.getComplianceData(mtdItId, fromDate, pocAchievementDate).map {
-          _.fold(
-            failure => {
-              logger.error(s"[ComplianceService][getDESComplianceData] - Connector failure: ${failure.message}")
-              logger.error("[ComplianceService][getDESComplianceData] - Failed to retrieve obligation data, returning None back to controller (renders ISE)")
-              None
-            },
-            obligationData => {
-              logger.debug(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data,  obligation data = $obligationData")
-              logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")
-              Some(obligationData)
-            }
-          )
-        }
-      }
-      case _ => {
-        logger.error(s"[ComplianceService][getDESComplianceData] - POC Achievement date was not present in session")
-        PagerDutyHelper.log("ComplianceService: getDESComplianceData", POC_ACHIEVEMENT_DATE_NOT_FOUND)
-        Future.successful(None)
-      }
+  def calculateComplianceWindow()(implicit request: Request[_]): Option[(LocalDate, LocalDate)] =
+    request.session.get(IncomeTaxSessionKeys.pocAchievementDate).map(LocalDate.parse) match {
+      case Some(pocDate) if pocDate.getYear == 9999 =>
+        logger.info("[ComplianceService][calculateComplianceWindow] - User does not have a compliance window, PoC year was 9999")
+        None
+      case Some(pocDate) =>
+        Some(pocDate.minusYears(2) -> pocDate)
+      case None =>
+        logger.info("[ComplianceService][calculateComplianceWindow] - User does not have a PoC Achievement Date in session")
+        None
     }
-  }
+
+  def getDESComplianceData(mtdItId: String,
+                           startDate: LocalDate,
+                           endDate: LocalDate)(implicit hc: HeaderCarrier): Future[Option[ComplianceData]] =
+    connector.getComplianceData(mtdItId, startDate, endDate).map {
+      case Right(obligationData) =>
+        logger.debug(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data,  obligation data = $obligationData")
+        logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")
+        Some(obligationData)
+      case Left(failure) =>
+        logger.error(s"[ComplianceService][getDESComplianceData] - Connector failure: ${failure.message}")
+        logger.error("[ComplianceService][getDESComplianceData] - Failed to retrieve obligation data, returning None back to controller (renders ISE)")
+        None
+    }
+
 }

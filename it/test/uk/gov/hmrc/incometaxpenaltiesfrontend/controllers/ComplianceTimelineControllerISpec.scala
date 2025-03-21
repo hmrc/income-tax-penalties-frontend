@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-import fixtures.PenaltiesFixture
+import fixtures.{ComplianceDataTestData, PenaltiesFixture}
 import org.jsoup.Jsoup
 import play.api.libs.json.Json
 import play.api.test.Helpers._
@@ -26,28 +26,18 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, ComplianceStub}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
 
 class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub
-  with PenaltiesFixture with ComplianceStub with FeatureSwitching with NavBarTesterHelper {
+  with PenaltiesFixture with ComplianceStub with FeatureSwitching with NavBarTesterHelper with ComplianceDataTestData {
 
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   val serviceName = "Manage your Self Assessment"
   val moreInformationLink = "More information about how HMRC removes penalty points (opens in new tab)"
   val returnToSALink = "Return to Self Assessment penalties and appeals (opens in new tab)"
-  val pointsToBeRemoved = "Points to be removed: March 2029"
-  val quarter1 = "Quarter: 28 February 2023 to 28 February 2023"
-  val quarter2 = "Quarter: 28 May 2023 to 28 May 2023"
-  val quarter3 = "Quarter: 6 January 2028 to 5 April 2028"
-  val quarter4 = "Quarter: 6 April 2028 to 5 July 2028"
-  val quarter5 = "Quarter: 6 July 2028 to 5 October 2028"
-  val taxReturn = "Tax return: 2027 to 2028"
-  val quarter6 = "Quarter: 6 October 2028 to 5 January 2029"
-  val timeline1 =  "Late Due on 28 February 2023. Send this missing submission now."
-  val timeline2 =  "Late Due on 28 May 2023. Send this missing submission now."
-  val timeline3 =  "Send by 5 May 2028"
-  val timeline4 =  "Send by 5 August 2028"
-  val timeline5 =  "Send by 5 November 2028"
-  val timeline6 =  "Send by 31 January 2029"
-  val timeline7 =  "Send by 5 February 2029"
+  val pointsToBeRemoved = s"Points to be removed: December 2024"
+  val taxYear1 = "Tax return: 6 April 2021 to 5 April 2022"
+  val quarter1 = "Quarter: 1 July 2022 to 30 September 2022"
+  val timeline1 =  "Late Due on 31 January 2023. Send this missing submission now."
+  val timeline2 =  "Late Due on 31 October 2022. Send this missing submission now."
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -57,14 +47,14 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
   "GET /compliance-timeline" should {
 
     testNavBar("/compliance-timeline") {
-      stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+      stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
     }
 
     "return an OK with an individual view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
         stubAuth(OK, successfulIndividualAuthResponse)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
         lazy val result = get("/compliance-timeline")
         result.status shouldBe OK
@@ -80,14 +70,14 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
-        document.getH2Elements.get(0).text() shouldBe quarter1
+        document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
       }
 
       "the page has the correct elements for two entries in the compliance timeline " in {
         stubAuth(OK, successfulIndividualAuthResponse)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceDataTwoOpen))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
         lazy val result = get("/compliance-timeline")
         result.status shouldBe OK
@@ -103,8 +93,8 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
-        document.getH2Elements.get(0).text() shouldBe quarter1
-        document.getH2Elements.get(1).text() shouldBe quarter2
+        document.getH2Elements.get(0).text() shouldBe taxYear1
+        document.getH2Elements.get(1).text() shouldBe quarter1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
         document.getElementsByClass("hmrc-timeline__event-content").get(1).text() shouldBe timeline2
       }
@@ -116,7 +106,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
 
         stubAuth(OK, successfulAgentAuthResponse)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceData))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
         lazy val result = get("/compliance-timeline", isAgent = true)
         result.status shouldBe OK
@@ -132,7 +122,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getElementById("missedDeadlinePara").text() shouldBe "If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
-        document.getH2Elements.get(0).text() shouldBe quarter1
+        document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
       }
 
@@ -140,7 +130,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
 
         stubAuth(OK, successfulAgentAuthResponse)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testToDate)(OK, Json.toJson(sampleComplianceDataTwoOpen))
+        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
         lazy val result = get("/compliance-timeline", isAgent = true)
         result.status shouldBe OK
@@ -156,8 +146,8 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
         document.getElementById("missedDeadlinePara").text() shouldBe "If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
-        document.getH2Elements.get(0).text() shouldBe quarter1
-        document.getH2Elements.get(1).text() shouldBe quarter2
+        document.getH2Elements.get(0).text() shouldBe taxYear1
+        document.getH2Elements.get(1).text() shouldBe quarter1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
         document.getElementsByClass("hmrc-timeline__event-content").get(1).text() shouldBe timeline2
       }

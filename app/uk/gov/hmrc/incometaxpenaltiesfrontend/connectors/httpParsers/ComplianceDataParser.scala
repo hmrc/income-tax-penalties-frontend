@@ -51,7 +51,7 @@ object ComplianceDataParser {
               Right(compliancePayload)
 
             case JsError(errors) =>
-              PagerDutyHelper.log("ComplianceDataReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
+              PagerDutyHelper.log("ComplianceDataReads", "read", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
               logger.debug(s"[ComplianceDataReads][read]: Failed to parse to model - failures: $errors")
               logger.error("[ComplianceDataReads][read]: Failed to parse to model")
 
@@ -64,12 +64,12 @@ object ComplianceDataParser {
           Left(ComplianceDataNoData)
 
         case BAD_REQUEST =>
-          PagerDutyHelper.log("ComplianceDataReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
+          PagerDutyHelper.log("ComplianceDataReads", "read", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
           logger.error(s"[ComplianceDataReads][read] - Failed to parse to model with response body: ${response.body} (Status: $BAD_REQUEST)")
           Left(ComplianceDataUnexpectedFailure(BAD_REQUEST))
 
         case status =>
-          PagerDutyHelper.logStatusCode("ComplianceDataReads", status)(RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
+          PagerDutyHelper.logStatusCode("ComplianceDataReads", "read", status)(RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
           logger.error(s"[ComplianceDataReads][read] Received unexpected response when calling backend for API 1330 data," +
             s" status code: $status and body: ${response.body}")
           Left(ComplianceDataUnexpectedFailure(status))
