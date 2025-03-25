@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Json, OFormat, Writes}
 
 import java.time.LocalDate
 
@@ -28,5 +28,16 @@ case class ObligationDetail(status: ComplianceStatusEnum.Value,
                             periodKey: String)
 
 object ObligationDetail {
+
   implicit val format: OFormat[ObligationDetail] = Json.format[ObligationDetail]
+
+  val auditWrites: Writes[ObligationDetail] = Writes { model =>
+    Json.obj(
+      "status" -> Json.toJson(model.status)(ComplianceStatusEnum.auditWrites),
+      "inboundCorrespondenceFromDate" -> model.inboundCorrespondenceFromDate,
+      "inboundCorrespondenceToDate" -> model.inboundCorrespondenceToDate,
+      "inboundCorrespondenceDueDate" -> model.inboundCorrespondenceDueDate,
+      "periodKey" -> model.periodKey
+    ) ++ model.inboundCorrespondenceDateReceived.fold(Json.obj())(date => Json.obj("inboundCorrespondenceDateReceived" -> date))
+  }
 }
