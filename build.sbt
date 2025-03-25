@@ -2,7 +2,7 @@ import sbt.Test
 import uk.gov.hmrc.DefaultBuildSettings
 
 ThisBuild / majorVersion := 1
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.13.16"
 
 lazy val microservice = Project("income-tax-penalties-frontend", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
