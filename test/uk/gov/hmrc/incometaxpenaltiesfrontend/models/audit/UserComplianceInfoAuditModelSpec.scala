@@ -54,18 +54,18 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
           "complianceData" -> Json.arr(
             Json.obj(
               "status" -> "Open",
-              "inboundCorrespondenceFromDate" -> "1920-02-29",
-              "inboundCorrespondenceToDate" -> "1920-02-29",
-              "inboundCorrespondenceDueDate" -> "1920-02-29",
-              "periodKey" -> "#001"
+              "inboundCorrespondenceFromDate" -> "2021-04-06",
+              "inboundCorrespondenceToDate" -> "2022-04-05",
+              "inboundCorrespondenceDueDate" -> "2023-01-31",
+              "periodKey" -> "22P0"
             ),
             Json.obj(
               "status" -> "Fulfilled",
-              "inboundCorrespondenceFromDate" -> "1920-02-29",
-              "inboundCorrespondenceToDate" -> "1920-02-29",
-              "inboundCorrespondenceDueDate" -> "1920-02-29",
-              "inboundCorrespondenceDateReceived" -> "1920-02-29",
-              "periodKey" -> "#001"
+              "inboundCorrespondenceFromDate" -> "2022-04-06",
+              "inboundCorrespondenceToDate" -> "2022-06-30",
+              "inboundCorrespondenceDueDate" -> "2022-07-31",
+              "inboundCorrespondenceDateReceived" -> "2022-07-01",
+              "periodKey" -> "23P1"
             )
           )
         )
@@ -97,18 +97,18 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
           "complianceData" -> Json.arr(
             Json.obj(
               "status" -> "Open",
-              "inboundCorrespondenceFromDate" -> "1920-02-29",
-              "inboundCorrespondenceToDate" -> "1920-02-29",
-              "inboundCorrespondenceDueDate" -> "1920-02-29",
-              "periodKey" -> "#001"
+              "inboundCorrespondenceFromDate" -> "2021-04-06",
+              "inboundCorrespondenceToDate" -> "2022-04-05",
+              "inboundCorrespondenceDueDate" -> "2023-01-31",
+              "periodKey" -> "22P0"
             ),
             Json.obj(
               "status" -> "Fulfilled",
-              "inboundCorrespondenceFromDate" -> "1920-02-29",
-              "inboundCorrespondenceToDate" -> "1920-02-29",
-              "inboundCorrespondenceDueDate" -> "1920-02-29",
-              "inboundCorrespondenceDateReceived" -> "1920-02-29",
-              "periodKey" -> "#001"
+              "inboundCorrespondenceFromDate" -> "2022-04-06",
+              "inboundCorrespondenceToDate" -> "2022-06-30",
+              "inboundCorrespondenceDueDate" -> "2022-07-31",
+              "inboundCorrespondenceDateReceived" -> "2022-07-01",
+              "periodKey" -> "23P1"
             )
           )
         )
