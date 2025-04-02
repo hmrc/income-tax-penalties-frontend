@@ -23,16 +23,16 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyStatusEnum
 
 class LSPPenaltyStatusEnumSpec extends AnyWordSpec with Matchers{
 
-  "LSPPenaltyCategoryEnum" should {
+  "LSPPenaltyStatusEnum" should {
 
     "deserialise from JSON" in {
-      JsString("P").as[LSPPenaltyCategoryEnum.Value] shouldBe LSPPenaltyCategoryEnum.Point
-      JsString("T").as[LSPPenaltyCategoryEnum.Value] shouldBe LSPPenaltyCategoryEnum.Threshold
+      JsString("ACTIVE").as[LSPPenaltyStatusEnum.Value] shouldBe LSPPenaltyStatusEnum.Active
+      JsString("INACTIVE").as[LSPPenaltyStatusEnum.Value] shouldBe LSPPenaltyStatusEnum.Inactive
     }
 
     "serialise to JSON" in {
-      Json.toJson(LSPPenaltyCategoryEnum.Point) shouldBe JsString("P")
-      Json.toJson(LSPPenaltyCategoryEnum.Threshold) shouldBe JsString("T")
+      Json.toJson(LSPPenaltyStatusEnum.Active) shouldBe JsString("ACTIVE")
+      Json.toJson(LSPPenaltyStatusEnum.Inactive) shouldBe JsString("INACTIVE")
     }
 
     "Unknown category should return jsError" in {

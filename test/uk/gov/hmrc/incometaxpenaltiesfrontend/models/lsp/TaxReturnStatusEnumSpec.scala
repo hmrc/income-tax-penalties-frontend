@@ -40,9 +40,6 @@ class TaxReturnStatusEnumSpec extends AnyWordSpec with Matchers{
     "Unknown category should return jsError" in {
       JsString("INVALID").validate[LPPPenaltyStatusEnum.Value].isError shouldBe true
     }
-
   }
-
-
 
 }
