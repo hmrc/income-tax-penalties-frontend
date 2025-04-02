@@ -83,5 +83,4 @@ class AuthActionSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPe
       redirectLocation(result) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in")
     }
   }
-
 }
