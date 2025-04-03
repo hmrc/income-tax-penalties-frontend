@@ -24,7 +24,7 @@ class LSPTypeEnumSpec extends AnyWordSpec with Matchers{
 
   "LSPTypeEnum" should {
 
-    "deserialise from JSON" in {
+    "deserialize from JSON" in {
       JsString("AF").as[LSPTypeEnum.Value] shouldBe LSPTypeEnum.AddedFAP
       JsString("RF").as[LSPTypeEnum.Value] shouldBe LSPTypeEnum.RemovedFAP
       JsString("AP").as[LSPTypeEnum.Value] shouldBe LSPTypeEnum.AppealedPoint
