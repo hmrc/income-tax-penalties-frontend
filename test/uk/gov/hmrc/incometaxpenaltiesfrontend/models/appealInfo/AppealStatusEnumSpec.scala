@@ -26,22 +26,22 @@ class AppealStatusEnumSpec extends AnyWordSpec with Matchers {
   "AppealStatusEnum" should  {
 
     "deserialise from JSON" in {
-      JsString("A").as[AppealStatusEnum.Value]     shouldBe AppealStatusEnum.Under_Appeal
-      JsString("B").as[AppealStatusEnum.Value]  shouldBe AppealStatusEnum.Upheld
+      JsString("A").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Under_Appeal
+      JsString("B").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Upheld
       JsString("C").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Rejected
       JsString("99").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Unappealable
     }
 
     "serialise to JSON" in {
-      Json.toJson(AppealStatusEnum.Under_Appeal)    shouldBe JsString("A")
-      Json.toJson(AppealStatusEnum.Upheld)    shouldBe JsString("B")
-      Json.toJson(AppealStatusEnum.Rejected)   shouldBe JsString("C")
-      Json.toJson(AppealStatusEnum.Unappealable)   shouldBe JsString("99")
+      Json.toJson(AppealStatusEnum.Under_Appeal) shouldBe JsString("A")
+      Json.toJson(AppealStatusEnum.Upheld) shouldBe JsString("B")
+      Json.toJson(AppealStatusEnum.Rejected) shouldBe JsString("C")
+      Json.toJson(AppealStatusEnum.Unappealable) shouldBe JsString("99")
 
     }
 
     "Unknown category should return jsError" in {
-      JsString("INVALID").validate[AppealStatusEnum.Value].isError  shouldBe true
+      JsString("INVALID").validate[AppealStatusEnum.Value].isError shouldBe true
     }
   }
 

@@ -19,26 +19,25 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsString, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum
 
 class AppealLevelEnumSpec extends AnyWordSpec with Matchers {
 
   "AppealLevelEnum" should  {
 
     "deserialise from JSON" in {
-      JsString("01").as[AppealLevelEnum.Value]     shouldBe AppealLevelEnum.FirstStageAppeal
-      JsString("02").as[AppealLevelEnum.Value]  shouldBe AppealLevelEnum.SecondStageAppeal
+      JsString("01").as[AppealLevelEnum.Value] shouldBe AppealLevelEnum.FirstStageAppeal
+      JsString("02").as[AppealLevelEnum.Value] shouldBe AppealLevelEnum.SecondStageAppeal
       JsString("03").as[AppealLevelEnum.Value] shouldBe AppealLevelEnum.Tribunal
     }
 
     "serialise to JSON" in {
-      Json.toJson(AppealLevelEnum.FirstStageAppeal)    shouldBe JsString("01")
-      Json.toJson(AppealLevelEnum.SecondStageAppeal)    shouldBe JsString("02")
-      Json.toJson(AppealLevelEnum.Tribunal)   shouldBe JsString("03")
+      Json.toJson(AppealLevelEnum.FirstStageAppeal) shouldBe JsString("01")
+      Json.toJson(AppealLevelEnum.SecondStageAppeal) shouldBe JsString("02")
+      Json.toJson(AppealLevelEnum.Tribunal) shouldBe JsString("03")
     }
 
     "Unknown category should return jsError" in {
-      JsString("INVALID").validate[AppealLevelEnum.Value].isError  shouldBe true
+      JsString("INVALID").validate[AppealLevelEnum.Value].isError shouldBe true
     }
   }
 

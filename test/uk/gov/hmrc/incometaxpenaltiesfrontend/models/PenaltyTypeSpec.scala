@@ -25,7 +25,7 @@ class PenaltyTypeSpec extends AnyWordSpec with Matchers {
   "PenaltyType" should {
 
     "serialise to JSON" in {
-      Json.toJson(PenaltyType.LSP)  shouldBe JsString("Late Submission Penalty")
+      Json.toJson(PenaltyType.LSP) shouldBe JsString("Late Submission Penalty")
       Json.toJson(PenaltyType.LPP1) shouldBe JsString("Late Payment Penalty 1")
       Json.toJson(PenaltyType.LPP2) shouldBe JsString("Late Payment Penalty 2")
     }

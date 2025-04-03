@@ -31,9 +31,9 @@ class LPPPenaltyCategoryEnumSpec extends AnyWordSpec with Matchers {
     }
 
     "serialise to JSON" in {
-      Json.toJson(LPPPenaltyCategoryEnum.LPP1)    shouldBe JsString("LPP1")
-      Json.toJson(LPPPenaltyCategoryEnum.LPP2)    shouldBe JsString("LPP2")
-      Json.toJson(LPPPenaltyCategoryEnum.MANUAL)   shouldBe JsString("MANUAL")
+      Json.toJson(LPPPenaltyCategoryEnum.LPP1) shouldBe JsString("LPP1")
+      Json.toJson(LPPPenaltyCategoryEnum.LPP2) shouldBe JsString("LPP2")
+      Json.toJson(LPPPenaltyCategoryEnum.MANUAL) shouldBe JsString("MANUAL")
     }
 
     "find Should return Some for LPP1 and LPP2 and None for Manual" in {
@@ -43,7 +43,7 @@ class LPPPenaltyCategoryEnumSpec extends AnyWordSpec with Matchers {
     }
 
     "Unknown category should return jsError" in {
-      JsString("INVALID").validate[LPPPenaltyCategoryEnum.Value].isError  shouldBe true
+      JsString("INVALID").validate[LPPPenaltyCategoryEnum.Value].isError shouldBe true
     }
   }
 

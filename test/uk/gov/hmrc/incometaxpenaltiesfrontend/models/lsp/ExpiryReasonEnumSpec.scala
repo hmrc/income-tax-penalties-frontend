@@ -37,18 +37,18 @@ class ExpiryReasonEnumSpec extends AnyWordSpec with Matchers{
     }
 
     "serialise to JSON" in {
-      Json.toJson(ExpiryReasonEnum.Appeal)    shouldBe JsString("APP")
-      Json.toJson(ExpiryReasonEnum.Adjustment)    shouldBe JsString("FAP")
-      Json.toJson(ExpiryReasonEnum.Reversal)    shouldBe JsString("ICR")
-      Json.toJson(ExpiryReasonEnum.Manual)    shouldBe JsString("MAN")
-      Json.toJson(ExpiryReasonEnum.NaturalExpiration)    shouldBe JsString("NAT")
-      Json.toJson(ExpiryReasonEnum.SubmissionOnTime)    shouldBe JsString("NLT")
-      Json.toJson(ExpiryReasonEnum.Compliance)    shouldBe JsString("POC")
-      Json.toJson(ExpiryReasonEnum.Reset)    shouldBe JsString("RES")
+      Json.toJson(ExpiryReasonEnum.Appeal) shouldBe JsString("APP")
+      Json.toJson(ExpiryReasonEnum.Adjustment) shouldBe JsString("FAP")
+      Json.toJson(ExpiryReasonEnum.Reversal) shouldBe JsString("ICR")
+      Json.toJson(ExpiryReasonEnum.Manual) shouldBe JsString("MAN")
+      Json.toJson(ExpiryReasonEnum.NaturalExpiration) shouldBe JsString("NAT")
+      Json.toJson(ExpiryReasonEnum.SubmissionOnTime) shouldBe JsString("NLT")
+      Json.toJson(ExpiryReasonEnum.Compliance) shouldBe JsString("POC")
+      Json.toJson(ExpiryReasonEnum.Reset) shouldBe JsString("RES")
     }
 
     "Unknown category should return jsError" in {
-      JsString("INVALID").validate[LPPPenaltyStatusEnum.Value].isError  shouldBe true
+      JsString("INVALID").validate[LPPPenaltyStatusEnum.Value].isError shouldBe true
     }
   }
 

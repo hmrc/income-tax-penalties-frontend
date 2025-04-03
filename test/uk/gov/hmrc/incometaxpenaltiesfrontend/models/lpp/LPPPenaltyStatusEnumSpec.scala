@@ -30,12 +30,12 @@ class LPPPenaltyStatusEnumSpec extends AnyWordSpec with Matchers {
     }
 
     "serialise to JSON" in {
-      Json.toJson(LPPPenaltyStatusEnum.Accruing)    shouldBe JsString("A")
-      Json.toJson(LPPPenaltyStatusEnum.Posted)    shouldBe JsString("P")
+      Json.toJson(LPPPenaltyStatusEnum.Accruing) shouldBe JsString("A")
+      Json.toJson(LPPPenaltyStatusEnum.Posted) shouldBe JsString("P")
     }
 
     "Unknown category should return jsError" in {
-      JsString("INVALID").validate[LPPPenaltyStatusEnum.Value].isError  shouldBe true
+      JsString("INVALID").validate[LPPPenaltyStatusEnum.Value].isError shouldBe true
     }
   }
 

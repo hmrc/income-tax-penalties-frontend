@@ -54,36 +54,36 @@ class MainTransactionEnumSpec extends AnyWordSpec with Matchers {
     }
 
     "serialise to JSON" in {
-      Json.toJson(MainTransactionEnum.VATReturnCharge)    shouldBe JsString("4700")
-      Json.toJson(MainTransactionEnum.VATReturnFirstLPP)    shouldBe JsString("4703")
-      Json.toJson(MainTransactionEnum.VATReturnSecondLPP)    shouldBe JsString("4704")
-      Json.toJson(MainTransactionEnum.CentralAssessment)    shouldBe JsString("4720")
-      Json.toJson(MainTransactionEnum.CentralAssessmentFirstLPP)    shouldBe JsString("4723")
-      Json.toJson(MainTransactionEnum.CentralAssessmentSecondLPP)    shouldBe JsString("4724")
-      Json.toJson(MainTransactionEnum.OfficersAssessment)    shouldBe JsString("4730")
-      Json.toJson(MainTransactionEnum.OfficersAssessmentFirstLPP)    shouldBe JsString("4741")
-      Json.toJson(MainTransactionEnum.OfficersAssessmentSecondLPP)    shouldBe JsString("4742")
-      Json.toJson(MainTransactionEnum.ErrorCorrection)    shouldBe JsString("4731")
-      Json.toJson(MainTransactionEnum.ErrorCorrectionFirstLPP)    shouldBe JsString("4743")
-      Json.toJson(MainTransactionEnum.ErrorCorrectionSecondLPP)    shouldBe JsString("4744")
-      Json.toJson(MainTransactionEnum.AdditionalAssessment)    shouldBe JsString("4732")
-      Json.toJson(MainTransactionEnum.AdditionalAssessmentFirstLPP)    shouldBe JsString("4758")
-      Json.toJson(MainTransactionEnum.AdditionalAssessmentSecondLPP)    shouldBe JsString("4759")
-      Json.toJson(MainTransactionEnum.ProtectiveAssessment)    shouldBe JsString("4733")
-      Json.toJson(MainTransactionEnum.ProtectiveAssessmentFirstLPP)    shouldBe JsString("4761")
-      Json.toJson(MainTransactionEnum.ProtectiveAssessmentSecondLPP)    shouldBe JsString("4762")
-      Json.toJson(MainTransactionEnum.VATOverpaymentForTax)    shouldBe JsString("4764")
-      Json.toJson(MainTransactionEnum.POAReturnCharge)    shouldBe JsString("4701")
-      Json.toJson(MainTransactionEnum.POAReturnChargeFirstLPP)    shouldBe JsString("4716")
-      Json.toJson(MainTransactionEnum.POAReturnChargeSecondLPP)    shouldBe JsString("4717")
-      Json.toJson(MainTransactionEnum.AAReturnCharge)    shouldBe JsString("4702")
-      Json.toJson(MainTransactionEnum.AAReturnChargeFirstLPP)    shouldBe JsString("4718")
-      Json.toJson(MainTransactionEnum.AAReturnChargeSecondLPP)    shouldBe JsString("4719")
-      Json.toJson(MainTransactionEnum.ManualCharge)    shouldBe JsString("4787")
+      Json.toJson(MainTransactionEnum.VATReturnCharge) shouldBe JsString("4700")
+      Json.toJson(MainTransactionEnum.VATReturnFirstLPP) shouldBe JsString("4703")
+      Json.toJson(MainTransactionEnum.VATReturnSecondLPP) shouldBe JsString("4704")
+      Json.toJson(MainTransactionEnum.CentralAssessment) shouldBe JsString("4720")
+      Json.toJson(MainTransactionEnum.CentralAssessmentFirstLPP) shouldBe JsString("4723")
+      Json.toJson(MainTransactionEnum.CentralAssessmentSecondLPP) shouldBe JsString("4724")
+      Json.toJson(MainTransactionEnum.OfficersAssessment) shouldBe JsString("4730")
+      Json.toJson(MainTransactionEnum.OfficersAssessmentFirstLPP) shouldBe JsString("4741")
+      Json.toJson(MainTransactionEnum.OfficersAssessmentSecondLPP) shouldBe JsString("4742")
+      Json.toJson(MainTransactionEnum.ErrorCorrection) shouldBe JsString("4731")
+      Json.toJson(MainTransactionEnum.ErrorCorrectionFirstLPP) shouldBe JsString("4743")
+      Json.toJson(MainTransactionEnum.ErrorCorrectionSecondLPP) shouldBe JsString("4744")
+      Json.toJson(MainTransactionEnum.AdditionalAssessment) shouldBe JsString("4732")
+      Json.toJson(MainTransactionEnum.AdditionalAssessmentFirstLPP) shouldBe JsString("4758")
+      Json.toJson(MainTransactionEnum.AdditionalAssessmentSecondLPP) shouldBe JsString("4759")
+      Json.toJson(MainTransactionEnum.ProtectiveAssessment) shouldBe JsString("4733")
+      Json.toJson(MainTransactionEnum.ProtectiveAssessmentFirstLPP) shouldBe JsString("4761")
+      Json.toJson(MainTransactionEnum.ProtectiveAssessmentSecondLPP) shouldBe JsString("4762")
+      Json.toJson(MainTransactionEnum.VATOverpaymentForTax) shouldBe JsString("4764")
+      Json.toJson(MainTransactionEnum.POAReturnCharge) shouldBe JsString("4701")
+      Json.toJson(MainTransactionEnum.POAReturnChargeFirstLPP) shouldBe JsString("4716")
+      Json.toJson(MainTransactionEnum.POAReturnChargeSecondLPP) shouldBe JsString("4717")
+      Json.toJson(MainTransactionEnum.AAReturnCharge) shouldBe JsString("4702")
+      Json.toJson(MainTransactionEnum.AAReturnChargeFirstLPP) shouldBe JsString("4718")
+      Json.toJson(MainTransactionEnum.AAReturnChargeSecondLPP) shouldBe JsString("4719")
+      Json.toJson(MainTransactionEnum.ManualCharge) shouldBe JsString("4787")
     }
 
     "Unknown category should return jsError" in {
-      JsString("INVALID").validate[MainTransactionEnum.Value].isError  shouldBe true
+      JsString("INVALID").validate[MainTransactionEnum.Value].isError shouldBe true
     }
   }
 
