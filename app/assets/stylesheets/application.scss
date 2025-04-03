@@ -12,3 +12,9 @@
 .not-bold {
   font-weight: normal;
 }
+
+@media screen and (max-width: 640px) {
+  .govuk-tabs__panel {
+    margin-top: 3em;
+  }
+}
