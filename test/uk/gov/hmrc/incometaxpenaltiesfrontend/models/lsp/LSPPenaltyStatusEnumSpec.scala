@@ -14,20 +14,31 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsString, Json}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyStatusEnum
 
-class PenaltyTypeSpec extends AnyWordSpec with Matchers {
+class LSPPenaltyStatusEnumSpec extends AnyWordSpec with Matchers{
 
-  "PenaltyType" should {
+  "LSPPenaltyStatusEnum" should {
+
+    "deserialise from JSON" in {
+      JsString("ACTIVE").as[LSPPenaltyStatusEnum.Value] shouldBe LSPPenaltyStatusEnum.Active
+      JsString("INACTIVE").as[LSPPenaltyStatusEnum.Value] shouldBe LSPPenaltyStatusEnum.Inactive
+    }
 
     "serialise to JSON" in {
-      Json.toJson(PenaltyType.LSP) shouldBe JsString("Late Submission Penalty")
-      Json.toJson(PenaltyType.LPP1) shouldBe JsString("Late Payment Penalty 1")
-      Json.toJson(PenaltyType.LPP2) shouldBe JsString("Late Payment Penalty 2")
+      Json.toJson(LSPPenaltyStatusEnum.Active) shouldBe JsString("ACTIVE")
+      Json.toJson(LSPPenaltyStatusEnum.Inactive) shouldBe JsString("INACTIVE")
     }
+
+    "Unknown category should return jsError" in {
+      JsString("INVALID").validate[LPPPenaltyStatusEnum.Value].isError shouldBe true
+    }
+
   }
+
 }

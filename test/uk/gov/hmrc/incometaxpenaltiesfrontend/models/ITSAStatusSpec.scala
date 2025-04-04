@@ -26,23 +26,23 @@ class ITSAStatusSpec extends AnyWordSpec with Matchers {
   "ITSAStatus" should  {
 
     "deserialise from JSON" in {
-      JsString("No Status").as[ITSAStatus]     shouldBe ITSAStatus.NoStatus
-      JsString("MTD Mandated").as[ITSAStatus]  shouldBe ITSAStatus.Mandated
+      JsString("No Status").as[ITSAStatus] shouldBe ITSAStatus.NoStatus
+      JsString("MTD Mandated").as[ITSAStatus] shouldBe ITSAStatus.Mandated
       JsString("MTD Voluntary").as[ITSAStatus] shouldBe ITSAStatus.Voluntary
-      JsString("Annual").as[ITSAStatus]        shouldBe ITSAStatus.Annual
-      JsString("Non Digital").as[ITSAStatus]   shouldBe ITSAStatus.NonDigital
-      JsString("Dormant").as[ITSAStatus]       shouldBe ITSAStatus.Dormant
-      JsString("MTD Exempt").as[ITSAStatus]    shouldBe ITSAStatus.Exempt
+      JsString("Annual").as[ITSAStatus] shouldBe ITSAStatus.Annual
+      JsString("Non Digital").as[ITSAStatus] shouldBe ITSAStatus.NonDigital
+      JsString("Dormant").as[ITSAStatus] shouldBe ITSAStatus.Dormant
+      JsString("MTD Exempt").as[ITSAStatus] shouldBe ITSAStatus.Exempt
     }
 
     "serialise to JSON" in {
-      Json.toJson(ITSAStatus.NoStatus)    shouldBe JsString("No Status")
-      Json.toJson(ITSAStatus.Mandated)    shouldBe JsString("MTD Mandated")
-      Json.toJson(ITSAStatus.Voluntary)   shouldBe JsString("MTD Voluntary")
-      Json.toJson(ITSAStatus.Annual)      shouldBe JsString("Annual")
-      Json.toJson(ITSAStatus.NonDigital)  shouldBe JsString("Non Digital")
-      Json.toJson(ITSAStatus.Dormant)     shouldBe JsString("Dormant")
-      Json.toJson(ITSAStatus.Exempt)      shouldBe JsString("MTD Exempt")
+      Json.toJson(ITSAStatus.NoStatus) shouldBe JsString("No Status")
+      Json.toJson(ITSAStatus.Mandated) shouldBe JsString("MTD Mandated")
+      Json.toJson(ITSAStatus.Voluntary) shouldBe JsString("MTD Voluntary")
+      Json.toJson(ITSAStatus.Annual) shouldBe JsString("Annual")
+      Json.toJson(ITSAStatus.NonDigital) shouldBe JsString("Non Digital")
+      Json.toJson(ITSAStatus.Dormant) shouldBe JsString("Dormant")
+      Json.toJson(ITSAStatus.Exempt) shouldBe JsString("MTD Exempt")
     }
   }
 }
