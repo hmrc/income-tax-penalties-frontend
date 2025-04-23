@@ -17,8 +17,3 @@ GET        /penalties/income-tax/test-only/add-to-session                       
 POST       /penalties/income-tax/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.submit()
 GET        /penalties/income-tax/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.show()
 
-#GET        /penalties/income-tax/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.getFeatureSwitches()
-#+ nocsrf
-#POST       /penalties/income-tax/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.updateFeatureSwitches()
-#
-
