@@ -61,6 +61,6 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
   def pointExpiryDate(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
       messages("lsp.expiry.key"),
-      Html(dateToMonthYearString(penalty.penaltyExpiryDate))
+      Html(dateToString(penalty.penaltyExpiryDate))
     )
 }

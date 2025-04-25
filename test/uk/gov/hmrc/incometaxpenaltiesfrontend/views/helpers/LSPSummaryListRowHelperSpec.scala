@@ -137,7 +137,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
             lspSummaryListRowHelper.pointExpiryDate(sampleLateSubmissionPoint) shouldBe
               summaryListRow(
                 messagesForLanguage.expiryDateKey,
-                Html(dateToMonthYearString(sampleLateSubmissionPoint.penaltyExpiryDate))
+                Html(dateToString(sampleLateSubmissionPoint.penaltyExpiryDate))
               )
           }
         }
