@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.AuthAction
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
@@ -26,7 +26,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.Inject
 
-class AppealsController @Inject()(val authorised: AuthAction,
+class AppealsController @Inject()(val authActions: AuthActions,
                                   override val controllerComponents: MessagesControllerComponents
                                  )(implicit val appConfig: AppConfig) extends FrontendBaseController with FeatureSwitching with DateFormatter {
 
@@ -35,7 +35,7 @@ class AppealsController @Inject()(val authorised: AuthAction,
                         isFindOutHowToAppealLSP: Boolean,
                         isLPP2: Boolean,
                         is2ndStageAppeal: Boolean): Action[AnyContent] =
-    authorised { _ =>
+    authActions.asMTDUserOld() { _ =>
       logger.debug(s"[IndexController][redirectToAppeals] - Redirect to appeals frontend with id $penaltyId and is late payment penalty: $isLPP " +
         s"and cannot be appealed: $isFindOutHowToAppealLSP and is LPP2: $isLPP2")
       if (isFindOutHowToAppealLSP) {
@@ -50,7 +50,7 @@ class AppealsController @Inject()(val authorised: AuthAction,
                                       itsaAmountInPence: Int,
                                       itsaPeriodStartDate: String,
                                       itsaPeriodEndDate: String): Action[AnyContent] =
-    authorised { _ =>
+    authActions.asMTDUserOld() { _ =>
       logger.debug(s"[IndexController][redirectToFindOutHowToAppealLPP] - Redirect to appeals frontend with principleChargeReference: $principalChargeReference " +
         s"and has itsaPeriodStartDate: $itsaPeriodStartDate and has itsaPeriodEndDate: $itsaPeriodEndDate and has itsaAmountInPence: $itsaAmountInPence")
       Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&itsaAmountInPence=$itsaAmountInPence&itsaPeriodStartDate=$itsaPeriodStartDate&itsaPeriodEndDate=$itsaPeriodEndDate")

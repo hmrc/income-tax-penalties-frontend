@@ -21,9 +21,11 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, ITSAStatus}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.IncomeTaxSessionMocks
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledAgent, AuthorisedAndEnrolledIndividual, CurrentUserRequest}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.ITSAStatus
 
-class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with ComplianceDataTestData {
+class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with IncomeTaxSessionMocks {
 
   "UserComplianceInfoAuditModel" should {
 
@@ -32,7 +34,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
       val mtditid = "XA123456"
       val arn = "ARN123456"
 
-      implicit val user: CurrentUserRequest[_] = CurrentUserRequest(mtditid, Some(arn))(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledAgent(sessionData, Some(arn))(FakeRequest())
 
       val model = UserComplianceInfoAuditModel(
         mandationStatus = ITSAStatus.NoStatus,
@@ -47,7 +49,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
         model.detail shouldBe Json.obj(
           "agentReferenceNumber" -> arn,
           "identifierType" -> "MTDITID",
-          "taxIdentifier" -> mtditid,
+          "taxIdentifier" -> testMtdItId,
           "mandationStatus" -> "No Status",
           "complianceWindow" -> "2 days",
           "isPenaltyLate" -> true,
@@ -76,7 +78,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
 
       val mtditid = "XA123456"
 
-      implicit val user: CurrentUserRequest[_] = CurrentUserRequest(mtditid)(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledIndividual(mtditid, "AA123456A", None)(FakeRequest())
 
       val model = UserComplianceInfoAuditModel(
         mandationStatus = ITSAStatus.NoStatus,

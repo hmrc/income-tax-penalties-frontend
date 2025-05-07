@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{ComplianceService, TimelineBuilderService}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
@@ -31,15 +31,14 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class ComplianceTimelineController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              complianceTimelineView: ComplianceTimeline,
-                                             authorised: AuthAction,
-                                             withNavBar: NavBarRetrievalAction,
+                                             authActions: AuthActions,
                                              timelineBuilder: TimelineBuilderService,
                                              complianceService: ComplianceService,
                                              errorHandler: ErrorHandler
                                             )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val complianceTimelinePage: Action[AnyContent] =
-    (authorised andThen withNavBar).async { implicit currentUserRequest =>
+    authActions.asMTDUserOld().async { implicit currentUserRequest =>
       complianceService.calculateComplianceWindow() match {
         case Some((fromDate, toDate)) =>
           for {

@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.GetPenaltyDetailsResponse
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.CurrentUserRequest
 
 import javax.inject.Inject
 import scala.concurrent.Future
