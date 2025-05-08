@@ -29,7 +29,7 @@ class AddToSessionControllerISpec extends ComponentSpecHelper {
       val result = get("/test-only/add-to-session?key=Origin&value=PTA")
 
       result.status shouldBe 303
-      result.header(LOCATION) shouldBe Some("/penalties/income-tax")
+      result.header(LOCATION) shouldBe Some("/view-or-appeal-penalty/self-assessment")
       SessionCookieCrumbler.getSessionMap(result).get("Origin") shouldBe Some("PTA")
     }
   }

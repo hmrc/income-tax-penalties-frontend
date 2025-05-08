@@ -29,7 +29,7 @@ class AddAgentSessionControllerISpec extends ComponentSpecHelper {
       val result = get("/test-only/add-agent-session/1234567890")
 
       result.status shouldBe 303
-      result.header(LOCATION) shouldBe Some("/penalties/income-tax")
+      result.header(LOCATION) shouldBe Some("/view-or-appeal-penalty/self-assessment")
       SessionCookieCrumbler.getSessionMap(result).get("pocAchievementDate") shouldBe Some(LocalDate.now.format(DateTimeFormatter.ISO_DATE))
       SessionCookieCrumbler.getSessionMap(result).get("ClientMTDID") shouldBe Some("1234567890")
     }
