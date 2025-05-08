@@ -62,7 +62,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
           stubAuthRequests(true)
           stubGetPenalties("1234567890", Some("123456789"))(OK, Json.toJson(samplePenaltyDetailsModel))
 
-          val result = get("/", isAgent = true)
+          val result = get("/agent", isAgent = true)
 
           val document = Jsoup.parse(result.body)
 

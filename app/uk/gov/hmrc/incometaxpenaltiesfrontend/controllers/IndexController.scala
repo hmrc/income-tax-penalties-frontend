@@ -20,6 +20,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthenticatedUserWithPenaltyData, CurrentUserRequest}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LSPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
@@ -38,7 +39,24 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
                                 lppCardHelper: LPPCardHelper,
                                 indexView: IndexView)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val homePage: Action[AnyContent] = authActions.asMTDUserOldWithPenaltyData().async { implicit penaltyDataUserRequest =>
+
+  val homePage: Action[AnyContent] = authActions.asMTDUserOldWithPenaltyData().async  { implicit currentUserRequest =>
+
+    currentUserRequest.uri match {
+      case s"${appConfig.ITSAPenaltiesHomeUrl}/" => if (!currentUserRequest.isAgent) {
+        home(isAgent = false)
+      }else {
+        Future.successful(Redirect(appConfig.ITSAPenaltiesHomeUrl))
+      }
+      case s"${appConfig.ITSAPenaltiesHomeUrl}/agent" => if(currentUserRequest.isAgent) {
+        home(isAgent = true)
+      }else{
+        Future.successful(Redirect(appConfig.ITSAPenaltiesHomeUrl))
+      }
+    }
+  }
+
+  private[controllers] def home(isAgent: Boolean)(implicit penaltyDataUserRequest: AuthenticatedUserWithPenaltyData[_]): Future[Result] = {
     val penaltyData = penaltyDataUserRequest.penaltyDetails
     val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
     val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)

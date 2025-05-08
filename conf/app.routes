@@ -6,6 +6,7 @@ GET        /assets/*file                        controllers.Assets.versioned(pat
 
 
 GET        /                                    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage
+GET        /agent                               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage
 
 GET        /sign-out                            uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.signOut()
 GET        /keep-alive                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.keepAlive()
