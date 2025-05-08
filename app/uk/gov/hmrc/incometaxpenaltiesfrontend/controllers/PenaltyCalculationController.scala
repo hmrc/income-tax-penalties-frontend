@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.PenaltyCalculation
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
@@ -28,11 +28,10 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class PenaltyCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              penaltyCalculationView: PenaltyCalculation,
-                                             authorised: AuthAction,
-                                             withNavBar: NavBarRetrievalAction)(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
+                                             authActions: AuthActions)(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
 
   val penaltyCalculationPage: Action[AnyContent] =
-    (authorised andThen withNavBar) { implicit currentUserRequest =>
+    authActions.asMTDUserOld() { implicit currentUserRequest =>
       Ok(penaltyCalculationView(currentUserRequest.isAgent))
   }
 

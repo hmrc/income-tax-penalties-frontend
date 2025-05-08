@@ -22,11 +22,10 @@ import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
 import play.api.libs.json.Json
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, PenaltiesStub}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, ViewSpecHelper}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
-class IndexControllerISpec extends ComponentSpecHelper with ViewSpecHelper with FeatureSwitching
-  with AuthStub with PenaltiesStub with PenaltiesDetailsTestData {
+class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
+  with PenaltiesStub with PenaltiesDetailsTestData {
 
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
@@ -39,7 +38,7 @@ class IndexControllerISpec extends ComponentSpecHelper with ViewSpecHelper with 
     "when call to penalties backend returns data" when {
       "the user is an authorised individual" should {
         "have the correct page has correct elements" in {
-          stubAuth(OK, successfulIndividualAuthResponse)
+          stubAuthRequests(false)
           stubGetPenalties("1234567890", None)(OK, Json.toJson(samplePenaltyDetailsModel))
 
           val result = get("/")
@@ -60,7 +59,7 @@ class IndexControllerISpec extends ComponentSpecHelper with ViewSpecHelper with 
 
       "the user is an authorised agent" should {
         "have the correct page has correct elements" in {
-          stubAuth(OK, successfulAgentAuthResponse)
+          stubAuthRequests(true)
           stubGetPenalties("1234567890", Some("123456789"))(OK, Json.toJson(samplePenaltyDetailsModel))
 
           val result = get("/", isAgent = true)
@@ -82,7 +81,7 @@ class IndexControllerISpec extends ComponentSpecHelper with ViewSpecHelper with 
 
     "when call to penalties backend fails" should {
       "render an ISE" in {
-        stubAuth(OK, successfulIndividualAuthResponse)
+        stubAuthRequests(false)
         stubGetPenalties("1234567890", None)(INTERNAL_SERVER_ERROR, Json.obj())
 
         val result = get("/")

@@ -19,17 +19,15 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.http.HeaderNames
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper}
 
-class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavBarTesterHelper {
+class AppealsControllerISpec extends ControllerISpecHelper {
 
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   "GET /appeal-penalty" should {
 
     "redirect the individual to the appeals service when the penalty is a LSP" in {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuthRequests(false)
 
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234"))
 
@@ -39,7 +37,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the individual to the appeals service when the penalty is a LSP and is a 2nd Stage Appeal" in {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuthRequests(false)
 
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "is2ndStageAppeal" -> "true"))
 
@@ -48,7 +46,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP1" in {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuthRequests(false)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true"))
 
       result.status shouldBe SEE_OTHER
@@ -57,7 +55,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP2" in {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuthRequests(false)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true", "isLPP2" -> "true"))
 
       result.status shouldBe SEE_OTHER
@@ -66,7 +64,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the individual to the obligations appeals service when the penalty is a LSP" in {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuthRequests(false)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isFindOutHowToAppealLSP" -> "true"))
 
       result.status shouldBe SEE_OTHER
@@ -75,7 +73,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the agent to the appeals service when the penalty is a LSP" in {
-      stubAuth(OK, successfulAgentAuthResponse)
+      stubAuthRequests(true)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
@@ -84,7 +82,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP1" in {
-      stubAuth(OK, successfulAgentAuthResponse)
+      stubAuthRequests(true)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
@@ -93,7 +91,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP2" in {
-      stubAuth(OK, successfulAgentAuthResponse)
+      stubAuthRequests(true)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true", "isLPP2" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
@@ -102,7 +100,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the agent to the obligations appeals service when the penalty is a LSP" in {
-      stubAuth(OK, successfulAgentAuthResponse)
+      stubAuthRequests(true)
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isFindOutHowToAppealLSP" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
@@ -114,7 +112,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
   "Get /find-out-how-to-appeal" should {
 
     "redirect the individual to the find-out-how-to-appeal page" in {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuthRequests(false)
       val result = get("/find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"))
 
       result.status shouldBe SEE_OTHER
@@ -123,7 +121,7 @@ class AppealsControllerISpec extends ComponentSpecHelper with AuthStub with NavB
     }
 
     "redirect the agent to the find-out-how-to-appeal page" in {
-      stubAuth(OK, successfulAgentAuthResponse)
+      stubAuthRequests(true)
       val result = get("/find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"), isAgent = true)
 
       result.status shouldBe SEE_OTHER

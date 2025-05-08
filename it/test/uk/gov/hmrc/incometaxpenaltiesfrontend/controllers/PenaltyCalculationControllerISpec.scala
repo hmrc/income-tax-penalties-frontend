@@ -18,11 +18,8 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import org.jsoup.Jsoup
 import play.api.http.Status.OK
-import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.AuthStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
 
-class PenaltyCalculationControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub
-with NavBarTesterHelper {
+class PenaltyCalculationControllerISpec extends ControllerISpecHelper {
 
   "GET /calculation" when {
 
@@ -30,7 +27,7 @@ with NavBarTesterHelper {
 
     "return an OK with a view" when {
       "have the correct page has correct elements" in {
-        stubAuth(OK, successfulIndividualAuthResponse)
+        stubAuthRequests(false)
         val result = get("/calculation")
         result.status shouldBe OK
 

@@ -35,6 +35,8 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   def selfUrl: String = servicesConfig.baseUrl("income-tax-penalties-frontend")
 
+  def incomeTaxSessionDataBaseUrl: String = servicesConfig.baseUrl("income-tax-session-data")
+
   lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
 
   lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
@@ -76,4 +78,6 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
     if(isAgent) "/report-quarterly/income-and-expenses/view/agents/what-your-client-owes"
     else "/report-quarterly/income-and-expenses/view/what-you-owe"
   }
+
+  lazy val enterClientUTRVandCUrl: String = config.get[String]("income-tax-view-change.enterClientUTR.url")
 }

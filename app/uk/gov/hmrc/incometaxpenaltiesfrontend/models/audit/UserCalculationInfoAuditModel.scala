@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.CurrentUserRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyType.PenaltyType
 
 case class UserCalculationInfoAuditModel(penaltyNumber: String,

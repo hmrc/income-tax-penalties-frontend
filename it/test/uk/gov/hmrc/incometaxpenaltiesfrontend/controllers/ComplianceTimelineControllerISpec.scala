@@ -22,11 +22,10 @@ import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, ComplianceStub}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.ComplianceStub
 
-class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpecHelper with AuthStub
-  with PenaltiesFixture with ComplianceStub with FeatureSwitching with NavBarTesterHelper with ComplianceDataTestData {
+class ComplianceTimelineControllerISpec extends ControllerISpecHelper
+  with PenaltiesFixture with ComplianceStub with FeatureSwitching with ComplianceDataTestData {
 
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
@@ -52,7 +51,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
 
     "return an OK with an individual view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
-        stubAuth(OK, successfulIndividualAuthResponse)
+        stubAuthRequests(false)
 
         stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
@@ -75,7 +74,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
       }
 
       "the page has the correct elements for two entries in the compliance timeline " in {
-        stubAuth(OK, successfulIndividualAuthResponse)
+        stubAuthRequests(false)
 
         stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
@@ -104,7 +103,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
     "return an OK with an agent view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
 
-        stubAuth(OK, successfulAgentAuthResponse)
+        stubAuthRequests(true)
 
         stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
@@ -128,7 +127,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
 
       "the page has the correct elements for two entries in the compliance timeline" in {
 
-        stubAuth(OK, successfulAgentAuthResponse)
+        stubAuthRequests(true)
 
         stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
@@ -156,7 +155,7 @@ class ComplianceTimelineControllerISpec extends ComponentSpecHelper with ViewSpe
 
     "throw an exception" when {
       "there is no date in session" in {
-        stubAuth(OK, successfulIndividualAuthResponse)
+        stubAuthRequests(false)
 
         lazy val result = getNoDateInSession("/compliance-timeline")
 

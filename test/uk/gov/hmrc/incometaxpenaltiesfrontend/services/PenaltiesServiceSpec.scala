@@ -30,7 +30,8 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsBadRequest, GetPenaltyDetailsMalformed, GetPenaltyDetailsUnexpectedFailure}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, PenaltyDetails}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledIndividual, CurrentUserRequest}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
 
 import scala.concurrent.Future
 
@@ -38,7 +39,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
 
   class Setup {
 
-    implicit val userRequest: CurrentUserRequest[AnyContentAsEmpty.type] = CurrentUserRequest("1234567890")(FakeRequest())
+    implicit val userRequest: CurrentUserRequest[AnyContentAsEmpty.type] = AuthorisedAndEnrolledIndividual("1234567890", "AA123456A", None)(FakeRequest())
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
     val mockPenaltiesConnector: PenaltiesConnector = mock(classOf[PenaltiesConnector])

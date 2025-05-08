@@ -36,6 +36,9 @@ object PagerDutyHelper {
     final val POC_ACHIEVEMENT_DATE_NOT_FOUND = Value
     final val UNEXPECTED_ERROR_FROM_PENALTIES_BACKEND = Value
     final val TTP_END_DATE_MISSING = Value
+    final val RECEIVED_4XX_FROM_INCOME_TAX_SESSION_DATA = Value
+    final val RECEIVED_5XX_FROM_INCOME_TAX_SESSION_DATA = Value
+    final val INVALID_JSON_RECEIVED_FROM_INCOME_TAX_SESSION_DATA = Value
   }
 
   def log(className: String,

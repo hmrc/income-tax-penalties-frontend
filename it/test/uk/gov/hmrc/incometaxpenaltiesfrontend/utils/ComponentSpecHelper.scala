@@ -63,6 +63,8 @@ trait ComponentSpecHelper
     "microservice.services.auth.port" -> mockPort,
     "microservice.services.business-tax-account.port" -> mockPort,
     "microservice.services.business-tax-account.port" -> mockPort,
+    "microservice.services.income-tax-session-data.host" -> mockHost,
+    "microservice.services.income-tax-session-data.port" -> mockPort,
     "auditing.enabled" -> "true",
     "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck"
   )
