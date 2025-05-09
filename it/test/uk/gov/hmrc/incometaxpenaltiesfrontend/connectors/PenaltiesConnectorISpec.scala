@@ -46,49 +46,49 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
   "getPenaltyDetails" should {
     "return a successful response when the call succeeds and the body can be parsed" when {
       "an individual has Late Payment Metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = OK, body = samplePenaltyDetailsModel)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = samplePenaltyDetailsModel)
 
-        val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
+        val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 
         result shouldBe Right(samplePenaltyDetailsModel)
       }
 
       "a client has Late Payment Metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModel)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModel)
 
-        val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testMtdItId, Some(testArn))(HeaderCarrier()))
+        val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testNino, Some(testArn))(HeaderCarrier()))
 
         result shouldBe Right(samplePenaltyDetailsModel)
       }
 
       "an individual does not have metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
 
-        val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
+        val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 
         result shouldBe Right(samplePenaltyDetailsModelWithoutMetadata)
       }
 
       "a client does not have metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
 
-        val result = await(connector.getPenaltyDetails(testMtdItId, Some(testArn))(HeaderCarrier()))
+        val result = await(connector.getPenaltyDetails(testNino, Some(testArn))(HeaderCarrier()))
 
         result shouldBe Right(samplePenaltyDetailsModelWithoutMetadata)
       }
 
       "an individual does not have any penalty details" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = NO_CONTENT, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = NO_CONTENT, body = Json.obj())
 
-        val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
+        val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 
         result shouldBe Right(PenaltyDetails(None, None, None, None))
       }
 
       "a client does not have any penalty details" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId\\?arn=$testArn").thenReturn(status = NO_CONTENT, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = NO_CONTENT, body = Json.obj())
 
-        val result = await(connector.getPenaltyDetails(testMtdItId, Some(testArn))(HeaderCarrier()))
+        val result = await(connector.getPenaltyDetails(testNino, Some(testArn))(HeaderCarrier()))
 
         result shouldBe Right(PenaltyDetails(None, None, None, None))
       }
@@ -96,11 +96,11 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
 
     "return a Left when" when {
       "an exception with status 4xx occurs upstream" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = BAD_REQUEST, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = BAD_REQUEST, body = Json.obj())
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
+            val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
             result shouldBe Left(GetPenaltyDetailsBadRequest)
           }
@@ -108,19 +108,19 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "invalid Json is returned" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = OK, body = "")
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = "")
 
-        val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
+        val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 
         result shouldBe Left(GetPenaltyDetailsMalformed)
       }
 
       "an exception with status 5xx occurs upstream is returned" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result = await(connector.getPenaltyDetails(testMtdItId)(HeaderCarrier()))
+            val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
             result shouldBe Left(GetPenaltyDetailsUnexpectedFailure(INTERNAL_SERVER_ERROR))
           }
@@ -132,9 +132,9 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
   "getComplianceData" should {
     "return a successful response" when {
       "the call succeeds and the body can be parsed" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Right(sampleCompliancePayload)
       }
@@ -143,9 +143,9 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
     "return a successful response" when {
       "the stub succeeds and the body can be parsed" in {
         enable(UseStubForBackend)
-        stubGetComplianceDataFromStub(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+        stubGetComplianceDataFromStub(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Right(sampleCompliancePayload)
       }
@@ -153,35 +153,35 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
 
     "return a Left response" when {
       "the call returns a OK response however the body is not parsable as a model" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(Json.obj("invalid" -> "json")))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(Json.obj("invalid" -> "json")))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataMalformed)
       }
 
       "the call returns a Not Found status" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(NOT_FOUND, Json.toJson(Json.obj()))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(NOT_FOUND, Json.toJson(Json.obj()))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataNoData)
       }
 
       "the call returns an unmatched response" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(SERVICE_UNAVAILABLE, Json.toJson(Json.obj()))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(SERVICE_UNAVAILABLE, Json.toJson(Json.obj()))
 
-        val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+        val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
         result shouldBe Left(ComplianceDataUnexpectedFailure(SERVICE_UNAVAILABLE))
       }
 
       "the call returns a UpstreamErrorResponse(4xx) exception" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(BAD_REQUEST, Json.toJson(Json.obj()))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(BAD_REQUEST, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+            val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(BAD_REQUEST))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -190,11 +190,11 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "the call returns a UpstreamErrorResponse(5xx) exception" in {
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
 
         withCaptureOfLoggingFrom(logger) {
           logs => {
-            val result: ComplianceDataResponse = await(connector.getComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+            val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(INTERNAL_SERVER_ERROR))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true

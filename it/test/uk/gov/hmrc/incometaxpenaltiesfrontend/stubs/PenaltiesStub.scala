@@ -24,8 +24,8 @@ import java.time.LocalDate
 
 trait PenaltiesStub extends WiremockMethods {
 
-  def stubGetPenalties(testMtdItId: String, arn: Option[String])(status: Int, body: JsValue = Json.obj()): StubMapping = {
-    when(GET, uri = s"/penalties/ITSA/etmp/penalties/MTDITID/$testMtdItId${arn.fold("")(s"\\?arn=" + _)}")
+  def stubGetPenalties(nino: String, arn: Option[String])(status: Int, body: JsValue = Json.obj()): StubMapping = {
+    when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$nino${arn.fold("")(s"\\?arn=" + _)}")
       .thenReturn(status, body)
   }
 

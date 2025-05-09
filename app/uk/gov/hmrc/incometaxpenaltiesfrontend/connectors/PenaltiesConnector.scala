@@ -35,19 +35,19 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
   def getPenaltyDetails(mtditid: String, optArn: Option[String] = None)
                        (implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
-    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for MTDITID: $mtditid")
+    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for NINO: $mtditid")
 
     httpClient
-      .get(url"${appConfig.penaltiesUrl + s"/ITSA/etmp/penalties/MTDITID/$mtditid${optArn.fold("")("?arn=" + _)}"}")
+      .get(url"${appConfig.penaltiesUrl + s"/ITSA/etmp/penalties/NINO/$mtditid${optArn.fold("")("?arn=" + _)}"}")
       .execute[GetPenaltyDetailsResponse]
   }
 
-  def getComplianceData(mtdItId: String, fromDate: LocalDate, toDate: LocalDate)
+  def getComplianceData(nino: String, fromDate: LocalDate, toDate: LocalDate)
                        (implicit hc: HeaderCarrier): Future[ComplianceDataResponse] = {
-    logger.info(s"[PenaltiesConnector][getComplianceData] - Requesting compliance data from backend for MTDITID $mtdItId")
+    logger.info(s"[PenaltiesConnector][getComplianceData] - Requesting compliance data from backend for NINO $nino")
 
     httpClient
-      .get(url"${appConfig.penaltiesUrl + s"/ITSA/compliance/data/MTDITID/$mtdItId?fromDate=$fromDate&toDate=$toDate"}")
+      .get(url"${appConfig.penaltiesUrl + s"/ITSA/compliance/data/NINO/$nino?fromDate=$fromDate&toDate=$toDate"}")
       .execute[ComplianceDataResponse]
   }
 
