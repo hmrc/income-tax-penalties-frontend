@@ -1,3 +1,4 @@
 # Add all the application routes to the app.routes file
-->         /view-or-appeal-penalty/self-assessment                        app.Routes
+#->         /view-or-appeal-penalty/self-assessment                        app.Routes
+->         /penalties/income-tax                        app.Routes
 ->         /                                            health.Routes

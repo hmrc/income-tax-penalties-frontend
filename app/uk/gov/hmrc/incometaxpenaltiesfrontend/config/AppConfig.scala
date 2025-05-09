@@ -37,7 +37,8 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   def incomeTaxSessionDataBaseUrl: String = servicesConfig.baseUrl("income-tax-session-data")
 
-  lazy val ITSAPenaltiesHomeUrl = "/view-or-appeal-penalty/self-assessment"
+//  lazy val ITSAPenaltiesHomeUrl = "/view-or-appeal-penalty/self-assessment"
+  lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
 
   lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
   lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""

@@ -40,20 +40,11 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
                                 indexView: IndexView)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  val homePage: Action[AnyContent] = authActions.asMTDUserOldWithPenaltyData().async  { implicit currentUserRequest =>
-
-    currentUserRequest.uri match {
-      case s"${appConfig.ITSAPenaltiesHomeUrl}/" => if (!currentUserRequest.isAgent) {
-        home(isAgent = false)
-      }else {
-        Future.successful(Redirect(appConfig.ITSAPenaltiesHomeUrl))
-      }
-      case s"${appConfig.ITSAPenaltiesHomeUrl}/agent" => if(currentUserRequest.isAgent) {
-        home(isAgent = true)
-      }else{
-        Future.successful(Redirect(appConfig.ITSAPenaltiesHomeUrl))
-      }
-    }
+  def homePage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUserOldWithPenaltyData().async  { implicit currentUserRequest =>
+    if(currentUserRequest.isAgent != isAgent) {
+      Future.successful(Redirect(routes.IndexController.homePage(currentUserRequest.isAgent)))
+    }else{
+      home(isAgent)}
   }
 
   private[controllers] def home(isAgent: Boolean)(implicit penaltyDataUserRequest: AuthenticatedUserWithPenaltyData[_]): Future[Result] = {
@@ -78,7 +69,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
           lspCardData = lspSummaryCards,
           lppCardData = lppSummaryCards,
           penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
-          isAgent = penaltyDataUserRequest.isAgent
+          isAgent = isAgent
         ))
       }
     )
