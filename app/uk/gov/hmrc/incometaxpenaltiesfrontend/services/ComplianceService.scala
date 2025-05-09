@@ -41,10 +41,10 @@ class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: Ex
         None
     }
 
-  def getDESComplianceData(mtdItId: String,
+  def getDESComplianceData(nino: String,
                            startDate: LocalDate,
                            endDate: LocalDate)(implicit hc: HeaderCarrier): Future[Option[ComplianceData]] =
-    connector.getComplianceData(mtdItId, startDate, endDate).map {
+    connector.getComplianceData(nino, startDate, endDate).map {
       case Right(obligationData) =>
         logger.debug(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data,  obligation data = $obligationData")
         logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")

@@ -46,14 +46,14 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
   "GET /compliance-timeline" should {
 
     testNavBar("/compliance-timeline") {
-      stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+      stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
     }
 
     "return an OK with an individual view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
         stubAuthRequests(false)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
         lazy val result = get("/compliance-timeline")
         result.status shouldBe OK
@@ -76,7 +76,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
       "the page has the correct elements for two entries in the compliance timeline " in {
         stubAuthRequests(false)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
         lazy val result = get("/compliance-timeline")
         result.status shouldBe OK
@@ -105,7 +105,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubAuthRequests(true)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
         lazy val result = get("/compliance-timeline", isAgent = true)
         result.status shouldBe OK
@@ -129,7 +129,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubAuthRequests(true)
 
-        stubGetComplianceData(testMtdItId, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
+        stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
         lazy val result = get("/compliance-timeline", isAgent = true)
         result.status shouldBe OK

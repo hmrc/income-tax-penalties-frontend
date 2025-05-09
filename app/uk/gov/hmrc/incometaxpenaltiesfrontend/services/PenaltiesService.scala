@@ -27,7 +27,7 @@ import scala.concurrent.Future
 class PenaltiesService @Inject()(connector: PenaltiesConnector) {
 
   def getPenaltyDataForUser()(implicit user: CurrentUserRequest[_], hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] =
-    connector.getPenaltyDetails(user.mtdItId, user.arn)
+    connector.getPenaltyDetails(user.nino, user.arn)
 
 }
 

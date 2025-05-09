@@ -34,7 +34,7 @@ import scala.concurrent.Future
 class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData {
 
   val mockPenaltiesConnector: PenaltiesConnector = mock(classOf[PenaltiesConnector])
-  val mtdItId: String = "12345678"
+  val nino = "AA123456A"
 
   class Setup {
     val service: ComplianceService = new ComplianceService(mockPenaltiesConnector)
@@ -49,7 +49,7 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
         ArgumentMatchers.eq(LocalDate.of(2022, 1, 1)))(any())).thenReturn(Future.successful(Right(sampleCompliancePayload)))
 
       val result: Option[ComplianceData] = await(service.getDESComplianceData(
-        mtdItId = mtdItId,
+        nino = nino,
         startDate = LocalDate.of(2020, 1, 1),
         endDate = LocalDate.of(2022, 1, 1)
       )(HeaderCarrier()))
@@ -63,7 +63,7 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
         .thenReturn(Future.failed(UpstreamErrorResponse.apply("Upstream error", INTERNAL_SERVER_ERROR)))
 
       val result: Exception = intercept[Exception](await(service.getDESComplianceData(
-        mtdItId = mtdItId,
+        nino = nino,
         startDate = LocalDate.of(2020, 1, 1),
         endDate = LocalDate.of(2022, 1, 1)
       )(HeaderCarrier())))
