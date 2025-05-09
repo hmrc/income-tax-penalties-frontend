@@ -33,12 +33,12 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
                                    val appConfig: AppConfig
                                   )(implicit ec: ExecutionContext) extends FeatureSwitching {
 
-  def getPenaltyDetails(mtditid: String, optArn: Option[String] = None)
+  def getPenaltyDetails(nino: String, optArn: Option[String] = None)
                        (implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
-    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for NINO: $mtditid")
+    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for NINO: $nino")
 
     httpClient
-      .get(url"${appConfig.penaltiesUrl + s"/ITSA/etmp/penalties/NINO/$mtditid${optArn.fold("")("?arn=" + _)}"}")
+      .get(url"${appConfig.penaltiesUrl + s"/ITSA/etmp/penalties/NINO/$nino${optArn.fold("")("?arn=" + _)}"}")
       .execute[GetPenaltyDetailsResponse]
   }
 
