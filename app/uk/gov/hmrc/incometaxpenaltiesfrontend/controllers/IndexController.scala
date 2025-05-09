@@ -18,13 +18,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction, PenaltyDataAction}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LSPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, PenaltyDetails}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
@@ -37,27 +35,21 @@ import scala.concurrent.{ExecutionContext, Future}
 class IndexController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                 authorised: AuthAction,
                                 withNavBar: NavBarRetrievalAction,
-                                penaltiesService: PenaltiesService,
-                                errorHandler: ErrorHandler,
+                                penaltyDataAction: PenaltyDataAction,
                                 lspCardHelper: LSPCardHelper,
                                 lppCardHelper: LPPCardHelper,
                                 indexView: IndexView)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val homePage: Action[AnyContent] = (authorised andThen withNavBar).async { implicit currentUserRequest =>
-    withPenaltyData { penaltyData =>
-
-      val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
-      val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
-      val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
+  val homePage: Action[AnyContent] = (authorised andThen withNavBar andThen penaltyDataAction).async { implicit penaltyDataRequest =>
+    val penaltyData = penaltyDataRequest.penaltyDetails
 
       val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(
-        penalties = sortPointsInDescendingOrder(lsp),
-        threshold = lspThreshold,
-        activePoints = lspActivePoints
+        penalties = sortPointsInDescendingOrder(penaltyData.lsp),
+        threshold = penaltyData.lspThreshold,
+        activePoints = penaltyData.lspPointsActive
       )
 
-      val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
-      val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex)
+      val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(penaltyData.lpp.zipWithIndex)
 
       Future(
         updateSessionCookie(penaltyData) {
@@ -66,11 +58,10 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
             lspCardData = lspSummaryCards,
             lppCardData = lppSummaryCards,
             penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
-            isAgent = currentUserRequest.isAgent
+            isAgent = penaltyDataRequest.isAgent
           ))
         }
       )
-    }
   }
 
   private[controllers] def updateSessionCookie(penaltyData: PenaltyDetails)(result: => Result)(implicit user: CurrentUserRequest[_]): Result = {
@@ -91,14 +82,6 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
       )
   }
 
-  private[controllers] def withPenaltyData(block: PenaltyDetails => Future[Result])(implicit user: CurrentUserRequest[_]): Future[Result] =
-    penaltiesService.getPenaltyDataForUser().flatMap(_.fold(
-      error => {
-        logger.error(s"[IndexController][homePage] Received error with message ${error.message} rendering ISE")
-        errorHandler.showInternalServerError()
-      },
-      block
-    ))
 
   def sortPointsInDescendingOrder(points: Seq[LSPDetails]): Seq[LSPDetails] = {
     val pointsWithOrder = points.zipWithIndex.map {

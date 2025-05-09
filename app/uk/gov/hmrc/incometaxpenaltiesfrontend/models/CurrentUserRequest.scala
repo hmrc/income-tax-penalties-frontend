@@ -20,15 +20,27 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Request, WrappedRequest}
 import play.twirl.api.Html
 
-case class CurrentUserRequest[A](mtdItId: String,
-                                 arn: Option[String] = None,
-                                 override val navBar: Option[Html] = None)(implicit request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
+abstract class CurrentUserRequest[A](request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
+  val mtdItId: String
+  val arn: Option[String]
+  val navBar: Option[Html]
 
-  val isAgent: Boolean = arn.isDefined
+  lazy val isAgent: Boolean = arn.isDefined
 
-  val auditJson: JsObject = Json.obj(
-      "identifierType" -> "MTDITID",
-      "taxIdentifier" -> mtdItId
+  lazy val auditJson: JsObject = Json.obj(
+    "identifierType" -> "MTDITID",
+    "taxIdentifier" -> mtdItId
   ) ++ arn.fold(Json.obj())(arn => Json.obj("agentReferenceNumber" -> arn))
-
 }
+
+case class AuthenticatedUserRequest[A](mtdItId: String,
+                                       arn: Option[String] = None,
+                                       navBar: Option[Html] = None)(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
+  def addNavBar(content: Html): AuthenticatedUserRequest[A] = copy(navBar = Some(content))
+}
+
+case class AuthenticatedUserWithPenaltyData[A](mtdItId: String,
+                                            penaltyDetails: PenaltyDetails,
+                                            arn: Option[String] = None,
+                                            navBar: Option[Html])(implicit request: Request[A]) extends CurrentUserRequest[A](request)
+

@@ -37,6 +37,8 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
           result.status shouldBe OK
           val document = Jsoup.parse(result.body)
 
+          println(document)
+
           document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe false
         }
       }

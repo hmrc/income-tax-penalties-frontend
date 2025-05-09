@@ -20,7 +20,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, PenaltyType}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{AuthenticatedUserRequest, CurrentUserRequest, PenaltyType}
 
 class UserCalculationInfoAuditModelSpec extends AnyWordSpec with Matchers {
 
@@ -31,7 +31,7 @@ class UserCalculationInfoAuditModelSpec extends AnyWordSpec with Matchers {
       val mtditid = "XA123456"
       val arn = "ARN123456"
 
-      implicit val user: CurrentUserRequest[_] = CurrentUserRequest(mtditid, Some(arn))(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthenticatedUserRequest(mtditid, Some(arn))(FakeRequest())
 
       val model = UserCalculationInfoAuditModel(
         penaltyNumber = "123456",
@@ -60,7 +60,7 @@ class UserCalculationInfoAuditModelSpec extends AnyWordSpec with Matchers {
 
       val mtditid = "XA123456"
 
-      implicit val user: CurrentUserRequest[_] = CurrentUserRequest(mtditid)(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthenticatedUserRequest(mtditid)(FakeRequest())
 
       val model = UserCalculationInfoAuditModel(
         penaltyNumber = "123456",

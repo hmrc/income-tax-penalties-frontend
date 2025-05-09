@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
 
 @this(
         main: MainTemplate,
@@ -27,18 +26,20 @@
         govukSummaryList : GovukSummaryList
 )
 
-@(isAgent: Boolean, lppDetails: Option[LPPDetails])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@main(pageTitle = messages(s"lpp.penaltyType.${lppDetails.map(_.penaltyCategory).getOrElse("MANUAL").toString.toUpperCase()}"), backLinkEnabled = true) {
+@(isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages(s"lpp.penaltyType.${lppDetails.map(_.penaltyCategory).getOrElse("MANUAL").toString.toUpperCase()}")</h1>
+
+@main(pageTitle = messages("calculation.individual.title", "First"), backLinkEnabled = true) {
+
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.h1", "First")</h1>
 
     @p("calculation.individual.p1")
     @p("calculation.individual.p2")
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>@lppDetails.flatMap(_.LPP1LRPercentage).getOrElse(BigDecimal(0))% of @lppDetails.flatMap(_.LPP1LRCalculationAmount).getOrElse(BigDecimal(0)) (the unpaid Income Tax @lppDetails.flatMap(_.LPP1LRDays).getOrElse(BigDecimal(0)) days after the due date)</li>
-        <li>@lppDetails.flatMap(_.LPP1LRPercentage).getOrElse(BigDecimal(0))% of @lppDetails.flatMap(_.LPP1HRCalculationAmount).getOrElse(BigDecimal(0)) (the unpaid Income Tax @lppDetails.flatMap(_.LPP1HRDays).getOrElse(BigDecimal(0)) days after the due date)</li>
+        <li>2% of £20,000 (the unpaid Income Tax 15 days after the due date)</li>
+        <li>2% of £20,000 (the unpaid Income Tax 30 days after the due date)</li>
     </ul>
 
 @govukSummaryList(SummaryList(
@@ -48,7 +49,7 @@
           content = Text(messages("calculation.penalty.amount"))
         ),
         value = Value(
-          content = Text("£" + lppDetails.map(_.penaltyAmountPosted).getOrElse(BigDecimal(0)).setScale(2, BigDecimal.RoundingMode.DOWN).toString())
+          content = Text("£800.00")
         )
       ),
       SummaryListRow(
@@ -56,7 +57,7 @@
           content = Text(messages("calculation.amount.received"))
         ),
         value = Value(
-          content = Text("£" + lppDetails.flatMap(_.penaltyAmountPaid).getOrElse(BigDecimal(0)).setScale(2, BigDecimal.RoundingMode.DOWN).toString)
+          content = Text("£800.00")
         )
       ),
       SummaryListRow(
@@ -64,12 +65,11 @@
           content = Text(messages("calculation.left.to.pay"))
         ),
         value = Value(
-            content = Text("£" + lppDetails.flatMap(_.penaltyAmountOutstanding).getOrElse(BigDecimal(0)).setScale(2, BigDecimal.RoundingMode.DOWN).toString)
+            content = Text("£0.00")
         )
       )
     )
-  )
-)
+  ))
 
     @link(
         link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage.url,

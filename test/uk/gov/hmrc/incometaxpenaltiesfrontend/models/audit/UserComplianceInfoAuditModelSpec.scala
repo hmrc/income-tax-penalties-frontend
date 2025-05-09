@@ -21,7 +21,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, ITSAStatus}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{AuthenticatedUserRequest, CurrentUserRequest, ITSAStatus}
 
 class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with ComplianceDataTestData {
 
@@ -32,7 +32,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
       val mtditid = "XA123456"
       val arn = "ARN123456"
 
-      implicit val user: CurrentUserRequest[_] = CurrentUserRequest(mtditid, Some(arn))(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthenticatedUserRequest(mtditid, Some(arn))(FakeRequest())
 
       val model = UserComplianceInfoAuditModel(
         mandationStatus = ITSAStatus.NoStatus,
@@ -76,7 +76,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
 
       val mtditid = "XA123456"
 
-      implicit val user: CurrentUserRequest[_] = CurrentUserRequest(mtditid)(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthenticatedUserRequest(mtditid)(FakeRequest())
 
       val model = UserComplianceInfoAuditModel(
         mandationStatus = ITSAStatus.NoStatus,

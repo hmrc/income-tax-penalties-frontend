@@ -26,12 +26,12 @@ with NavBarTesterHelper {
 
   "GET /calculation" when {
 
-    testNavBar("/calculation")()
+    testNavBar("/calculation/1")()
 
     "return an OK with a view" when {
       "have the correct page has correct elements" in {
         stubAuth(OK, successfulIndividualAuthResponse)
-        val result = get("/calculation")
+        val result = get("/calculation/1")
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)

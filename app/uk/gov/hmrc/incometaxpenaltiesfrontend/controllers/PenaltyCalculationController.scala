@@ -17,52 +17,56 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{CurrentUserRequest, PenaltyDetails}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates.{AuthAction, NavBarRetrievalAction, PenaltyDataAction}
+//import uk.gov.hmrc.incometaxpenaltiesfrontend.models.AuthenticatedUserWithPenaltyData
+//import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
+//import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
+//import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.PenaltyCalculation
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class PenaltyCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              penaltyCalculationView: PenaltyCalculation,
                                              authorised: AuthAction,
-                                             errorHandler: ErrorHandler,
-                                             penaltiesService: PenaltiesService,
-                                             withNavBar: NavBarRetrievalAction)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+//                                             errorHandler: ErrorHandler,
+//                                             penaltiesService: PenaltiesService,
+                                             withNavBar: NavBarRetrievalAction,
+                                             penaltyDataAction: PenaltyDataAction
+                                            )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val penaltyCalculationPage: Action[AnyContent] =
-    (authorised andThen withNavBar).async { implicit currentUserRequest => withPenaltyData {penaltyData: PenaltyDetails =>
-
-      val lpp: Option[LPPDetails] = for {
-        latePaymentPenalty <- penaltyData.latePaymentPenalty
-        lppDetail <- latePaymentPenalty.details.find(lppdetails =>
-          lppdetails.LPP1LRCalculationAmount.isDefined &&
-            lppdetails.LPP1HRCalculationAmount.isDefined &&
-            lppdetails.LPP1LRPercentage.isDefined &&
-            lppdetails.LPP1HRPercentage.isDefined
-        )
-      } yield lppDetail
-
-      Future(Ok(penaltyCalculationView(isAgent = currentUserRequest.isAgent, lpp)))
+  def penaltyCalculationPage(index: Int): Action[AnyContent] =
+    (authorised andThen withNavBar) { implicit currentUserRequest =>
+      Ok(penaltyCalculationView(currentUserRequest.isAgent))
     }
-  }
-
-  private[controllers] def withPenaltyData(block: PenaltyDetails => Future[Result])(implicit user: CurrentUserRequest[_]): Future[Result] =
-    penaltiesService.getPenaltyDataForUser().flatMap(_.fold(
-      error => {
-        logger.error(s"[PenaltyCalculationController][PenaltyCalculationPage] Received error with message ${error.message} rendering ISE")
-        errorHandler.showInternalServerError()
-      },
-      block
-    ))
+//  def penaltyCalculationPage(index: Int): Action[AnyContent] =
+//    (authorised andThen withNavBar andThen penaltyDataAction).async { implicit penaltyDataRequest =>
+//
+//      getSelectedLPPDetails(index) match {
+//        case Some(lppDetails) => Future(Ok(penaltyCalculationView(isAgent = penaltyDataRequest.isAgent, lppDetails)))
+//        case None =>
+//          logger.warn(s"[PenaltyCalculationController][penaltyCalculationPage] unable to find penalty details for index $index")
+//          Future.successful(Redirect(routes.IndexController.homePage))
+//      }
+//
+//
+//    }
+//
+//  private def getSelectedLPPDetails(index: Int)
+//                                   (implicit penaltyDataRequest: AuthenticatedUserWithPenaltyData[_]): Option[LPPDetails] = {
+//    penaltyDataRequest
+//      .penaltyDetails
+//      .lpp
+//      .zipWithIndex
+//      .collectFirst{
+//        case (lppDetails, lppIndex) if lppIndex == index => lppDetails
+//      }
+//  }
 }
 
 

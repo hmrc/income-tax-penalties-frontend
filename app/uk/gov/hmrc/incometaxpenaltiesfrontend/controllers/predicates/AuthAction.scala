@@ -18,12 +18,12 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.predicates
 
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
+import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.AuthenticatedUserRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.{AuthReferenceExtractor, agentDelegatedAuthorityRule}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
@@ -36,13 +36,13 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthAction @Inject()(mcc: MessagesControllerComponents,
                            appConfig: AppConfig,
                            override val authConnector: AuthConnector)(implicit override val executionContext: ExecutionContext)
-  extends ActionBuilder[CurrentUserRequest, AnyContent]
-    with ActionFunction[Request, CurrentUserRequest]
+  extends ActionBuilder[AuthenticatedUserRequest, AnyContent]
+    with ActionFunction[Request, AuthenticatedUserRequest]
     with AuthorisedFunctions {
 
   override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
 
-  override def invokeBlock[A](request: Request[A], f: CurrentUserRequest[A] => Future[Result]): Future[Result] = {
+  override def invokeBlock[A](request: Request[A], f: AuthenticatedUserRequest[A] => Future[Result]): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     implicit val _req: Request[A] = request
@@ -56,7 +56,7 @@ class AuthAction @Inject()(mcc: MessagesControllerComponents,
               enrolments =>
                 enrolments.agentReferenceNumber match {
                   case Some(arn) =>
-                    f(CurrentUserRequest(mtdItId, Some(arn)))
+                    f(AuthenticatedUserRequest(mtdItId, Some(arn)))
                   case _ =>
                     logger.error("Auth check - Agent does not have HMRC-AS-AGENT enrolment")
                     throw InsufficientEnrolments("User does not have Agent Enrolment")
@@ -68,7 +68,7 @@ class AuthAction @Inject()(mcc: MessagesControllerComponents,
         logger.debug("Auth check - Authorising user as Individual")
         enrolments.mtdItId match {
           case Some(mtdItId) =>
-            f(CurrentUserRequest(mtdItId))
+            f(AuthenticatedUserRequest(mtdItId))
           case _ =>
             logger.error("Auth check - User does not have an HMRC-MTD-IT enrolment")
             throw InsufficientEnrolments("User does not have an HMRC-MTD-IT enrolment")

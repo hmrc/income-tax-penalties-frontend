@@ -40,6 +40,8 @@ class ComplianceTimelineController @Inject()(override val controllerComponents: 
 
   val complianceTimelinePage: Action[AnyContent] =
     (authorised andThen withNavBar).async { implicit currentUserRequest =>
+      println("*****JJJJJJJ")
+      println(currentUserRequest.navBar)
       complianceService.calculateComplianceWindow() match {
         case Some((fromDate, toDate)) =>
           for {

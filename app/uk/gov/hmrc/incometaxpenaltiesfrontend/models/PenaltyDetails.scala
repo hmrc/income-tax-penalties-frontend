@@ -44,6 +44,9 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 
   val hasFinancialChargeToPay: Boolean =
     (unpaidIncomeTax + totalInterest + countLPPNotPaidOrAppealed + countLSPNotPaidOrAppealed) > 0
+
+  val lsp = lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
+  val lpp = latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
 }
 
 object PenaltyDetails {

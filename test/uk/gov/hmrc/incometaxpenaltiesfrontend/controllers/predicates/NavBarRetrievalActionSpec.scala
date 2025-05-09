@@ -28,7 +28,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.MessageCountHttpParser.MessagesCountResponseMalformed
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.MockMessageCountConnector
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{AuthenticatedUserRequest, CurrentUserRequest}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.messageCount.MessageCount
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.mocks.MockBtaNavBarService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
@@ -45,7 +45,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
 
   lazy val ptaNavBar: PtaNavBar = app.injector.instanceOf[PtaNavBar]
 
-  val block: CurrentUserRequest[AnyContent] => Result = { _ => Ok("ALL GOOD") }
+  val block: AuthenticatedUserRequest[AnyContent] => Result = { _ => Ok("ALL GOOD") }
 
   val testAction = new NavBarRetrievalAction(
     messageCountConnector = mockMessageCountConnector,
@@ -58,9 +58,9 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
       "return the CurrentUserRequest without the NavBar being added" in {
 
         implicit val request =  FakeRequest()
-        val agentRequest = CurrentUserRequest("1234567890", Some("ARN1234"))
+        val agentRequest = AuthenticatedUserRequest("1234567890", Some("ARN1234"))
 
-        val result = testAction.refine(CurrentUserRequest("1234567890", Some("ARN1234")))
+        val result = testAction.refine(AuthenticatedUserRequest("1234567890", Some("ARN1234")))
         await(result) shouldBe Right(agentRequest)
       }
     }
@@ -72,7 +72,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
 
             implicit lazy val request = FakeRequest().withSession(IncomeTaxSessionKeys.origin -> "PTA")
             implicit lazy val messages = messagesApi.preferred(request)
-            val userRequest = CurrentUserRequest("1234567890")
+            val userRequest = AuthenticatedUserRequest("1234567890")
 
             mockGetMessageCount()(Future.successful(Right(MessageCount(1))))
 
@@ -86,7 +86,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
 
             implicit lazy val request = FakeRequest().withSession(IncomeTaxSessionKeys.origin -> "PTA")
             implicit lazy val messages = messagesApi.preferred(request)
-            val userRequest = CurrentUserRequest("1234567890")
+            val userRequest = AuthenticatedUserRequest("1234567890")
 
             mockGetMessageCount()(Future.successful(Left(MessagesCountResponseMalformed)))
 
@@ -101,7 +101,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
           "return the CurrentUserRequest with the NavBar being added" in {
 
             implicit lazy val request = FakeRequest().withSession(IncomeTaxSessionKeys.origin -> "BTA")
-            val userRequest = CurrentUserRequest("1234567890")
+            val userRequest = AuthenticatedUserRequest("1234567890")
 
             mockRetrieveBtaLinksAndRenderNavBar()(Future.successful(Some(Html("BTA Nav Bar"))))
 
@@ -114,7 +114,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
           "return the CurrentUserRequest without a NavBar" in {
 
             implicit lazy val request = FakeRequest().withSession(IncomeTaxSessionKeys.origin -> "BTA")
-            val userRequest = CurrentUserRequest("1234567890")
+            val userRequest = AuthenticatedUserRequest("1234567890")
 
             mockRetrieveBtaLinksAndRenderNavBar()(Future.successful(None))
 

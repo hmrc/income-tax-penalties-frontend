@@ -21,7 +21,7 @@ import play.api.mvc._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.MessageCountConnector
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.CurrentUserRequest
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.AuthenticatedUserRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.BtaNavBarService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
@@ -37,12 +37,12 @@ class NavBarRetrievalAction @Inject()(val messageCountConnector: MessageCountCon
                                       val ptaNavBar: PtaNavBar)
                                      (implicit val appConfig: AppConfig,
                                       val executionContext: ExecutionContext,
-                                      val messagesApi: MessagesApi) extends ActionRefiner[CurrentUserRequest, CurrentUserRequest] with I18nSupport {
+                                      val messagesApi: MessagesApi) extends ActionRefiner[AuthenticatedUserRequest, AuthenticatedUserRequest] with I18nSupport {
 
-  override def refine[A](request: CurrentUserRequest[A]): Future[Either[Result, CurrentUserRequest[A]]] = {
+  override def refine[A](request: AuthenticatedUserRequest[A]): Future[Either[Result, AuthenticatedUserRequest[A]]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    implicit val _req: CurrentUserRequest[A] = request
+    implicit val _req: AuthenticatedUserRequest[A] = request
 
     if (request.isAgent) Future.successful(Right(request)) else {
       request.session.get(IncomeTaxSessionKeys.origin) match {
@@ -55,18 +55,18 @@ class NavBarRetrievalAction @Inject()(val messageCountConnector: MessageCountCon
     }
   }
 
-  private def handlePtaNavBar[A]()(implicit request: CurrentUserRequest[A], hc: HeaderCarrier): Future[Either[Result, CurrentUserRequest[A]]] = {
+  private def handlePtaNavBar[A]()(implicit request: AuthenticatedUserRequest[A], hc: HeaderCarrier): Future[Either[Result, AuthenticatedUserRequest[A]]] = {
     messageCountConnector.getMessageCount().map {
       case Right(count) =>
-        Right(request.copy(navBar = Some(ptaNavBar(count.count))))
+        Right(request.addNavBar(ptaNavBar(count.count)))
       case _ =>
         logger.warn("[NavBarRetrievalAction][refine] Failed to retrieve message count from 'message' microservice, continuing with 0 messages to continue gracefully")
-        Right(request.copy(navBar = Some(ptaNavBar(0))))
+        Right(request.addNavBar(ptaNavBar(0)))
     }
   }
 
-  private def handleBtaNavBar[A]()(implicit request: CurrentUserRequest[A], hc: HeaderCarrier): Future[Right[Result, CurrentUserRequest[A]]] =
+  private def handleBtaNavBar[A]()(implicit request: AuthenticatedUserRequest[A], hc: HeaderCarrier): Future[Right[Result, AuthenticatedUserRequest[A]]] =
     btaNavBarService.retrieveBtaLinksAndRenderNavBar().map(btaNavBarHtml =>
-      Right(request.copy(navBar = btaNavBarHtml))
+      Right(btaNavBarHtml.fold(request)(content => request.addNavBar(content)))
     )
 }
