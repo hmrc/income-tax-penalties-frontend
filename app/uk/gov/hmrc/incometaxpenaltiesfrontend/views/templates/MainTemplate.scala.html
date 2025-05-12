@@ -46,7 +46,7 @@
 
     @if(!disableSessionExpired){
         @hmrcTimeoutDialogHelper(
-            signOutUrl = appConfig.survey,
+            signOutUrl = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.signOut.url,
             keepAliveUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.keepAlive().url)
         )
     }
@@ -99,7 +99,7 @@
     HmrcStandardPageParams(
         serviceURLs = ServiceURLs(
             serviceUrl = Some(appConfig.ITSAPenaltiesHomeUrl),
-            signOutUrl = None
+            signOutUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.signOut.url)
         ),
         serviceName = Some(messages("service.name")),
         pageTitle = Some(fullPageTitle.toString()),
