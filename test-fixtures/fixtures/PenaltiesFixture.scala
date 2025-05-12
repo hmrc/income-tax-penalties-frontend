@@ -132,6 +132,7 @@ trait PenaltiesFixture {
 
 
   val testMtdItId: String = "1234567890"
+  val testNino: String = "AA123456A"
   val testArn: String = "XARN1234567890"
   val testPoCAchievementDate: LocalDate = LocalDate.of(2024, 12, 1)
   val testFromDate: LocalDate = testPoCAchievementDate.minusYears(2)

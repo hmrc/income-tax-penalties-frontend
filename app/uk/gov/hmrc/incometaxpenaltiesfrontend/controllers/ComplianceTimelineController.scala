@@ -42,7 +42,7 @@ class ComplianceTimelineController @Inject()(override val controllerComponents: 
       complianceService.calculateComplianceWindow() match {
         case Some((fromDate, toDate)) =>
           for {
-            optComplianceData <- complianceService.getDESComplianceData(currentUserRequest.mtdItId, fromDate, toDate)
+            optComplianceData <- complianceService.getDESComplianceData(currentUserRequest.nino, fromDate, toDate)
             timelineEvents = timelineBuilder.buildTimeline(optComplianceData)
             result = Ok(complianceTimelineView(currentUserRequest.isAgent, timelineEvents, toDate))
           } yield result

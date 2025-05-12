@@ -39,7 +39,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
       "the user is an authorised individual" should {
         "have the correct page has correct elements" in {
           stubAuthRequests(false)
-          stubGetPenalties("1234567890", None)(OK, Json.toJson(samplePenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, None)(OK, Json.toJson(samplePenaltyDetailsModel))
 
           val result = get("/")
 
@@ -60,7 +60,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
       "the user is an authorised agent" should {
         "have the correct page has correct elements" in {
           stubAuthRequests(true)
-          stubGetPenalties("1234567890", Some("123456789"))(OK, Json.toJson(samplePenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, Some("123456789"))(OK, Json.toJson(samplePenaltyDetailsModel))
 
           val result = get("/", isAgent = true)
 
@@ -82,7 +82,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
     "when call to penalties backend fails" should {
       "render an ISE" in {
         stubAuthRequests(false)
-        stubGetPenalties("1234567890", None)(INTERNAL_SERVER_ERROR, Json.obj())
+        stubGetPenalties(testAgentNino, None)(INTERNAL_SERVER_ERROR, Json.obj())
 
         val result = get("/")
 
