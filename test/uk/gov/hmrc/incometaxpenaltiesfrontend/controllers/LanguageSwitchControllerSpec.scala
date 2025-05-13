@@ -34,7 +34,7 @@ class LanguageSwitchControllerSpec extends AnyWordSpec with should.Matchers with
   val testAction = new LanguageSwitchController(
     languageUtils = languageUtils,
     cc = stubControllerComponents()
-  )
+  )(appConfig)
 
   "LanguageSwitchController" should {
 

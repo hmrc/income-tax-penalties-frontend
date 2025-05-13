@@ -72,7 +72,7 @@
   ))
 
     @link(
-        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage.url,
+        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
         messageKey = messages("calculation.return.link"),
         id = Some("returnToIndex")
     )

@@ -19,17 +19,18 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import com.google.inject.Inject
 import play.api.i18n.Lang
 import play.api.mvc.ControllerComponents
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
 
 class LanguageSwitchController @Inject()(
   languageUtils: LanguageUtils,
   cc: ControllerComponents
-) extends LanguageController(languageUtils, cc) {
+)(implicit appConfig: AppConfig) extends LanguageController(languageUtils, cc) {
 
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
     "cymraeg" -> Lang("cy")
   )
 
-  override def fallbackURL: String = routes.IndexController.homePage.url
+  override def fallbackURL: String = appConfig.ITSAPenaltiesHomeUrl
 }

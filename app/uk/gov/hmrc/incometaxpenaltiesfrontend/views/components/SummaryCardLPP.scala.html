@@ -28,7 +28,7 @@
         link: Link
 )
 
-@(summaryCard: LatePaymentPenaltySummaryCard)(implicit messages: Messages)
+@(summaryCard: LatePaymentPenaltySummaryCard,isAgent:Boolean)(implicit messages: Messages)
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
@@ -51,7 +51,7 @@
             } else {
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action no-border not-bold">
-                        <a id={"lpp-view-calculation-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.PenaltyCalculationController.penaltyCalculationPage.url}>
+                        <a id={"lpp-view-calculation-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.PenaltyCalculationController.penaltyCalculationPage(isAgent = isAgent).url}>
                             {messages("cardLinks.viewCalculation")}
                         </a>
                     </li>

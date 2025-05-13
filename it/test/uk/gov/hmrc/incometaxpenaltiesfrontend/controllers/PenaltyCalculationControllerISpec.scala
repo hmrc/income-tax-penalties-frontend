@@ -21,14 +21,14 @@ import play.api.http.Status.OK
 
 class PenaltyCalculationControllerISpec extends ControllerISpecHelper {
 
-  "GET /calculation" when {
+  "GET /first-lpp-calculation" when {
 
-    testNavBar("/calculation")()
+    testNavBar("/first-lpp-calculation")()
 
     "return an OK with a view" when {
       "have the correct page has correct elements" in {
         stubAuthRequests(false)
-        val result = get("/calculation")
+        val result = get("/first-lpp-calculation")
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)

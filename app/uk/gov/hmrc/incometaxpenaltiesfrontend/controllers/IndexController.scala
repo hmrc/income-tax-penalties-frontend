@@ -20,6 +20,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthenticatedUserWithPenaltyData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LSPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
@@ -38,7 +39,16 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
                                 lppCardHelper: LPPCardHelper,
                                 indexView: IndexView)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val homePage: Action[AnyContent] = authActions.asMTDUserOldWithPenaltyData().async { implicit penaltyDataUserRequest =>
+
+
+  def homePage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUserOldWithPenaltyData().async  { implicit currentUserRequest =>
+    if(currentUserRequest.isAgent != isAgent) {
+      Future.successful(Redirect(routes.IndexController.homePage(currentUserRequest.isAgent)))
+    }else{
+      home(isAgent)}
+  }
+
+  private[controllers] def home(isAgent: Boolean)(implicit penaltyDataUserRequest: AuthenticatedUserWithPenaltyData[_]): Future[Result] = {
     val penaltyData = penaltyDataUserRequest.penaltyDetails
     val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
     val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
@@ -60,7 +70,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
           lspCardData = lspSummaryCards,
           lppCardData = lppSummaryCards,
           penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
-          isAgent = penaltyDataUserRequest.isAgent
+          isAgent = isAgent
         ))
       }
     )
