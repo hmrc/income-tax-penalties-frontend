@@ -30,12 +30,8 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
                                              penaltyCalculationView: PenaltyCalculation,
                                              authActions: AuthActions)(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
 
-  def penaltyCalculationPage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUserOld() { implicit currentUserRequest =>
-    if(currentUserRequest.isAgent != isAgent) {
-      Redirect(routes.IndexController.homePage(currentUserRequest.isAgent))
-    }else{
-      Ok(penaltyCalculationView(currentUserRequest.isAgent))
-    }
+  def penaltyCalculationPage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUser(isAgent)  { implicit currentUserRequest =>
+    Ok(penaltyCalculationView(currentUserRequest.isAgent))
   }
 }
 

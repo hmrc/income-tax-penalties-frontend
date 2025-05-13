@@ -74,8 +74,7 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
           stubAuth(OK, successfulAgentAuthResponse)
           stubGetIncomeTaxSessionDataSuccessResponse()
           runStubs
-          val url = "/agent-first-lpp-calculation"
-          val result = get(url, origin = Some("BTA"), isAgent = true, queryParams = queryParams)
+          val result = get("/agent-first-lpp-calculation", origin = Some("BTA"), isAgent = true, queryParams = queryParams)
 
           result.status shouldBe OK
           val document = Jsoup.parse(result.body)
