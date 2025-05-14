@@ -43,9 +43,9 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
     disable(UseStubForBackend)
   }
 
-  "GET /compliance-timeline" should {
+  "GET /actions-to-get-points-removed" should {
 
-    testNavBar("/compliance-timeline") {
+    testNavBar("/actions-to-get-points-removed") {
       stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
     }
 
@@ -55,7 +55,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        lazy val result = get("/compliance-timeline")
+        lazy val result = get("/actions-to-get-points-removed")
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -78,7 +78,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
-        lazy val result = get("/compliance-timeline")
+        lazy val result = get("/actions-to-get-points-removed")
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -107,7 +107,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        lazy val result = get("/compliance-timeline", isAgent = true)
+        lazy val result = get("/actions-to-get-points-removed", isAgent = true)
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -131,7 +131,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
-        lazy val result = get("/compliance-timeline", isAgent = true)
+        lazy val result = get("/actions-to-get-points-removed", isAgent = true)
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -157,7 +157,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
       "there is no date in session" in {
         stubAuthRequests(false)
 
-        lazy val result = getNoDateInSession("/compliance-timeline")
+        lazy val result = getNoDateInSession("/actions-to-get-points-removed")
 
         result.status shouldBe INTERNAL_SERVER_ERROR
       }
