@@ -14,7 +14,7 @@ GET        /appeal-penalty                      uk.gov.hmrc.incometaxpenaltiesfr
 GET        /find-out-how-to-appeal              uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToFindOutHowToAppealLPP(principalChargeReference: String, itsaAmountInPence: Int, itsaPeriodStartDate: String, itsaPeriodEndDate:String)
 GET        /first-lpp-calculation               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.PenaltyCalculationController.penaltyCalculationPage(isAgent:Boolean = false)
 GET        /agent-first-lpp-calculation         uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.PenaltyCalculationController.penaltyCalculationPage(isAgent:Boolean = true)
-GET        /actions-to-get-points-removed       uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage(isAgent:Boolean = false)
-GET        /agent-actions-to-get-points-removed uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage(isAgent:Boolean = true)
+GET        /actions-to-get-points-removed       uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage
+#GET        /agent-actions-to-get-points-removed uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage(isAgent:Boolean = true)
 
 GET        /language/:lang                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)

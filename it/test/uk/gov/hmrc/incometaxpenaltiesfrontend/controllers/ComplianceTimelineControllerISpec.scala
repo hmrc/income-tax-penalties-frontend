@@ -107,7 +107,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        lazy val result = get("/agent-actions-to-get-points-removed", isAgent = true)
+        lazy val result = get("/actions-to-get-points-removed", isAgent = true)
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -131,7 +131,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
-        lazy val result = get("/agent-actions-to-get-points-removed", isAgent = true)
+        lazy val result = get("/actions-to-get-points-removed", isAgent = true)
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
