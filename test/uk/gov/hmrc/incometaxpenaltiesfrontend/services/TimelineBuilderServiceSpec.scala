@@ -22,6 +22,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 
@@ -30,7 +31,7 @@ import java.time.LocalDate
 class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with GuiceOneAppPerSuite with DateFormatter {
 
   class Setup(runDate: LocalDate = LocalDate.of(2023,4,13)) {
-    object FakeTimeMachine extends TimeMachine {
+    object FakeTimeMachine extends TimeMachine(appConfig = app.injector.instanceOf[AppConfig]) {
       override def getCurrentDate: LocalDate = runDate
     }
     val service: TimelineBuilderService = new TimelineBuilderService(FakeTimeMachine)
