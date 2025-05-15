@@ -22,7 +22,11 @@ import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URLEncoder
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
+import scala.util.Try
+
 
 @Singleton
 class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends FeatureSwitching {
@@ -80,4 +84,17 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   }
 
   lazy val enterClientUTRVandCUrl: String = config.get[String]("income-tax-view-change.enterClientUTR.url")
+
+  lazy val timeMachineEnabled: Boolean =
+    config.get[Boolean]("timemachine.enabled")
+
+  lazy val timeMachineDate: String =
+    config.get[String]("timemachine.date")
+  private val timeMachineDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+  def optCurrentDate: Option[LocalDate]  = if (timeMachineEnabled && !timeMachineDate.equalsIgnoreCase("now")){
+    Try(LocalDate.parse(timeMachineDate, timeMachineDateFormatter)).toOption
+  } else None
+
+
 }
