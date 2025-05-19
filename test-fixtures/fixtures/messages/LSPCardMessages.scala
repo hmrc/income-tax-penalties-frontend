@@ -48,27 +48,27 @@ object LSPCardMessages {
 
   object Welsh extends Messages with Cy {
     //Card Title Messages
-    override val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: adjustment point (Welsh)"
-    override val cardTitleRemovedPoint = "Penalty point (Welsh)"
-    override def cardTitleFinancialPoint(point: Int, amount: String) = s"Penalty point $point: £$amount penalty (Welsh)"
-    override def cardTitleAdditionalFinancialPoint(amount: String) = s"Additional £$amount penalty (Welsh)"
-    override val cardTitlePoint: Int => String = point => s"Penalty point $point (Welsh)"
+    override val cardTitleAdjustmentPoint: Int => String = point => s"Pwynt cosb $point: pwynt addasu"
+    override val cardTitleRemovedPoint = "Pwynt cosb"
+    override def cardTitleFinancialPoint(point: Int, amount: String) = s"Pwynt cosb $point: Cosb o £$amount"
+    override def cardTitleAdditionalFinancialPoint(amount: String) = s"Cosb ychwanegol o £$amount"
+    override val cardTitlePoint: Int => String = point => s"Pwynt cosb $point"
 
     //Summary Row Messages
-    override val addedOnKey = "Added on (Welsh)"
-    override val quarterKey = "Quarter (Welsh)"
-    override def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate (Welsh)"
-    override val updateDueKey = "Update due (Welsh)"
-    override val updateSubmittedKey = "Update submitted (Welsh)"
-    override val returnNotReceived = "Return not received (Welsh)"
-    override val expiryDateKey = "Point due to expire (Welsh)"
-    override val expiryReasonKey = "Removed reason (Welsh)"
+    override val addedOnKey = "Ychwanegwyd ar"
+    override val quarterKey = "Quarter (Welsh)" // Chwarter
+    override def quarterValue(fromDate: String, toDate: String) = s"$fromDate i $toDate"
+    override val updateDueKey = "Diweddariad i’w gyflwyno"
+    override val updateSubmittedKey = "Diweddariad wedi’i gyflwyno"
+    override val returnNotReceived = "Return not received (Welsh)" // Ffurflen Dreth heb ddod i law
+    override val expiryDateKey = "Pwynt cosb yn dod i ben"
+    override val expiryReasonKey = "Removed reason (Welsh)" // Rheswm dros dynnu
 
     //Card Footer Links
-    override val cardLinksAdjustedPointCannotAppeal = "You cannot appeal this point (Welsh)"
-    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
-    override val cardLinksAppealNoPointNumber = "Appeal penalty (Welsh)"
-    override val cardLinksAppeal: Int => String = point => s"Appeal penalty point $point (Welsh)"
-    override val cardLinksReviewAppeal: String = "Ask for review (Welsh)"
+    override val cardLinksAdjustedPointCannotAppeal = "Ni allwch apelio yn erbyn y pwynt hwn"
+    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)" // Darganfyddwch sut i apelio
+    override val cardLinksAppealNoPointNumber = "Apelio yn erbyn cosb"
+    override val cardLinksAppeal: Int => String = point => s"Apelio yn erbyn pwynt cosb $point"
+    override val cardLinksReviewAppeal: String = "Gofyn am adolygiad"
   }
 }
