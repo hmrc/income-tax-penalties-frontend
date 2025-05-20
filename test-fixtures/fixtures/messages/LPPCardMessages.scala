@@ -60,7 +60,7 @@ object LPPCardMessages {
     override val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
       case LPP1 => "Cosb gyntaf am dalu’n hwyr"
       case LPP2 => "Ail gosb am dalu’n hwyr"
-      case _    => "Penalty for late payment - details are in the letter we sent you (Welsh)" // Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonwyd atoch
+      case _    => "Penalty for late payment - details are in the letter we sent you (Welsh)"
     }
     override val incomeTaxPeriodKey = "Taliad sy’n hwyr"
     override def overdueChargeValue(fromYear: String, toYear: String) = s"Treth Incwm ar gyfer blwyddyn dreth $fromYear i $toYear"
@@ -72,7 +72,7 @@ object LPPCardMessages {
     //Card Footer Links
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"
     override val cardLinksAppealThisPenalty = "Apelio yn erbyn y gosb hon"
-    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)" // Darganfyddwch sut i apelio
+    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
     override val cardLinksReviewAppeal = "Gofyn am adolygiad"
     override val cannotAppeal = "Ni allwch apelio yn erbyn y pwynt hwn"
   }

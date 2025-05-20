@@ -56,17 +56,17 @@ object LSPCardMessages {
 
     //Summary Row Messages
     override val addedOnKey = "Ychwanegwyd ar"
-    override val quarterKey = "Quarter (Welsh)" // Chwarter
+    override val quarterKey = "Quarter (Welsh)"
     override def quarterValue(fromDate: String, toDate: String) = s"$fromDate i $toDate"
     override val updateDueKey = "Diweddariad i’w gyflwyno"
     override val updateSubmittedKey = "Diweddariad wedi’i gyflwyno"
-    override val returnNotReceived = "Return not received (Welsh)" // Ffurflen Dreth heb ddod i law
+    override val returnNotReceived = "Return not received (Welsh)"
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
-    override val expiryReasonKey = "Removed reason (Welsh)" // Rheswm dros dynnu
+    override val expiryReasonKey = "Removed reason (Welsh)"
 
     //Card Footer Links
     override val cardLinksAdjustedPointCannotAppeal = "Ni allwch apelio yn erbyn y pwynt hwn"
-    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)" // Darganfyddwch sut i apelio
+    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
     override val cardLinksAppealNoPointNumber = "Apelio yn erbyn cosb"
     override val cardLinksAppeal: Int => String = point => s"Apelio yn erbyn pwynt cosb $point"
     override val cardLinksReviewAppeal: String = "Gofyn am adolygiad"
