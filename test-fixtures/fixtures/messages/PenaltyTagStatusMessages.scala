@@ -31,12 +31,12 @@ object PenaltyTagStatusMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val active: String = "ACTIVE (Welsh)"
-    override val expired: String = "EXPIRED (Welsh)"
+    override val active: String = "AR WAITH"
+    override val expired: String = "WEDI DOD I BEN"
     override val upheld: String = "UPHELD (Welsh)"
-    override val due: String = "DUE (Welsh)"
+    override val due: String = "YN DDYLEDUS"
     override val amountDue: String => String = amount => s"£$amount $due"
-    override val paid = "PAID (Welsh)"
-    override val estimate = "ESTIMATE (Welsh)"
+    override val paid = "WEDI’I DALU"
+    override val estimate = "AMCANGYFRIF"
   }
 }

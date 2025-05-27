@@ -64,57 +64,57 @@ agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax
 # Status tags
 # ===========
 status.upheld = UPHELD (Welsh)
-status.expired = EXPIRED (Welsh)
-status.active = ACTIVE (Welsh)
-status.due = DUE (Welsh)
-status.paid = PAID (Welsh)
-status.amountDue = £{0} DUE (Welsh)
-status.estimate = ESTIMATE (Welsh)
+status.expired = WEDI DOD I BEN
+status.active = AR WAITH
+status.due = YN DDYLEDUS
+status.paid = WEDI’I DALU
+status.amountDue = £{0} YN DDYLEDUS
+status.estimate = AMCANGYFRIF
 
 # Card Title Content
 # ==================
-lsp.cardTitle.addedPoint = Penalty point {0}: adjustment point (Welsh)
-lsp.cardTitle.removedPoint = Penalty point (Welsh)
+lsp.cardTitle.addedPoint = Pwynt cosb {0}: pwynt addasu
+lsp.cardTitle.removedPoint = Pwynt cosb
 lsp.cardTitle.financialPoint = Penalty point {0}: £{1} penalty (Welsh)
-lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty (Welsh)
-lsp.cardTitle.point = Penalty point {0} (Welsh)
-lpp.cardTitle = £{0} penalty (Welsh)
+lsp.cardTitle.additionalFinancialPoint = Cosb ychwanegol o £{0}
+lsp.cardTitle.point = Pwynt cosb {0}
+lpp.cardTitle = Cosb o £{0}
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
-lsp.addedOn.key = Added on (Welsh)
+lsp.addedOn.key = Ychwanegwyd ar
 lsp.quarter.key = Quarter (Welsh)
 lsp.quarter.value = {0} to {1} (Welsh)
-lsp.updateDue.key = Update due (Welsh)
-lsp.updateSubmitted.key = Update submitted (Welsh)
+lsp.updateDue.key = Diweddariad i’w gyflwyno
+lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
 lsp.updateSubmitted.notReceived = Return not received (Welsh)
-lsp.expiry.key = Point due to expire (Welsh)
+lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
 lsp.noPenalties = There are no late submission penalties. (Welsh)
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
-lpp.penaltyType.key = Penalty type (Welsh)
+lpp.penaltyType.key = Math o gosb
 lpp.penaltyType.LPP1 = First penalty for late payment (Welsh)
 lpp.penaltyType.LPP2 = Second penalty for late payment (Welsh)
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you (Welsh)
-lpp.addedOn.key = Added on (Welsh)
-lpp.incomeTaxPeriod.key = Overdue charge (Welsh)
-lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year (Welsh)
-lpp.incomeTaxDue.key = Income Tax due (Welsh)
-lpp.incomeTaxPaymentDate.key = Income Tax paid (Welsh)
-lpp.paymentNotReceived = Payment not yet received (Welsh)
+lpp.addedOn.key = Ychwanegwyd ar
+lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
+lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
+lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
+lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
+lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
 lpp.noPenalties = There are no late payment penalties. (Welsh)
 
 # Appeal Status
 # =============
 #TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
-appealStatus.key = Appeal status (Welsh)
+appealStatus.key = Statws yr apêl
 appealStatus.A.01 = Under review by HMRC (Welsh)
 appealStatus.A.02 = Under review by the tax tribunal (Welsh)
 appealStatus.B.02 = Appeal accepted by tax tribunal (Welsh)
 appealStatus.B.01 = Appeal accepted (Welsh)
-appealStatus.C.01 = Appeal rejected (Welsh)
+appealStatus.C.01 = Apêl wedi’i wrthod
 appealStatus.C.02 = Appeal rejected by tax tribunal (Welsh)
 
 # Expiry Reason
@@ -131,12 +131,12 @@ expiryReason.RES = Reset (Welsh)
 
 # Card Footer Links
 # =================
-cardLinks.cannotAppeal = You cannot appeal this point (Welsh)
+cardLinks.cannotAppeal = YNi allwch apelio yn erbyn y pwynt hwn
 cardLinks.findOutHowToAppeal = Find out how to appeal (Welsh)
-cardLinks.appealNoPointNumber = Appeal this penalty (Welsh)
-cardLinks.appeal = Appeal penalty point {0} (Welsh)
-cardLinks.viewCalculation = View calculation (Welsh)
-cardLinks.reviewAppeal = Ask for review (Welsh)
+cardLinks.appealNoPointNumber = Apelio yn erbyn y gosb hon
+cardLinks.appeal = Apelio yn erbyn pwynt cosb {0}
+cardLinks.viewCalculation = Gweld y cyfrifiad
+cardLinks.reviewAppeal = Gofyn am adolygiad
 
 # Months
 # ======
