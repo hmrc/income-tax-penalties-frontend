@@ -5,15 +5,15 @@
 GET        /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
 
 
-GET        /                                    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage
-
+GET        /                                    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage(isAgent:Boolean = false)
+GET        /agent                               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage(isAgent:Boolean = true)
 GET        /sign-out                            uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.signOut()
 GET        /keep-alive                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ServiceController.keepAlive()
 
 GET        /appeal-penalty                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToAppeals(penaltyId: String, isLPP: Boolean ?= false, isFindOutHowToAppealLSP: Boolean ?= false, isLPP2: Boolean ?= false, is2ndStageAppeal: Boolean ?= false)
 GET        /find-out-how-to-appeal              uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController.redirectToFindOutHowToAppealLPP(principalChargeReference: String, itsaAmountInPence: Int, itsaPeriodStartDate: String, itsaPeriodEndDate:String)
-GET        /calculation                         uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.PenaltyCalculationController.penaltyCalculationPage
-GET        /compliance-timeline                 uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage
-
+GET        /first-lpp-calculation               uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.PenaltyCalculationController.penaltyCalculationPage(isAgent:Boolean = false)
+GET        /agent-first-lpp-calculation         uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.PenaltyCalculationController.penaltyCalculationPage(isAgent:Boolean = true)
+GET        /actions-to-get-points-removed       uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage
 
 GET        /language/:lang                      uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)

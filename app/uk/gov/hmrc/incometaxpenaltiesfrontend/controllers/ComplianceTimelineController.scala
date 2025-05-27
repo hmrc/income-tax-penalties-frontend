@@ -37,7 +37,7 @@ class ComplianceTimelineController @Inject()(override val controllerComponents: 
                                              errorHandler: ErrorHandler
                                             )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val complianceTimelinePage: Action[AnyContent] =
+  def complianceTimelinePage: Action[AnyContent] =
     authActions.asMTDUserOld().async { implicit currentUserRequest =>
       complianceService.calculateComplianceWindow() match {
         case Some((fromDate, toDate)) =>

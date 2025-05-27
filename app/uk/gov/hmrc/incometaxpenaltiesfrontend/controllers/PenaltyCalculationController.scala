@@ -30,11 +30,9 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
                                              penaltyCalculationView: PenaltyCalculation,
                                              authActions: AuthActions)(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
 
-  val penaltyCalculationPage: Action[AnyContent] =
-    authActions.asMTDUserOld() { implicit currentUserRequest =>
-      Ok(penaltyCalculationView(currentUserRequest.isAgent))
+  def penaltyCalculationPage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUser(isAgent)  { implicit currentUserRequest =>
+    Ok(penaltyCalculationView(currentUserRequest.isAgent))
   }
-
 }
 
 
