@@ -53,27 +53,27 @@ object LPPCardMessages {
   object Welsh extends Messages with Cy {
 
     //Card Title Messages
-    override val cardTitlePenalty: String => String = amount => s"£$amount penalty (Welsh)"
+    override val cardTitlePenalty: String => String = amount => s"Cosb o £$amount"
 
     //Summary Row Messages
-    override val penaltyTypeKey = "Penalty type (Welsh)"
+    override val penaltyTypeKey = "Math o gosb"
     override val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
       case LPP1 => "First penalty for late payment (Welsh)"
       case LPP2 => "Second penalty for late payment (Welsh)"
       case _    => "Penalty for late payment - details are in the letter we sent you (Welsh)"
     }
-    override val incomeTaxPeriodKey = "Overdue charge (Welsh)"
-    override def overdueChargeValue(fromYear: String, toYear: String) = s"Income Tax for $fromYear to $toYear tax year (Welsh)"
-    override val addedOnKey = "Added on (Welsh)"
-    override val incomeTaxDueKey = "Income Tax due (Welsh)"
-    override val incomeTaxPaidKey = "Income Tax paid (Welsh)"
-    override val paymentNotReceived = "Payment not yet received (Welsh)"
+    override val incomeTaxPeriodKey = "Taliad sy’n hwyr"
+    override def overdueChargeValue(fromYear: String, toYear: String) = s"Treth Incwm ar gyfer blwyddyn dreth $fromYear i $toYear"
+    override val addedOnKey = "Ychwanegwyd ar"
+    override val incomeTaxDueKey = "Treth Incwm sy’n ddyledus"
+    override val incomeTaxPaidKey = "Treth Incwm wedi’i thalu"
+    override val paymentNotReceived = "Nid yw’r taliad wedi dod i law hyd yn hyn"
 
     //Card Footer Links
-    override val cardLinksViewCalculation = "View calculation (Welsh)"
-    override val cardLinksAppealThisPenalty = "Appeal this penalty (Welsh)"
+    override val cardLinksViewCalculation = "Gweld y cyfrifiad"
+    override val cardLinksAppealThisPenalty = "Apelio yn erbyn y gosb hon"
     override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
-    override val cardLinksReviewAppeal = "Ask for review (Welsh)"
-    override val cannotAppeal = "You cannot appeal this point (Welsh)"
+    override val cardLinksReviewAppeal = "Gofyn am adolygiad"
+    override val cannotAppeal = "YNi allwch apelio yn erbyn y pwynt hwn"
   }
 }

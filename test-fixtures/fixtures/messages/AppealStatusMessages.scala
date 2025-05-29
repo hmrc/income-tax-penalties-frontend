@@ -31,12 +31,12 @@ object AppealStatusMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val appealStatusKey = "Appeal status (Welsh)"
+    override val appealStatusKey = "Statws yr apêl"
     override val underReviewHMRC = "Under review by HMRC (Welsh)"
     override val underReviewTaxTribunal = "Under review by the tax tribunal (Welsh)"
     override val acceptedTaxTribunal = "Appeal accepted by tax tribunal (Welsh)"
     override val accepted = "Appeal accepted (Welsh)"
-    override val rejected = "Appeal rejected (Welsh)"
+    override val rejected = "Apêl wedi’i wrthod"
     override val rejectedTaxTribunal = "Appeal rejected by tax tribunal (Welsh)"
   }
 }
