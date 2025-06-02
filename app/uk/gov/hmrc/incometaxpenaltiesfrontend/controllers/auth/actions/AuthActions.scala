@@ -21,15 +21,13 @@ import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthenticatedUserWithPenaltyData, CurrentUserRequest}
 
 @Singleton
-class AuthActions @Inject()(val authoriseAndRetrieve: AuthoriseAndRetrieve,
-                            val authoriseAndRetrieveMTDIndividual: AuthoriseAndRetrieveMTDIndividual,
+class AuthActions @Inject()(val authoriseAndRetrieveMTDIndividual: AuthoriseAndRetrieveMTDIndividual,
                             val authoriseAndRetrieveAgent: AuthoriseAndRetrieveAgent,
                             val withAgentClientData: RetrieveClientData,
                             val authoriseAndRetrieveMtdAgent: AuthoriseAndRetrieveMtdAgent,
                             val navBarRetrievalAction: NavBarRetrievalAction,
                             val penaltyDataAction: PenaltyDataAction) {
 
-  // $COVERAGE-OFF$
   def asMTDIndividual(): ActionBuilder[CurrentUserRequest, AnyContent] = {
     authoriseAndRetrieveMTDIndividual andThen navBarRetrievalAction
   }
@@ -38,29 +36,12 @@ class AuthActions @Inject()(val authoriseAndRetrieve: AuthoriseAndRetrieve,
     authoriseAndRetrieveAgent andThen withAgentClientData andThen authoriseAndRetrieveMtdAgent
   }
 
-  def asMTDUserOld(): ActionBuilder[CurrentUserRequest, AnyContent] = {
-    authoriseAndRetrieve andThen navBarRetrievalAction
-  }
-
   def asMTDUser(isAgent: Boolean): ActionBuilder[CurrentUserRequest, AnyContent] = {
     if(isAgent) asMTDAgent() else asMTDIndividual()
-  }
-
-  def asMTDIndividualWithPenaltyData(): ActionFunction[Request, AuthenticatedUserWithPenaltyData] = {
-    asMTDIndividual() andThen penaltyDataAction
-  }
-
-  def asMTDAgentWitPenaltyData(): ActionBuilder[AuthenticatedUserWithPenaltyData, AnyContent] = {
-    asMTDAgent() andThen penaltyDataAction
-  }
-
-  def asMTDUserOldWithPenaltyData(): ActionBuilder[AuthenticatedUserWithPenaltyData, AnyContent] = {
-    asMTDUserOld() andThen penaltyDataAction
   }
   def asMTDUserWithPenaltyData(isAgent: Boolean): ActionBuilder[AuthenticatedUserWithPenaltyData, AnyContent] = {
     asMTDUser(isAgent) andThen penaltyDataAction
   }
-  // $COVERAGE-ON$
 
 
 }

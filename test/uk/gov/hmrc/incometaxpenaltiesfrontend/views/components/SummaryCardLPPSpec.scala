@@ -233,6 +233,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       appealLink.text() shouldBe messagesForLanguage.cardLinksReviewAppeal
                       appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
                         penalty.penaltyChargeReference.get,
+                        isAgent,
                         isLPP = true,
                         is2ndStageAppeal = true
                       ).url

@@ -31,11 +31,12 @@ class AppealsController @Inject()(val authActions: AuthActions,
                                  )(implicit val appConfig: AppConfig) extends FrontendBaseController with FeatureSwitching with DateFormatter {
 
   def redirectToAppeals(penaltyId: String,
+                        isAgent: Boolean,
                         isLPP: Boolean,
                         isFindOutHowToAppealLSP: Boolean,
                         isLPP2: Boolean,
                         is2ndStageAppeal: Boolean): Action[AnyContent] =
-    authActions.asMTDUserOld() { _ =>
+    authActions.asMTDUser(isAgent) { _ =>
       logger.debug(s"[IndexController][redirectToAppeals] - Redirect to appeals frontend with id $penaltyId and is late payment penalty: $isLPP " +
         s"and cannot be appealed: $isFindOutHowToAppealLSP and is LPP2: $isLPP2")
       if (isFindOutHowToAppealLSP) {
@@ -47,10 +48,11 @@ class AppealsController @Inject()(val authActions: AuthActions,
 
 
   def redirectToFindOutHowToAppealLPP(principalChargeReference: String,
+                                      isAgent: Boolean,
                                       itsaAmountInPence: Int,
                                       itsaPeriodStartDate: String,
                                       itsaPeriodEndDate: String): Action[AnyContent] =
-    authActions.asMTDUserOld() { _ =>
+    authActions.asMTDUser(isAgent) { _ =>
       logger.debug(s"[IndexController][redirectToFindOutHowToAppealLPP] - Redirect to appeals frontend with principleChargeReference: $principalChargeReference " +
         s"and has itsaPeriodStartDate: $itsaPeriodStartDate and has itsaPeriodEndDate: $itsaPeriodEndDate and has itsaAmountInPence: $itsaAmountInPence")
       Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&itsaAmountInPence=$itsaAmountInPence&itsaPeriodStartDate=$itsaPeriodStartDate&itsaPeriodEndDate=$itsaPeriodEndDate")

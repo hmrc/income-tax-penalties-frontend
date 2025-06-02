@@ -97,8 +97,20 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
         document.getElementsByClass("hmrc-timeline__event-content").get(1).text() shouldBe timeline2
       }
-
     }
+
+    "throw an exception" when {
+      "there is no date in session" in {
+        stubAuthRequests(false)
+
+        lazy val result = getNoDateInSession("/actions-to-get-points-removed")
+
+        result.status shouldBe INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "GET /agent-actions-to-get-points-removed" should {
 
     "return an OK with an agent view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
@@ -107,7 +119,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
 
-        lazy val result = get("/actions-to-get-points-removed", isAgent = true)
+        lazy val result = get("/agent-actions-to-get-points-removed", isAgent = true)
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -131,7 +143,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayloadTwoOpen))
 
-        lazy val result = get("/actions-to-get-points-removed", isAgent = true)
+        lazy val result = get("/agent-actions-to-get-points-removed", isAgent = true)
         result.status shouldBe OK
 
         val document = Jsoup.parse(result.body)
@@ -162,6 +174,5 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         result.status shouldBe INTERNAL_SERVER_ERROR
       }
     }
-
   }
 }

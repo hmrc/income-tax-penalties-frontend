@@ -30,8 +30,6 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
   "UserComplianceInfoAuditModel" should {
 
     "user is an Agent" should {
-
-      val mtditid = "XA123456"
       val arn = "ARN123456"
 
       implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledAgent(sessionData, Some(arn))(FakeRequest())

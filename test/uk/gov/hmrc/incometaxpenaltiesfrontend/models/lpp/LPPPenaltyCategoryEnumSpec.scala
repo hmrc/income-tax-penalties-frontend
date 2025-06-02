@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.{JsError, JsString, Json}
+import play.api.libs.json.{JsString, Json}
 
 class LPPPenaltyCategoryEnumSpec extends AnyWordSpec with Matchers {
 

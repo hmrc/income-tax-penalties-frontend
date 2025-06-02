@@ -47,219 +47,223 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
       s"rendering in language '${messagesForLanguage.lang.name}'" when {
 
-        "calling .apply()" when {
+        List(true, false).foreach { isAgent =>
 
-          "provided with a Late Submission Penalty" when {
+          s"calling .apply(isAgent = $isAgent)" when {
 
-            "penalty is NOT appealed" when {
+            "provided with a Late Submission Penalty" when {
 
-              "it's not an added or remove point" when {
+              "penalty is NOT appealed" when {
 
-                "when the return has been received late" should {
+                "it's not an added or remove point" when {
 
-                  "generate a Summary Card with correct content including an Appeal Link" in {
+                  "when the return has been received late" should {
 
-                    val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
-                      cardRows = Seq.empty,
-                      cardTitle = messagesForLanguage.cardTitlePoint(1),
-                      status = getTagStatus(sampleLateSubmissionPoint),
-                      penaltyPoint = "1",
-                      penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
-                      isReturnSubmitted = true,
-                      penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
-                      dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_))
-                    ))
+                    "generate a Summary Card with correct content including an Appeal Link" in {
 
-                    val document = Jsoup.parse(summaryCardHtml.toString)
+                      val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
+                        cardRows = Seq.empty,
+                        cardTitle = messagesForLanguage.cardTitlePoint(1),
+                        status = getTagStatus(sampleLateSubmissionPoint),
+                        penaltyPoint = "1",
+                        penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                        isReturnSubmitted = true,
+                        penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
+                        dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_))
+                      ), isAgent)
 
-                    document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                      val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink")
-                    appealLink.text() shouldBe messagesForLanguage.cardLinksAppeal(1)
-                    appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
-                      sampleRemovedPenaltyPoint.penaltyNumber
-                    ).url
+                      document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+
+                      val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink")
+                      appealLink.text() shouldBe messagesForLanguage.cardLinksAppeal(1)
+                      appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
+                        sampleRemovedPenaltyPoint.penaltyNumber, isAgent
+                      ).url
+                    }
+                  }
+
+                  "when the return has NOT been received" should {
+
+                    "generate a Summary Card with correct content including an Find out how to Appeal Link" in {
+
+                      val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
+                        cardRows = Seq.empty,
+                        cardTitle = messagesForLanguage.cardTitlePoint(1),
+                        status = getTagStatus(sampleLateSubmissionPoint),
+                        penaltyPoint = "1",
+                        penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                        isReturnSubmitted = false,
+                        penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
+                        dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_))
+                      ), isAgent)
+
+                      val document = Jsoup.parse(summaryCardHtml.toString)
+
+                      document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+
+                      val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-findOutHowAppeal")
+                      appealLink.text() shouldBe messagesForLanguage.cardLinksFindOutHowToAppeal
+                      appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
+                        sampleRemovedPenaltyPoint.penaltyNumber, isAgent,
+                        isFindOutHowToAppealLSP = true
+                      ).url
+                    }
                   }
                 }
 
-                "when the return has NOT been received" should {
+                "it's adjustment point" when {
 
-                  "generate a Summary Card with correct content including an Find out how to Appeal Link" in {
+                  "when the point has been added" should {
 
-                    val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
-                      cardRows = Seq.empty,
-                      cardTitle = messagesForLanguage.cardTitlePoint(1),
-                      status = getTagStatus(sampleLateSubmissionPoint),
-                      penaltyPoint = "1",
-                      penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
-                      isReturnSubmitted = false,
-                      penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
-                      dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_))
-                    ))
+                    "generate a Summary Card with correct content including a cannot appeal message" in {
 
-                    val document = Jsoup.parse(summaryCardHtml.toString)
+                      val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
+                        cardRows = Seq.empty,
+                        cardTitle = messagesForLanguage.cardTitleAdjustmentPoint(1),
+                        status = getTagStatus(sampleLateSubmissionPoint),
+                        penaltyPoint = "1",
+                        penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                        isReturnSubmitted = true,
+                        penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
+                        dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_)),
+                        isAddedPoint = true,
+                        isAddedOrRemovedPoint = true
+                      ), isAgent)
 
-                    document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                      val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-findOutHowAppeal")
-                    appealLink.text() shouldBe messagesForLanguage.cardLinksFindOutHowToAppeal
-                    appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
-                      sampleRemovedPenaltyPoint.penaltyNumber,
-                      isFindOutHowToAppealLSP = true
-                    ).url
+                      document.select("h2").text() shouldBe messagesForLanguage.cardTitleAdjustmentPoint(1)
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").text() shouldBe messagesForLanguage.cardLinksAdjustedPointCannotAppeal
+                    }
+                  }
+
+                  "when the point has been removed" should {
+
+                    "generate a Summary Card with correct content (no link or content in the card footer)" in {
+
+                      val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
+                        cardRows = Seq.empty,
+                        cardTitle = messagesForLanguage.cardTitleRemovedPoint,
+                        status = getTagStatus(sampleLateSubmissionPoint),
+                        penaltyPoint = "",
+                        penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                        isReturnSubmitted = true,
+                        penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
+                        dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_)),
+                        isAddedOrRemovedPoint = true
+                      ), isAgent)
+
+                      val document = Jsoup.parse(summaryCardHtml.toString)
+
+                      document.select("h2").text() shouldBe messagesForLanguage.cardTitleRemovedPoint
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
+                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink").isEmpty shouldBe true
+                    }
                   }
                 }
               }
 
-              "it's adjustment point" when {
+              "penalty has been appealed" when {
 
-                "when the point has been added" should {
+                "appeal was rejected at 1st Stage" should {
 
-                  "generate a Summary Card with correct content including a cannot appeal message" in {
+                  "generate a Summary Card with correct content including a Review Appeal link" in {
 
+                    val appealedPenalty = samplePenaltyPointAppeal(AppealStatusEnum.Rejected, AppealLevelEnum.FirstStageAppeal)
                     val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq.empty,
-                      cardTitle = messagesForLanguage.cardTitleAdjustmentPoint(1),
-                      status = getTagStatus(sampleLateSubmissionPoint),
-                      penaltyPoint = "1",
-                      penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                      cardTitle = messagesForLanguage.cardTitlePoint(1),
+                      status = getTagStatus(appealedPenalty),
+                      penaltyPoint = "",
+                      penaltyId = appealedPenalty.penaltyNumber,
                       isReturnSubmitted = true,
-                      penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
-                      dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_)),
-                      isAddedPoint = true,
-                      isAddedOrRemovedPoint = true
-                    ))
+                      penaltyCategory = appealedPenalty.penaltyCategory,
+                      dueDate = appealedPenalty.dueDate.map(dateToString(_)),
+                      isAppealedPoint = true,
+                      appealStatus = Some(AppealStatusEnum.Rejected),
+                      appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
+                    ), isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h2").text() shouldBe messagesForLanguage.cardTitleAdjustmentPoint(1)
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").text() shouldBe messagesForLanguage.cardLinksAdjustedPointCannotAppeal
+                    document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
+
+                    val appealLink = document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-appealLink")
+                    appealLink.text() shouldBe messagesForLanguage.cardLinksReviewAppeal
+                    appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
+                      sampleRemovedPenaltyPoint.penaltyNumber,
+                      isAgent,
+                      is2ndStageAppeal = true
+                    ).url
                   }
                 }
 
-                "when the point has been removed" should {
+                "appeal was rejected at 2nd Stage" should {
 
                   "generate a Summary Card with correct content (no link or content in the card footer)" in {
 
+                    val appealedPenalty = samplePenaltyPointAppeal(AppealStatusEnum.Rejected, AppealLevelEnum.SecondStageAppeal)
                     val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq.empty,
-                      cardTitle = messagesForLanguage.cardTitleRemovedPoint,
-                      status = getTagStatus(sampleLateSubmissionPoint),
+                      cardTitle = messagesForLanguage.cardTitlePoint(1),
+                      status = getTagStatus(appealedPenalty),
                       penaltyPoint = "",
-                      penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                      penaltyId = appealedPenalty.penaltyNumber,
                       isReturnSubmitted = true,
-                      penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
-                      dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_)),
-                      isAddedOrRemovedPoint = true
-                    ))
+                      penaltyCategory = appealedPenalty.penaltyCategory,
+                      dueDate = appealedPenalty.dueDate.map(dateToString(_)),
+                      isAppealedPoint = true,
+                      appealStatus = Some(AppealStatusEnum.Rejected),
+                      appealLevel = Some(AppealLevelEnum.SecondStageAppeal)
+                    ), isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h2").text() shouldBe messagesForLanguage.cardTitleRemovedPoint
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
-                    document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink").isEmpty shouldBe true
+                    document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-appealLink").isEmpty shouldBe true
                   }
                 }
-              }
-            }
 
-            "penalty has been appealed" when {
+                "active appeal is in progress" should {
 
-              "appeal was rejected at 1st Stage" should {
+                  "generate a Summary Card with correct content (no link or content in the card footer)" in {
 
-                "generate a Summary Card with correct content including a Review Appeal link" in {
+                    val appealedPenalty = samplePenaltyPointAppeal(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
+                    val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
+                      cardRows = Seq.empty,
+                      cardTitle = messagesForLanguage.cardTitlePoint(1),
+                      status = getTagStatus(appealedPenalty),
+                      penaltyPoint = "",
+                      penaltyId = appealedPenalty.penaltyNumber,
+                      isReturnSubmitted = true,
+                      penaltyCategory = appealedPenalty.penaltyCategory,
+                      dueDate = appealedPenalty.dueDate.map(dateToString(_)),
+                      isAppealedPoint = true,
+                      appealStatus = Some(AppealStatusEnum.Rejected),
+                      appealLevel = Some(AppealLevelEnum.SecondStageAppeal)
+                    ), isAgent)
 
-                  val appealedPenalty = samplePenaltyPointAppeal(AppealStatusEnum.Rejected, AppealLevelEnum.FirstStageAppeal)
-                  val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
-                    cardRows = Seq.empty,
-                    cardTitle = messagesForLanguage.cardTitlePoint(1),
-                    status = getTagStatus(appealedPenalty),
-                    penaltyPoint = "",
-                    penaltyId = appealedPenalty.penaltyNumber,
-                    isReturnSubmitted = true,
-                    penaltyCategory = appealedPenalty.penaltyCategory,
-                    dueDate = appealedPenalty.dueDate.map(dateToString(_)),
-                    isAppealedPoint = true,
-                    appealStatus = Some(AppealStatusEnum.Rejected),
-                    appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
-                  ))
+                    val document = Jsoup.parse(summaryCardHtml.toString)
 
-                  val document = Jsoup.parse(summaryCardHtml.toString)
-
-                  document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
-
-                  val appealLink = document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-appealLink")
-                  appealLink.text() shouldBe messagesForLanguage.cardLinksReviewAppeal
-                  appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
-                    sampleRemovedPenaltyPoint.penaltyNumber,
-                    is2ndStageAppeal = true
-                  ).url
-                }
-              }
-
-              "appeal was rejected at 2nd Stage" should {
-
-                "generate a Summary Card with correct content (no link or content in the card footer)" in {
-
-                  val appealedPenalty = samplePenaltyPointAppeal(AppealStatusEnum.Rejected, AppealLevelEnum.SecondStageAppeal)
-                  val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
-                    cardRows = Seq.empty,
-                    cardTitle = messagesForLanguage.cardTitlePoint(1),
-                    status = getTagStatus(appealedPenalty),
-                    penaltyPoint = "",
-                    penaltyId = appealedPenalty.penaltyNumber,
-                    isReturnSubmitted = true,
-                    penaltyCategory = appealedPenalty.penaltyCategory,
-                    dueDate = appealedPenalty.dueDate.map(dateToString(_)),
-                    isAppealedPoint = true,
-                    appealStatus = Some(AppealStatusEnum.Rejected),
-                    appealLevel = Some(AppealLevelEnum.SecondStageAppeal)
-                  ))
-
-                  val document = Jsoup.parse(summaryCardHtml.toString)
-
-                  document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-appealLink").isEmpty shouldBe true
-                }
-              }
-
-              "active appeal is in progress" should {
-
-                "generate a Summary Card with correct content (no link or content in the card footer)" in {
-
-                  val appealedPenalty = samplePenaltyPointAppeal(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
-                  val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
-                    cardRows = Seq.empty,
-                    cardTitle = messagesForLanguage.cardTitlePoint(1),
-                    status = getTagStatus(appealedPenalty),
-                    penaltyPoint = "",
-                    penaltyId = appealedPenalty.penaltyNumber,
-                    isReturnSubmitted = true,
-                    penaltyCategory = appealedPenalty.penaltyCategory,
-                    dueDate = appealedPenalty.dueDate.map(dateToString(_)),
-                    isAppealedPoint = true,
-                    appealStatus = Some(AppealStatusEnum.Rejected),
-                    appealLevel = Some(AppealLevelEnum.SecondStageAppeal)
-                  ))
-
-                  val document = Jsoup.parse(summaryCardHtml.toString)
-
-                  document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
-                  document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-appealLink").isEmpty shouldBe true
+                    document.select("h2").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
+                    document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-appealLink").isEmpty shouldBe true
+                  }
                 }
               }
             }

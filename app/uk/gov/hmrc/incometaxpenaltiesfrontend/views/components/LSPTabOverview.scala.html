@@ -62,7 +62,7 @@
             }
 
             @link(
-                link = controllers.routes.ComplianceTimelineController.complianceTimelinePage.url,
+                link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
                 messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink"),
                 attrTarget = false,
                 id = Some("actionsToRemoveLink")
