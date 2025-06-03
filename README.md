@@ -1,7 +1,7 @@
 
 # income-tax-penalties-frontend
 
-This is Scala/Play service for Income Tax users to view and pay their penalties.
+This is Scala/Play service for Income Tax users to view and pay their penalties
 
 ### License
 
