@@ -27,7 +27,7 @@
         link: Link
 )
 
-@(summaryCard: LateSubmissionPenaltySummaryCard)(implicit messages: Messages)
+@(summaryCard: LateSubmissionPenaltySummaryCard, isAgent: Boolean)(implicit messages: Messages)
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
@@ -54,6 +54,7 @@
                 if(!summaryCard.isReturnSubmitted || summaryCard.appealStatus.contains(AppealStatusEnum.Unappealable)) {
                         <a id={s"penalty-id-${summaryCard.penaltyId}-findOutHowAppeal"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(
                             penaltyId = summaryCard.penaltyId,
+                           isAgent = isAgent,
                             isFindOutHowToAppealLSP = true
                         ).url}>
                         {messages("cardLinks.findOutHowToAppeal")}
@@ -61,11 +62,11 @@
                 } else {
                     summaryCard.appealStatus match {
                         case Some(AppealStatusEnum.Rejected) if summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal) =>
-                            <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
+                            <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent, is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
                             {messages("cardLinks.reviewAppeal", summaryCard.penaltyPoint)}
                             </a>
                         case None =>
-                            <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId).url}>
+                            <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent).url}>
                             {messages("cardLinks.appeal", summaryCard.penaltyPoint)}
                             </a>
                         case _ =>

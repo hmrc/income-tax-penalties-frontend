@@ -56,7 +56,7 @@
         @p("lsp.noPenalties")
     }
     @lspOverviewData.map(lspTabOverview(_, isAgent))
-    @lspCardData.map(summaryCardLSP(_))
+    @lspCardData.map(summaryCardLSP(_, isAgent))
 }
 
 @lppMainTab(individualOrAgent: String) = {

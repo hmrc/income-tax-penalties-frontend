@@ -33,7 +33,7 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=false&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
     }
 
     "redirect the individual to the appeals service when the penalty is a LSP and is a 2nd Stage Appeal" in {
@@ -42,7 +42,7 @@ class AppealsControllerISpec extends ControllerISpecHelper {
       val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "is2ndStageAppeal" -> "true"))
 
       result.status shouldBe SEE_OTHER
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false&is2ndStageAppeal=true")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=false&isLPP=false&isAdditional=false&is2ndStageAppeal=true")
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP1" in {
@@ -51,7 +51,7 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false&is2ndStageAppeal=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=false&isLPP=true&isAdditional=false&is2ndStageAppeal=false")
     }
 
     "redirect the individual to the appeals service when the penalty is a LPP2" in {
@@ -60,7 +60,7 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true&is2ndStageAppeal=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=false&isLPP=true&isAdditional=true&is2ndStageAppeal=false")
     }
 
     "redirect the individual to the obligations appeals service when the penalty is a LSP" in {
@@ -69,43 +69,46 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-against-the-obligation?penaltyId=1234")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-against-the-obligation?penaltyId=1234&isAgent=false")
     }
+  }
+
+  "GET /agent-appeal-penalty" should {
 
     "redirect the agent to the appeals service when the penalty is a LSP" in {
       stubAuthRequests(true)
-      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234"), isAgent = true)
+      val result = get("/agent-appeal-penalty", queryParams = Map("penaltyId" -> "1234"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=true&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP1" in {
       stubAuthRequests(true)
-      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true"), isAgent = true)
+      val result = get("/agent-appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=false&is2ndStageAppeal=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=true&isLPP=true&isAdditional=false&is2ndStageAppeal=false")
     }
 
     "redirect the agent to the appeals service when the penalty is a LPP2" in {
       stubAuthRequests(true)
-      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true", "isLPP2" -> "true"), isAgent = true)
+      val result = get("/agent-appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isLPP" -> "true", "isLPP2" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isLPP=true&isAdditional=true&is2ndStageAppeal=false")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=true&isLPP=true&isAdditional=true&is2ndStageAppeal=false")
     }
 
     "redirect the agent to the obligations appeals service when the penalty is a LSP" in {
       stubAuthRequests(true)
-      val result = get("/appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isFindOutHowToAppealLSP" -> "true"), isAgent = true)
+      val result = get("/agent-appeal-penalty", queryParams = Map("penaltyId" -> "1234", "isFindOutHowToAppealLSP" -> "true"), isAgent = true)
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-against-the-obligation?penaltyId=1234")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-against-the-obligation?penaltyId=1234&isAgent=true")
     }
   }
 
@@ -117,17 +120,20 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&isAgent=false&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
     }
 
-    "redirect the agent to the find-out-how-to-appeal page" in {
-      stubAuthRequests(true)
-      val result = get("/find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"), isAgent = true)
+    "Get /agent-find-out-how-to-appeal" should {
 
-      result.status shouldBe SEE_OTHER
+      "redirect the agent to the find-out-how-to-appeal page" in {
+        stubAuthRequests(true)
+        val result = get("/agent-find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"), isAgent = true)
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
+        result.status shouldBe SEE_OTHER
+
+        result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/view-or-appeal-penalty/self-assessment/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&isAgent=true&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
+      }
+
     }
-
   }
 }
