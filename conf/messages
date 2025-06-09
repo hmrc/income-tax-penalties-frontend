@@ -96,7 +96,7 @@ compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadl
 
 # Penalty Status tags
 # ===================
-status.upheld = Uphelp
+status.upheld = Upheld
 status.expired = Expired
 status.active = Active
 status.due = Due
