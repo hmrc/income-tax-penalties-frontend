@@ -112,6 +112,10 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
   "GET /agent-actions-to-get-points-removed" should {
 
+    testNoNavBar("/agent-actions-to-get-points-removed") {
+      stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+    }
+
     "return an OK with an agent view" when {
       "the page has the correct elements for one entry in the compliance timeline" in {
 
