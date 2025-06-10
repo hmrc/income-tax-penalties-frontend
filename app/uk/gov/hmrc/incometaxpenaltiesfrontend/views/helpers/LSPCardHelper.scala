@@ -77,6 +77,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     buildLSPSummaryCard(
       cardTitle,
       rows = Seq(
+        summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
@@ -91,6 +92,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     buildLSPSummaryCard(
       cardTitle = messages("lsp.cardTitle.point", penalty.penaltyOrder.getOrElse("")),
       rows = Seq(
+        summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
@@ -106,6 +108,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     buildLSPSummaryCard(
       cardTitle = messages("lsp.cardTitle.removedPoint"),
       rows = Seq(
+        summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.expiryReasonSummaryRow(penalty),
       ).flatten,

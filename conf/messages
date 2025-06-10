@@ -116,6 +116,7 @@ lpp.cardTitle = £{0} penalty
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Added on
+lsp.missingOrLateIncomeSources.key = Missing or Late Income Sources
 lsp.updatePeriod.key = Update Period
 lsp.updatePeriod.value = {0} to {1}
 lsp.updateDue.key = Update due
