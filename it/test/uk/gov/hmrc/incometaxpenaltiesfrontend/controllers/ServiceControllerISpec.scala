@@ -24,7 +24,7 @@ import java.net.URLEncoder
 
 class ServiceControllerISpec extends ControllerISpecHelper {
 
-  "GET /penalties/income-tax/sign-out" should {
+  "GET /view-penalty/self-assessment/sign-out" should {
     "redirect to sign-out route with the continue URL set to the feedback survey" in {
       val appConfig = app.injector.instanceOf[AppConfig]
       stubAuthRequests(false)
@@ -39,7 +39,7 @@ class ServiceControllerISpec extends ControllerISpecHelper {
     }
   }
 
-  "GET /penalties/income-tax/keep-alive" should {
+  "GET /view-penalty/self-assessment/keep-alive" should {
     "return No-Content" in {
       stubAuthRequests(false)
 

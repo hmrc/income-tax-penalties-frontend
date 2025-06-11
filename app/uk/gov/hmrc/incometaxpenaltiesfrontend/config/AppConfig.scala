@@ -41,7 +41,7 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   def incomeTaxSessionDataBaseUrl: String = servicesConfig.baseUrl("income-tax-session-data")
 
-  lazy val ITSAPenaltiesHomeUrl = "/penalties/income-tax"
+  lazy val ITSAPenaltiesHomeUrl = "/view-penalty/self-assessment"
 
   lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
   lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
@@ -74,7 +74,7 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
       servicesConfig.getConfString(vatAgentClientLookupFrontendStartUrl, "") +
       s"?redirectUrl=${agentClientLookupRedirectUrl(uri)}"
 
-  lazy val incomeTaxPenaltiesAppealsBaseUrl: String = config.get[String]("urls.incomeTaxPenaltiesAppealsBaseUrl") + "/view-or-appeal-penalty/self-assessment"
+  lazy val incomeTaxPenaltiesAppealsBaseUrl: String = config.get[String]("urls.incomeTaxPenaltiesAppealsBaseUrl") + "/appeal-penalty/self-assessment"
 
   lazy val viewAndChangeBaseUrl: String = config.get[String]("urls.viewAndChangeBaseUrl")
 

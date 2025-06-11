@@ -12,11 +12,11 @@
 # Add all the application routes to the prod.routes file
 ->         /                                                                     prod.Routes
 
-GET        /penalties/income-tax/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.show()
-POST       /penalties/income-tax/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.submit()
-GET        /penalties/income-tax/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.getFeatureSwitches()
+GET        /view-penalty/self-assessment/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.show()
+POST       /view-penalty/self-assessment/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.submit()
+GET        /view-penalty/self-assessment/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.getFeatureSwitches()
 
 + nocsrf
-POST       /penalties/income-tax/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.updateFeatureSwitches()
+POST       /view-penalty/self-assessment/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.updateFeatureSwitches()
 
 
