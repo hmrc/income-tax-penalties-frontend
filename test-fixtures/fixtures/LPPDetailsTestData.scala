@@ -32,9 +32,10 @@ trait LPPDetailsTestData {
   val lpp2PrincipleChargePaidDate: LocalDate = penaltyDueDate.plusDays(45) //2021-08-22
   val timeToPayPeriodStart: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-06-01
   val timeToPayPeriodEnd: LocalDate = timeToPayPeriodStart.plusMonths(1) //2021-07-01
+  val principleChargeRef = "12345678901234"
 
   val sampleUnpaidLPP1: LPPDetails = LPPDetails(
-    principalChargeReference = "12345678901234",
+    principalChargeReference = principleChargeRef,
     penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
     penaltyStatus = LPPPenaltyStatusEnum.Accruing,
     penaltyAmountPaid = None,

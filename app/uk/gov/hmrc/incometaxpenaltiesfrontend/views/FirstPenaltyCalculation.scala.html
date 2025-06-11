@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 
 @this(
         main: MainTemplate,
@@ -27,7 +28,7 @@
 )
 
 
-@(isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 
 @main(pageTitle = messages("calculation.individual.title", "First"), backLinkEnabled = true) {

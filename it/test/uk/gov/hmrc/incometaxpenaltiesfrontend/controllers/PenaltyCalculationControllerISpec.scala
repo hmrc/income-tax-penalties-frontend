@@ -18,40 +18,108 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import fixtures.PenaltiesDetailsTestData
 import org.jsoup.Jsoup
-import play.api.http.Status.OK
+import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.libs.json.Json
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
-class PenaltyCalculationControllerISpec extends ControllerISpecHelper with PenaltiesStub with PenaltiesDetailsTestData {
+class PenaltyCalculationControllerISpec extends ControllerISpecHelper
+  with PenaltiesStub with PenaltiesDetailsTestData with FeatureSwitching {
 
-  "GET /first-lpp-calculation" when {
+  override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-    testNavBar("/first-lpp-calculation")()
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(UseStubForBackend)
+  }
 
-    "return an OK with a view" when {
-      "have the correct page has correct elements" in {
-        stubAuthRequests(false)
+  def addQueryParam(pathNoQuery: String): String = {
+    pathNoQuery + "?penaltyId=" + principleChargeRef
+  }
 
-        val result = get("/first-lpp-calculation")
-        result.status shouldBe OK
+  List(false, true).foreach { isAgent =>
+    val pathStart = if (isAgent) "/agent-" else "/"
+    val firstLPPPath = addQueryParam(pathStart + "first-lpp-calculation")
+    val secondLPPPath = addQueryParam(pathStart + "second-lpp-calculation")
+    val optArn = if(isAgent) Some("123456789") else None
+    s"GET $firstLPPPath" when {
+      "a first late payment penalty exists for the penaltyId" should {
+        "render the first late payment calculation page" in {
+          stubAuthRequests(isAgent)
+          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsModel))
 
-        val document = Jsoup.parse(result.body)
+          val result = get(firstLPPPath, isAgent)
+          result.status shouldBe OK
 
-        document.getServiceName.text() shouldBe "Manage your Self Assessment"
-        document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "First penalty for late payment"
-        document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
-        document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
-        document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
-        document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
-        document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
-        document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
-        document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
-        document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
-        document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
-        document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
-        document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
+          val document = Jsoup.parse(result.body)
 
+          document.getServiceName.text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "First penalty for late payment"
+          document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
+          document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
+          document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
+          document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
+          document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
+          document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
+          document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
+          document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
+          document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
+          document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
+          document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
+        }
+      }
+
+      "a penalty does not exist for the penaltyId" should {
+        "redirect to penalties home" in {
+          stubAuthRequests(isAgent)
+          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+
+          val result = get(firstLPPPath, isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
+      }
+    }
+
+    s"GET $secondLPPPath" when {
+      "a second late payment penalty exists for the penaltyId" should {
+        "render the second late payment calculation page" in {
+          stubAuthRequests(isAgent)
+          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsLPP2Model))
+
+          val result = get(secondLPPPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+
+          document.getServiceName.text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "First penalty for late payment"
+          document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
+          document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
+          document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
+          document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
+          document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
+          document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
+          document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
+          document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
+          document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
+          document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
+          document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
+        }
+      }
+
+      "a penalty does not exist for the penaltyId" should {
+        "redirect to penalties home" in {
+          stubAuthRequests(isAgent)
+          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+
+          val result = get(firstLPPPath, isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
       }
     }
   }

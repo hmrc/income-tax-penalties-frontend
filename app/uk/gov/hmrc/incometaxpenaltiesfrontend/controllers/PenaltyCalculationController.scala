@@ -17,21 +17,52 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.PenaltyCalculation
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthenticatedUserWithPenaltyData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class PenaltyCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
-                                             penaltyCalculationView: PenaltyCalculation,
-                                             authActions: AuthActions)(implicit appConfig: AppConfig) extends FrontendBaseController with I18nSupport {
+                                             firstPenaltyCalculationView: FirstPenaltyCalculation,
+                                             secondPenaltyCalculationView: SecondPenaltyCalculation,
+                                             authActions: AuthActions)
+                                            (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
 
-  def penaltyCalculationPage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUser(isAgent)  { implicit currentUserRequest =>
-    Ok(penaltyCalculationView(currentUserRequest.isAgent))
+  def penaltyCalculationPage(penaltyId: String, isAgent: Boolean, isLPP2: Boolean): Action[AnyContent] = authActions.asMTDUserWithPenaltyData(isAgent)  { implicit currentUserRequest =>
+    val penaltyDetailsForId = currentUserRequest
+      .penaltyDetails
+      .latePaymentPenalty
+      .fold[Option[LPPDetails]](None)(_.details.collectFirst{
+        case lpp if lpp.principalChargeReference ==  penaltyId => lpp
+      })
+
+    penaltyDetailsForId match {
+      case Some(lppDetails) if isLPP2 => handleLPP2(lppDetails, isAgent)
+      case Some(lppDetails) => handleLPP1(lppDetails, isAgent)
+      case None => Redirect(routes.IndexController.homePage(isAgent))
+    }
+  }
+
+  def handleLPP1[A](lppDetails: LPPDetails,
+                    isAgent: Boolean)
+                   (implicit currentUserRequest: AuthenticatedUserWithPenaltyData[A]): Result = {
+    val calculationData = new FirstLatePaymentPenaltyCalculationData(lppDetails)
+    Ok(firstPenaltyCalculationView(calculationData, currentUserRequest.isAgent))
+
+  }
+
+  def handleLPP2[A](lppDetails: LPPDetails, isAgent: Boolean)(implicit currentUserRequest: AuthenticatedUserWithPenaltyData[A]): Result = {
+    val calculationData = new SecondLatePaymentPenaltyCalculationData(lppDetails)
+    Ok(secondPenaltyCalculationView(calculationData, currentUserRequest.isAgent))
+
   }
 }
 
