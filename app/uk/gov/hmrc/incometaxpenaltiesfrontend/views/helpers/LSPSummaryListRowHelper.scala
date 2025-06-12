@@ -34,6 +34,12 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     )
   ))
 
+  def penaltyStatusRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
+    Some(summaryListRow(
+      label = messages("lpp.penaltyType.key"),
+      value = Html(messages(s"lpp.penaltyType.${penalty.penaltyCategory}"))
+    ))
+
   def taxPeriodSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     (penalty.taxPeriodStartDate, penalty.taxPeriodEndDate) match {
       case (Some(startDate), Some(endDate)) =>
