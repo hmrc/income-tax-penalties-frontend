@@ -29,19 +29,6 @@ import javax.inject.Inject
 
 class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends SummaryListRowHelper with TagHelper with DateFormatter {
 
-//  sealed trait PenaltyReason {
-//    def reason: String
-//  }
-//
-//  object PenaltyReason {
-//    case object LateUpdate {
-//      val reason = "Late Update"
-//    }
-//    case object LateTaxReturn {
-//      val reason = "Late Tax Return"
-//    }
-//  }
-
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,
                                        activePoints: Int)
@@ -90,12 +77,17 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
   }
 
   def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+
+    val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
+    val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
+
     val cardTitle =
       if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
-        messages("lsp.cardTitle.additionalFinancialPoint",s"$reason -", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount))
+        messages("lsp.cardTitle.additionalFinancialPoint",currencyFormat,reason)
       } else {
-        messages("lsp.cardTitle.financialPoint",s"$reason -", penalty.penaltyOrder.getOrElse(""), CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount))
+        messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
       }
+
     buildLSPSummaryCard(
       cardTitle,
       rows = Seq(
@@ -103,7 +95,6 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
-        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel),
       ).flatten,
       penalty = penalty
     )
