@@ -24,12 +24,28 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
 class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
+  def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = Option(summaryListRow(
+    label = messages("lsp.missingOrLateIncomeSources.key"),
+    value = Html(
+      """<ul class="govuk-list govuk-list--bullet">
+        |  <li>Missing Income Sources</li>
+        |  <li>Late Income Sources</li>
+        |</ul>""".stripMargin
+    )
+  ))
+
+  def penaltyStatusRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
+    Some(summaryListRow(
+      label = messages("lpp.penaltyType.key"),
+      value = Html(messages(s"lpp.penaltyType.${penalty.penaltyCategory}"))
+    ))
+
   def taxPeriodSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     (penalty.taxPeriodStartDate, penalty.taxPeriodEndDate) match {
       case (Some(startDate), Some(endDate)) =>
         Some(summaryListRow(
-          label = messages("lsp.quarter.key"),
-          value = Html(messages("lsp.quarter.value", dateToString(startDate), dateToString(endDate)))
+          label = messages("lsp.updatePeriod.key"),
+          value = Html(messages("lsp.updatePeriod.value", dateToString(startDate), dateToString(endDate)))
         ))
       case _ => None
     }

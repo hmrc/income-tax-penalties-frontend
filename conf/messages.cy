@@ -83,8 +83,8 @@ lpp.cardTitle = Cosb o £{0}
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Ychwanegwyd ar
-lsp.quarter.key = Quarter (Welsh)
-lsp.quarter.value = {0} to {1} (Welsh)
+lsp.updatePeriod.key = Update Period (Welsh)
+lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
 lsp.updateSubmitted.notReceived = Return not received (Welsh)
@@ -161,7 +161,7 @@ compliance.timeline.individual.more.information.link.text = More information abo
 compliance.timeline.individual.points.to.be.removed = Points to be removed: (Welsh)
 compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points. (Welsh)
 compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals (Welsh)
-compliance.timeline.quarter.heading = Quarter: {0} to {1} (Welsh)
+compliance.timeline.updatePeriod.heading = Update Period: {0} to {1} (Welsh)
 compliance.timeline.tax.return.heading = Tax return: {0} to {1} (Welsh)
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now. (Welsh)
 compliance.timeline.send.by = Send by {0} (Welsh)

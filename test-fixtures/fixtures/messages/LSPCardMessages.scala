@@ -28,7 +28,7 @@ object LSPCardMessages {
 
     //Summary Row Messages
     val addedOnKey = "Added on"
-    val quarterKey = "Quarter"
+    val updatePeriod = "Update Period"
     def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate"
     val updateDueKey = "Update due"
     val updateSubmittedKey = "Update submitted"
@@ -56,7 +56,7 @@ object LSPCardMessages {
 
     //Summary Row Messages
     override val addedOnKey = "Ychwanegwyd ar"
-    override val quarterKey = "Quarter (Welsh)"
+    override val updatePeriod = "Update Period (Welsh)"
     override def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate (Welsh)"
     override val updateDueKey = "Diweddariad i’w gyflwyno"
     override val updateSubmittedKey = "Diweddariad wedi’i gyflwyno"
