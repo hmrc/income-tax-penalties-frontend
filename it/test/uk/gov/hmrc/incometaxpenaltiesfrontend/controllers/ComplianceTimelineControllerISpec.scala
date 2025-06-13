@@ -34,7 +34,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
   val returnToSALink = "Return to Self Assessment penalties and appeals (opens in new tab)"
   val pointsToBeRemoved = s"Points to be removed: December 2024"
   val taxYear1 = "Tax return: 6 April 2021 to 5 April 2022"
-  val quarter1 = "Quarter: 1 July 2022 to 30 September 2022"
+  val quarter1 = "Update Period: 1 July 2022 to 30 September 2022"
   val timeline1 =  "Late Due on 31 January 2023. Send this missing submission now."
   val timeline2 =  "Late Due on 31 October 2022. Send this missing submission now."
 
