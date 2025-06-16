@@ -53,6 +53,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 val penalty1 = sampleLateSubmissionPoint.copy(penaltyOrder = Some("1"))
 
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
@@ -66,7 +67,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow,
                       testPointExpiryRow
                     ),
-                    cardTitle = messagesForLanguage.cardTitlePoint(1),
+                    cardTitle = s"${messagesForLanguage.cardTitlePoint(1)}: Late Update",
                     status = getTagStatus(penalty1),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
@@ -131,7 +132,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testDueDateRow,
                       testReceivedDateRow
                     ),
-                    cardTitle = messagesForLanguage.cardTitlePoint(1),
+                    cardTitle = s"${messagesForLanguage.cardTitlePoint(1)}: Late Update",
                     status = getTagStatus(penalty1),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
