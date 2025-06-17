@@ -55,9 +55,9 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
 
   private def penaltyReason(dueDate: Option[LocalDate]): String =
     if (dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31)))
-      "Late Tax Return"
+      "Late tax return"
     else
-      "Late Update"
+      "Late update"
 
   def addedPointCard(penalty: LSPDetails, thresholdMet: Boolean, reason:String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
@@ -68,7 +68,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
           label = messages("lsp.addedOn.key"),
           value = Html(dateToString(penalty.penaltyCreationDate))
         )),
-        Option.when(!thresholdMet)(summaryRow.pointExpiryDate(penalty))
+        Option.when(!thresholdMet)(summaryRow.pointExpiryDate(penalty)),
+        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
       ).flatten,
       penalty = penalty,
       isAnAddedPoint = true,
@@ -113,7 +114,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         Some(summaryRow.receivedDateSummaryRow(penalty)),
         Option.when(!thresholdMet && !penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
           summaryRow.pointExpiryDate(penalty)
-        }
+        },
+          summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
       ).flatten,
       penalty = penalty
     )
@@ -127,6 +129,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.expiryReasonSummaryRow(penalty),
         summaryRow.penaltyStatusRow(penalty),
+        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
       ).flatten,
       penalty = penalty,
       isAnAddedOrRemovedPoint = true,
@@ -134,12 +137,14 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     )
   }
 
+
   private def buildLSPSummaryCard(cardTitle: String,
                                   rows: Seq[SummaryListRow],
                                   penalty: LSPDetails,
                                   isAnAddedPoint: Boolean = false,
                                   isAnAddedOrRemovedPoint: Boolean = false,
                                   isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+
     LateSubmissionPenaltySummaryCard(
       cardRows = rows,
       cardTitle = cardTitle,

@@ -106,18 +106,18 @@ status.amountDue = £{0} Due
 
 # Card Title Content
 # ==================
-lsp.cardTitle.addedPoint = Penalty point {0}: adjustment point
+lsp.cardTitle.addedPoint = Penalty point {0}: Adjustment point
 lsp.cardTitle.removedPoint = Penalty point
-lsp.cardTitle.financialPoint = Penalty point {0} {1} - £{2} penalty
-lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty: {1}
+lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
+lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
 lsp.cardTitle.point = Penalty point {1}{0}
 lpp.cardTitle = £{0} penalty
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Added on
-lsp.missingOrLateIncomeSources.key = Missing or Late Income Sources
-lsp.updatePeriod.key = Update Period
+lsp.missingOrLateIncomeSources.key = Missing or late income sources
+lsp.updatePeriod.key = Update period
 lsp.updatePeriod.value = {0} to {1}
 lsp.updateDue.key = Update due
 lsp.updateSubmitted.key = Update submitted

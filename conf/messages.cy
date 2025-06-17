@@ -83,7 +83,7 @@ lpp.cardTitle = Cosb o £{0}
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Ychwanegwyd ar
-lsp.updatePeriod.key = Update Period (Welsh)
+lsp.updatePeriod.key = Update period (Welsh)
 lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
