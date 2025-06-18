@@ -67,4 +67,9 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
     when(mockLSPSummaryListRowHelper.appealStatusRow(eqTo(appealStatus), eqTo(appealLevel))(any()))
       .thenReturn(value)
 
+  def mockPenaltyStatusSummaryRow(penalty: LSPDetails)
+                                 (value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLSPSummaryListRowHelper.penaltyStatusRow(eqTo(penalty))(any()))
+      .thenReturn(value)
+
 }

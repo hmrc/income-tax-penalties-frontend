@@ -20,15 +20,17 @@ object LSPCardMessages {
 
   sealed trait Messages { _: i18n =>
     //Card Title Messages
-    val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: adjustment point"
+    val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: Adjustment point"
     val cardTitleRemovedPoint = "Penalty point"
-    def cardTitleFinancialPoint(point: Int, amount: String) = s"Penalty point $point: £$amount penalty"
-    def cardTitleAdditionalFinancialPoint(amount: String) = s"Additional £$amount penalty"
+    def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
+      s"Penalty point $point$reason - £$amount penalty"
+    def cardTitleAdditionalFinancialPoint(amount: String, reason: String): String =
+      s"Additional £$amount penalty$reason"
     val cardTitlePoint: Int => String = point => "Penalty point " + point
 
     //Summary Row Messages
     val addedOnKey = "Added on"
-    val updatePeriod = "Update Period"
+    val updatePeriod = "Update period"
     def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate"
     val updateDueKey = "Update due"
     val updateSubmittedKey = "Update submitted"
@@ -50,13 +52,16 @@ object LSPCardMessages {
     //Card Title Messages
     override val cardTitleAdjustmentPoint: Int => String = point => s"Pwynt cosb $point: pwynt addasu"
     override val cardTitleRemovedPoint = "Pwynt cosb"
-    override def cardTitleFinancialPoint(point: Int, amount: String) = s"Penalty point $point: £$amount penalty (Welsh)"
-    override def cardTitleAdditionalFinancialPoint(amount: String) = s"Cosb ychwanegol o £$amount"
+    override def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
+      s"Penalty point $point$reason: £$amount penalty (Welsh)"
+    override def cardTitleAdditionalFinancialPoint(amount: String, reason: String): String =
+      s"Cosb ychwanegol o £$amount$reason"
+
     override val cardTitlePoint: Int => String = point => s"Pwynt cosb $point"
 
     //Summary Row Messages
     override val addedOnKey = "Ychwanegwyd ar"
-    override val updatePeriod = "Update Period (Welsh)"
+    override val updatePeriod = "Update period (Welsh)"
     override def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate (Welsh)"
     override val updateDueKey = "Diweddariad i’w gyflwyno"
     override val updateSubmittedKey = "Diweddariad wedi’i gyflwyno"

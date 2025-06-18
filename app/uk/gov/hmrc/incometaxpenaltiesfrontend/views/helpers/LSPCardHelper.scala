@@ -59,23 +59,35 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     else
       "Late update"
 
-  def addedPointCard(penalty: LSPDetails, thresholdMet: Boolean, reason:String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  private def addedPointCard(p: LSPDetails, thresholdMet: Boolean, reason: String)
+                            (implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+
+    val order = p.penaltyOrder.getOrElse("")
+
+    val cardTitle =
+      if (thresholdMet) {
+        messages("lsp.cardTitle.addedPoint", order)
+      } else {
+        messages("lsp.cardTitle.addedPoint", order, reason)
+      }
+    val rows = Seq(
+      summaryListRow(
+        label = messages("lsp.addedOn.key"),
+        value = Html(dateToString(p.penaltyCreationDate))
+      )
+    ) ++
+      (if (!thresholdMet) Seq(summaryRow.pointExpiryDate(p)) else Nil)
 
     buildLSPSummaryCard(
-      cardTitle = messages("lsp.cardTitle.addedPoint",reason, penalty.penaltyOrder.getOrElse("")),
-      rows = Seq(
-        Some(summaryListRow(
-          label = messages("lsp.addedOn.key"),
-          value = Html(dateToString(penalty.penaltyCreationDate))
-        )),
-        Option.when(!thresholdMet)(summaryRow.pointExpiryDate(penalty)),
-        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
-      ).flatten,
-      penalty = penalty,
-      isAnAddedPoint = true,
+      cardTitle            = cardTitle,
+      rows                 = rows,
+      penalty              = p,
+      isAnAddedPoint       = true,
       isAnAddedOrRemovedPoint = true
     )
   }
+
+
 
   def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
