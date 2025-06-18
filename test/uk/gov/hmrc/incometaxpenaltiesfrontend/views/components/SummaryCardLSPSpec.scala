@@ -87,7 +87,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                   "when the return has NOT been received" should {
 
-                    "generate a Summary Card with correct content including an Find out how to Appeal Link" in {
+                    "generate a Summary Card with correct content including an Check if you can appeal this penalty" in {
 
                       val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                         cardRows = Seq.empty,
