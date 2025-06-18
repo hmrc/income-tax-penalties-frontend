@@ -78,7 +78,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
 
                       val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink")
-                      appealLink.text() shouldBe messagesForLanguage.cardLinksAppeal(1)
+                      appealLink.text() shouldBe messagesForLanguage.cardLinksAppeal
                       appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
                         sampleRemovedPenaltyPoint.penaltyNumber, isAgent
                       ).url
