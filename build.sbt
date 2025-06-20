@@ -16,7 +16,6 @@ lazy val microservice = Project("income-tax-penalties-frontend", file("."))
       PlayKeys.playDefaultPort := 9185
   )
   .settings(Test/logBuffered := false)
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(TwirlKeys.templateImports ++= Seq(
       "uk.gov.hmrc.govukfrontend.views.html.components._",
