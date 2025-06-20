@@ -38,9 +38,9 @@ object LSPCardMessages {
 
     //Card Footer Links
     val cardLinksAdjustedPointCannotAppeal = "You cannot appeal this point"
-    val cardLinksFindOutHowToAppeal = "Find out how to appeal"
+    val cardLinksFindOutHowToAppeal = "Check if you can appeal this penalty"
     val cardLinksAppealNoPointNumber = "Appeal penalty"
-    val cardLinksAppeal: Int => String = point => s"Appeal penalty point $point"
+    val cardLinksAppeal: String = s"Check if you can appeal this penalty"
     val cardLinksReviewAppeal: String = "Ask for review"
   }
 
@@ -66,9 +66,9 @@ object LSPCardMessages {
 
     //Card Footer Links
     override val cardLinksAdjustedPointCannotAppeal = "YNi allwch apelio yn erbyn y pwynt hwn"
-    override val cardLinksFindOutHowToAppeal = "Find out how to appeal (Welsh)"
+    override val cardLinksFindOutHowToAppeal = "Check if you can appeal this penalty (Welsh)"
     override val cardLinksAppealNoPointNumber = "Apelio yn erbyn cosb"
-    override val cardLinksAppeal: Int => String = point => s"Apelio yn erbyn pwynt cosb $point"
+    override val cardLinksAppeal: String =  "Check if you can appeal this penalty (Welsh)"
     override val cardLinksReviewAppeal: String = "Gofyn am adolygiad"
   }
 }

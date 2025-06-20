@@ -40,7 +40,7 @@ class AppealsController @Inject()(val authActions: AuthActions,
       logger.debug(s"[IndexController][redirectToAppeals] - Redirect to appeals frontend with id $penaltyId and is late payment penalty: $isLPP " +
         s"and cannot be appealed: $isFindOutHowToAppealLSP and is LPP2: $isLPP2")
       if (isFindOutHowToAppealLSP) {
-        Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}" + s"/initialise-appeal-against-the-obligation?penaltyId=$penaltyId&isAgent=$isAgent")
+        Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}" + s"/appeal-start")
       } else {
         Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal?penaltyId=$penaltyId&isAgent=$isAgent&isLPP=$isLPP&isAdditional=$isLPP2&is2ndStageAppeal=$is2ndStageAppeal")
       }
