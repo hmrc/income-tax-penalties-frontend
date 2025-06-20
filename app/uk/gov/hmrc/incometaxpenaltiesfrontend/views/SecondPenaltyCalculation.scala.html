@@ -1,0 +1,82 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenaltyCalculationData
+
+
+@this(
+        main: MainTemplate,
+        p: P,
+        link: Link,
+        govukSummaryList : GovukSummaryList
+)
+
+
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+
+@main(pageTitle = messages("calculation.individual.title", "First"), backLinkEnabled = true) {
+
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.h1", "First")</h1>
+
+    @p("calculation.individual.p1")
+    @p("calculation.individual.p2")
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>2% of £20,000 (the unpaid Income Tax 15 days after the due date)</li>
+        <li>2% of £20,000 (the unpaid Income Tax 30 days after the due date)</li>
+    </ul>
+
+@govukSummaryList(SummaryList(
+    rows = Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("calculation.penalty.amount"))
+        ),
+        value = Value(
+          content = Text("£800.00")
+        )
+      ),
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("calculation.amount.received"))
+        ),
+        value = Value(
+          content = Text("£800.00")
+        )
+      ),
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("calculation.left.to.pay"))
+        ),
+        value = Value(
+            content = Text("£0.00")
+        )
+      )
+    )
+  ))
+
+    @link(
+        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+        messageKey = messages("calculation.return.link"),
+        id = Some("returnToIndex")
+    )
+
+}

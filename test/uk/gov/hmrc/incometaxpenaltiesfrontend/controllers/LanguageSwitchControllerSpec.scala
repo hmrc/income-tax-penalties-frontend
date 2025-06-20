@@ -42,7 +42,7 @@ class LanguageSwitchControllerSpec extends AnyWordSpec with should.Matchers with
 
       val result = testAction.switchToLanguage("english")(FakeRequest())
       status(result) shouldBe SEE_OTHER
-      redirectLocation(result) shouldBe Some("/penalties/income-tax")
+      redirectLocation(result) shouldBe Some("/view-penalty/self-assessment")
 
       cookies(result).get("PLAY_LANG").get.value shouldBe "en"
 
@@ -52,7 +52,7 @@ class LanguageSwitchControllerSpec extends AnyWordSpec with should.Matchers with
 
       val result = testAction.switchToLanguage("cymraeg")(FakeRequest())
       status(result) shouldBe SEE_OTHER
-      redirectLocation(result) shouldBe Some("/penalties/income-tax")
+      redirectLocation(result) shouldBe Some("/view-penalty/self-assessment")
 
       cookies(result).get("PLAY_LANG").get.value shouldBe "cy"
 
@@ -63,7 +63,7 @@ class LanguageSwitchControllerSpec extends AnyWordSpec with should.Matchers with
 
     val result = testAction.switchToLanguage("spanish")(FakeRequest())
     status(result) shouldBe SEE_OTHER
-    redirectLocation(result) shouldBe Some("/penalties/income-tax")
+    redirectLocation(result) shouldBe Some("/view-penalty/self-assessment")
 
     cookies(result).get("PLAY_LANG").get.value shouldBe "en"
 
