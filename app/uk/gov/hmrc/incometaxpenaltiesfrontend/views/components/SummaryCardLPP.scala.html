@@ -77,7 +77,7 @@
                         if(summaryCard.appealStatus.isEmpty) {
                             <li class="govuk-summary-card__action no-border not-bold">
                                 <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToFindOutHowToAppealLPP(summaryCard.principalChargeReference, isAgent, summaryCard.incomeTaxOutstandingAmountInPence, summaryCard.taxPeriodStartDate, summaryCard.taxPeriodEndDate).url}>
-                                    {messages("cardLinks.findOutHowToAppeal")}
+                                    {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
                                 </a>
                             </li>
                         }

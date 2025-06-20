@@ -165,7 +165,7 @@ expiryReason.RES = Reset
 # Card Footer Links
 # =================
 cardLinks.cannotAppeal = You cannot appeal this point
-cardLinks.findOutHowToAppeal = Check if you can appeal this penalty
+cardLinks.checkIfYouCanAppealThisPenalty = Check if you can appeal this penalty
 cardLinks.appealNoPointNumber = Appeal this penalty
 cardLinks.appeal = Check if you can appeal this penalty
 cardLinks.viewCalculation = View calculation
