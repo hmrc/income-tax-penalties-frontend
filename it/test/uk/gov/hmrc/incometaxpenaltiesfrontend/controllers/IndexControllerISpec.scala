@@ -34,7 +34,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
     disable(UseStubForBackend)
   }
 
-  "GET /penalties/income-tax" should {
+  "GET /view-penalty/self-assessment" should {
     "when call to penalties backend returns data" when {
       "the user is an authorised individual" should {
         "have the correct page has correct elements" in {

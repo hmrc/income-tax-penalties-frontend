@@ -68,20 +68,22 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
           document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe true
         }
       }
+    }
+  }
 
-      "the user is an Agent" should {
-        "render without a Nav" in {
-          stubAuth(OK, successfulAgentAuthResponse)
-          stubGetIncomeTaxSessionDataSuccessResponse()
-          runStubs
-          val result = get("/agent-first-lpp-calculation", origin = Some("BTA"), isAgent = true, queryParams = queryParams)
+  def testNoNavBar(url: String, queryParams: Map[String, String] = Map.empty)(runStubs: => Unit = ()): Unit = {
+    "the user is an Agent" should {
+      "render without a Nav" in {
+        stubAuth(OK, successfulAgentAuthResponse)
+        stubGetIncomeTaxSessionDataSuccessResponse()
+        runStubs
+        val result = get(url, origin = Some("BTA"), isAgent = true, queryParams = queryParams)
 
-          result.status shouldBe OK
-          val document = Jsoup.parse(result.body)
+        result.status shouldBe OK
+        val document = Jsoup.parse(result.body)
 
-          document.select("nav#secondary-nav-bta.hmrc-account-menu").isEmpty shouldBe true
-          document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe true
-        }
+        document.select("nav#secondary-nav-bta.hmrc-account-menu").isEmpty shouldBe true
+        document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe true
       }
     }
   }
