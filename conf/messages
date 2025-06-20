@@ -83,7 +83,7 @@ compliance.timeline.individual.more.information.link.text = More information abo
 compliance.timeline.individual.points.to.be.removed = Points to be removed:
 compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points.
 compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals
-compliance.timeline.quarter.heading = Quarter: {0} to {1}
+compliance.timeline.updatePeriod.heading = Update period: {0} to {1}
 compliance.timeline.tax.return.heading = Tax return: {0} to {1}
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now.
 compliance.timeline.send.by = Send by {0}
@@ -96,28 +96,29 @@ compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadl
 
 # Penalty Status tags
 # ===================
-status.upheld = UPHELD
-status.expired = EXPIRED
-status.active = ACTIVE
-status.due = DUE
-status.paid = PAID
-status.estimate = ESTIMATE
-status.amountDue = £{0} DUE
+status.upheld = Upheld
+status.expired = Expired
+status.active = Active
+status.due = Due
+status.paid = Paid
+status.estimate = Estimate
+status.amountDue = £{0} Due
 
 # Card Title Content
 # ==================
-lsp.cardTitle.addedPoint = Penalty point {0}: adjustment point
+lsp.cardTitle.addedPoint = Penalty point {0}: Adjustment point
 lsp.cardTitle.removedPoint = Penalty point
-lsp.cardTitle.financialPoint = Penalty point {0}: £{1} penalty
-lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty
-lsp.cardTitle.point = Penalty point {0}
+lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
+lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
+lsp.cardTitle.point = Penalty point {1}{0}
 lpp.cardTitle = £{0} penalty
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Added on
-lsp.quarter.key = Quarter
-lsp.quarter.value = {0} to {1}
+lsp.missingOrLateIncomeSources.key = Missing or late income sources
+lsp.updatePeriod.key = Update period
+lsp.updatePeriod.value = {0} to {1}
 lsp.updateDue.key = Update due
 lsp.updateSubmitted.key = Update submitted
 lsp.updateSubmitted.notReceived = Return not received

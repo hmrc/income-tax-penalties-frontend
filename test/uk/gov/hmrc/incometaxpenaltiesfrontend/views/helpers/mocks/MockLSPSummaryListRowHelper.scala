@@ -20,7 +20,8 @@ import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.govukfrontend.views.Aliases.{Key, Text, Value}
+import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.Aliases.{HtmlContent, Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPDetails
@@ -36,6 +37,10 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
   val testAppealStatusRow: SummaryListRow = SummaryListRow(Key(Text("appealStatus")), Value(Text("status")))
 
   lazy val mockLSPSummaryListRowHelper: LSPSummaryListRowHelper = mock[LSPSummaryListRowHelper]
+
+  def mockMissingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLSPSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(eqTo(penalty))(any()))
+      .thenReturn(value)
 
   def mockTaxPeriodSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.taxPeriodSummaryRow(eqTo(penalty))(any()))
@@ -60,6 +65,11 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
                                  appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.appealStatusRow(eqTo(appealStatus), eqTo(appealLevel))(any()))
+      .thenReturn(value)
+
+  def mockPenaltyStatusSummaryRow(penalty: LSPDetails)
+                                 (value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLSPSummaryListRowHelper.penaltyStatusRow(eqTo(penalty))(any()))
       .thenReturn(value)
 
 }

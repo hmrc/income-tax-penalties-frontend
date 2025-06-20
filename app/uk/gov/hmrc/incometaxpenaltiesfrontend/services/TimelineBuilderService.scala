@@ -38,7 +38,7 @@ class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFor
 
         TimelineEvent(
           headerContent = {
-            val infix = if (isTaxYear) "tax.return" else "quarter"
+            val infix = if (isTaxYear) "tax.return" else "updatePeriod"
             messages(s"compliance.timeline.$infix.heading", dateToString(data.inboundCorrespondenceFromDate), dateToString(data.inboundCorrespondenceToDate))
           },
           spanContent = {

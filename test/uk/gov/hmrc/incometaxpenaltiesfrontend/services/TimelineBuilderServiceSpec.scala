@@ -46,8 +46,8 @@ class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with Complian
       "buildTimeline" should {
         "return a sequence of timeline events " when {
           "there is one open event (late)" in new Setup() {
-            val result = service.buildTimeline(Some(sampleCompliancePayload))
-            val expected = Seq(
+            val result: Seq[TimelineEvent] = service.buildTimeline(Some(sampleCompliancePayload))
+            val expected: Seq[TimelineEvent] = Seq(
               TimelineEvent(
                 headerContent = messagesForLang.taxReturn(LocalDate.of(2021, 4, 6), LocalDate.of(2022, 4, 5)),
                 spanContent = messagesForLang.dueDate(LocalDate.of(2023, 1, 31), isLate = true),
@@ -66,7 +66,7 @@ class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with Complian
                 tagContent = Some(messagesForLang.late),
               ),
               TimelineEvent(
-                headerContent = messagesForLang.quarter(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
+                headerContent = messagesForLang.updatePeriod(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
                 spanContent = messagesForLang.dueDate(LocalDate.of(2022, 10, 31), isLate = true),
                 tagContent = Some(messagesForLang.late)
               )
@@ -83,7 +83,7 @@ class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with Complian
                 tagContent = None
               ),
               TimelineEvent(
-                headerContent = messagesForLang.quarter(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
+                headerContent = messagesForLang.updatePeriod(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
                 spanContent = messagesForLang.dueDate(LocalDate.of(2022, 10, 31), isLate = true),
                 tagContent = Some(messagesForLang.late)
               )
@@ -100,7 +100,7 @@ class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with Complian
                 tagContent = None
               ),
               TimelineEvent(
-                headerContent = messagesForLang.quarter(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
+                headerContent = messagesForLang.updatePeriod(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 9, 30)),
                 spanContent = messagesForLang.dueDate(LocalDate.of(2022, 10, 31), isLate = false),
                 tagContent = None
               )

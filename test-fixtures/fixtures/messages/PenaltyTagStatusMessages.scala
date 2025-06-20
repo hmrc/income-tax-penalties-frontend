@@ -19,13 +19,13 @@ package fixtures.messages
 object PenaltyTagStatusMessages {
 
   sealed trait Messages { _: i18n =>
-    val active: String = "ACTIVE"
-    val expired: String = "EXPIRED"
-    val upheld: String = "UPHELD"
-    val due: String = "DUE"
+    val active: String = "Active"
+    val expired: String = "Expired"
+    val upheld: String = "Upheld"
+    val due: String = "Due"
     val amountDue: String => String = amount => s"£$amount $due"
-    val paid = "PAID"
-    val estimate = "ESTIMATE"
+    val paid = "Paid"
+    val estimate = "Estimate"
   }
 
   object English extends Messages with En

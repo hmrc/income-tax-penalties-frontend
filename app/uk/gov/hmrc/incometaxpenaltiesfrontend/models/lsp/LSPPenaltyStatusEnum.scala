@@ -20,8 +20,8 @@ import play.api.libs.json._
 
 object LSPPenaltyStatusEnum extends Enumeration {
 
-  val Active: LSPPenaltyStatusEnum.Value = Value("ACTIVE")
-  val Inactive: LSPPenaltyStatusEnum.Value = Value("INACTIVE")
+  val Active: LSPPenaltyStatusEnum.Value = Value("Active")
+  val Inactive: LSPPenaltyStatusEnum.Value = Value("Inactive")
 
   implicit val format: Format[LSPPenaltyStatusEnum.Value] = new Format[LSPPenaltyStatusEnum.Value] {
 

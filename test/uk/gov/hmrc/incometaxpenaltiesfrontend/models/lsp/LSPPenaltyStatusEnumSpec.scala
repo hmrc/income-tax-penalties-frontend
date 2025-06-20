@@ -31,8 +31,8 @@ class LSPPenaltyStatusEnumSpec extends AnyWordSpec with Matchers{
     }
 
     "serialise to JSON" in {
-      Json.toJson(LSPPenaltyStatusEnum.Active) shouldBe JsString("ACTIVE")
-      Json.toJson(LSPPenaltyStatusEnum.Inactive) shouldBe JsString("INACTIVE")
+      Json.toJson(LSPPenaltyStatusEnum.Active) shouldBe JsString("Active")
+      Json.toJson(LSPPenaltyStatusEnum.Inactive) shouldBe JsString("Inactive")
     }
 
     "Unknown category should return jsError" in {
