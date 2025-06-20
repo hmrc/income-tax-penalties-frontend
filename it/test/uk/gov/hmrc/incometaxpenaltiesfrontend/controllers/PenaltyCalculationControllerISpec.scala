@@ -55,8 +55,8 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           val document = Jsoup.parse(result.body)
 
           document.getServiceName.text() shouldBe "Manage your Self Assessment"
-          document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
-          document.getH1Elements.text() shouldBe "First penalty for late payment"
+          document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "First late payment penalty calculation"
           document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
           document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
           document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
@@ -95,8 +95,8 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           val document = Jsoup.parse(result.body)
 
           document.getServiceName.text() shouldBe "Manage your Self Assessment"
-          document.title() shouldBe "First penalty for late payment - Manage your Self Assessment - GOV.UK"
-          document.getH1Elements.text() shouldBe "First penalty for late payment"
+          document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
           document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
           document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
           document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
