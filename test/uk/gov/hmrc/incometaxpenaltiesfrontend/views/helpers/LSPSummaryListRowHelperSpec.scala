@@ -50,7 +50,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
 
               lspSummaryListRowHelper.taxPeriodSummaryRow(sampleLateSubmissionPoint) shouldBe
                 Some(summaryListRow(
-                  label = messagesForLanguage.quarterKey,
+                  label = messagesForLanguage.updatePeriod,
                   value = Html(messagesForLanguage.quarterValue(
                     dateToString(sampleLateSubmissionPoint.taxPeriodStartDate.get),
                     dateToString(sampleLateSubmissionPoint.taxPeriodEndDate.get)
