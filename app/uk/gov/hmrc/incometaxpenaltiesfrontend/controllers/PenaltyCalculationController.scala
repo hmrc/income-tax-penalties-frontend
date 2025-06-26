@@ -48,10 +48,19 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
 
         penaltyDetailsForId match {
           case Some(lppDetails) =>
+
+            val firstLPPCalcData = new FirstLatePaymentPenaltyCalculationData(lppDetails)
+
             if (isLPP2) {
               ??? // Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails)
             } else {
-              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent))
+              if (firstLPPCalcData.llpHRCharge.map(_.daysOverdue).filter(_.toInt >= 31)) {
+                ???
+              } else if (firstLPPCalcData.llpHRCharge.map(_.daysOverdue).filter(_.toInt >= 15)) {
+                ???
+              } else {
+                Ok(lpp1CalculationView(firstLPPCalcData, isAgent))
+              }
             }
 
           case None =>

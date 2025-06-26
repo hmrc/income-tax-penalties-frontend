@@ -26,14 +26,13 @@
         main: MainTemplate,
         p: P,
         link: Link,
+        govukTable : GovukTable,
         govukSummaryList: GovukSummaryList,
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@individualOrAgent = {
-    @if(isAgent) {agent} else {individual}
-}
+@individualOrAgent = {@if(isAgent){agent}else{individual}}
 
 @main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true) {
 
@@ -43,7 +42,9 @@
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages(s"calculation.individual.first.h1")</h1>
 
-    <p class="govuk-heading-m">@messages("calculation.penalty.amount") @calculationData.penaltyAmount</p>
+
+    <p class="govuk-heading-m">@messages(s"calculation.$individualOrAgent.penalty.amount") £@calculationData.penaltyAmount</p>
+
 
     @if(calculationData.llpHRCharge.map(_.daysOverdue).filter(_.toInt >= 31) || calculationData.incomeTaxIsPaid) {
         <p class="govuk-body">
@@ -89,39 +90,37 @@
             Html("")
         }
     }
-    @govukSummaryList(SummaryList(
-        rows = Seq(
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("calculation.penalty.amount"))
-                ),
-                value = Value(
-                    content = Text(calculationData.penaltyAmount.toString)
-                )
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("calculation.amount.received"))
-                ),
-                value = Value(
-                    content = Text("£800.00")
-                )
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("calculation.left.to.pay"))
-                ),
-                value = Value(
-                    content = Text("£0.00")
-                )
-            )
-        )
-    ))
 
-    @link(
-        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-        messageKey = messages("calculation.return.link"),
-        id = Some("returnToIndex")
-    )
+
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.days.payment")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.rate")</th>
+                <th scope="col" class="govuk-table__header govuk-!-text-align-right">@messages("calculation.table.caption.amount")</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">£@calculationData.penaltyAmount</td>
+                <td class="govuk-table__cell">@calculationData.llpLRCharge.daysOverdue</td>
+                <td class="govuk-table__cell">@calculationData.llpLRCharge.penaltyPercentage</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.llpLRCharge.chargeAmount</td>
+            </tr>
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
+                <td class="govuk-table__cell govuk-table__cell--numeric" colspan="3">£@calculationData.llpLRCharge.chargeAmount</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="govuk-form-group">
+        @link(
+            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+            messageKey = messages("calculation.return.link"),
+            id = Some("returnToIndex")
+        )
+    </div>
 
 }
