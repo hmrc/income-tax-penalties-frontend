@@ -27,7 +27,7 @@ trait DateFormatter {
   def dateToString(date: LocalDate)(implicit messages: Messages): String =
     htmlNonBroken(s"${date.getDayOfMonth} ${messages(s"month.${date.getMonthValue}")} ${date.getYear}")
 
-  def dateToYearString(date: LocalDate)(implicit messages: Messages): String =
+  def dateToYearString(date: LocalDate): String =
     htmlNonBroken(s"${date.getYear}")
 
   def dateToMonthYearString(date: LocalDate)(implicit messages: Messages): String =

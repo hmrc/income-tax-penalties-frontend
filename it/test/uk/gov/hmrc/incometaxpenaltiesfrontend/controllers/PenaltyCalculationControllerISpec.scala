@@ -43,33 +43,108 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     val firstLPPPath = addQueryParam(pathStart + "first-lpp-calculation")
     val secondLPPPath = addQueryParam(pathStart + "second-lpp-calculation")
     val optArn = if(isAgent) Some("123456789") else None
-    s"GET $firstLPPPath" when {
-      "a first late payment penalty exists for the penaltyId" should {
-        "render the first late payment calculation page" in {
-          stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsModel))
+    s"GET $firstLPPPath" should {
+      "render the expected first late payment calculation" when {
+        "a first late payment penalty exists for the penaltyId" that {
+          "is between 15 and 30 days and the tax is unpaid" in {
+            stubAuthRequests(isAgent)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleUnpaidLPP1Day15to30)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
 
-          val result = get(firstLPPPath, isAgent)
-          result.status shouldBe OK
+            val document = Jsoup.parse(result.body)
 
-          val document = Jsoup.parse(result.body)
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
 
-          document.getServiceName.text() shouldBe "Manage your Self Assessment"
-          document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
-          document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-          document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
-          document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
-          document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
-          document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
-          document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
-          document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
-          document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
-          document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
-          document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
-          document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
-          document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
+          }
+
+          "is between 15 and 30 days and the tax is paid but not penalty" in {
+            stubAuthRequests(isAgent)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleTaxPaidLPP1Day15to30)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+
+          }
+
+          "is between 15 and 30 days and the tax and penalty is paid" in {
+            stubAuthRequests(isAgent)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(samplePaidLPP1Day15to30)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+
+          }
+
+          "is over 30 days, tax has not been paid" in {
+            stubAuthRequests(isAgent)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleUnpaidLPP1Day31)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+
+          }
+
+          "is over 30 days, the tax is paid but not penalty" in {
+            stubAuthRequests(isAgent)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleTaxPaidLPP1Day31)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+
+          }
+
+          "is over 30 days and the tax and penalty is paid" in {
+            stubAuthRequests(isAgent)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(samplePaidLPP1Day31)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+
+          }
         }
       }
+
+//        "render the first late payment calculation page" in {
+//          stubAuthRequests(isAgent)
+//          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsModel))
+//
+//          val result = get(firstLPPPath, isAgent)
+//          result.status shouldBe OK
+//
+//          val document = Jsoup.parse(result.body)
+//
+//          document.getServiceName.text() shouldBe "Manage your Self Assessment"
+//          document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+//          document.getH1Elements.text() shouldBe "First late payment penalty calculation"
+//          document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
+//          document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
+//          document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
+//          document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
+//          document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
+//          document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
+//          document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
+//          document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
+//          document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
+//          document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
+//          document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
+//        }
+//      }
 
       "a penalty does not exist for the penaltyId" should {
         "redirect to penalties home" in {

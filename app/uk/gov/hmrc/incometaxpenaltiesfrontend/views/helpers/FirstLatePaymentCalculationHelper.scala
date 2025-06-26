@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 
 class FirstLatePaymentCalculationHelper {
@@ -49,22 +50,33 @@ class FirstLatePaymentCalculationHelper {
     }
   }
 
-  def getFirstBulletPointMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
-                        isAgent: Boolean)(implicit messages: Messages): String = {
+  def getBulletListContent(calculationData: FirstLatePaymentPenaltyCalculationData,
+                           isAgent: Boolean)(implicit messages: Messages): List[String] = {
     calculationData.llpHRCharge match {
-      case Some(_) =>  messages("calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1", calculationData.llpLRCharge.chargeAmount)
-      case None if !calculationData.incomeTaxIsPaid =>
-        messages("calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1", calculationData.llpLRCharge.chargeAmount)
-      case _ => messages("calculation.individual.payment.15.30.missed.reason.bullet.1", calculationData.llpLRCharge.chargeAmount)
+      case Some(llpHRCharge) => List(
+        messages("calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1", calculationData.llpLRCharge.formattedChargeAmount),
+        messages("calculation.individual.payment.30.plus.missed.reason.bullet.2", llpHRCharge.formattedChargeAmount)
+      )
+      case None if !calculationData.incomeTaxIsPaid => List(
+        messages("calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1", calculationData.llpLRCharge.formattedChargeAmount),
+        messages("calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2")
+      )
+      case None => List(
+        messages("calculation.individual.payment.15.30.missed.reason.bullet.1", calculationData.llpLRCharge.formattedChargeAmount)
+      )
     }
   }
 
-  def getSecondBulletPointMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
+  def getFinalUnpaidMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
                         isAgent: Boolean)(implicit messages: Messages): String = {
-    calculationData.llpHRCharge match {
-      case Some(_) =>  messages("calculation.individual.payment.30.plus.missed.reason.bullet.2", calculationData.llpHRCharge)
-      case None if !calculationData.incomeTaxIsPaid =>
-        messages("calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2")
+    if(calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
+      messages("calculation.individual.penalty.isEstimate",
+        dateToYearString(calculationData.taxPeriodStartDate),
+        dateToYearString(calculationData.taxPeriodEndDate))
+    } else if(calculationData.isPenaltyOverdue) {
+      messages("calculation.individual.penalty.isOverdue")
+    } else {
+      messages("calculation.individual.penalty.isDue", dateToString(calculationData.payPenaltyBy))
     }
   }
 

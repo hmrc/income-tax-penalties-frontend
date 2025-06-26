@@ -70,29 +70,20 @@
 
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>@calculationHelper.getFirstBulletPointMsg(calculationData, isAgent)</li>
-        @if(calculationHelper.getSecondBulletPointMsg(calculationData, isAgent).nonEmpty) {
-            <li>@calculationHelper.getSecondBulletPointMsg(calculationData, isAgent)</li>
+        @calculationHelper.getBulletListContent(calculationData, isAgent).map { bulletContent =>
+            <li>@bulletContent</li>
         }
     </ul>
 
-    @{
-        if(calculationData.isPenaltyOverdue && calculationData.incomeTaxIsPaid) {
-                <p class="govuk-body">{messages(s"calculation.$individualOrAgent.penalty.overdue")}</p>
-        } else if(calculationData.incomeTaxIsPaid && !calculationData.isPenaltyOverdue) {
-                <p class="govuk-body">{messages(s"calculation.$individualOrAgent.payment.avoid.interest", dateToString(calculationData.payPenaltyBy))}</p>
-        } else if(!calculationData.incomeTaxIsPaid && !calculationData.isPenaltyOverdue && calculationData.isEstimate) {
-                <p class="govuk-body">{messages(s"calculation.$individualOrAgent.payment.15.30.unpaid.missed.reason.penalty.estimate", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))}</p>
-        } else {
-            Html("")
-        }
+    @if(!calculationData.isPenaltyPaid) {
+        @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
     }
 
 
     <table class="govuk-table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amountApplied")</th>
                 <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.days.payment")</th>
                 <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.rate")</th>
                 <th scope="col" class="govuk-table__header govuk-!-text-align-right">@messages("calculation.table.caption.amount")</th>
@@ -100,14 +91,22 @@
         </thead>
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
-                <td class="govuk-table__cell">£@calculationData.penaltyAmount</td>
+                <td class="govuk-table__cell">£@calculationData.llpLRCharge.formattedChargeAmount</td>
                 <td class="govuk-table__cell">@calculationData.llpLRCharge.daysOverdue</td>
-                <td class="govuk-table__cell">@calculationData.llpLRCharge.penaltyPercentage</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.llpLRCharge.chargeAmount</td>
+                <td class="govuk-table__cell">@{calculationData.llpLRCharge.penaltyPercentage}%</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.llpLRCharge.formattedPenaltyAmount</td>
             </tr>
+            @calculationData.llpHRCharge.map {lppHRCharge =>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">£@lppHRCharge.formattedChargeAmount</td>
+                    <td class="govuk-table__cell">@lppHRCharge.daysOverdue</td>
+                    <td class="govuk-table__cell">@{lppHRCharge.penaltyPercentage}%</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">£@lppHRCharge.formattedPenaltyAmount</td>
+                </tr>
+            }
             <tr class="govuk-table__row">
                 <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
-                <td class="govuk-table__cell govuk-table__cell--numeric" colspan="3">£@calculationData.llpLRCharge.chargeAmount</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric" colspan="3">£@calculationData.formattedPenaltyAmount</td>
             </tr>
         </tbody>
     </table>

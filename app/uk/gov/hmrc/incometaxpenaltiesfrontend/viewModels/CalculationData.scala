@@ -68,6 +68,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
+
 }
 
 case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
