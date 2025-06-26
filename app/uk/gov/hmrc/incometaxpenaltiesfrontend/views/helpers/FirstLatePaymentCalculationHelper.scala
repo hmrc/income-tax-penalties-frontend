@@ -15,9 +15,9 @@ class FirstLatePaymentCalculationHelper {
     } else {
       Some{
         if(calculationData.isPenaltyPaid) {
-          messages("calculation.paid.penalty.on", "22 December 2024")
+          messages("calculation.individual.paid.penalty.on", "22 December 2024")
         } else {
-          messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+          messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
         }
       }
     }
@@ -29,8 +29,8 @@ class FirstLatePaymentCalculationHelper {
     calculationData.llpHRCharge match {
       case Some(_) =>  messages("calculation.payment.missed.reason.additional")
       case None if !calculationData.incomeTaxIsPaid =>
-        messages("calculation.payment.15.30.missed.reason.taxUnpaid")
-      case _ => messages("calculation.payment.15.30.missed.reason")
+        messages("calculation.individual.payment.15.30.missed.reason.taxUnpaid")
+      case _ => messages("calculation.individual.payment.15.30.missed.reason")
     }
   }
 
