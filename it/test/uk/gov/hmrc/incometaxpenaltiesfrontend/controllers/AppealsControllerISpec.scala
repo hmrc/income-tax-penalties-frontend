@@ -69,7 +69,7 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/appeal-start")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=false&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
     }
   }
 
@@ -108,7 +108,7 @@ class AppealsControllerISpec extends ControllerISpecHelper {
 
       result.status shouldBe SEE_OTHER
 
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/appeal-start")
+      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=true&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
     }
   }
 
