@@ -20,6 +20,8 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.FirstLatePaymentCalculationHelper
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToYearString
 
 
 @this(
@@ -48,7 +50,7 @@
 
 
     @calculationHelper.getPaymentDetails(calculationData, isAgent).map{msg =>
-        <p class="govuk-body">msg</p>
+        <p class="govuk-body">@msg</p>
     }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>
@@ -58,44 +60,19 @@
     }
 
     <p class="govuk-body">
-        @messages(s"calculation.$individualOrAgent.payment.deadline", calculationData.taxPeriodStartDate.getYear, calculationData.taxPeriodEndDate.getYear, dateToString(calculationData.payPenaltyBy))
+        @messages(s"calculation.$individualOrAgent.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.payPenaltyBy))
     </p>
 
 
     <p class="govuk-body">
-        @messages(calculationHelper.getMissedDeadlineMsg(calculationData, isAgent))
+        @calculationHelper.getMissedDeadlineMsg(calculationData, isAgent)
     </p>
 
-    @if(calculationData.llpHRCharge.map(_.daysOverdue).filter(_.toInt >= 31) || calculationData.incomeTaxIsPaid) {
-        <p class="govuk-body">
-            @messages(s"calculation.$individualOrAgent.pay.penalty.by", dateToString(calculationData.payPenaltyBy))
-        </p>
-
-        <p class="govuk-body">
-            @messages(s"calculation.$individualOrAgent.charge.reference", dateToString(calculationData.payPenaltyBy))
-        </p>
-
-        <p class="govuk-body">
-            @messages(s"calculation.$individualOrAgent.payment.deadline", calculationData.taxPeriodStartDate.getYear, calculationData.taxPeriodEndDate.getYear, dateToString(calculationData.payPenaltyBy))
-        </p>
-    } else {
-        <p class="govuk-body">
-            @messages(s"calculation.$individualOrAgent.payment.deadline", calculationData.taxPeriodStartDate.getYear, calculationData.taxPeriodEndDate.getYear, dateToString(calculationData.payPenaltyBy))
-        </p>
-    }
-
-    @if(calculationData.llpHRCharge.isDefined) {
-        <p class="govuk-body">@messages(s"calculation.$individualOrAgent.payment.missed.reason.additional", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))</p>
-    } else {
-        <p class="govuk-body">@messages(s"calculation.$individualOrAgent.payment.15.30.missed.reason", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))</p>
-    }
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>@messages(s"calculation.$individualOrAgent.payment.15.30.unpaid.missed.reason.bullet.1", calculationData.penaltyAmount)</li>
-        @if(calculationData.incomeTaxIsPaid) {
-            @Html("")
-        } else {
-            <li>@messages(s"calculation.$individualOrAgent.payment.15.30.unpaid.missed.reason.bullet.2")</li>
+        <li>@calculationHelper.getFirstBulletPointMsg(calculationData, isAgent)</li>
+        @if(calculationHelper.getSecondBulletPointMsg(calculationData, isAgent).nonEmpty) {
+            <li>@calculationHelper.getSecondBulletPointMsg(calculationData, isAgent)</li>
         }
     </ul>
 
