@@ -64,7 +64,7 @@ class AuthoriseAndRetrieveMTDIndividual @Inject()(override val authConnector: Au
           logger.info("Agent on individual endpoint")
           Future.successful(
             Left(Redirect(routes.IndexController.homePage(isAgent = true))))
-        case _ ~ enrolments ~ Some(nino) =>
+        case _ ~ enrolments ~ Some(nino) if enrolments.mtdItId.isDefined =>
           enrolments.mtdItId match {
             case Some(mtditid) => Future.successful(
               Right(AuthorisedAndEnrolledIndividual(mtditid, nino, navBar = None))
@@ -72,6 +72,18 @@ class AuthoriseAndRetrieveMTDIndividual @Inject()(override val authConnector: Au
             case None =>
               logger.error("Auth check - User does not have an HMRC-MTD-IT enrolment")
             // ToDo this needs updating for unenrolled error when implemented
+              errorHandler.internalServerErrorTemplate.map(html => Left(
+                InternalServerError(html)
+              ))
+          }
+        case _ ~ enrolments ~ Some(nino) if enrolments.itsa.isDefined =>
+          enrolments.itsa match {
+            case Some(utr) => Future.successful(
+              Right(AuthorisedAndEnrolledIndividual(utr, nino, navBar = None))
+            )
+            case None =>
+              logger.error("Auth check - User does not have an HMRC-MTD-IT enrolment")
+              // ToDo this needs updating for unenrolled error when implemented
               errorHandler.internalServerErrorTemplate.map(html => Left(
                 InternalServerError(html)
               ))

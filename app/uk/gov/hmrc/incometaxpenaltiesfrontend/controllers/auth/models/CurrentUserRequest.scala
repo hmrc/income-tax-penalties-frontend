@@ -19,11 +19,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Request, WrappedRequest}
 import play.twirl.api.Html
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, EnrolmentIdentifier}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, RequestWithNavBar}
 
 abstract class CurrentUserRequest[A](request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
-  val mtdItId: String
+  val identifier: EnrolmentIdentifier
   val nino: String
   val navBar: Option[Html]
   val arn: Option[String]
@@ -32,12 +32,12 @@ abstract class CurrentUserRequest[A](request: Request[A]) extends WrappedRequest
 
   lazy val auditJson: JsObject = Json.obj(
       "identifierType" -> "MTDITID",
-      "taxIdentifier" -> mtdItId
+      "taxIdentifier" -> identifier.value
   ) ++ arn.fold(Json.obj())(arn => Json.obj("agentReferenceNumber" -> arn))
 
 }
 
-case class AuthorisedAndEnrolledIndividual[A](mtdItId: String,
+case class AuthorisedAndEnrolledIndividual[A](identifier: EnrolmentIdentifier,
                                               nino: String,
                                               navBar: Option[Html])(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
   override val isAgent: Boolean = false
@@ -48,7 +48,7 @@ case class AuthorisedAndEnrolledIndividual[A](mtdItId: String,
 case class AuthorisedAndEnrolledAgent[A](sessionData: SessionData,
                                          arn: Option[String]
                                         )(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
-  override val mtdItId: String = sessionData.mtditid
+  override val identifier: EnrolmentIdentifier = EnrolmentIdentifier("MTDITID", sessionData.mtditid)
   override val nino: String = sessionData.nino
   override val isAgent: Boolean = true
   override val navBar: Option[Html] = None

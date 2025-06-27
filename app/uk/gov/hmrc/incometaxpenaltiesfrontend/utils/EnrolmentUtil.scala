@@ -16,14 +16,16 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import uk.gov.hmrc.auth.core.{Enrolment, Enrolments}
+import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 
 object EnrolmentUtil {
 
   val agentEnrolmentKey = "HMRC-AS-AGENT"
   val incomeTaxEnrolmentKey = "HMRC-MTD-IT"
+  val itsaEnrolmentKey = "IR-SA"
   val arnKey = "AgentReferenceNumber"
   val mtdItIdKey = "MTDITID"
+  val utrKey = "UTR"
   val agentDelegatedAuthRuleKey = "mtd-it-auth"
 
   val agentDelegatedAuthorityRule: String => Enrolment =
@@ -41,12 +43,17 @@ object EnrolmentUtil {
         arn = identifier.value
       } yield arn
 
-    def mtdItId: Option[String] =
+    def mtdItId: Option[EnrolmentIdentifier] =
       for {
         incomeTaxEnrolment <- enrolments.getEnrolment(incomeTaxEnrolmentKey)
         identifier <- incomeTaxEnrolment.getIdentifier(mtdItIdKey)
-        mtdItId = identifier.value
-      } yield mtdItId
+      } yield identifier
+
+   def itsa: Option[EnrolmentIdentifier] =
+      for {
+        incomeTaxEnrolment <- enrolments.getEnrolment(itsaEnrolmentKey)
+        identifier <- incomeTaxEnrolment.getIdentifier(utrKey)
+      } yield identifier
 
   }
 
