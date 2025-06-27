@@ -43,40 +43,42 @@
         @messages("caption.date", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))
     </span>
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages(s"calculation.individual.first.h1")</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.first.h1")</h1>
 
 
-    <p class="govuk-heading-m">@messages(s"calculation.$individualOrAgent.penalty.amount") £@calculationData.penaltyAmount</p>
+    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.penaltyAmount</p>
 
 
     @calculationHelper.getPaymentDetails(calculationData, isAgent).map{msg =>
-        <p class="govuk-body">@msg</p>
+        <p class="govuk-body" id="payPenaltyBy">@msg</p>
     }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>
-        <p class="govuk-body">
-            @messages(s"calculation.$individualOrAgent.charge.reference", chargeRef)
+        <p class="govuk-body" id="chargeReference">
+            @messages("calculation.charge.reference", chargeRef)
         </p>
     }
 
-    <p class="govuk-body">
-        @messages(s"calculation.$individualOrAgent.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.payPenaltyBy))
+    <p class="govuk-body" id="paymentDeadline">
+        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.payPenaltyBy))
     </p>
 
 
-    <p class="govuk-body">
+    <p class="govuk-body" id="missedDeadline">
         @calculationHelper.getMissedDeadlineMsg(calculationData, isAgent)
     </p>
 
 
-    <ul class="govuk-list govuk-list--bullet">
+    <ul class="govuk-list govuk-list--bullet" id="reasonList">
         @calculationHelper.getBulletListContent(calculationData, isAgent).map { bulletContent =>
             <li>@bulletContent</li>
         }
     </ul>
 
     @if(!calculationData.isPenaltyPaid) {
-        @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+        <p class="govuk-body" id="penaltyStatus">
+            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+        </p>
     }
 
 

@@ -70,7 +70,7 @@ trait LPPDetailsTestData {
   val sampleTaxPaidLPP1Day15to30: LPPDetails = sampleUnpaidLPP1Day15to30.copy(penaltyStatus = LPPPenaltyStatusEnum.Posted,
     penaltyAmountAccruing = 0,
     penaltyAmountPosted = 1001.45,
-    principalChargeLatestClearing = Some("22/10/2024"))
+    principalChargeLatestClearing = Some(LocalDate.now()))
 
   val samplePaidLPP1Day15to30: LPPDetails = sampleTaxPaidLPP1Day15to30.copy(penaltyAmountOutstanding = None)
 
@@ -111,7 +111,7 @@ trait LPPDetailsTestData {
   val sampleTaxPaidLPP1Day31 = sampleUnpaidLPP1.copy(
     penaltyAmountAccruing = 0,
     penaltyAmountPosted = 1001.45,
-    principalChargeLatestClearing = Some("22/10/2024")
+    principalChargeLatestClearing = Some(LocalDate.now())
   )
   val samplePaidLPP1Day31 = sampleTaxPaidLPP1Day31.copy(penaltyAmountOutstanding = None)
 
