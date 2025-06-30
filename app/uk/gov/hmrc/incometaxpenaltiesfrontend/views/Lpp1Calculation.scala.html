@@ -88,7 +88,7 @@
                 <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amountApplied")</th>
                 <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.days.payment")</th>
                 <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.rate")</th>
-                <th scope="col" class="govuk-table__header govuk-!-text-align-right">@messages("calculation.table.caption.amount")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
             </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -108,12 +108,14 @@
             }
             <tr class="govuk-table__row">
                 <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
-                <td class="govuk-table__cell govuk-table__cell--numeric" colspan="3">£@calculationData.formattedPenaltyAmount</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
             </tr>
         </tbody>
     </table>
 
-    <div class="govuk-form-group">
+    <div class="govuk-!-margin-bottom-8">
         @link(
             link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
             messageKey = messages("calculation.return.link"),
