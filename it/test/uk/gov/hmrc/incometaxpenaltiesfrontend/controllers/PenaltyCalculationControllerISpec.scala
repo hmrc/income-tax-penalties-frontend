@@ -23,6 +23,9 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.CalculationData
+
+import java.time.LocalDate
 
 class PenaltyCalculationControllerISpec extends ControllerISpecHelper
   with PenaltiesStub with PenaltiesDetailsTestData with FeatureSwitching {
@@ -38,6 +41,9 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     pathNoQuery + "?penaltyId=" + principleChargeRef
   }
 
+  def getDateString(date: LocalDate): String = s"${date.getDayOfMonth} ${messagesAPI(s"month.${date.getMonthValue}")} ${date.getYear}"
+  def getTaxYearString(calcData: CalculationData): String = calcData.taxPeriodStartDate.getYear.toString + " to " + calcData.taxPeriodEndDate.getYear.toString
+
   List(false, true).foreach { isAgent =>
     val pathStart = if (isAgent) "/agent-" else "/"
     val firstLPPPath = addQueryParam(pathStart + "first-lpp-calculation")
@@ -51,7 +57,8 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 1
           "is between 15 and 30 days and the tax is unpaid" in {
             stubAuthRequests(isAgent)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleUnpaidLPP1Day15to30)))
+            val firstLPPCalcData = sampleFirstLPPCalcData()
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -61,17 +68,18 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
-            document.getElementById("paymentDeadline").text() shouldBe "The payment deadline for the 2021 to 2021 tax year was 8 July 2021."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15-30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
-            document.getElementById("penaltyStatus").text() shouldBe "This penalty is currently an estimate because the outstanding tax for the 2021 to 2021 tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
           }
 
           //scenario 2
           "is between 15 and 30 days and the tax is paid but not penalty" in {
             stubAuthRequests(isAgent)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleTaxPaidLPP1Day15to30)))
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -81,19 +89,44 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
-            document.getElementById("payPenaltyBy").text() shouldBe "Pay penalty by 8 July 2021"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
-            document.getElementById("paymentDeadline").text() shouldBe "The payment deadline for the 2021 to 2021 tax year was 8 July 2021."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("penaltyStatus").text() shouldBe "To avoid interest charges, you should pay this penalty by 8 July 2021."
+            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
 
           }
 
           //scenario 3
+          "is between 15 and 30 days and the tax paid late and penalty is not paid" in {
+            stubAuthRequests(isAgent)
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true,
+              isOverdue = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "First late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
+            document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
+
+          }
+
+          //scenario 4
           "is between 15 and 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(samplePaidLPP1Day15to30)))
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -116,7 +149,8 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 4
           "is over 30 days, tax has not been paid" in {
             stubAuthRequests(isAgent)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleUnpaidLPP1Day31)))
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -138,9 +172,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           }
 
           //scenario 5
-          "is over 30 days, the tax is paid but not penalty" in {
+          "is over 30 days, the tax is paid but not penalty and is overdue" in {
             stubAuthRequests(isAgent)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(sampleTaxPaidLPP1Day31)))
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isOverdue = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -166,7 +201,8 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is 15-30 days and the penalty is paid" in {
             stubAuthRequests(isAgent)
             //to update
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(samplePaidLPP1Day31)))
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -183,11 +219,12 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             //this message is incorrect. it should be empty
             document.getElementById("penaltyStatus") shouldBe null
-
+          }
             //scenario 7
           "is over 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(samplePaidLPP1Day31)))
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPenaltyPaid = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
