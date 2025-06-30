@@ -93,6 +93,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
 
@@ -117,6 +118,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
 
@@ -177,7 +179,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 6
           "is between 15 and 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true)
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
             stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -188,21 +190,20 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
-//            document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-//            document.getElementById("reasonList").getElementsByTag("li").get(1)
-            //this message is incorrect. it should be "This penalty is now overdue and interest is being charged"
-//            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
+
 
           }
 
             //scenario 7
           "is over 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPenaltyPaid = true)
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
             stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -213,46 +214,17 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
-//            document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
-            //this message is incorrect. it should be empty
-//            document.getElementById("penaltyStatus") shouldBe false
-
 
 
           }
         }
       }
-
-//        "render the first late payment calculation page" in {
-//          stubAuthRequests(isAgent)
-//          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsModel))
-//
-//          val result = get(firstLPPPath, isAgent)
-//          result.status shouldBe OK
-//
-//          val document = Jsoup.parse(result.body)
-//
-//          document.getServiceName.text() shouldBe "Manage your Self Assessment"
-//          document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
-//          document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-//          document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
-//          document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
-//          document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
-//          document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
-//          document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
-//          document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
-//          document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
-//          document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
-//          document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
-//          document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
-//          document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
-//        }
-//      }
 
       "a penalty does not exist for the penaltyId" should {
         "redirect to penalties home" in {
@@ -265,45 +237,5 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
         }
       }
     }
-
-//    s"GET $secondLPPPath" when {
-//      "a second late payment penalty exists for the penaltyId" should {
-//        "render the second late payment calculation page" in {
-//          stubAuthRequests(isAgent)
-//          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsLPP2Model))
-//
-//          val result = get(secondLPPPath, isAgent)
-//          result.status shouldBe OK
-//
-//          val document = Jsoup.parse(result.body)
-//
-//          document.getServiceName.text() shouldBe "Manage your Self Assessment"
-//          document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
-//          document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
-//          document.getParagraphs.get(0).text() shouldBe "This penalty applies if Income Tax has not been paid for 30 days."
-//          document.getParagraphs.get(1).text() shouldBe "It is made up of 2 parts:"
-//          document.getBulletPoints.get(0).text() shouldBe "2% of £20,000 (the unpaid Income Tax 15 days after the due date)"
-//          document.getBulletPoints.get(1).text() shouldBe "2% of £20,000 (the unpaid Income Tax 30 days after the due date)"
-//          document.getSummaryListQuestion.get(0).text() shouldBe "Penalty amount"
-//          document.getSummaryListQuestion.get(1).text() shouldBe "Amount received"
-//          document.getSummaryListQuestion.get(2).text() shouldBe "Left to pay"
-//          document.getSummaryListAnswer.get(0).text() shouldBe "£800.00"
-//          document.getSummaryListAnswer.get(1).text() shouldBe "£800.00"
-//          document.getSummaryListAnswer.get(2).text() shouldBe "£0.00"
-//          document.getLink("returnToIndex").text() shouldBe "Return to Self Assessment penalties and appeals"
-//        }
-//      }
-//
-//      "a penalty does not exist for the penaltyId" should {
-//        "redirect to penalties home" in {
-//          stubAuthRequests(isAgent)
-//          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
-//
-//          val result = get(firstLPPPath, isAgent)
-//          result.status shouldBe SEE_OTHER
-//          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
-//        }
-//      }
-//    }
   }
 }
