@@ -21,12 +21,15 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.models.FeatureSwitch
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 
+import java.time.LocalDate
+
 trait FeatureSwitching {
 
   val appConfig: AppConfig
 
   val FEATURE_SWITCH_ON = "true"
   val FEATURE_SWITCH_OFF = "false"
+  val TIME_MACHINE_NOW = "TIME_MACHINE_NOW"
 
   def isEnabled(featureSwitch: FeatureSwitch): Boolean =
     sys.props get featureSwitch.configName match {
@@ -43,5 +46,23 @@ trait FeatureSwitching {
     logger.warn(s"[disable] $featureSwitch")
     sys.props += featureSwitch.configName -> FEATURE_SWITCH_OFF
   }
+
+  def setFeatureDate(dateToSet: Option[LocalDate]): Unit = {
+    logger.debug(s"[FeatureSwitching][setFeatureDate] - Setting time machine date to: $dateToSet")
+    dateToSet.fold(sys.props -= TIME_MACHINE_NOW)(sys.props += TIME_MACHINE_NOW -> _.toString)
+  }
+
+  def getFeatureDate(implicit appConfig: AppConfig): LocalDate = {
+    sys.props.get(TIME_MACHINE_NOW).fold({
+      val optDateAsString = appConfig.config.getOptional[String]("feature.switch.time-machine-now")
+      val dateAsString = optDateAsString.getOrElse("")
+      if(dateAsString.isEmpty){
+        LocalDate.now()
+      }else{
+        LocalDate.parse(dateAsString)
+      }
+    })(LocalDate.parse(_))
+  }
+
 
 }

@@ -29,7 +29,7 @@ import scala.util.Try
 
 
 @Singleton
-class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends FeatureSwitching {
+class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesConfig) extends FeatureSwitching {
 
   val appConfig: AppConfig = this
 
@@ -92,8 +92,16 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
     config.get[String]("timemachine.date")
   private val timeMachineDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yy")
 
-  def optCurrentDate: Option[LocalDate]  = if (timeMachineEnabled && !timeMachineDate.equalsIgnoreCase("now")){
-    Try(LocalDate.parse(timeMachineDate, timeMachineDateFormatter)).toOption
-  } else None
+  def optCurrentDate: Option[LocalDate] = {
+    val sysPropDate = Option(System.getProperty("timemachine.date"))
 
+    sysPropDate match {
+      case Some(dateStr) if timeMachineEnabled && !dateStr.trim.equalsIgnoreCase("now") =>
+        Try(LocalDate.parse(dateStr, timeMachineDateFormatter)).toOption
+      case _ =>
+        if (timeMachineEnabled && !timeMachineDate.trim.equalsIgnoreCase("now")) {
+          Try(LocalDate.parse(timeMachineDate, timeMachineDateFormatter)).toOption
+        } else None
+    }
+  }
 }
