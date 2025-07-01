@@ -62,10 +62,8 @@ class FeatureSwitchFrontendController @Inject()(featureSwitchService: FeatureSwi
       Ok(s"Time machine set to: ${LocalDate.now()}")
     })(
       dateAsString => {
-
-        val timeMachineDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
-        Try(LocalDate.parse(dateAsString, timeMachineDateFormatter)).fold(
+        val timeMachineStringDate = dateAsString.replace("/", "-")
+        Try(LocalDate.parse(timeMachineStringDate, timeMachineDateFormatter)).fold(
           err => {
             logger.error(s"[FeatureSwitchController][setFeatureDate] - Exception was thrown when setting time machine date: ${err.getMessage}")
             BadRequest("The date provided is in an invalid format")

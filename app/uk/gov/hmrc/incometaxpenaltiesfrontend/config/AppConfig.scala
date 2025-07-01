@@ -90,18 +90,13 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
 
   lazy val timeMachineDate: String =
     config.get[String]("timemachine.date")
-  private val timeMachineDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yy")
 
   def optCurrentDate: Option[LocalDate] = {
-    val sysPropDate = Option(System.getProperty("timemachine.date"))
-
-    sysPropDate match {
-      case Some(dateStr) if timeMachineEnabled && !dateStr.trim.equalsIgnoreCase("now") =>
-        Try(LocalDate.parse(dateStr, timeMachineDateFormatter)).toOption
-      case _ =>
-        if (timeMachineEnabled && !timeMachineDate.trim.equalsIgnoreCase("now")) {
-          Try(LocalDate.parse(timeMachineDate, timeMachineDateFormatter)).toOption
-        } else None
+    if(timeMachineEnabled) {
+      val optDateString = sys.props.get(TIME_MACHINE_NOW).getOrElse(timeMachineDate)
+      Try(LocalDate.parse(optDateString, timeMachineDateFormatter)).toOption
+    } else {
+      None
     }
   }
 }
