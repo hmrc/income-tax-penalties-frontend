@@ -3,6 +3,7 @@ service.name = Manage your Self Assessment
 common.opensInNewTab = (opens in new tab)
 common.late = Late
 
+
 phaseBanner.tag = Beta
 phaseBanner.message = This is a new service – your {0} will help us to improve it.
 phaseBanner.linkText = feedback
@@ -66,15 +67,37 @@ session.expired.h1 = For your security, this service has been reset
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
 
 calculations.view.calculations = View calculation
-calculation.individual.title = {0} penalty for late payment
-calculation.individual.h1 = {0} penalty for late payment
+calculation.individual.first.title = First late payment penalty calculation
+calculation.individual.second.title = Second late payment penalty calculation
+calculation.individual.first.h1 = First late payment penalty calculation
+calculation.individual.second.h1 = Second late payment penalty calculation
 calculation.individual.p1 = This penalty applies if Income Tax has not been paid for 30 days.
 calculation.individual.p2 = It is made up of 2 parts:
 calculation.return.link = Return to Self Assessment penalties and appeals
-calculation.penalty.amount = Penalty amount
-calculation.amount.received = Amount received
-calculation.left.to.pay = Left to pay
-
+calculation.penalty.amount = Penalty amount:
+calculation.individual.amount.received = Amount received
+calculation.individual.left.to.pay = Left to pay
+caption.date = {0} to {1} tax year
+calculation.charge.reference = Charge reference: {0}
+calculation.individual.pay.penalty.by = Pay penalty by {0}
+calculation.individual.paid.penalty.on = Penalty paid on {0}
+calculation.payment.deadline = The payment deadline for the {0} to {1} tax year was {2}.
+calculation.individual.payment.15.30.missed.reason.taxUnpaid = Because you missed this deadline, you will be charged a late payment penalty.
+calculation.individual.payment.15.30.missed.reason = Because you missed this deadline, you have been charged a late payment penalty.
+calculation.individual.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
+calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15-30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 3% of £{0} (the tax that was outstanding 15 days after the payment deadline)
+calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional 3% of £{0} (the tax that was outstanding 30 days after the payment deadline)
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline
+calculation.table.caption.amountApplied = Amount penalty is applied to
+calculation.table.caption.days.payment = Days after payment deadline
+calculation.table.caption.rate = Rate
+calculation.table.caption.amount = Amount
+calculation.table.caption.total.penalty = Total penalty
+calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
+calculation.individual.penalty.isOverdue = This penalty is now overdue and interest is being charged.
 
 compliance.timeline.individual.title = Actions to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.

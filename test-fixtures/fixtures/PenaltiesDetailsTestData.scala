@@ -19,6 +19,7 @@ package fixtures
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{FirstLatePaymentPenaltyCalculationData, LLPCharge}
 
 import java.time.LocalDate
 
@@ -47,6 +48,85 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
   val latePaymentPenalty: LatePaymentPenalty = LatePaymentPenalty(Seq(
     sampleUnpaidLPP1.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnFirstLPP), outstandingAmount = Some(20), timeToPay = None))
   ))
+
+  def sampleFirstLPPCalcData(is15to30Days: Boolean = true,
+                             isPenaltyPaid: Boolean = false,
+                             isIncomeTaxPaid: Boolean = false,
+                             isEstimate: Boolean = true,
+                             isOverdue: Boolean = false) = {
+    val penaltyChargeDueDate = if(isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
+
+    FirstLatePaymentPenaltyCalculationData(
+      penaltyAmount = 1001.45,
+      taxPeriodStartDate = penaltyChargeDueDate.minusDays(90),
+      taxPeriodEndDate = penaltyChargeDueDate.minusDays(60),
+      isPenaltyPaid = isPenaltyPaid,
+      incomeTaxIsPaid = isIncomeTaxPaid,
+      isEstimate = isEstimate,
+      isPenaltyOverdue = isOverdue,
+      payPenaltyBy = penaltyChargeDueDate,
+      penaltyChargeReference = if(is15to30Days && !isIncomeTaxPaid) None else Some("PEN1234567"),
+      llpLRCharge = LLPCharge(
+        99.99, "15", 2.00
+      ),
+      llpHRCharge = if(!is15to30Days) {Some(
+        LLPCharge(
+          99.99, "31", 2.00
+        )
+      )} else None
+    )
+  }
+
+  def getPenaltyDetailsForCalculationPage(firstLPPCalData: FirstLatePaymentPenaltyCalculationData): PenaltyDetails = {
+    val lppDetails = LPPDetails(
+      principalChargeReference = principleChargeRef,
+      penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
+      penaltyStatus = if(firstLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
+      penaltyAmountPaid = if(firstLPPCalData.isPenaltyPaid) Some(firstLPPCalData.penaltyAmount) else None,
+      penaltyAmountPosted = if(firstLPPCalData.isEstimate) 0 else firstLPPCalData.penaltyAmount,
+      penaltyAmountAccruing = if(firstLPPCalData.isEstimate) firstLPPCalData.penaltyAmount else 0,
+      penaltyAmountOutstanding = if(firstLPPCalData.isPenaltyPaid) Some(0) else Some(firstLPPCalData.penaltyAmount),
+      LPP1LRDays = Some("15"),
+      LPP1HRDays = Some("31"),
+      LPP2Days = Some("31"),
+      LPP1LRCalculationAmount = Some(99.99),
+      LPP1HRCalculationAmount = if(firstLPPCalData.llpHRCharge.isDefined) Some(99.99) else None,
+      LPP2Percentage = None,
+      LPP1LRPercentage = Some(2.00),
+      LPP1HRPercentage = if(firstLPPCalData.llpHRCharge.isDefined) Some(BigDecimal(2.00).setScale(2)) else None,
+      penaltyChargeCreationDate = Some(firstLPPCalData.payPenaltyBy.minusDays(30)),
+      communicationsDate = Some(firstLPPCalData.payPenaltyBy),
+      penaltyChargeDueDate = Some(firstLPPCalData.payPenaltyBy),
+      appealInformation = None,
+      principalChargeBillingFrom = firstLPPCalData.taxPeriodStartDate,
+      principalChargeBillingTo = firstLPPCalData.taxPeriodEndDate,
+      principalChargeDueDate = firstLPPCalData.payPenaltyBy,
+      penaltyChargeReference = Some("PEN1234567"),
+      principalChargeLatestClearing = if(firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
+      vatOutstandingAmount = None,
+      LPPDetailsMetadata = LPPDetailsMetadata(
+        mainTransaction = Some(MainTransactionEnum.VATReturnCharge),
+        outstandingAmount = Some(99),
+        timeToPay = None
+      )
+    )
+    val lpp = LatePaymentPenalty(Seq(lppDetails
+      .copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnFirstLPP), outstandingAmount = Some(20), timeToPay = None))))
+    PenaltyDetails(
+      totalisations = Some(Totalisations(
+        LSPTotalValue = Some(200),
+        penalisedPrincipalTotal = Some(2000),
+        LPPPostedTotal = Some(165.25),
+        LPPEstimatedTotal = Some(15.26),
+        totalAccountOverdue = None,
+        totalAccountPostedInterest = None,
+        totalAccountAccruingInterest = None
+      )),
+      lateSubmissionPenalty = Some(lateSubmissionPenalty),
+      latePaymentPenalty = Some(lpp),
+      breathingSpace = None
+    )
+  }
 
   val latePaymentPenalty2: LatePaymentPenalty = LatePaymentPenalty(Seq(
     sampleLPP2.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnSecondLPP), outstandingAmount = Some(20), timeToPay = None))

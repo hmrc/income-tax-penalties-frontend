@@ -15,7 +15,7 @@
     <logger name="io.netty.buffer" level="OFF"/>
     <logger name="play.core.netty" level="OFF"/>
 
-    <root level="DEBUG">
+    <root level="ERROR">
         <!-- We send DEBUG logs to an INFO-filtering appender rather than setting log level to ERROR directly
         so that all the logging statements are exercised during tests -->
         <appender-ref ref="STDOUT"/>

@@ -21,6 +21,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
+import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Writes
 import play.api.libs.ws.{DefaultWSCookie, WSClient, WSCookie, WSRequest, WSResponse}
@@ -52,6 +53,9 @@ trait ComponentSpecHelper
   val mockPort: String = WiremockHelper.wiremockPort.toString
   val mockUrl: String = s"http://$mockHost:$mockPort"
 
+  implicit lazy val messagesAPI = app.injector.instanceOf[MessagesApi]
+  implicit lazy val lang: Lang = Lang("en")
+  implicit lazy val messagesProvider = MessagesImpl(Lang("en"), messagesAPI)
   def config: Map[String, String] = Map(
     "microservice.services.penalties.host" -> mockHost,
     "microservice.services.penalties.port" -> mockPort,

@@ -1,0 +1,126 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToString
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.FirstLatePaymentCalculationHelper
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToYearString
+
+
+@this(
+        main: MainTemplate,
+        p: P,
+        link: Link,
+        govukTable : GovukTable,
+        govukSummaryList: GovukSummaryList,
+        calculationHelper: FirstLatePaymentCalculationHelper,
+)
+
+@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@individualOrAgent = {@if(isAgent){agent}else{individual}}
+
+@main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true) {
+
+    <span class="govuk-caption-l" id="captionSpan">
+        @messages("caption.date", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))
+    </span>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.first.h1")</h1>
+
+
+    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.penaltyAmount</p>
+
+
+    @calculationHelper.getPaymentDetails(calculationData, isAgent).map{msg =>
+        <p class="govuk-body" id="payPenaltyBy">@msg</p>
+    }
+
+    @calculationData.penaltyChargeReference.map{chargeRef =>
+        <p class="govuk-body" id="chargeReference">
+            @messages("calculation.charge.reference", chargeRef)
+        </p>
+    }
+
+    <p class="govuk-body" id="paymentDeadline">
+        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.payPenaltyBy))
+    </p>
+
+
+    <p class="govuk-body" id="missedDeadline">
+        @calculationHelper.getMissedDeadlineMsg(calculationData, isAgent)
+    </p>
+
+
+    <ul class="govuk-list govuk-list--bullet" id="reasonList">
+        @calculationHelper.getBulletListContent(calculationData, isAgent).map { bulletContent =>
+            <li>@bulletContent</li>
+        }
+    </ul>
+
+    @if(!calculationData.isPenaltyPaid) {
+        <p class="govuk-body" id="penaltyStatus">
+            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+        </p>
+    }
+
+
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amountApplied")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.days.payment")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.rate")</th>
+                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">£@calculationData.llpLRCharge.formattedChargeAmount</td>
+                <td class="govuk-table__cell">@calculationData.llpLRCharge.daysOverdue</td>
+                <td class="govuk-table__cell">@{calculationData.llpLRCharge.penaltyPercentage}%</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.llpLRCharge.formattedPenaltyAmount</td>
+            </tr>
+            @calculationData.llpHRCharge.map {lppHRCharge =>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">£@lppHRCharge.formattedChargeAmount</td>
+                    <td class="govuk-table__cell">@lppHRCharge.daysOverdue</td>
+                    <td class="govuk-table__cell">@{lppHRCharge.penaltyPercentage}%</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">£@lppHRCharge.formattedPenaltyAmount</td>
+                </tr>
+            }
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
+                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
+                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="govuk-!-margin-bottom-8">
+        @link(
+            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+            messageKey = messages("calculation.return.link"),
+            id = Some("returnToIndex")
+        )
+    </div>
+
+}
