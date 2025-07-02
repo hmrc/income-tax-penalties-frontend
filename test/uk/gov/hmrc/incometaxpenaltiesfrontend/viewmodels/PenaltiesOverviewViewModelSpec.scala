@@ -22,9 +22,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.Totalisations
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.Totalisations
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 
 class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with PenaltiesDetailsTestData {
@@ -57,10 +57,10 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
             "return a PenaltiesOverviewViewModel with no content" in {
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(
                 totalisations = Some(Totalisations(
-                  LSPTotalValue = Some(200),
+                  lspTotalValue = Some(200),
                   penalisedPrincipalTotal = Some(2000),
-                  LPPPostedTotal = Some(165.25),
-                  LPPEstimatedTotal = Some(15.26),
+                  lppPostedTotal = Some(165.25),
+                  lppEstimatedTotal = Some(15.26),
                   totalAccountOverdue = Some(389.26),
                   totalAccountPostedInterest = Some(5.50),
                   totalAccountAccruingInterest = Some(3.25)
@@ -255,11 +255,11 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(
                 lateSubmissionPenalty = None,
                 latePaymentPenalty = samplePenaltyDetailsModel.latePaymentPenalty.map(_.copy(
-                  details = Seq(
+                  lppDetails = Some(Seq(
                     sampleUnpaidLPP1,
                     sampleUnpaidLPP1
                   )
-                ))
+                )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
                   content = Seq(messagesForLanguage.overviewLPP(2)),
@@ -274,10 +274,10 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(
                 lateSubmissionPenalty = None,
                 latePaymentPenalty = samplePenaltyDetailsModel.latePaymentPenalty.map(_.copy(
-                  details = Seq(
+                  lppDetails = Some(Seq(
                     sampleUnpaidLPP1,
                     samplePaidLPP1
-                  )
+                  ))
                 ))
               )) shouldBe
                 PenaltiesOverviewViewModel(
@@ -293,11 +293,11 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(
                 lateSubmissionPenalty = None,
                 latePaymentPenalty = samplePenaltyDetailsModel.latePaymentPenalty.map(_.copy(
-                  details = Seq(
+                  lppDetails = Some(Seq(
                     sampleUnpaidLPP1,
                     sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
                   )
-                ))
+                )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
                   content = Seq(messagesForLanguage.overviewLPP(1)),
@@ -312,11 +312,11 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(
                 lateSubmissionPenalty = None,
                 latePaymentPenalty = samplePenaltyDetailsModel.latePaymentPenalty.map(_.copy(
-                  details = Seq(
+                  lppDetails = Some(Seq(
                     samplePaidLPP1,
                     samplePaidLPP1
                   )
-                ))
+                )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
                   content = Seq(),
@@ -330,10 +330,10 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
             "return a PenaltiesOverviewViewModel no content AND hasFinancialCharge=false" in {
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(
                 totalisations = Some(Totalisations(
-                  LSPTotalValue = Some(200),
+                  lspTotalValue = Some(200),
                   penalisedPrincipalTotal = Some(2000),
-                  LPPPostedTotal = Some(165.25),
-                  LPPEstimatedTotal = Some(15.26),
+                  lppPostedTotal = Some(165.25),
+                  lppEstimatedTotal = Some(15.26),
                   totalAccountOverdue = Some(389.26),
                   totalAccountPostedInterest = Some(5.50),
                   totalAccountAccruingInterest = Some(3.25)
@@ -352,11 +352,11 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                   )
                 )),
                 latePaymentPenalty = samplePenaltyDetailsModel.latePaymentPenalty.map(_.copy(
-                  details = Seq(
+                  lppDetails = Some(Seq(
                     sampleUnpaidLPP1,
                     sampleLPP2
                   )
-                ))
+                )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
                   content = Seq(

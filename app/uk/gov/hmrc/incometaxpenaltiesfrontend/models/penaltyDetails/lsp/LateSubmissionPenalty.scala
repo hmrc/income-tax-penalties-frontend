@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp
 
-import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
+import play.api.libs.functional.syntax.{toFunctionalBuilderOps, unlift}
+import play.api.libs.json.{JsPath, OFormat, OWrites, Reads}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 
 case class LateSubmissionPenalty(summary: LSPSummary,
                                  details: Seq[LSPDetails]) {
@@ -27,5 +28,16 @@ case class LateSubmissionPenalty(summary: LSPSummary,
 }
 
 object LateSubmissionPenalty {
-  implicit val format: Format[LateSubmissionPenalty] = Json.format[LateSubmissionPenalty]
+  implicit val reads: Reads[LateSubmissionPenalty] = (
+    (JsPath \ "lspSummary").read[LSPSummary] and
+      (JsPath \ "lspDetails").read[Seq[LSPDetails]]
+    )(LateSubmissionPenalty.apply _)
+
+
+  implicit val writes: OWrites[LateSubmissionPenalty] = (
+    (JsPath \ "lspSummary").write[LSPSummary] and
+      (JsPath \ "lspDetails").write[Seq[LSPDetails]]
+    )(unlift(LateSubmissionPenalty.unapply))
+
+  implicit val format: OFormat[LateSubmissionPenalty] = OFormat(reads, writes)
 }

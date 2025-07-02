@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 
 import play.api.libs.json._
 
 object MainTransactionEnum extends Enumeration {
-  val VATReturnCharge: MainTransactionEnum.Value = Value("4700")
-  val VATReturnFirstLPP: MainTransactionEnum.Value = Value("4703")
-  val VATReturnSecondLPP: MainTransactionEnum.Value = Value("4704")
+  val ITSAReturnCharge: MainTransactionEnum.Value = Value("4700")
+  val ITSAReturnFirstLPP: MainTransactionEnum.Value = Value("4703")
+  val ITSAReturnSecondLPP: MainTransactionEnum.Value = Value("4704")
   val CentralAssessment: MainTransactionEnum.Value = Value("4720")
   val CentralAssessmentFirstLPP: MainTransactionEnum.Value = Value("4723")
   val CentralAssessmentSecondLPP: MainTransactionEnum.Value = Value("4724")
@@ -37,7 +37,7 @@ object MainTransactionEnum extends Enumeration {
   val ProtectiveAssessment: MainTransactionEnum.Value = Value("4733")
   val ProtectiveAssessmentFirstLPP: MainTransactionEnum.Value = Value("4761")
   val ProtectiveAssessmentSecondLPP: MainTransactionEnum.Value = Value("4762")
-  val VATOverpaymentForTax: MainTransactionEnum.Value = Value("4764")
+  val ITSAOverpaymentForTax: MainTransactionEnum.Value = Value("4764")
   val POAReturnCharge: MainTransactionEnum.Value = Value("4701")
   val POAReturnChargeFirstLPP: MainTransactionEnum.Value = Value("4716")
   val POAReturnChargeSecondLPP: MainTransactionEnum.Value = Value("4717")
@@ -53,9 +53,9 @@ object MainTransactionEnum extends Enumeration {
 
     override def reads(json: JsValue): JsResult[MainTransactionEnum.Value] = {
       json.as[String] match {
-        case "4700" => JsSuccess(VATReturnCharge)
-        case "4703" => JsSuccess(VATReturnFirstLPP)
-        case "4704" => JsSuccess(VATReturnSecondLPP)
+        case "4700" => JsSuccess(ITSAReturnCharge)
+        case "4703" => JsSuccess(ITSAReturnFirstLPP)
+        case "4704" => JsSuccess(ITSAReturnSecondLPP)
         case "4720" => JsSuccess(CentralAssessment)
         case "4723" => JsSuccess(CentralAssessmentFirstLPP)
         case "4724" => JsSuccess(CentralAssessmentSecondLPP)
@@ -71,7 +71,7 @@ object MainTransactionEnum extends Enumeration {
         case "4733" => JsSuccess(ProtectiveAssessment)
         case "4761" => JsSuccess(ProtectiveAssessmentFirstLPP)
         case "4762" => JsSuccess(ProtectiveAssessmentSecondLPP)
-        case "4764" => JsSuccess(VATOverpaymentForTax)
+        case "4764" => JsSuccess(ITSAOverpaymentForTax)
         case "4701" => JsSuccess(POAReturnCharge)
         case "4716" => JsSuccess(POAReturnChargeFirstLPP)
         case "4717" => JsSuccess(POAReturnChargeSecondLPP)

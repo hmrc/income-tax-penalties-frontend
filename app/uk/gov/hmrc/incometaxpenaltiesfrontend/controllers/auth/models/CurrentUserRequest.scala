@@ -20,7 +20,8 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Request, WrappedRequest}
 import play.twirl.api.Html
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, RequestWithNavBar}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.RequestWithNavBar
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 
 abstract class CurrentUserRequest[A](request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
   val mtdItId: String

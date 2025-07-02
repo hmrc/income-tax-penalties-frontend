@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LateSubmission
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LateSubmission
 
 object PenaltyPeriodHelper {
 

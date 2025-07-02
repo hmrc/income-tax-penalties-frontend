@@ -16,8 +16,9 @@
 
 package fixtures
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPDetailsMetadata, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, MainTransactionEnum}
 
 import java.time.LocalDate
 
@@ -82,14 +83,14 @@ trait LPPDetailsTestData {
     penaltyAmountPosted = 0,
     penaltyAmountAccruing = 1001.45,
     penaltyAmountOutstanding = Some(200),
-    LPP1LRDays = Some("15"),
-    LPP1HRDays = Some("31"),
-    LPP2Days = Some("31"),
-    LPP1LRCalculationAmount = Some(99.99),
-    LPP1HRCalculationAmount = Some(99.99),
-    LPP2Percentage = Some(4.00),
-    LPP1LRPercentage = Some(2.00),
-    LPP1HRPercentage = Some(BigDecimal(2.00).setScale(2)),
+    lpp1LRDays = Some("15"),
+    lpp1HRDays = Some("31"),
+    lpp2Days = Some("31"),
+    lpp1LRCalculationAmt = Some(99.99),
+    lpp1HRCalculationAmt = Some(99.99),
+    lpp2Percentage = Some(4.00),
+    lpp1LRPercentage = Some(2.00),
+    lpp1HRPercentage = Some(BigDecimal(2.00).setScale(2)),
     penaltyChargeCreationDate = Some(penaltyChargeCreationDate),
     communicationsDate = Some(communicationDate),
     penaltyChargeDueDate = Some(penaltyDueDate),
@@ -100,9 +101,10 @@ trait LPPDetailsTestData {
     penaltyChargeReference = Some("PEN1234567"),
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-      LPPDetailsMetadata = LPPDetailsMetadata(
-      mainTransaction = Some(MainTransactionEnum.VATReturnCharge),
-      outstandingAmount = Some(99),
+      metadata = LPPDetailsMetadata(
+      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
+      principalChargeSubTr = None,
+      principalChargeDocNumber = None,
       timeToPay = None
     )
   )
@@ -167,14 +169,14 @@ trait LPPDetailsTestData {
     penaltyAmountPosted = 999.99,
     penaltyAmountAccruing = 0,
     penaltyAmountOutstanding = Some(999.99),
-    LPP1LRDays = None,
-    LPP1HRDays = None,
-    LPP2Days = None,
-    LPP1LRCalculationAmount = None,
-    LPP1HRCalculationAmount = None,
-    LPP1LRPercentage = None,
-    LPP1HRPercentage = None,
-    LPP2Percentage = None,
+    lpp1LRDays = None,
+    lpp1HRDays = None,
+    lpp2Days = None,
+    lpp1LRCalculationAmt = None,
+    lpp1HRCalculationAmt = None,
+    lpp1LRPercentage = None,
+    lpp1HRPercentage = None,
+    lpp2Percentage = None,
     communicationsDate = None,
     penaltyChargeDueDate = None,
     appealInformation = None,
@@ -184,8 +186,8 @@ trait LPPDetailsTestData {
     penaltyChargeReference = None,
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-      LPPDetailsMetadata = LPPDetailsMetadata(
-      mainTransaction = Some(MainTransactionEnum.ManualCharge),
+      metadata = LPPDetailsMetadata(
+      principalChargeMainTr = MainTransactionEnum.ManualCharge,
       None,
       None,
     )

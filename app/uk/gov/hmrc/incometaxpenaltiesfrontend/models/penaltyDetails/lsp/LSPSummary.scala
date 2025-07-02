@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp
 
 import play.api.libs.json.{Format, Json}
 
-case class Totalisations(LSPTotalValue: Option[BigDecimal],
-                         penalisedPrincipalTotal: Option[BigDecimal],
-                         LPPPostedTotal: Option[BigDecimal],
-                         LPPEstimatedTotal: Option[BigDecimal],
-                         totalAccountOverdue: Option[BigDecimal],
-                         totalAccountPostedInterest: Option[BigDecimal],
-                         totalAccountAccruingInterest: Option[BigDecimal])
+import java.time.LocalDate
 
-object Totalisations {
-  implicit val format: Format[Totalisations] = Json.format[Totalisations]
+case class LSPSummary(activePenaltyPoints: Int,
+                      inactivePenaltyPoints: Int,
+                      regimeThreshold: Int,
+                      penaltyChargeAmount: BigDecimal,
+                      pocAchievementDate: Option[LocalDate])
+
+object LSPSummary {
+  implicit val format: Format[LSPSummary] = Json.format[LSPSummary]
 }

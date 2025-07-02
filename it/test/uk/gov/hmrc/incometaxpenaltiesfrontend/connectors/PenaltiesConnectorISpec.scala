@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.{ComplianceDataMalformed, ComplianceDataNoData, ComplianceDataResponse, ComplianceDataUnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsBadRequest, GetPenaltyDetailsMalformed, GetPenaltyDetailsResponse, GetPenaltyDetailsUnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.ComplianceStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
@@ -44,17 +44,18 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
   }
 
   "getPenaltyDetails" should {
-    "return a successful response when the call succeeds and the body can be parsed" when {
+    "return a successful response when the call succeeds and the HIP body can be parsed" when {
       "an individual has Late Payment Metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = samplePenaltyDetailsModel)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = PenaltySuccessResponse("22/01/2023", Some(samplePenaltyDetailsModel)))
 
         val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 
+        println(Json.prettyPrint(Json.toJson(samplePenaltyDetailsModel)))
         result shouldBe Right(samplePenaltyDetailsModel)
       }
 
       "a client has Late Payment Metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModel)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = OK, body = PenaltySuccessResponse("22/01/2023", Some(samplePenaltyDetailsModel)))
 
         val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testNino, Some(testArn))(HeaderCarrier()))
 
@@ -62,7 +63,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "an individual does not have metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = PenaltySuccessResponse("22/01/2023", Some(samplePenaltyDetailsModelWithoutMetadata)))
 
         val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 
@@ -70,7 +71,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "a client does not have metadata" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = OK, body = samplePenaltyDetailsModelWithoutMetadata)
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino\\?arn=$testArn").thenReturn(status = OK, body = PenaltySuccessResponse("22/01/2023", Some(samplePenaltyDetailsModelWithoutMetadata)))
 
         val result = await(connector.getPenaltyDetails(testNino, Some(testArn))(HeaderCarrier()))
 
@@ -94,6 +95,97 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
     }
 
+    "return a success response and convert to HIP model" when {
+      "penalties returns a valid IF response" in {
+        val ifPenaltiesResponse = Json.obj(
+          "lateSubmissionPenalty" -> Json.obj(
+            "summary" -> Json.obj(
+              "activePenaltyPoints" -> 1,
+              "inactivePenaltyPoints" -> 0,
+              "PoCAchievementDate" -> "2027-11-07",
+              "regimeThreshold" -> 4,
+              "penaltyChargeAmount" -> 200.00
+            ),
+            "details" -> Json.arr(
+              Json.obj(
+                "penaltyCategory" -> "P",
+                "penaltyNumber" -> "005000000328",
+                "penaltyOrder" -> "1",
+                "penaltyCreationDate" -> "2027-11-10",
+                "penaltyExpiryDate" -> "2029-12-10",
+                "penaltyStatus" -> "ACTIVE",
+                "incomeSourceName" -> "JB Painting and Decorating",
+                "triggeringProcess" -> "ICRU",
+                "communicationsDate" -> "2027-11-10",
+                "lateSubmissions" -> Json.arr(
+                  Json.obj(
+                    "lateSubmissionID" -> "001",
+                    "taxPeriodStartDate" -> "2027-07-06",
+                    "taxPeriodEndDate" -> "2027-10-05",
+                    "taxPeriodDueDate" -> "2027-11-07",
+                    "returnReceiptDate" -> "2027-11-10",
+                    "taxReturnStatus" -> "Fulfilled"
+                  )
+                )
+              )
+            )
+          ),
+        "latePaymentPenalty" -> Json.obj(
+          "details" -> Json.arr(
+            Json.obj(
+              "principalChargeReference" -> "XJ002616061027",
+              "penaltyCategory" -> "LPP1",
+              "penaltyStatus" -> "A",
+              "penaltyAmountAccruing" -> 400.00,
+              "penaltyAmountPosted" -> 0,
+              "penaltyAmountPaid" -> 0,
+              "penaltyAmountOutstanding" -> 0,
+              "LPP1LRCalculationAmount" -> 20000.00,
+              "LPP1LRDays" -> "15",
+              "LPP1LRPercentage" -> 2,
+              "LPP1HRDays" -> "30",
+              "LPP1HRPercentage" -> 2,
+              "penaltyChargeReference" -> "XJ002616061027",
+              "principalChargeMainTransaction" -> "4720",
+              "principalChargeBillingFrom" -> "2027-04-06",
+              "principalChargeBillingTo" -> "2028-04-05",
+              "principalChargeDueDate" -> "2029-01-31",
+              "principalChargeDocNumber" -> "DOC1",
+              "principalChargeSubTransaction" -> "SUB1"
+            ),
+            Json.obj(
+              "principalChargeReference" -> "XJ002616061028",
+              "penaltyCategory" -> "LPP1",
+              "penaltyStatus" -> "P",
+              "penaltyAmountAccruing" -> 0,
+              "penaltyAmountPosted" -> 400.00,
+              "penaltyAmountPaid" -> 400.00,
+              "penaltyAmountOutstanding" -> 0,
+              "LPP1LRCalculationAmount" -> 20000.00,
+              "LPP1LRDays" -> "15",
+              "LPP1LRPercentage" -> 2,
+              "LPP1HRDays" -> "30",
+              "LPP1HRPercentage" -> 2,
+              "penaltyChargeReference" -> "XJ002616061028",
+              "principalChargeMainTransaction" -> "4720",
+              "principalChargeBillingFrom" -> "2026-04-06",
+              "principalChargeBillingTo" -> "2027-04-05",
+              "principalChargeDueDate" -> "2028-01-31",
+              "principalChargeLatestClearing" -> "2028-02-19",
+              "principalChargeDocNumber" -> "DOC1",
+              "principalChargeSubTransaction" -> "SUB1"
+            )
+          )
+        ))
+
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = ifPenaltiesResponse)
+
+        val result = await(connector.getPenaltyDetails(testNino, None)(HeaderCarrier()))
+
+        result.isRight shouldBe true
+      }
+    }
+
     "return a Left when" when {
       "an exception with status 4xx occurs upstream" in {
         when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = BAD_REQUEST, body = Json.obj())
@@ -108,7 +200,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       }
 
       "invalid Json is returned" in {
-        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = "")
+        when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = Json.obj("success" -> "ERROR"))
 
         val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
 

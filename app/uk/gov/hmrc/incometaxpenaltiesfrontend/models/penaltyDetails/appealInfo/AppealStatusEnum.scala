@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo
 
 import play.api.libs.json._
 
