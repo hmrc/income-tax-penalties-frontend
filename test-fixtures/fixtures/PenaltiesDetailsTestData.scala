@@ -16,9 +16,9 @@
 
 package fixtures
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetailsMetadata, LatePaymentPenalty, MainTransactionEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPSummary, LateSubmissionPenalty}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, Totalisations}
 
 import java.time.LocalDate
 
@@ -39,25 +39,25 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       inactivePenaltyPoints = 0,
       regimeThreshold = 4,
       penaltyChargeAmount = 200,
-      PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+      pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
     ),
     details = Seq(sampleLateSubmissionPoint)
   )
 
-  val latePaymentPenalty: LatePaymentPenalty = LatePaymentPenalty(Seq(
-    sampleUnpaidLPP1.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnFirstLPP), outstandingAmount = Some(20), timeToPay = None))
-  ))
+  val latePaymentPenalty: LatePaymentPenalty = LatePaymentPenalty(Some(Seq(
+    sampleUnpaidLPP1.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = MainTransactionEnum.ITSAReturnFirstLPP, timeToPay = None))
+  )))
 
-  val latePaymentPenalty2: LatePaymentPenalty = LatePaymentPenalty(Seq(
-    sampleLPP2.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnSecondLPP), outstandingAmount = Some(20), timeToPay = None))
-  ))
+  val latePaymentPenalty2: LatePaymentPenalty = LatePaymentPenalty(Some(Seq(
+    sampleLPP2.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = MainTransactionEnum.ITSAReturnSecondLPP, timeToPay = None))
+  )))
 
   val samplePenaltyDetailsModel: PenaltyDetails = PenaltyDetails(
     totalisations = Some(Totalisations(
-      LSPTotalValue = Some(200),
+      lspTotalValue = Some(200),
       penalisedPrincipalTotal = Some(2000),
-      LPPPostedTotal = Some(165.25),
-      LPPEstimatedTotal = Some(15.26),
+      lppPostedTotal = Some(165.25),
+      lppEstimatedTotal = Some(15.26),
       totalAccountOverdue = None,
       totalAccountPostedInterest = None,
       totalAccountAccruingInterest = None
@@ -69,10 +69,10 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
 
   val samplePenaltyDetailsLPP2Model: PenaltyDetails = PenaltyDetails(
     totalisations = Some(Totalisations(
-      LSPTotalValue = Some(200),
+      lspTotalValue = Some(200),
       penalisedPrincipalTotal = Some(2000),
-      LPPPostedTotal = Some(165.25),
-      LPPEstimatedTotal = Some(15.26),
+      lppPostedTotal = Some(165.25),
+      lppEstimatedTotal = Some(15.26),
       totalAccountOverdue = None,
       totalAccountPostedInterest = None,
       totalAccountAccruingInterest = None
@@ -82,5 +82,5 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     breathingSpace = None
   )
 
-  val samplePenaltyDetailsModelWithoutMetadata: PenaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleUnpaidLPP1))))
+  val samplePenaltyDetailsModelWithoutMetadata: PenaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = Some(LatePaymentPenalty(Some(Seq(sampleUnpaidLPP1)))))
 }

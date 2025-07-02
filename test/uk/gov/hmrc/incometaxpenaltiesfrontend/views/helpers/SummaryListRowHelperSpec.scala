@@ -24,7 +24,7 @@ import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases.{HtmlContent, SummaryListRow, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 
 class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 

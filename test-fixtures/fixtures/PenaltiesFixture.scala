@@ -16,15 +16,17 @@
 
 package fixtures
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.{PenaltyDetails, Totalisations}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, Totalisations}
 
 import java.time.LocalDate
 
 trait PenaltiesFixture {
 
+  val lateSubmissionId: String = "testSubId"
+  val taxPeriod = "2021-2022"
   val principleChargeBillingStartDate: LocalDate = LocalDate.of(2021, 5, 1) //2021-05-01 All other dates based off this date
   val principleChargeBillingEndDate: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-06-01
   val principleChargeBillingDueDate: LocalDate = principleChargeBillingEndDate.plusDays(6) //2021-06-07
@@ -44,14 +46,14 @@ trait PenaltiesFixture {
     penaltyAmountPosted = 0,
     penaltyAmountAccruing = 1001.45,
     penaltyAmountOutstanding = None,
-    LPP1LRDays = Some("15"),
-    LPP1HRDays = Some("31"),
-    LPP2Days = Some("31"),
-    LPP1LRCalculationAmount = Some(99.99),
-    LPP1HRCalculationAmount = Some(99.99),
-    LPP2Percentage = Some(4.00),
-    LPP1LRPercentage = Some(2.00),
-    LPP1HRPercentage = Some(BigDecimal(2.00).setScale(2)),
+    lpp1LRDays = Some("15"),
+    lpp1HRDays = Some("31"),
+    lpp2Days = Some("31"),
+    lpp1LRCalculationAmt = Some(99.99),
+    lpp1HRCalculationAmt = Some(99.99),
+    lpp2Percentage = Some(4.00),
+    lpp1LRPercentage = Some(2.00),
+    lpp1HRPercentage = Some(BigDecimal(2.00).setScale(2)),
     penaltyChargeCreationDate = Some(penaltyChargeCreationDate),
     communicationsDate = Some(communicationDate),
     penaltyChargeDueDate = Some(penaltyDueDate),
@@ -62,9 +64,8 @@ trait PenaltiesFixture {
     penaltyChargeReference = Some("PEN1234567"),
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-    LPPDetailsMetadata = LPPDetailsMetadata(
-      mainTransaction = Some(MainTransactionEnum.VATReturnCharge),
-      outstandingAmount = Some(99),
+    metadata = LPPDetailsMetadata(
+      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
       timeToPay = None
     )
   )
@@ -82,13 +83,16 @@ trait PenaltiesFixture {
     penaltyOrder = Some("01"),
     penaltyCategory = Some(LSPPenaltyCategoryEnum.Point),
     penaltyStatus = LSPPenaltyStatusEnum.Active,
-    FAPIndicator = None,
+    fapIndicator = None,
     penaltyCreationDate = creationDate,
     penaltyExpiryDate = expiryDate,
     expiryReason = None,
     communicationsDate = Some(creationDate),
     lateSubmissions = Some(Seq(
       LateSubmission(
+        lateSubmissionID = lateSubmissionId,
+        incomeSource = Some("Income source"),
+        taxPeriod = Some(taxPeriod),
         taxPeriodStartDate = Some(taxPeriodStart),
         taxPeriodEndDate = Some(taxPeriodEnd),
         taxPeriodDueDate = Some(taxPeriodDue),
@@ -99,36 +103,38 @@ trait PenaltiesFixture {
     appealInformation = None,
     chargeAmount = None,
     chargeOutstandingAmount = None,
-    chargeDueDate = None
+    chargeDueDate = None,
+    triggeringProcess = None,
+    chargeReference = None
   )
 
 
   val samplePenaltyDetailsModel: PenaltyDetails = PenaltyDetails(
     totalisations = Some(Totalisations(
-      LSPTotalValue = Some(200),
+      lspTotalValue = Some(200),
       penalisedPrincipalTotal = Some(2000),
-      LPPPostedTotal = Some(165.25),
-      LPPEstimatedTotal = Some(15.26),
+      lppPostedTotal = Some(165.25),
+      lppEstimatedTotal = Some(15.26),
       totalAccountOverdue = None,
       totalAccountPostedInterest = None,
       totalAccountAccruingInterest = None
     )),
     lateSubmissionPenalty = Some(LateSubmissionPenalty(
       summary = LSPSummary(
-        activePenaltyPoints = 1, inactivePenaltyPoints = 0, regimeThreshold = 4, penaltyChargeAmount = 200, PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        activePenaltyPoints = 1, inactivePenaltyPoints = 0, regimeThreshold = 4, penaltyChargeAmount = 200, pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(sampleLateSubmissionPoint))),
     latePaymentPenalty = Some(
       LatePaymentPenalty(
-        Seq(
-          sampleUnpaidLPP1.copy(LPPDetailsMetadata = LPPDetailsMetadata(mainTransaction = Some(MainTransactionEnum.VATReturnFirstLPP), outstandingAmount = Some(20), timeToPay = None))
-        )
+        Some(Seq(
+          sampleUnpaidLPP1.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = MainTransactionEnum.ITSAReturnFirstLPP, timeToPay = None))
+        ))
       )
     ),
     breathingSpace = None
   )
 
-  val samplePenaltyDetailsModelWithoutMetadata: PenaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleUnpaidLPP1))))
+  val samplePenaltyDetailsModelWithoutMetadata: PenaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = Some(LatePaymentPenalty(Some(Seq(sampleUnpaidLPP1)))))
 
 
   val testMtdItId: String = "1234567890"
@@ -147,13 +153,16 @@ trait PenaltiesFixture {
     penaltyOrder = Some("01"),
     penaltyCategory = Some(LSPPenaltyCategoryEnum.Point),
     penaltyStatus = LSPPenaltyStatusEnum.Active,
-    FAPIndicator = None,
+    fapIndicator = None,
     penaltyCreationDate = LocalDate.parse("2069-10-30"),
     penaltyExpiryDate = LocalDate.parse("2069-10-30"),
     expiryReason = None,
     communicationsDate = Some(LocalDate.parse("2069-10-30")),
     lateSubmissions = Some(Seq(
       LateSubmission(
+        lateSubmissionID = lateSubmissionId,
+        incomeSource = Some("Income source"),
+        taxPeriod = Some(taxPeriod),
         taxPeriodStartDate = Some(LocalDate.parse("2069-10-30")),
         taxPeriodEndDate = Some(LocalDate.parse("2069-10-30")),
         taxPeriodDueDate = Some(LocalDate.parse("2069-10-30")),
@@ -164,7 +173,9 @@ trait PenaltiesFixture {
     appealInformation = None,
     chargeAmount = None,
     chargeOutstandingAmount = None,
-    chargeDueDate = None
+    chargeDueDate = None,
+    triggeringProcess = None,
+    chargeReference = None
   )
 
   val sampleLPPPosted: LPPDetails = LPPDetails(
@@ -175,14 +186,14 @@ trait PenaltiesFixture {
     penaltyAmountOutstanding = Some(123.00),
     penaltyAmountPosted = 400,
     penaltyAmountAccruing = 0,
-    LPP1LRDays = Some("15"),
-    LPP1HRDays = Some("31"),
-    LPP2Days = Some("31"),
-    LPP1LRCalculationAmount = Some(10000.00),
-    LPP1HRCalculationAmount = Some(10000.00),
-    LPP2Percentage = Some(4.00),
-    LPP1LRPercentage = Some(2.00),
-    LPP1HRPercentage = Some(2.00),
+    lpp1LRDays = Some("15"),
+    lpp1HRDays = Some("31"),
+    lpp2Days = Some("31"),
+    lpp1LRCalculationAmt = Some(10000.00),
+    lpp1HRCalculationAmt = Some(10000.00),
+    lpp2Percentage = Some(4.00),
+    lpp1LRPercentage = Some(2.00),
+    lpp1HRPercentage = Some(2.00),
     penaltyChargeCreationDate = Some(LocalDate.parse("2069-10-30")),
     communicationsDate = Some(LocalDate.parse("2069-10-30")),
     penaltyChargeDueDate = Some(LocalDate.parse("2021-03-08")),
@@ -196,18 +207,17 @@ trait PenaltiesFixture {
     penaltyChargeReference = Some("1234567890"),
     principalChargeLatestClearing = Some(LocalDate.parse("2069-10-30")),
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-    LPPDetailsMetadata = LPPDetailsMetadata(
-      mainTransaction = Some(MainTransactionEnum.VATReturnCharge),
-      outstandingAmount = None,
+    metadata = LPPDetailsMetadata(
+      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
       timeToPay = None
     )
   )
 
   val sampleTotalisations = Totalisations(
-    LSPTotalValue = Some(BigDecimal(200)),
+    lspTotalValue = Some(BigDecimal(200)),
     penalisedPrincipalTotal = Some(BigDecimal(2000)),
-    LPPPostedTotal = Some(BigDecimal(165.25)),
-    LPPEstimatedTotal = Some(BigDecimal(15.26)),
+    lppPostedTotal = Some(BigDecimal(165.25)),
+    lppEstimatedTotal = Some(BigDecimal(15.26)),
     totalAccountOverdue = Some(10432.21),
     totalAccountPostedInterest = Some(4.32),
     totalAccountAccruingInterest = Some(1.23)
@@ -215,19 +225,18 @@ trait PenaltiesFixture {
 
   val samplePenaltyDetails: PenaltyDetails = PenaltyDetails(
     totalisations = Some(sampleTotalisations),
-    lateSubmissionPenalty = Some(
-      LateSubmissionPenalty(
+    lateSubmissionPenalty =
+      Some(LateSubmissionPenalty(
         summary = LSPSummary(
           activePenaltyPoints = 1,
           inactivePenaltyPoints = 0,
           regimeThreshold = 4,
           penaltyChargeAmount = 0,
-          PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+          pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
         ),
         details = Seq(sampleLSP)
-      )
-    ),
-    latePaymentPenalty = Some(LatePaymentPenalty(Seq(sampleLPPPosted))),
+      )),
+    latePaymentPenalty = Some(LatePaymentPenalty(Some(Seq(sampleLPPPosted)))),
     breathingSpace = None
   )
 
@@ -239,13 +248,13 @@ trait PenaltiesFixture {
         regimeThreshold = 4,
         inactivePenaltyPoints = 0,
         penaltyChargeAmount = 0,
-        PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(
         sampleLSP.copy(
           penaltyNumber = "1234567890",
           penaltyOrder = Some("01"),
-          FAPIndicator = Some("X"),
+          fapIndicator = Some("X"),
           penaltyExpiryDate = LocalDate.of(2023, 2, 1),
           penaltyCreationDate = LocalDate.of(2021, 1, 1)
         )
@@ -264,7 +273,7 @@ trait PenaltiesFixture {
         regimeThreshold = 2,
         inactivePenaltyPoints = 0,
         penaltyChargeAmount = 200.00,
-        PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(
         sampleLSP.copy(
@@ -276,6 +285,9 @@ trait PenaltiesFixture {
           chargeDueDate = Some(sampleDate1),
           lateSubmissions = Some(Seq(
             LateSubmission(
+              lateSubmissionID = lateSubmissionId,
+              incomeSource = Some("Income source"),
+              taxPeriod = Some(taxPeriod),
               taxPeriodStartDate = Some(LocalDate.parse("2021-01-01")),
               taxPeriodEndDate = Some(LocalDate.parse("2021-01-31")),
               taxPeriodDueDate = Some(LocalDate.parse("2021-03-07")),
@@ -311,17 +323,20 @@ trait PenaltiesFixture {
         regimeThreshold = 4,
         inactivePenaltyPoints = 1,
         penaltyChargeAmount = 0,
-        PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(
         sampleLSP.copy(
           penaltyStatus = LSPPenaltyStatusEnum.Inactive,
           penaltyNumber = "1234567891",
           penaltyOrder = Some("02"),
-          FAPIndicator = Some("X"),
+          fapIndicator = Some("X"),
           expiryReason = Some(ExpiryReasonEnum.Adjustment),
           lateSubmissions = Some(Seq(
             LateSubmission(
+              lateSubmissionID = lateSubmissionId,
+              incomeSource = Some("Income source"),
+              taxPeriod = Some(taxPeriod),
               taxPeriodStartDate = Some(LocalDate.parse("2021-01-01")),
               taxPeriodEndDate = Some(LocalDate.parse("2021-01-31")),
               taxPeriodDueDate = Some(LocalDate.parse("2021-03-07")),
@@ -345,7 +360,7 @@ trait PenaltiesFixture {
         regimeThreshold = 4,
         inactivePenaltyPoints = 1,
         penaltyChargeAmount = 0,
-        PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(
         sampleLSP.copy(
@@ -362,7 +377,7 @@ trait PenaltiesFixture {
           penaltyStatus = LSPPenaltyStatusEnum.Inactive,
           penaltyNumber = "1234567891",
           penaltyOrder = Some("01"),
-          FAPIndicator = Some("X"),
+          fapIndicator = Some("X"),
           expiryReason = Some(ExpiryReasonEnum.Adjustment)
         )
       ))
@@ -379,7 +394,7 @@ trait PenaltiesFixture {
         regimeThreshold = 4,
         inactivePenaltyPoints = 0,
         penaltyChargeAmount = 0,
-        PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(
         sampleLSP.copy(
@@ -387,6 +402,9 @@ trait PenaltiesFixture {
           penaltyNumber = "1234567893",
           penaltyOrder = Some("01"),
           lateSubmissions = Some(Seq(LateSubmission(
+            lateSubmissionID = lateSubmissionId,
+            incomeSource = Some("Income source"),
+            taxPeriod = Some(taxPeriod),
             taxPeriodStartDate = Some(sampleDate1.minusMonths(3)),
             taxPeriodEndDate = Some(sampleDate1.minusMonths(3).plusDays(30)),
             taxPeriodDueDate = Some(sampleDate1),
@@ -399,6 +417,9 @@ trait PenaltiesFixture {
           penaltyNumber = "1234567892",
           penaltyOrder = Some("02"),
           lateSubmissions = Some(Seq(LateSubmission(
+            lateSubmissionID = lateSubmissionId,
+            incomeSource = Some("Income source"),
+            taxPeriod = Some(taxPeriod),
             taxPeriodStartDate = Some(sampleDate1.minusMonths(2)),
             taxPeriodEndDate = Some(sampleDate1.minusMonths(2).plusDays(29)),
             taxPeriodDueDate = Some(sampleDate1),
@@ -411,6 +432,9 @@ trait PenaltiesFixture {
           penaltyNumber = "1234567893",
           penaltyOrder = Some("03"),
           lateSubmissions = Some(Seq(LateSubmission(
+            lateSubmissionID = lateSubmissionId,
+            incomeSource = Some("Income source"),
+            taxPeriod = Some(taxPeriod),
             taxPeriodStartDate = Some(sampleDate1.minusMonths(1)),
             taxPeriodEndDate = Some(sampleDate1.minusMonths(1).plusDays(30)),
             taxPeriodDueDate = Some(sampleDate1),
@@ -425,7 +449,7 @@ trait PenaltiesFixture {
   )
 
   val paidLatePaymentPenalty: LatePaymentPenalty = LatePaymentPenalty(
-    details = Seq(sampleLPPPosted.copy(
+    lppDetails = Some(Seq(sampleLPPPosted.copy(
       penaltyAmountPaid = Some(BigDecimal(400)),
       penaltyAmountOutstanding = Some(BigDecimal(0)),
       penaltyAmountPosted = 400,
@@ -434,9 +458,10 @@ trait PenaltiesFixture {
       principalChargeBillingTo = sampleDate1.plusDays(30),
       principalChargeDueDate = sampleDate1.plusMonths(2).plusDays(6),
       principalChargeLatestClearing = Some(sampleDate1.plusMonths(2).plusDays(7))
-    )))
+    ))))
 
-  val latePaymentPenaltyWithAdditionalPenalty: LatePaymentPenalty = LatePaymentPenalty(details = Seq(
+  val latePaymentPenaltyWithAdditionalPenalty: LatePaymentPenalty = LatePaymentPenalty(lppDetails = Some(
+    Seq(
     sampleLPPPosted.copy(
       penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
       penaltyAmountPaid = Some(BigDecimal(123.45)),
@@ -458,10 +483,10 @@ trait PenaltiesFixture {
       principalChargeBillingTo = sampleDate1.plusMonths(1),
       principalChargeDueDate = sampleDate1.plusMonths(2).plusDays(6),
       principalChargeLatestClearing = Some(sampleDate1.plusMonths(2).plusDays(7))
-    )))
+    ))))
 
   val latePaymentPenaltyVATUnpaid: LatePaymentPenalty = LatePaymentPenalty(
-    details = Seq(
+    lppDetails = Some(Seq(
       sampleLPPPosted.copy(
         penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
         penaltyAmountPaid = Some(BigDecimal(200)),
@@ -473,10 +498,10 @@ trait PenaltiesFixture {
         principalChargeDueDate = sampleDate1.plusMonths(2).plusDays(6),
         principalChargeLatestClearing = None
       )
-    )
+    ))
   )
 
-  val latePaymentPenaltyWithAppeal = Some(LatePaymentPenalty(Seq(
+  val latePaymentPenaltyWithAppeal = Some(LatePaymentPenalty(Some(Seq(
     sampleLPPPosted.copy(
       penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
       penaltyAmountPaid = Some(BigDecimal(400)),
@@ -490,7 +515,7 @@ trait PenaltiesFixture {
       appealInformation = Some(Seq(AppealInformationType(
         appealStatus = Some(AppealStatusEnum.Under_Appeal),
         appealLevel = Some(AppealLevelEnum.FirstStageAppeal))))
-    )
+    ))
   )))
 
   val getPenaltiesDataPayloadWithPaidLPP: PenaltyDetails = getPenaltyDetailsPayloadWithAddedPoint.copy(
@@ -507,10 +532,10 @@ trait PenaltiesFixture {
 
   val getPenaltyDetailsPayloadWithLPPVATUnpaidAndVATOverviewAndLSPsDue: PenaltyDetails = getPenaltyDetailsPayloadWithAddedPoint.copy(
     totalisations = Some(Totalisations(
-      LSPTotalValue = Some(400),
+      lspTotalValue = Some(400),
       penalisedPrincipalTotal = Some(121.40),
-      LPPPostedTotal = Some(165.25),
-      LPPEstimatedTotal = Some(46.55),
+      lppPostedTotal = Some(165.25),
+      lppEstimatedTotal = Some(46.55),
       totalAccountOverdue = Some(10432.21),
       totalAccountPostedInterest = Some(4.32),
       totalAccountAccruingInterest = Some(1.23)
@@ -521,7 +546,7 @@ trait PenaltiesFixture {
         regimeThreshold = 2,
         inactivePenaltyPoints = 0,
         penaltyChargeAmount = 0,
-        PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+        pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
       ),
       details = Seq(
         sampleLSP.copy(
@@ -555,7 +580,7 @@ trait PenaltiesFixture {
   )
 
   val unpaidLatePaymentPenalty: LatePaymentPenalty = LatePaymentPenalty(
-    details = Seq(
+    lppDetails = Some(Seq(
       sampleLPPPosted.copy(
         penaltyAmountPaid = Some(BigDecimal(0)),
         penaltyAmountOutstanding = Some(BigDecimal(400)),
@@ -563,7 +588,7 @@ trait PenaltiesFixture {
         penaltyAmountAccruing = 0,
         principalChargeLatestClearing = None
       )
-    ))
+    )))
 
   val getPenaltiesDetailsPayloadWithMultiplePenaltyPeriodInLSP: PenaltyDetails = PenaltyDetails(
     totalisations = None,
@@ -574,7 +599,7 @@ trait PenaltiesFixture {
           inactivePenaltyPoints = 0,
           regimeThreshold = 4,
           penaltyChargeAmount = 200,
-          PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+          pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
         ),
         details = Seq(
           sampleLSP.copy(
@@ -582,6 +607,9 @@ trait PenaltiesFixture {
             penaltyOrder = Some("01"),
             lateSubmissions = Some(Seq(
               LateSubmission(
+                lateSubmissionID = lateSubmissionId,
+                incomeSource = Some("Income source 2"),
+                taxPeriod = Some(taxPeriod),
                 taxPeriodStartDate = Some(sampleDate1),
                 taxPeriodEndDate = Some(sampleDate1.plusDays(14)),
                 taxPeriodDueDate = Some(sampleDate1.plusMonths(4).plusDays(7)),
@@ -589,6 +617,9 @@ trait PenaltiesFixture {
                 taxReturnStatus = Some(TaxReturnStatusEnum.Fulfilled)
               ),
               LateSubmission(
+                lateSubmissionID = lateSubmissionId,
+                incomeSource = Some("Income source"),
+                taxPeriod = Some(taxPeriod),
                 taxPeriodStartDate = Some(sampleDate1.plusDays(16)),
                 taxPeriodEndDate = Some(sampleDate1.plusDays(31)),
                 taxPeriodDueDate = Some(sampleDate1.plusMonths(4).plusDays(23)),
@@ -613,7 +644,7 @@ trait PenaltiesFixture {
           inactivePenaltyPoints = 1,
           regimeThreshold = 4,
           penaltyChargeAmount = 200,
-          PoCAchievementDate = Some(LocalDate.of(2022, 1, 1))
+          pocAchievementDate = Some(LocalDate.of(2022, 1, 1))
         ),
         details = Seq(
           sampleLSP.copy(
@@ -622,6 +653,9 @@ trait PenaltiesFixture {
             penaltyOrder = Some("03"),
             lateSubmissions = Some(Seq(
               LateSubmission(
+                lateSubmissionID = lateSubmissionId,
+                incomeSource = Some("Income source"),
+                taxPeriod = Some(taxPeriod),
                 taxPeriodStartDate = Some(sampleDate2),
                 taxPeriodEndDate = Some(sampleDate2.plusDays(27)),
                 taxPeriodDueDate = Some(sampleDate2.plusMonths(2).plusDays(7)),
@@ -642,6 +676,9 @@ trait PenaltiesFixture {
             penaltyOrder = Some("01"),
             lateSubmissions = Some(Seq(
               LateSubmission(
+                lateSubmissionID = lateSubmissionId,
+                incomeSource = Some("Income source"),
+                taxPeriod = Some(taxPeriod),
                 taxPeriodStartDate = Some(sampleDate1),
                 taxPeriodEndDate = Some(sampleDate1.plusDays(30)),
                 taxPeriodDueDate = Some(sampleDate1.plusMonths(2).plusDays(7)),
@@ -662,7 +699,7 @@ trait PenaltiesFixture {
     lateSubmissionPenalty = None,
     latePaymentPenalty = Some(
       LatePaymentPenalty(
-        details = Seq(LPPDetails(
+        lppDetails = Some(Seq(LPPDetails(
           principalChargeReference = "1234567890",
           penaltyCategory = LPPPenaltyCategoryEnum.MANUAL,
           penaltyChargeCreationDate = Some(LocalDate.parse("2069-10-30")),
@@ -671,14 +708,14 @@ trait PenaltiesFixture {
           penaltyAmountPosted = 100.00,
           penaltyAmountAccruing = 0,
           penaltyAmountOutstanding = Some(100.00),
-          LPP1LRDays = None,
-          LPP1HRDays = None,
-          LPP2Days = None,
-          LPP1LRCalculationAmount = None,
-          LPP1HRCalculationAmount = None,
-          LPP1LRPercentage = None,
-          LPP1HRPercentage = None,
-          LPP2Percentage = None,
+          lpp1LRDays = None,
+          lpp1HRDays = None,
+          lpp2Days = None,
+          lpp1LRCalculationAmt = None,
+          lpp1HRCalculationAmt = None,
+          lpp1LRPercentage = None,
+          lpp1HRPercentage = None,
+          lpp2Percentage = None,
           communicationsDate = None,
           penaltyChargeDueDate = None,
           appealInformation = None,
@@ -688,12 +725,12 @@ trait PenaltiesFixture {
           penaltyChargeReference = None,
           principalChargeLatestClearing = None,
           vatOutstandingAmount = None,
-          LPPDetailsMetadata = LPPDetailsMetadata(
-            mainTransaction = Some(MainTransactionEnum.ManualCharge),
-            outstandingAmount = None,
+          metadata = LPPDetailsMetadata(
+            principalChargeMainTr = MainTransactionEnum.ManualCharge,
             timeToPay = None
           )
         ))
+        )
       )
     ),
     breathingSpace = None

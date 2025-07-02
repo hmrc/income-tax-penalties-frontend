@@ -23,7 +23,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 
 class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with LPPDetailsTestData with SummaryListRowHelper with DateFormatter {

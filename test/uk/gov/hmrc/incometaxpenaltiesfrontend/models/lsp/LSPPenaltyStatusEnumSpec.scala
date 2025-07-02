@@ -19,7 +19,8 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsString, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 
 class LSPPenaltyStatusEnumSpec extends AnyWordSpec with Matchers{
 
@@ -31,8 +32,8 @@ class LSPPenaltyStatusEnumSpec extends AnyWordSpec with Matchers{
     }
 
     "serialise to JSON" in {
-      Json.toJson(LSPPenaltyStatusEnum.Active) shouldBe JsString("Active")
-      Json.toJson(LSPPenaltyStatusEnum.Inactive) shouldBe JsString("Inactive")
+      Json.toJson(LSPPenaltyStatusEnum.Active) shouldBe JsString("ACTIVE")
+      Json.toJson(LSPPenaltyStatusEnum.Inactive) shouldBe JsString("INACTIVE")
     }
 
     "Unknown category should return jsError" in {

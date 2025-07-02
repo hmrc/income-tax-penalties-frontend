@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPTypeEnum, LateSubmissionPenalty}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPTypeEnum, LateSubmissionPenalty}
 
 case class LSPOverviewViewModel(lateSubmission: LateSubmissionPenalty) {
 

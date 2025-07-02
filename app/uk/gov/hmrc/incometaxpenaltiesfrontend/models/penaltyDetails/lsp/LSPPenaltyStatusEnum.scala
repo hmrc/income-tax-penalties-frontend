@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp
 
 import play.api.libs.json._
 
-object LPPPenaltyStatusEnum extends Enumeration {
+object LSPPenaltyStatusEnum extends Enumeration {
 
-  val Accruing: LPPPenaltyStatusEnum.Value = Value("A")
-  val Posted: LPPPenaltyStatusEnum.Value = Value("P")
+  val Active: LSPPenaltyStatusEnum.Value = Value("ACTIVE")
+  val Inactive: LSPPenaltyStatusEnum.Value = Value("INACTIVE")
 
-  implicit val format: Format[LPPPenaltyStatusEnum.Value] = new Format[LPPPenaltyStatusEnum.Value] {
-    override def writes(o: LPPPenaltyStatusEnum.Value): JsValue = JsString(o.toString.toUpperCase)
+  implicit val format: Format[LSPPenaltyStatusEnum.Value] = new Format[LSPPenaltyStatusEnum.Value] {
 
-    override def reads(json: JsValue): JsResult[LPPPenaltyStatusEnum.Value] = json.as[String].toUpperCase match {
-      case "A" => JsSuccess(Accruing)
-      case "P" => JsSuccess(Posted)
+    override def writes(o: LSPPenaltyStatusEnum.Value): JsValue = JsString(o.toString)
+
+    override def reads(json: JsValue): JsResult[LSPPenaltyStatusEnum.Value] = json.as[String].toUpperCase match {
+      case "ACTIVE" => JsSuccess(Active)
+      case "INACTIVE" => JsSuccess(Inactive)
       case e => JsError(s"$e not recognised")
     }
   }

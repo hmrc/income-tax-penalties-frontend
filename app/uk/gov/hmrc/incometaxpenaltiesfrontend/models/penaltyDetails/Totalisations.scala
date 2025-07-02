@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails
 
 import play.api.libs.json.{Format, Json}
 
-import java.time.LocalDate
+case class Totalisations(lspTotalValue: Option[BigDecimal],
+                         penalisedPrincipalTotal: Option[BigDecimal],
+                         lppPostedTotal: Option[BigDecimal],
+                         lppEstimatedTotal: Option[BigDecimal],
+                         totalAccountOverdue: Option[BigDecimal],
+                         totalAccountPostedInterest: Option[BigDecimal],
+                         totalAccountAccruingInterest: Option[BigDecimal])
 
-case class LateSubmission(taxPeriodStartDate: Option[LocalDate],
-                          taxPeriodEndDate: Option[LocalDate],
-                          taxPeriodDueDate: Option[LocalDate],
-                          returnReceiptDate: Option[LocalDate],
-                          taxReturnStatus: Option[TaxReturnStatusEnum.Value])
-
-object LateSubmission {
-  implicit val format: Format[LateSubmission] = Json.format[LateSubmission]
+object Totalisations {
+  implicit val format: Format[Totalisations] = Json.format[Totalisations]
 }

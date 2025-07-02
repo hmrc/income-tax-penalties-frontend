@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp
 
 import play.api.libs.json.{Format, Json}
 
 import java.time.LocalDate
 
-case class LSPSummary(activePenaltyPoints: Int,
-                      inactivePenaltyPoints: Int,
-                      regimeThreshold: Int,
-                      penaltyChargeAmount: BigDecimal,
-                      PoCAchievementDate: Option[LocalDate])
+case class LateSubmission(lateSubmissionID: String,
+                          incomeSource: Option[String],
+                          taxPeriod: Option[String],
+                          taxPeriodStartDate: Option[LocalDate],
+                          taxPeriodEndDate: Option[LocalDate],
+                          taxPeriodDueDate: Option[LocalDate],
+                          returnReceiptDate: Option[LocalDate],
+                          taxReturnStatus: Option[TaxReturnStatusEnum.Value])
 
-object LSPSummary {
-  implicit val format: Format[LSPSummary] = Json.format[LSPSummary]
+object LateSubmission {
+  implicit val format: Format[LateSubmission] = Json.format[LateSubmission]
 }

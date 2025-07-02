@@ -19,15 +19,16 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsString, Json}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.MainTransactionEnum
 
 class MainTransactionEnumSpec extends AnyWordSpec with Matchers {
 
   "MainTransactionEnum" should  {
 
     "deserialise from JSON" in {
-      JsString("4700").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.VATReturnCharge
-      JsString("4703").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.VATReturnFirstLPP
-      JsString("4704").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.VATReturnSecondLPP
+      JsString("4700").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ITSAReturnCharge
+      JsString("4703").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ITSAReturnFirstLPP
+      JsString("4704").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ITSAReturnSecondLPP
       JsString("4720").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.CentralAssessment
       JsString("4723").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.CentralAssessmentFirstLPP
       JsString("4724").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.CentralAssessmentSecondLPP
@@ -43,7 +44,7 @@ class MainTransactionEnumSpec extends AnyWordSpec with Matchers {
       JsString("4733").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ProtectiveAssessment
       JsString("4761").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ProtectiveAssessmentFirstLPP
       JsString("4762").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ProtectiveAssessmentSecondLPP
-      JsString("4764").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.VATOverpaymentForTax
+      JsString("4764").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.ITSAOverpaymentForTax
       JsString("4701").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.POAReturnCharge
       JsString("4716").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.POAReturnChargeFirstLPP
       JsString("4717").as[MainTransactionEnum.Value]  shouldBe MainTransactionEnum.POAReturnChargeSecondLPP
@@ -54,9 +55,9 @@ class MainTransactionEnumSpec extends AnyWordSpec with Matchers {
     }
 
     "serialise to JSON" in {
-      Json.toJson(MainTransactionEnum.VATReturnCharge) shouldBe JsString("4700")
-      Json.toJson(MainTransactionEnum.VATReturnFirstLPP) shouldBe JsString("4703")
-      Json.toJson(MainTransactionEnum.VATReturnSecondLPP) shouldBe JsString("4704")
+      Json.toJson(MainTransactionEnum.ITSAReturnCharge) shouldBe JsString("4700")
+      Json.toJson(MainTransactionEnum.ITSAReturnFirstLPP) shouldBe JsString("4703")
+      Json.toJson(MainTransactionEnum.ITSAReturnSecondLPP) shouldBe JsString("4704")
       Json.toJson(MainTransactionEnum.CentralAssessment) shouldBe JsString("4720")
       Json.toJson(MainTransactionEnum.CentralAssessmentFirstLPP) shouldBe JsString("4723")
       Json.toJson(MainTransactionEnum.CentralAssessmentSecondLPP) shouldBe JsString("4724")
@@ -72,7 +73,7 @@ class MainTransactionEnumSpec extends AnyWordSpec with Matchers {
       Json.toJson(MainTransactionEnum.ProtectiveAssessment) shouldBe JsString("4733")
       Json.toJson(MainTransactionEnum.ProtectiveAssessmentFirstLPP) shouldBe JsString("4761")
       Json.toJson(MainTransactionEnum.ProtectiveAssessmentSecondLPP) shouldBe JsString("4762")
-      Json.toJson(MainTransactionEnum.VATOverpaymentForTax) shouldBe JsString("4764")
+      Json.toJson(MainTransactionEnum.ITSAOverpaymentForTax) shouldBe JsString("4764")
       Json.toJson(MainTransactionEnum.POAReturnCharge) shouldBe JsString("4701")
       Json.toJson(MainTransactionEnum.POAReturnChargeFirstLPP) shouldBe JsString("4716")
       Json.toJson(MainTransactionEnum.POAReturnChargeSecondLPP) shouldBe JsString("4717")

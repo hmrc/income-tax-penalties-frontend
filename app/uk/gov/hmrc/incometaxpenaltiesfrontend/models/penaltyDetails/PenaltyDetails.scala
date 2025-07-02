@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails
 
-import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.breathingSpace.BreathingSpace
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LatePaymentPenalty
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LateSubmissionPenalty
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LatePaymentPenalty
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LateSubmissionPenalty
 
 
 case class PenaltyDetails(totalisations: Option[Totalisations],
@@ -47,5 +48,30 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 }
 
 object PenaltyDetails {
-  implicit val format: OFormat[PenaltyDetails] = Json.format[PenaltyDetails]
+  implicit val getPenaltyDetailsReads: Reads[PenaltyDetails] = (
+      (JsPath \ "success" \ "penaltyData" \ "totalisations")
+        .readNullable[Totalisations] and
+      (JsPath \ "success" \ "penaltyData" \ "lsp")
+        .readNullable[LateSubmissionPenalty] and
+      (JsPath \ "success" \ "penaltyData" \ "lpp")
+        .readNullable[LatePaymentPenalty] and
+      (JsPath \ "success" \ "penaltyData" \ "breathingSpace")
+        .readNullable[Seq[BreathingSpace]]
+    )(PenaltyDetails.apply _)
+
+  implicit val writes: Writes[PenaltyDetails] = Writes { pd =>
+    Json.obj(
+      "success" -> Json.obj(
+        "penaltyData" -> Json.obj(
+          "totalisations" -> pd.totalisations,
+          "lsp" -> pd.lateSubmissionPenalty,
+          "lpp" -> pd.latePaymentPenalty,
+          "breathingSpace" -> pd.breathingSpace
+        )
+      )
+    )
+  }
+
+  implicit val format: Format[PenaltyDetails] =
+    Format(getPenaltyDetailsReads, writes)
 }

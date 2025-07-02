@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
 
 case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
@@ -39,8 +39,8 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     isEstimate = lppDetails.penaltyStatus == LPPPenaltyStatusEnum.Accruing,
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.fold(false)(_.isAfter(timeMachine.getCurrentDate)),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
-    penaltyPercentage = lppDetails.LPP2Percentage.getOrElse(0.04),
-    daysOverdue = lppDetails.LPP2Days.getOrElse("31")
+    penaltyPercentage = lppDetails.lpp2Percentage.getOrElse(0.04),
+    daysOverdue = lppDetails.lpp2Days.getOrElse("31")
   )
 
   val formattedPenaltyAmount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)

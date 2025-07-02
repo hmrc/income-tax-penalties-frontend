@@ -47,7 +47,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
       "a first late payment penalty exists for the penaltyId" should {
         "render the first late payment calculation page" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, optArn)(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
           val result = get(firstLPPPath, isAgent)
           result.status shouldBe OK
@@ -74,7 +74,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
       "a penalty does not exist for the penaltyId" should {
         "redirect to penalties home" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, optArn)(OK, convertPenaltyDetailsToSuccessJsonResponse(emptyPenaltyDetailsModel))
 
           val result = get(firstLPPPath, isAgent)
           result.status shouldBe SEE_OTHER
@@ -87,7 +87,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
       "a second late payment penalty exists for the penaltyId" should {
         "render the second late payment calculation page" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(samplePenaltyDetailsLPP2Model))
+          stubGetPenalties(testAgentNino, optArn)(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsLPP2Model))
 
           val result = get(secondLPPPath, isAgent)
           result.status shouldBe OK
@@ -114,7 +114,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
       "a penalty does not exist for the penaltyId" should {
         "redirect to penalties home" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, optArn)(OK, convertPenaltyDetailsToSuccessJsonResponse(emptyPenaltyDetailsModel))
 
           val result = get(firstLPPPath, isAgent)
           result.status shouldBe SEE_OTHER

@@ -17,11 +17,20 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.http.Status.OK
+import play.api.libs.json.{JsValue, Json}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, IncomeTaxSessionDataStub}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBarTesterHelper, ViewSpecHelper}
 
 trait ControllerISpecHelper extends ComponentSpecHelper with ViewSpecHelper with NavBarTesterHelper
   with AuthStub with IncomeTaxSessionDataStub {
+
+  def convertPenaltyDetailsToSuccessJsonResponse(pd: PenaltyDetails): JsValue = Json.toJson(
+    PenaltySuccessResponse(
+      "22/03/2024",
+      Some(pd)
+    )
+  )
 
   def stubAuthRequests(isAgent: Boolean) = {
     if(isAgent) {

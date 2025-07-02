@@ -16,8 +16,8 @@
 
 package fixtures.messages
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.LPPPenaltyCategoryEnum.{LPP1, LPP2}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum.{LPP1, LPP2}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 
 object LPPCardMessages {
 

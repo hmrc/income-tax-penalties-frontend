@@ -19,10 +19,9 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.LSPPenaltyStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.CurrencyFormatter
 
 trait TagHelper {

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
 
 case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
@@ -40,15 +40,15 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.fold(false)(_.isAfter(timeMachine.getCurrentDate)),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
     llpLRCharge = LLPCharge(
-      chargeAmount = lppDetails.LPP1LRCalculationAmount.getOrElse(0),
-      daysOverdue = lppDetails.LPP1LRDays.getOrElse("15"),
-      penaltyPercentage = lppDetails.LPP1LRPercentage.getOrElse(0.02)
+      chargeAmount = lppDetails.lpp1LRCalculationAmt.getOrElse(0),
+      daysOverdue = lppDetails.lpp1LRDays.getOrElse("15"),
+      penaltyPercentage = lppDetails.lpp1LRPercentage.getOrElse(0.02)
     ),
-    llpHRCharge = lppDetails.LPP1HRCalculationAmount.map(calcAmount =>
+    llpHRCharge = lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
     LLPCharge(
       chargeAmount = calcAmount,
-      daysOverdue = lppDetails.LPP1HRDays.getOrElse("31"),
-      penaltyPercentage = lppDetails.LPP1HRPercentage.getOrElse(0.02)
+      daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
+      penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.02)
     ))
   )
 

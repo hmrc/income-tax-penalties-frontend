@@ -19,10 +19,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import PagerDutyHelper.PagerDutyKeys._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.IF.IFToHIPPenaltyDetailsConverter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 
 object GetPenaltyDetailsParser {
 
@@ -48,11 +49,11 @@ object GetPenaltyDetailsParser {
   implicit object GetPenaltyDetailsResponseReads extends HttpReads[GetPenaltyDetailsResponse] {
     override def read(method: String, url: String, response: HttpResponse): GetPenaltyDetailsResponse = {
       response.status match {
-        case OK =>
-          response.json.validate[PenaltyDetails] match {
+        case OK if(response.json \ "success").isDefined =>
+          response.json.validate[PenaltySuccessResponse] match {
             case JsSuccess(model, _) =>
               logger.info("[GetPenaltyDetailsResponseReads][read]: Successful call to retrieve penalties details.")
-              Right(model)
+              Right(model.penaltyDetails.getOrElse(PenaltyDetails(None, None, None, None)))
 
             case JsError(errors) =>
               logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $errors")
@@ -60,6 +61,21 @@ object GetPenaltyDetailsParser {
               PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
               Left(GetPenaltyDetailsMalformed)
           }
+
+        case OK =>
+          println("%%%%%%%%%^^^^^^^***********")
+          println(response.json)
+          response.json.validate[PenaltyDetails](IFToHIPPenaltyDetailsConverter.penaltyDetailsReads) match {
+          case JsSuccess(model, _) =>
+            logger.info("[GetPenaltyDetailsResponseReads][read]: Successful call to retrieve penalties details.")
+            Right(model)
+
+          case JsError(errors) =>
+            logger.info(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $errors")
+            logger.error("[GetPenaltyDetailsResponseReads][read]: Failed to parse to model")
+            PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
+            Left(GetPenaltyDetailsMalformed)
+        }
 
         case NO_CONTENT =>
           logger.info(s"[GetPenaltyDetailsResponseReads][read]: No content found for MTDITID provided, returning empty model")
