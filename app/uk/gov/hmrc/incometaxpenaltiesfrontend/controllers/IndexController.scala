@@ -42,10 +42,6 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
 
   def homePage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUserWithPenaltyData(isAgent).async { implicit penaltyDataUserRequest =>
     val penaltyData = penaltyDataUserRequest.penaltyDetails
-    if(penaltyDataUserRequest.mtdItId == "30000") {
-      println("%%%%%%%%%%%%%%%%%%%%%")
-      println(Json.toJson(penaltyData))
-    }
     val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
     val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
     val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
