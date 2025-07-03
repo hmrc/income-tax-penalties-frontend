@@ -51,7 +51,7 @@
 
 
 
-    @if(!calculationData.incomeTaxIsPaid){
+    @if(calculationData.incomeTaxIsPaid){
         <p class="govuk-body" id="payPenaltyBy">@calculationHelper.getPaymentDetails(calculationData)</p>
     }
 
@@ -67,7 +67,7 @@
     </p>
 
 
-    @if(calculationData.incomeTaxIsPaid){
+    @if(!calculationData.incomeTaxIsPaid){
         <p class="govuk-body" id="missedDeadline">
             @messages("calculation.individual.calc2.missed.deadline.tax.unpaid")
         </p>
@@ -88,9 +88,11 @@
         </p>
     }
 
-    <p class="govuk-body" id="penaltyStatus">
-        @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
-    </p>
+    @if(!calculationData.isPenaltyPaid) {
+        <p class="govuk-body" id="penaltyStatus">
+            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+        </p>
+    }
 
     <table class="govuk-table">
         <thead class="govuk-table__head">
@@ -103,8 +105,8 @@
         </thead>
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
-                <td class="govuk-table__cell">£@calculationData.llpHRCharge</td>
-                <td class="govuk-table__cell">@calculationData.taxPeriodStartDate to @calculationData.taxPeriodEndDate</td>
+                <td class="govuk-table__cell">£@calculationData.formattedAmountPenaltyAppliedTo</td>
+                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.chargeStartDate), dateToString(calculationData.chargeEndDate))</td>
                 <td class="govuk-table__cell">@{calculationData.penaltyPercentage}%</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
             </tr>

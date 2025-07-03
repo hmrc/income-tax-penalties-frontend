@@ -26,11 +26,11 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
 
-    if(calculationData.isPenaltyPaid) {
-      messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
-    } else {
-      messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
-    }
+      if (calculationData.isPenaltyPaid) {
+        messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
+      } else {
+        messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+      }
   }
 
 
