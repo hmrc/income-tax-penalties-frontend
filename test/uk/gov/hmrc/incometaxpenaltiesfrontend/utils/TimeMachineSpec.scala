@@ -33,15 +33,15 @@ class TimeMachineSpec extends AnyWordSpec with Matchers {
   "TimeMachine -getCurrentDate" should {
 
     "Return the configured date specified" in {
-//      System.clearProperty("TIME_MACHINE_NOW")
-//      sys.props.set("TIME_MACHINE_DATE", "2024-05-02")
       val app = new GuiceApplicationBuilder().configure(
         "timemachine.enabled" -> true,
-        "timemachine.date" -> "2024-05-01"
+        "timemachine.date" -> "01-05-2025"
       ).build()
 
       val timeMachine = app.injector.instanceOf[TimeMachine]
-      timeMachine.getCurrentDate shouldEqual LocalDate.parse("2024-05-02")
+      sys.props -= "TIME_MACHINE_NOW"
+      sys.props += ("TIME_MACHINE_NOW" -> "02-05-2024")
+      timeMachine.getCurrentDate shouldEqual LocalDate.of(2024, 5, 2)
     }
 
     "Return the current date if timemachine is disabled" in {
