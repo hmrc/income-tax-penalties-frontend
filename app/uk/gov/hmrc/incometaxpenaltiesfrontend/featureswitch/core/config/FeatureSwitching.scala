@@ -54,4 +54,17 @@ trait FeatureSwitching {
     logger.debug(s"[FeatureSwitching][setFeatureDate] - Setting time machine date to: $dateToSet")
     dateToSet.fold(sys.props -= TIME_MACHINE_NOW)(sys.props += TIME_MACHINE_NOW -> _.format(timeMachineDateFormatter))
   }
+
+  def getFeatureDate(implicit appConfig: AppConfig): LocalDate = {
+    sys.props.get(TIME_MACHINE_NOW).fold({
+      val optDateAsString = appConfig.config.getOptional[String]("feature.switch.time-machine-now")
+      val dateAsString = optDateAsString.getOrElse("")
+      if(dateAsString.isEmpty){
+        LocalDate.now()
+      }else{
+        LocalDate.parse(dateAsString)
+      }
+    })(LocalDate.parse(_))
+  }
+
 }

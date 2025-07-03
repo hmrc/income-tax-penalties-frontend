@@ -31,6 +31,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import scala.concurrent.{ExecutionContext, Future}
 
 class FeatureSwitchFrontendControllerISpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite{
@@ -58,11 +59,15 @@ class FeatureSwitchFrontendControllerISpec extends AnyWordSpec with Matchers wit
       contentAsString(result) shouldBe "The date provided is in an invalid format"
     }
 
+
     s"return $OK (OK) when the date provided is valid" in {
-      val result: Future[Result] = this.controller.setTimeMachineDate(Some("2022-01-01"))(FakeRequest())
+      val timeMachineDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+      val result: Future[Result] = this.controller.setTimeMachineDate(Some("01-01-2022"))(FakeRequest())
       status(result) shouldBe OK
-      contentAsString(result) shouldBe s"Time machine set to: ${LocalDate.of(2022,1,1).toString}"
-      (sys.props get "TIME_MACHINE_NOW") shouldBe Some(LocalDate.of(2022,1,1).toString)
+      contentAsString(result) shouldBe s"Time machine set to: ${LocalDate.parse("01-01-2022" , timeMachineDateFormatter)}"
+
+      sys.props.get("TIME_MACHINE_NOW").map(dateString => LocalDate.parse(dateString, timeMachineDateFormatter)) shouldBe Some(LocalDate.of(2022, 1, 1))
     }
 
     s"return $OK (OK) and the systems current date when no date is provided" in {
