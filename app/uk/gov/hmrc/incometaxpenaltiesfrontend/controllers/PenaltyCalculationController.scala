@@ -30,7 +30,7 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class PenaltyCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              lpp1CalculationView: Lpp1Calculation,
-                                             //lpp2CalculationView: Lpp2Calculation,
+                                             lpp2CalculationView: Lpp2Calculation,
                                              authActions: AuthActions)
                                             (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
 
@@ -49,7 +49,7 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
         penaltyDetailsForId match {
           case Some(lppDetails) =>
             if (isLPP2) {
-              ??? // Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails)
+              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent))
             } else {
               Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent))
             }
