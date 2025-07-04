@@ -49,6 +49,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     val firstLPPPath = addQueryParam(pathStart + "first-lpp-calculation")
     val secondLPPPath = addQueryParam(pathStart + "second-lpp-calculation")
     val optArn = if(isAgent) Some("123456789") else None
+
     s"GET $firstLPPPath" should {
 
       "render the expected first late payment calculation" when {
@@ -200,7 +201,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
           }
 
-            //scenario 7
+          //scenario 7
           "is over 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
@@ -232,6 +233,114 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
 
           val result = get(firstLPPPath, isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
+      }
+    }
+
+    s"GET $secondLPPPath" should {
+
+      "render the expected second late payment calculation" when {
+        "a second late payment penalty exists for the penaltyId" that {
+
+          //scenario 1
+          "the tax is unpaid" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData()
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
+            document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
+          }
+
+          //scenario 2
+          "tax is paid" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}"
+            document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
+            document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+
+          }
+
+          //scenario 3
+          "tax is paid but penalty overdue accruing interest" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true,
+              isOverdue = true)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}"
+            document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
+            document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
+
+          }
+
+          //scenario 4
+          "penalty paid" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
+            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(secondLPPCalcData.payPenaltyBy)}"
+            document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
+            document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+
+          }
+        }
+      }
+
+      "a penalty does not exist for the penaltyId" should {
+        "redirect to penalties home" in {
+          stubAuthRequests(isAgent)
+          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+
+          val result = get(secondLPPPath, isAgent)
           result.status shouldBe SEE_OTHER
           result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
         }

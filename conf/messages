@@ -92,12 +92,25 @@ calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional 3%
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline
 calculation.table.caption.amountApplied = Amount penalty is applied to
 calculation.table.caption.days.payment = Days after payment deadline
+calculation.table.caption.charge.period = Charge period
+calculation.table.caption.annual.rate = Annual rate
 calculation.table.caption.rate = Rate
 calculation.table.caption.amount = Amount
+calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
 calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
 calculation.individual.penalty.isOverdue = This penalty is now overdue and interest is being charged.
+calculation.individual.calc2.missed.deadline.tax.unpaid = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
+calculation.individual.calc2.missed.deadline.tax.paid = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
+calculation.individual.calc2.penalty.increase.tax.unpaid = This penalty will increase daily at an annual rate of 10% of the outstanding tax.
+calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.
+
+calculation.individual.calc2.penalty.due = To avoid interest charges, you should pay this penalty by {0}.
+calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
+
+
 
 compliance.timeline.individual.title = Actions to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.

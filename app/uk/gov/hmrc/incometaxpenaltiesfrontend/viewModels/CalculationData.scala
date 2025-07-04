@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
 
+
 import java.time.LocalDate
 
 sealed trait CalculationData {
@@ -78,9 +79,13 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                    incomeTaxIsPaid: Boolean,
                                                    isEstimate: Boolean,
                                                    isPenaltyOverdue: Boolean,
+                                                   payPenaltyBy: LocalDate,
                                                    penaltyChargeReference: Option[String],
                                                    penaltyPercentage: BigDecimal,
-                                                   daysOverdue: String
+                                                   daysOverdue: String,
+                                                   amountPenaltyAppliedTo: BigDecimal,
+                                                   chargeStartDate: LocalDate,
+                                                   chargeEndDate: LocalDate
                                                   ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
@@ -89,12 +94,17 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     isPenaltyPaid = lppDetails.isPaid,
     incomeTaxIsPaid = lppDetails.incomeTaxIsPaid,
     isEstimate = lppDetails.penaltyStatus == LPPPenaltyStatusEnum.Accruing,
+    payPenaltyBy = lppDetails.penaltyChargeDueDate.getOrElse(timeMachine.getCurrentDate),
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.exists(_.isBefore(timeMachine.getCurrentDate.plusDays(1))),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
     penaltyPercentage = lppDetails.LPP2Percentage.getOrElse(0.04),
-    daysOverdue = lppDetails.LPP2Days.getOrElse("31")
+    daysOverdue = lppDetails.LPP2Days.getOrElse("31"),
+    amountPenaltyAppliedTo = lppDetails.LPP1HRCalculationAmount.get,
+    chargeStartDate = lppDetails.penaltyChargeDueDate.get,
+    chargeEndDate = lppDetails.communicationsDate.getOrElse(timeMachine.getCurrentDate)
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
+  val formattedAmountPenaltyAppliedTo: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(amountPenaltyAppliedTo)
 
 }
