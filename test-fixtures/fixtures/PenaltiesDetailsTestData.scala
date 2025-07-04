@@ -78,9 +78,9 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
   }
 
   def sampleSecondLPPCalcData(isPenaltyPaid: Boolean = false,
-                             isIncomeTaxPaid: Boolean = false,
-                             isEstimate: Boolean = true,
-                             isOverdue: Boolean = false) = {
+                              isIncomeTaxPaid: Boolean = false,
+                              isEstimate: Boolean = true,
+                              isOverdue: Boolean = false) = {
     val penaltyChargeDueDate = if(isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
 
     SecondLatePaymentPenaltyCalculationData(
@@ -98,7 +98,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       amountPenaltyAppliedTo =  20.00,
       chargeStartDate = LocalDate.now(),
       chargeEndDate = LocalDate.now()
-      )
+    )
   }
 
   def getPenaltyDetailsForCalculationPage(firstLPPCalData: FirstLatePaymentPenaltyCalculationData): PenaltyDetails = {

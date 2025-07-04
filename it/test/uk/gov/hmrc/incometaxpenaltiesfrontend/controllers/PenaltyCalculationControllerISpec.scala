@@ -201,7 +201,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
           }
 
-            //scenario 7
+          //scenario 7
           "is over 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
@@ -311,7 +311,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
           }
 
-            //scenario 4
+          //scenario 4
           "penalty paid" in {
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)

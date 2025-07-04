@@ -17,7 +17,8 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
+
 
 import java.time.LocalDate
 
@@ -105,4 +106,5 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
   val formattedAmountPenaltyAppliedTo: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(amountPenaltyAppliedTo)
+
 }

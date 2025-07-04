@@ -16,6 +16,8 @@ GET        /view-penalty/self-assessment/test-only/feature-switches             
 POST       /view-penalty/self-assessment/test-only/feature-switches                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.submit()
 GET        /view-penalty/self-assessment/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.getFeatureSwitches()
 
+GET        /view-penalty/self-assessment/test-only/time-machine-now                      uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.controllers.FeatureSwitchFrontendController.setTimeMachineDate(dateToSet: Option[String])
+
 + nocsrf
 POST       /view-penalty/self-assessment/test-only/api/feature-switches                  uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.api.controllers.FeatureSwitchApiController.updateFeatureSwitches()
 

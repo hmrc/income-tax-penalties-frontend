@@ -40,7 +40,7 @@
 @main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true) {
 
     <span class="govuk-caption-l" id="captionSpan">
-        @messages("caption.date", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))
+        @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.first.h1")</h1>
@@ -50,7 +50,7 @@
 
 
     @calculationHelper.getPaymentDetails(calculationData, isAgent).map{msg =>
-        <p class="govuk-body" id="payPenaltyBy">@msg</p>
+        <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@msg</p>
     }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>

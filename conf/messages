@@ -111,6 +111,7 @@ calculation.individual.calc2.penalty.isEstimate = This penalty is currently an e
 calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
 
 
+
 compliance.timeline.individual.title = Actions to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
 compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
