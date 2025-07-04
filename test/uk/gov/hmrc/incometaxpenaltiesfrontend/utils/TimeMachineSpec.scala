@@ -61,6 +61,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers {
       ).build()
 
       val timeMachine = app.injector.instanceOf[TimeMachine]
+      sys.props -= "TIME_MACHINE_NOW"
       timeMachine.getCurrentDate shouldEqual LocalDate.now()
 
     }
