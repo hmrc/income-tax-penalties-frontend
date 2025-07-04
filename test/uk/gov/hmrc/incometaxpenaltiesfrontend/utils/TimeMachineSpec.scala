@@ -16,16 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
+import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar.mock
+import play.api.Configuration
 import play.api.inject.guice.GuiceApplicationBuilder
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-class TimeMachineSpec extends AnyWordSpec with Matchers{
-
-  private val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yy")
+class TimeMachineSpec extends AnyWordSpec with Matchers {
 
 
   "TimeMachine -getCurrentDate" should {
@@ -33,32 +35,81 @@ class TimeMachineSpec extends AnyWordSpec with Matchers{
     "Return the configured date specified" in {
       val app = new GuiceApplicationBuilder().configure(
         "timemachine.enabled" -> true,
-        "timemachine.date" -> "01-01-21"
+        "timemachine.date" -> "01-05-2025"
       ).build()
 
       val timeMachine = app.injector.instanceOf[TimeMachine]
-      timeMachine.getCurrentDate shouldEqual LocalDate.parse("01-01-21", dateFormatter)
+      sys.props -= "TIME_MACHINE_NOW"
+      sys.props += ("TIME_MACHINE_NOW" -> "02-05-2024")
+      timeMachine.getCurrentDate shouldEqual LocalDate.of(2024, 5, 2)
     }
-  }
 
-  "Return the current date if timemachine is disabled" in {
-    val app = new GuiceApplicationBuilder().configure(
-      "timemachine.enabled" -> false
-    ).build()
+    "Return the current date if timemachine is disabled" in {
+      val app = new GuiceApplicationBuilder().configure(
+        "timemachine.enabled" -> false
+      ).build()
 
-    val timeMachine = app.injector.instanceOf[TimeMachine]
-    timeMachine.getCurrentDate shouldEqual LocalDate.now()
-  }
+      val timeMachine = app.injector.instanceOf[TimeMachine]
+      timeMachine.getCurrentDate shouldEqual LocalDate.now()
+    }
 
-  "Return the current date if timemachine date set to now" in {
+    "Return the current date if timemachine date set to now" in {
 
-    val app = new GuiceApplicationBuilder().configure(
-      "timemachine.enabled" -> true,
-      "timemachine.date" -> "now"
-    ).build()
+      val app = new GuiceApplicationBuilder().configure(
+        "timemachine.enabled" -> true,
+        "timemachine.date" -> "now"
+      ).build()
 
-    val timeMachine = app.injector.instanceOf[TimeMachine]
-    timeMachine.getCurrentDate shouldEqual LocalDate.now()
+      val timeMachine = app.injector.instanceOf[TimeMachine]
+      sys.props -= "TIME_MACHINE_NOW"
+      timeMachine.getCurrentDate shouldEqual LocalDate.now()
+
+    }
+
+    "optCurrentDate" should {
+      "return None when timeMachineEnabled is false" in {
+        val config = Configuration("timemachine.enabled" -> false)
+        val servicesConfig = mock[ServicesConfig]
+        val appConfig = new AppConfig(config, servicesConfig)
+        appConfig.optCurrentDate mustBe None
+      }
+
+      "return Some(LocalDate) from system property when timeMachineEnabled is true and property is set" in {
+        val config = Configuration(
+          "timemachine.enabled" -> true,
+          "timemachine.date" -> "01-01-2024"
+        )
+        val servicesConfig = mock[ServicesConfig]
+        val appConfig = new AppConfig(config, servicesConfig)
+        val dateStr = "31-12-2023"
+        System.setProperty("TIME_MACHINE_NOW", dateStr)
+        try {
+          appConfig.optCurrentDate mustBe Some(LocalDate.parse(dateStr, appConfig.timeMachineDateFormatter))
+        } finally {
+          System.clearProperty("TIME_MACHINE_NOW")
+        }
+      }
+
+      "return Some(LocalDate) from config when timeMachineEnabled is true and property is not set" in {
+        val config = Configuration(
+          "timemachine.enabled" -> true,
+          "timemachine.date" -> "01-01-2024"
+        )
+        val servicesConfig = mock[ServicesConfig]
+        val appConfig = new AppConfig(config, servicesConfig)
+        appConfig.optCurrentDate mustBe Some(LocalDate.parse("01-01-2024", appConfig.timeMachineDateFormatter))
+      }
+
+      "return None if date string is invalid" in {
+        val config = Configuration(
+          "timemachine.enabled" -> true,
+          "timemachine.date" -> "invalid-date"
+        )
+        val servicesConfig = mock[ServicesConfig]
+        val appConfig = new AppConfig(config, servicesConfig)
+        appConfig.optCurrentDate mustBe None
+      }
+    }
 
   }
 }
