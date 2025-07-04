@@ -22,7 +22,7 @@ case class LLPCharge(chargeAmount: BigDecimal,
                      daysOverdue: String,
                      penaltyPercentage: BigDecimal
                     ) {
-  val penaltyAmount: BigDecimal = chargeAmount * penaltyPercentage
+  val penaltyAmount: BigDecimal = (chargeAmount * penaltyPercentage) / 100
   val formattedChargeAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(chargeAmount)
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
 
