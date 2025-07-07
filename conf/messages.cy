@@ -91,6 +91,7 @@ lsp.updateSubmitted.notReceived = Return not received (Welsh)
 lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
 lsp.noPenalties = There are no late submission penalties. (Welsh)
+lsp.pointExpiredOn.key = Point Expired On (Welsh)
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================

@@ -151,6 +151,7 @@ lpp.cardTitle = £{0} penalty
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
+lsp.penaltyType.key = Penalty type
 lsp.addedOn.key = Added on
 lsp.missingOrLateIncomeSources.key = Missing or late income sources
 lsp.updatePeriod.key = Update period
@@ -161,6 +162,7 @@ lsp.updateSubmitted.notReceived = Return not received
 lsp.expiry.key = Point due to expire
 lsp.expiryReason.key = Removed reason
 lsp.noPenalties = There are no late submission penalties.
+lsp.pointExpiredOn.key = Point Expired On
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
