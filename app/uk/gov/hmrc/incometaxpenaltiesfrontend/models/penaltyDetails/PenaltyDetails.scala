@@ -61,14 +61,10 @@ object PenaltyDetails {
 
   implicit val writes: Writes[PenaltyDetails] = Writes { pd =>
     Json.obj(
-      "success" -> Json.obj(
-        "penaltyData" -> Json.obj(
-          "totalisations" -> pd.totalisations,
-          "lsp" -> pd.lateSubmissionPenalty,
-          "lpp" -> pd.latePaymentPenalty,
-          "breathingSpace" -> pd.breathingSpace
-        )
-      )
+      "totalisations" -> pd.totalisations,
+      "lsp" -> pd.lateSubmissionPenalty,
+      "lpp" -> pd.latePaymentPenalty,
+      "breathingSpace" -> pd.breathingSpace
     )
   }
 

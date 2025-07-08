@@ -49,8 +49,6 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
         when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = PenaltySuccessResponse("22/01/2023", Some(samplePenaltyDetailsModel)))
 
         val result: GetPenaltyDetailsResponse = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
-
-        println(Json.prettyPrint(Json.toJson(samplePenaltyDetailsModel)))
         result shouldBe Right(samplePenaltyDetailsModel)
       }
 

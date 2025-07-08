@@ -16,9 +16,8 @@
 
 package fixtures
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPDetailsMetadata, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum, MainTransactionEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp._
 
 import java.time.LocalDate
 
@@ -43,14 +42,14 @@ trait LPPDetailsTestData {
     penaltyAmountPosted = 0,
     penaltyAmountAccruing = 1001.45,
     penaltyAmountOutstanding = Some(200),
-    LPP1LRDays = Some("15"),
-    LPP1HRDays = None,
-    LPP2Days = None,
-    LPP1LRCalculationAmount = Some(99.99),
-    LPP1HRCalculationAmount = None,
-    LPP2Percentage = None,
-    LPP1LRPercentage = Some(2.00),
-    LPP1HRPercentage = None,
+    lpp1LRDays = Some("15"),
+    lpp1HRDays = None,
+    lpp2Days = None,
+    lpp1LRCalculationAmt = Some(99.99),
+    lpp1HRCalculationAmt = None,
+    lpp2Percentage = None,
+    lpp1LRPercentage = Some(2.00),
+    lpp1HRPercentage = None,
     penaltyChargeCreationDate = Some(penaltyChargeCreationDate),
     communicationsDate = Some(communicationDate),
     penaltyChargeDueDate = Some(penaltyDueDate),
@@ -61,9 +60,8 @@ trait LPPDetailsTestData {
     penaltyChargeReference = Some("PEN1234567"),
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-    LPPDetailsMetadata = LPPDetailsMetadata(
-      mainTransaction = Some(MainTransactionEnum.VATReturnCharge),
-      outstandingAmount = Some(99),
+    metadata = LPPDetailsMetadata(
+      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
       timeToPay = None
     )
   )
