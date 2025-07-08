@@ -58,7 +58,7 @@ case class LPPDetails(principalChargeReference: String,
   //TODO: Expect an API change to return a different name other than `vat` prefixed for the outstandingAmount
   val incomeTaxOutstandingAmountInPence: Int = vatOutstandingAmount.map(amount => (amount * 100).toInt).getOrElse(0)
 
-  val isPaid: Boolean = penaltyAmountPaid.contains(penaltyAmountPosted)
+  val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
 
   override def compare(that: LPPDetails): Int = {
