@@ -50,6 +50,12 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     val secondLPPPath = addQueryParam(pathStart + "second-lpp-calculation")
     val optArn = if(isAgent) Some("123456789") else None
 
+    val youOrClient = if(isAgent){"your client"}else{"you"}
+    val youOrThey = if(isAgent){"they"}else{"you"}
+    val youOrTheyCaps = if(isAgent){"They"}else{"You"}
+    val youHaveOrThey = if(isAgent){"They"}else{"You have"}
+    val youOrYourClientShould = if(isAgent){"your client should"}else{"please"}
+
     s"GET $firstLPPPath" should {
 
       "render the expected first late payment calculation" when {
@@ -70,10 +76,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15-30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
-            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline, $youOrThey will be charged a late payment penalty."
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"$youHaveOrThey missed the deadline by 15-30 days, so $youOrThey will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"If $youOrThey miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, $youOrYourClientShould pay the outstanding tax immediately or set up a payment plan."
           }
 
           //scenario 2
@@ -93,10 +99,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline, $youOrThey have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"$youOrTheyCaps missed the deadline by 15-30 days, so $youOrThey have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, $youOrClient should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
 
           }
 
@@ -118,9 +124,9 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline, $youOrThey have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"$youOrTheyCaps missed the deadline by 15-30 days, so $youOrThey have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
 
           }
@@ -143,10 +149,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
-            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
+            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, $youOrClient should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
 
 
           }
@@ -168,7 +174,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
             document.getElementById("penaltyStatus").text() shouldBe "This penalty is now overdue and interest is being charged."
@@ -194,9 +200,9 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline, $youOrThey have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"$youOrTheyCaps missed the deadline by 15-30 days, so $youOrThey have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
 
 
           }
@@ -218,7 +224,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
 
