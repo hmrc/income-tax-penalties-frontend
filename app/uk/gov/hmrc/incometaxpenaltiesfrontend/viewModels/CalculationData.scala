@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp.{LPPDetails, LPPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
-
 
 import java.time.LocalDate
 
@@ -56,15 +55,15 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.exists(_.isBefore(timeMachine.getCurrentDate.plusDays(1))),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
     llpLRCharge = LLPCharge(
-      chargeAmount = lppDetails.LPP1LRCalculationAmount.getOrElse(0),
-      daysOverdue = lppDetails.LPP1LRDays.getOrElse("15"),
-      penaltyPercentage = lppDetails.LPP1LRPercentage.getOrElse(0.03)
+      chargeAmount = lppDetails.lpp1LRCalculationAmt.getOrElse(0),
+      daysOverdue = lppDetails.lpp1LRDays.getOrElse("15"),
+      penaltyPercentage = lppDetails.lpp1LRPercentage.getOrElse(0.03)
     ),
-    llpHRCharge = lppDetails.LPP1HRCalculationAmount.map(calcAmount =>
+    llpHRCharge = lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
       LLPCharge(
         chargeAmount = calcAmount,
-        daysOverdue = lppDetails.LPP1HRDays.getOrElse("31"),
-        penaltyPercentage = lppDetails.LPP1HRPercentage.getOrElse(0.03)
+        daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
+        penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.03)
       ))
   )
 
@@ -97,9 +96,9 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     payPenaltyBy = lppDetails.penaltyChargeDueDate.getOrElse(timeMachine.getCurrentDate),
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.exists(_.isBefore(timeMachine.getCurrentDate.plusDays(1))),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
-    penaltyPercentage = lppDetails.LPP2Percentage.getOrElse(0.04),
-    daysOverdue = lppDetails.LPP2Days.getOrElse("31"),
-    amountPenaltyAppliedTo = lppDetails.LPP1HRCalculationAmount.get,
+    penaltyPercentage = lppDetails.lpp2Percentage.getOrElse(0.04),
+    daysOverdue = lppDetails.lpp2Days.getOrElse("31"),
+    amountPenaltyAppliedTo = lppDetails.lpp1HRCalculationAmt.get,
     chargeStartDate = lppDetails.penaltyChargeDueDate.get,
     chargeEndDate = lppDetails.communicationsDate.getOrElse(timeMachine.getCurrentDate)
   )
