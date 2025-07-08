@@ -49,13 +49,13 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 
 object PenaltyDetails {
   implicit val getPenaltyDetailsReads: Reads[PenaltyDetails] = (
-      (JsPath \ "success" \ "penaltyData" \ "totalisations")
+      (JsPath \ "totalisations")
         .readNullable[Totalisations] and
-      (JsPath \ "success" \ "penaltyData" \ "lsp")
+      (JsPath \ "lsp")
         .readNullable[LateSubmissionPenalty] and
-      (JsPath \ "success" \ "penaltyData" \ "lpp")
+      (JsPath \ "lpp")
         .readNullable[LatePaymentPenalty] and
-      (JsPath \ "success" \ "penaltyData" \ "breathingSpace")
+      (JsPath \ "breathingSpace")
         .readNullable[Seq[BreathingSpace]]
     )(PenaltyDetails.apply _)
 

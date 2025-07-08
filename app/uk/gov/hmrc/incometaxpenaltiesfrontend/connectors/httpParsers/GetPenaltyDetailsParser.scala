@@ -63,8 +63,6 @@ object GetPenaltyDetailsParser {
           }
 
         case OK =>
-          println("%%%%%%%%%^^^^^^^***********")
-          println(response.json)
           response.json.validate[PenaltyDetails](IFToHIPPenaltyDetailsConverter.penaltyDetailsReads) match {
           case JsSuccess(model, _) =>
             logger.info("[GetPenaltyDetailsResponseReads][read]: Successful call to retrieve penalties details.")
