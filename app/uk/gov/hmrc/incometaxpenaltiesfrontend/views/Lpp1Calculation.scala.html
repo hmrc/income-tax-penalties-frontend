@@ -65,19 +65,19 @@
 
 
     <p class="govuk-body" id="missedDeadline">
-        @calculationHelper.getMissedDeadlineMsg(calculationData, isAgent)
+        @calculationHelper.getMissedDeadlineMsg(calculationData, individualOrAgent.toString)
     </p>
 
 
     <ul class="govuk-list govuk-list--bullet" id="reasonList">
-        @calculationHelper.getBulletListContent(calculationData, isAgent).map { bulletContent =>
+        @calculationHelper.getBulletListContent(calculationData, individualOrAgent.toString).map { bulletContent =>
             <li>@bulletContent</li>
         }
     </ul>
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+            @calculationHelper.getFinalUnpaidMsg(calculationData, individualOrAgent.toString)
         </p>
     }
 
