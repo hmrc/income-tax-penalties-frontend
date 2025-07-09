@@ -45,7 +45,7 @@ object ComplianceTimelineMessages {
       s"Tax return: ${dateToString(fromDate)} to ${dateToString(toDate)} (Welsh)"
 
     override def updatePeriod(fromDate: LocalDate, toDate: LocalDate)(implicit messages: i18n.Messages): String =
-      s"Update period: ${dateToString(fromDate)} to ${dateToString(toDate)} (Welsh)"
+      s"Cyfnod diweddaru: ${dateToString(fromDate)} to ${dateToString(toDate)} (Welsh)"
 
     override def dueDate(dueDate: LocalDate, isLate: Boolean)(implicit messages: i18n.Messages): String =
       if(isLate) {

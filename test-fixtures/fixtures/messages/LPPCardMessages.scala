@@ -29,8 +29,8 @@ object LPPCardMessages {
     //Summary Row Messages
     val penaltyTypeKey = "Penalty type"
     val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
-      case LPP1 => "First penalty for late payment"
-      case LPP2 => "Second penalty for late payment"
+      case LPP1 => "First late payment penalty"
+      case LPP2 => "Second late payment penalty"
       case _    => "Penalty for late payment - details are in the letter we sent you"
     }
     val incomeTaxPeriodKey = "Overdue charge"
@@ -58,8 +58,8 @@ object LPPCardMessages {
     //Summary Row Messages
     override val penaltyTypeKey = "Math o gosb"
     override val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
-      case LPP1 => "First penalty for late payment (Welsh)"
-      case LPP2 => "Second penalty for late payment (Welsh)"
+      case LPP1 => "First late payment penalty (Welsh)"
+      case LPP2 => "Second late payment penalty (Welsh)"
       case _    => "Penalty for late payment - details are in the letter we sent you (Welsh)"
     }
     override val incomeTaxPeriodKey = "Taliad sy’n hwyr"
