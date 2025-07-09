@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PenaltyPeriodHelper
 
 import java.time.LocalDate
@@ -26,16 +26,18 @@ case class LSPDetails(penaltyNumber: String,
                       penaltyOrder: Option[String],
                       penaltyCategory: Option[LSPPenaltyCategoryEnum.Value],
                       penaltyStatus: LSPPenaltyStatusEnum.Value,
-                      FAPIndicator: Option[String],
                       penaltyCreationDate: LocalDate,
                       penaltyExpiryDate: LocalDate,
-                      expiryReason: Option[ExpiryReasonEnum.Value],
                       communicationsDate: Option[LocalDate],
+                      fapIndicator: Option[String],
                       lateSubmissions: Option[Seq[LateSubmission]],
+                      expiryReason: Option[ExpiryReasonEnum.Value],
                       appealInformation: Option[Seq[AppealInformationType]],
-                      chargeAmount: Option[BigDecimal],
+                      chargeDueDate: Option[LocalDate],
                       chargeOutstandingAmount: Option[BigDecimal],
-                      chargeDueDate: Option[LocalDate]) {
+                      chargeAmount: Option[BigDecimal],
+                      triggeringProcess: Option[String],
+                      chargeReference: Option[String]) {
 
   val appealStatus: Option[AppealStatusEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
   val appealLevel: Option[AppealLevelEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
@@ -45,7 +47,7 @@ case class LSPDetails(penaltyNumber: String,
       case (Some(LSPPenaltyCategoryEnum.Threshold), _) => LSPTypeEnum.Financial
       case (Some(LSPPenaltyCategoryEnum.Charge), _) => LSPTypeEnum.Financial
       case (_, Some(AppealStatusEnum.Upheld)) if penaltyStatus == LSPPenaltyStatusEnum.Inactive => LSPTypeEnum.AppealedPoint
-      case (_, _) if FAPIndicator.contains("X") => if (penaltyStatus == LSPPenaltyStatusEnum.Active) LSPTypeEnum.AddedFAP else LSPTypeEnum.RemovedFAP
+      case (_, _) if fapIndicator.contains("X") => if (penaltyStatus == LSPPenaltyStatusEnum.Active) LSPTypeEnum.AddedFAP else LSPTypeEnum.RemovedFAP
       case (_, _) if penaltyStatus == LSPPenaltyStatusEnum.Inactive && expiryReason.isDefined => LSPTypeEnum.RemovedPoint
       case _ => LSPTypeEnum.Point
     }

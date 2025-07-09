@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lpp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.AppealStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 
-case class LatePaymentPenalty(details: Seq[LPPDetails]) {
+case class LatePaymentPenalty(lppDetails: Option[Seq[LPPDetails]], ManualLPPIndicator: Option[Boolean] = None
+                             ) {
 
+  val details = lppDetails.getOrElse(Seq.empty[LPPDetails])
   val withoutAppealedPenalties: Seq[LPPDetails] =
     details.filterNot(details => details.appealInformation.exists(_.exists(_.appealStatus.contains(AppealStatusEnum.Upheld))))
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp
 
 import play.api.libs.json._
 
@@ -30,6 +30,7 @@ object LSPPenaltyCategoryEnum extends Enumeration {
 
     override def reads(json: JsValue): JsResult[LSPPenaltyCategoryEnum.Value] = json.as[String].toUpperCase match {
       case "P" => JsSuccess(Point)
+      case " " => JsSuccess(Point)
       case "T" => JsSuccess(Threshold)
       case "C" => JsSuccess(Charge)
       case e => JsError(s"$e not recognised")

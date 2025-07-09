@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
 
 case class PenaltiesOverviewViewModel(content: Seq[String], hasFinancialCharge: Boolean)

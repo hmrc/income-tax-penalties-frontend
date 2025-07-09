@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo
 
 import play.api.libs.json.{Json, OFormat}
 
 case class AppealInformationType(appealStatus: Option[AppealStatusEnum.Value],
-                                 appealLevel: Option[AppealLevelEnum.Value])
+                                 appealLevel: Option[AppealLevelEnum.Value],
+                                 appealDescription: Option[String] = None)
 
 object AppealInformationType {
   implicit val format: OFormat[AppealInformationType] = Json.format[AppealInformationType]

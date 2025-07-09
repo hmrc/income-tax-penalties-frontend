@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.breathingSpace
+package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace
 
 import play.api.libs.json.{Format, Json}
 
 import java.time.LocalDate
 
-case class BreathingSpace(BSStartDate: LocalDate, BSEndDate: LocalDate)
+case class BreathingSpace(bsStartDate: LocalDate, bsEndDate: LocalDate)
 
 object BreathingSpace {
   implicit val format: Format[BreathingSpace] = Json.format[BreathingSpace]

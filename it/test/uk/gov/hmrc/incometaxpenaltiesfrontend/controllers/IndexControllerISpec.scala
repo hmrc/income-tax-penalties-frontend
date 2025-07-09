@@ -19,9 +19,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import fixtures.PenaltiesDetailsTestData
 import org.jsoup.Jsoup
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
 class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
@@ -39,7 +40,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
       "the user is an authorised individual" should {
         "have the correct page has correct elements" in {
           stubAuthRequests(false)
-          stubGetPenalties(testAgentNino, None)(OK, Json.toJson(samplePenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
           val result = get("/")
 
@@ -60,7 +61,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
       "the user is an authorised agent" should {
         "have the correct page has correct elements" in {
           stubAuthRequests(true)
-          stubGetPenalties(testAgentNino, Some("123456789"))(OK, Json.toJson(samplePenaltyDetailsModel))
+          stubGetPenalties(testAgentNino, Some("123456789"))(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
           val result = get("/agent", isAgent = true)
 

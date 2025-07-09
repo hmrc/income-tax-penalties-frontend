@@ -16,12 +16,15 @@
 
 package fixtures
 
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{ExpiryReasonEnum, LSPDetails, LSPPenaltyCategoryEnum, LSPPenaltyStatusEnum, LateSubmission, TaxReturnStatusEnum}
 
 import java.time.LocalDate
 
 trait LSPDetailsTestData {
+  val lateSubmissionId: String = "testSubId"
+  val taxPeriod = "2021-2022"
   val taxPeriodStart: LocalDate = LocalDate.of(2021, 1, 6)
   val taxPeriodEnd: LocalDate = LocalDate.of(2021, 2, 5)
   val taxPeriodDue: LocalDate = taxPeriodEnd.plusMonths(1).plusDays(7)
@@ -35,13 +38,16 @@ trait LSPDetailsTestData {
     penaltyOrder = Some("01"),
     penaltyCategory = Some(LSPPenaltyCategoryEnum.Point),
     penaltyStatus = LSPPenaltyStatusEnum.Active,
-    FAPIndicator = None,
+    fapIndicator = None,
     penaltyCreationDate = creationDate,
     penaltyExpiryDate = expiryDate,
     expiryReason = None,
     communicationsDate = Some(creationDate),
     lateSubmissions = Some(Seq(
       LateSubmission(
+        lateSubmissionID = lateSubmissionId,
+        incomeSource = Some("Income source"),
+        taxPeriod = Some(taxPeriod),
         taxPeriodStartDate = Some(taxPeriodStart),
         taxPeriodEndDate = Some(taxPeriodEnd),
         taxPeriodDueDate = Some(taxPeriodDue),
@@ -52,7 +58,9 @@ trait LSPDetailsTestData {
     appealInformation = None,
     chargeAmount = None,
     chargeOutstandingAmount = None,
-    chargeDueDate = None
+    chargeDueDate = None,
+    triggeringProcess = None,
+    chargeReference = None
   )
 
   val sampleLateSubmissionPenaltyCharge: LSPDetails = sampleLateSubmissionPoint.copy(
@@ -66,6 +74,9 @@ trait LSPDetailsTestData {
   val sampleLateSubmissionPenaltyChargeWithMultiplePeriods: LSPDetails = sampleLateSubmissionPenaltyCharge.copy(
     lateSubmissions = Some(Seq(
       LateSubmission(
+        lateSubmissionID = lateSubmissionId,
+        incomeSource = Some("Income source"),
+        taxPeriod = Some(taxPeriod),
         taxPeriodStartDate = Some(taxPeriodStart),
         taxPeriodEndDate = Some(taxPeriodEnd),
         taxPeriodDueDate = Some(taxPeriodDue),
@@ -73,6 +84,9 @@ trait LSPDetailsTestData {
         taxReturnStatus = Some(TaxReturnStatusEnum.Fulfilled)
       ),
       LateSubmission(
+        lateSubmissionID = lateSubmissionId,
+        incomeSource = Some("Income source"),
+        taxPeriod = Some(taxPeriod),
         taxPeriodStartDate = Some(taxPeriodStart.plusMonths(1)),
         taxPeriodEndDate = Some(taxPeriodEnd.plusMonths(1)),
         taxPeriodDueDate = Some(taxPeriodDue.plusMonths(1)),
@@ -85,6 +99,9 @@ trait LSPDetailsTestData {
   val sampleLateSubmissionPointReturnSubmitted: LSPDetails = sampleLateSubmissionPoint.copy(
     lateSubmissions = Some(Seq(
       LateSubmission(
+        lateSubmissionID = lateSubmissionId,
+        incomeSource = Some("Income source"),
+        taxPeriod = Some(taxPeriod),
         taxPeriodStartDate = Some(taxPeriodStart),
         taxPeriodEndDate = Some(taxPeriodEnd),
         taxPeriodDueDate = Some(taxPeriodDue),
@@ -102,7 +119,7 @@ trait LSPDetailsTestData {
   val sampleRemovedPenaltyPoint: LSPDetails = sampleLateSubmissionPoint.copy(
     penaltyStatus = LSPPenaltyStatusEnum.Inactive,
     penaltyOrder = None,
-    FAPIndicator = Some("X"),
+    fapIndicator = Some("X"),
     expiryReason = Some(ExpiryReasonEnum.Adjustment)
   )
 
@@ -110,6 +127,9 @@ trait LSPDetailsTestData {
     lateSubmissions = Some(
       Seq(
         LateSubmission(
+          lateSubmissionID = lateSubmissionId,
+          incomeSource = Some("Income source"),
+          taxPeriod = Some(taxPeriod),
           taxPeriodStartDate = Some(taxPeriodStart),
           taxPeriodEndDate = Some(taxPeriodEnd),
           taxPeriodDueDate = Some(taxPeriodDue),

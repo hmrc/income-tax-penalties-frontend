@@ -17,11 +17,12 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.i18n.I18nSupport
+import play.api.libs.json.Json
 import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.lsp.{LSPDetails, LSPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
@@ -69,7 +70,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
 
   private[controllers] def updateSessionCookie(penaltyData: PenaltyDetails)(result: => Result)(implicit req: Request[_]): Result = {
 
-    val optPOCAchievementDate: Option[String] = penaltyData.lateSubmissionPenalty.flatMap(_.summary.PoCAchievementDate.map(_.toString))
+    val optPOCAchievementDate: Option[String] = penaltyData.lateSubmissionPenalty.flatMap(_.summary.pocAchievementDate.map(_.toString))
     val optRegimeThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold.toString)
 
     result

@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors
 
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import play.api.libs.json.Json
 import play.api.test.Helpers._
