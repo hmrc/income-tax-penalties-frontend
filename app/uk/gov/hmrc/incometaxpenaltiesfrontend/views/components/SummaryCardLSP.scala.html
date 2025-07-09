@@ -50,7 +50,7 @@
                 {messages("cardLinks.cannotAppeal")}
                 </span>
         } else {
-            if(!summaryCard.isAddedOrRemovedPoint) {
+            if(!summaryCard.isAddedOrRemovedPoint && !summaryCard.status.content.asHtml.body.contains("Expired")) {
                 if(!summaryCard.isReturnSubmitted || summaryCard.appealStatus.contains(AppealStatusEnum.Unappealable)) {
                         <a id={s"penalty-id-${summaryCard.penaltyId}-findOutHowAppeal"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(
                             penaltyId = summaryCard.penaltyId,
