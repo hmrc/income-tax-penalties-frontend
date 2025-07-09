@@ -23,7 +23,6 @@ object LSPPenaltyStatusEnum extends Enumeration {
   val Active: LSPPenaltyStatusEnum.Value = Value("Active")
   val Inactive: LSPPenaltyStatusEnum.Value = Value("Inactive")
 
-
   implicit val format: Format[LSPPenaltyStatusEnum.Value] = new Format[LSPPenaltyStatusEnum.Value] {
 
     override def writes(o: LSPPenaltyStatusEnum.Value): JsValue = JsString(o.toString)
