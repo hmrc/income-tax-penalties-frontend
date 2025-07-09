@@ -163,7 +163,7 @@ lsp.updateSubmitted.notReceived = Return not received
 lsp.expiry.key = Point due to expire
 lsp.expiryReason.key = Removed reason
 lsp.noPenalties = There are no late submission penalties.
-lsp.pointExpiredOn.key = Point Expired On
+lsp.pointExpiredOn.key = Point expired on
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
