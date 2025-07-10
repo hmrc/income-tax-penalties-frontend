@@ -19,8 +19,8 @@ package fixtures.messages
 object IndexViewMessages {
 
   sealed trait Messages { _: i18n =>
-    val noLSP = "There are no late submission penalties."
-    val noLPP = "There are no late payment penalties."
+    val noLSP = "You don’t have any active late submission penalties"
+    val noLPP = "You have no late payment penalties that are currently due"
     val overviewH2 = "Overview"
     val overviewP1: Boolean => String = {
       case true => "Your client’s account has:"
@@ -56,8 +56,8 @@ object IndexViewMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val noLSP = "There are no late submission penalties. (Welsh)"
-    override val noLPP = "There are no late payment penalties. (Welsh)"
+    override val noLSP = "You don’t have any active late submission penalties. (Welsh)"
+    override val noLPP = "You have no late payment penalties that are currently due. (Welsh)"
     override val overviewH2 = "Trosolwg"
     override val overviewP1: Boolean => String = {
       case true => "Mae gan gyfrif eich cleient y canlynol:"

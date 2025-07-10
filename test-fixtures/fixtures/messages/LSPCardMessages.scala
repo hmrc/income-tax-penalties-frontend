@@ -34,7 +34,7 @@ object LSPCardMessages {
     def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate"
     val updateDueKey = "Update due"
     val updateSubmittedKey = "Update submitted"
-    val returnNotReceived = "Return not received"
+    val returnNotReceived = "Not yet received"
     val expiryDateKey = "Point due to expire"
     val expiryReasonKey = "Removed reason"
 
@@ -61,11 +61,11 @@ object LSPCardMessages {
 
     //Summary Row Messages
     override val addedOnKey = "Ychwanegwyd ar"
-    override val updatePeriod = "Update period (Welsh)"
+    override val updatePeriod = "Cyfnod diweddaru"
     override def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate (Welsh)"
     override val updateDueKey = "Diweddariad i’w gyflwyno"
     override val updateSubmittedKey = "Diweddariad wedi’i gyflwyno"
-    override val returnNotReceived = "Return not received (Welsh)"
+    override val returnNotReceived = "Heb ddod i law eto"
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
     override val expiryReasonKey = "Removed reason (Welsh)"
 

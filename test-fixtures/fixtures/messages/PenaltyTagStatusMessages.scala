@@ -21,7 +21,7 @@ object PenaltyTagStatusMessages {
   sealed trait Messages { _: i18n =>
     val active: String = "Active"
     val expired: String = "Expired"
-    val upheld: String = "Upheld"
+    val upheld: String = "Decision upheld"
     val due: String = "Due"
     val amountDue: String => String = amount => s"£$amount $due"
     val paid = "Paid"
@@ -33,7 +33,7 @@ object PenaltyTagStatusMessages {
   object Welsh extends Messages with Cy {
     override val active: String = "AR WAITH"
     override val expired: String = "WEDI DOD I BEN"
-    override val upheld: String = "UPHELD (Welsh)"
+    override val upheld: String = "Penderfyniad wedi’i gadarnhau"
     override val due: String = "YN DDYLEDUS"
     override val amountDue: String => String = amount => s"£$amount $due"
     override val paid = "WEDI’I DALU"

@@ -148,7 +148,7 @@ compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadl
 
 # Penalty Status tags
 # ===================
-status.upheld = Upheld
+status.upheld = Decision upheld
 status.expired = Expired
 status.active = Active
 status.due = Due
@@ -175,17 +175,17 @@ lsp.updatePeriod.key = Update period
 lsp.updatePeriod.value = {0} to {1}
 lsp.updateDue.key = Update due
 lsp.updateSubmitted.key = Update submitted
-lsp.updateSubmitted.notReceived = Return not received
+lsp.updateSubmitted.notReceived = Not yet received
 lsp.expiry.key = Point due to expire
 lsp.expiryReason.key = Removed reason
-lsp.noPenalties = There are no late submission penalties.
+lsp.noPenalties = You don’t have any active late submission penalties.
 lsp.pointExpiredOn.key = Point expired on
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
 lpp.penaltyType.key = Penalty type
-lpp.penaltyType.LPP1 = First penalty for late payment
-lpp.penaltyType.LPP2 = Second penalty for late payment
+lpp.penaltyType.LPP1 = First late payment penalty
+lpp.penaltyType.LPP2 = Second late payment penalty
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you
 lpp.addedOn.key = Added on
 lpp.incomeTaxPeriod.key = Overdue charge
@@ -193,7 +193,7 @@ lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year
 lpp.incomeTaxDue.key = Income Tax due
 lpp.incomeTaxPaymentDate.key = Income Tax paid
 lpp.paymentNotReceived = Payment not yet received
-lpp.noPenalties = There are no late payment penalties.
+lpp.noPenalties = You have no late payment penalties that are currently due.
 
 # Appeal Status
 # =============

@@ -63,7 +63,7 @@ agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax
 
 # Status tags
 # ===========
-status.upheld = UPHELD (Welsh)
+status.upheld = Penderfyniad wedi’i gadarnhau
 status.expired = WEDI DOD I BEN
 status.active = AR WAITH
 status.due = YN DDYLEDUS
@@ -84,22 +84,23 @@ lpp.cardTitle = Cosb o £{0}
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Ychwanegwyd ar
+lsp.updatePeriod.key = Cyfnod diweddaru
 lsp.penaltyType.key = Penalty type (Welsh)
-lsp.updatePeriod.key = Update period (Welsh)
+lsp.updatePeriod.key = Cyfnod diweddaru
 lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
-lsp.updateSubmitted.notReceived = Return not received (Welsh)
+lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
-lsp.noPenalties = There are no late submission penalties. (Welsh)
+lsp.noPenalties = You don’t have any active late submission penalties. (Welsh)
 lsp.pointExpiredOn.key = Point expired on (Welsh)
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
 lpp.penaltyType.key = Math o gosb
-lpp.penaltyType.LPP1 = First penalty for late payment (Welsh)
-lpp.penaltyType.LPP2 = Second penalty for late payment (Welsh)
+lpp.penaltyType.LPP1 = First late payment penalty (Welsh)
+lpp.penaltyType.LPP2 = Second late payment penalty (Welsh)
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you (Welsh)
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
@@ -107,7 +108,7 @@ lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
-lpp.noPenalties = There are no late payment penalties. (Welsh)
+lpp.noPenalties = You have no late payment penalties that are currently due. (Welsh)
 
 # Appeal Status
 # =============
@@ -164,7 +165,7 @@ compliance.timeline.individual.more.information.link.text = More information abo
 compliance.timeline.individual.points.to.be.removed = Points to be removed: (Welsh)
 compliance.timeline.individual.if.you.missed.deadline = If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points. (Welsh)
 compliance.timeline.individual.return.to.sa.penalties = Return to Self Assessment penalties and appeals (Welsh)
-compliance.timeline.updatePeriod.heading = Update period: {0} to {1} (Welsh)
+compliance.timeline.updatePeriod.heading = Cyfnod diweddaru: {0} to {1} (Welsh)
 compliance.timeline.tax.return.heading = Tax return: {0} to {1} (Welsh)
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now. (Welsh)
 compliance.timeline.send.by = Send by {0} (Welsh)
