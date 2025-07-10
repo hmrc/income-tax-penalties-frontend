@@ -22,6 +22,8 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
+import java.time.MonthDay
+
 class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
   def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = Option(summaryListRow(
@@ -46,13 +48,17 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       value = Html(messages(s"lpp.penaltyType.${penalty.penaltyCategory}"))
     ))
 
+
   def taxPeriodSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
+
     (penalty.taxPeriodStartDate, penalty.taxPeriodEndDate) match {
       case (Some(startDate), Some(endDate)) =>
-        Some(summaryListRow(
-          label = messages("lsp.updatePeriod.key"),
-          value = Html(messages("lsp.updatePeriod.value", dateToString(startDate), dateToString(endDate)))
-        ))
+        if(penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31))) {
+          Some (summaryListRow (
+            label = messages ("lsp.updatePeriod.key"),
+            value = Html (messages ("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
+          ))
+        } else None
       case _ => None
     }
 

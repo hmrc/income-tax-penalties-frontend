@@ -26,6 +26,8 @@ import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.ExpiryReasonEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 
+import java.time.LocalDate
+
 class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with LSPDetailsTestData with SummaryListRowHelper with DateFormatter {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
@@ -46,7 +48,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
 
           "there is a `from` and `to` date" should {
 
-            "construct a SummaryListRow model for tax period with expected messages" in {
+            "construct a SummaryListRow model for tax period with expected messages when it is a late update" in {
 
               lspSummaryListRowHelper.taxPeriodSummaryRow(sampleLateSubmissionPoint) shouldBe
                 Some(summaryListRow(
@@ -56,6 +58,17 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
                     dateToString(sampleLateSubmissionPoint.taxPeriodEndDate.get)
                   ))
                 ))
+            }
+
+            "do not display a SummaryListRow model for tax period when it is not a late update" in {
+
+              val lspDetailsAnnual = sampleLateSubmissionPoint.copy(
+                lateSubmissions = sampleLateSubmissionPoint.lateSubmissions.map(_.map(_.copy(
+                  taxPeriodDueDate = Some(LocalDate.of(2021, 1, 31))
+                )))
+              )
+
+              lspSummaryListRowHelper.taxPeriodSummaryRow(lspDetailsAnnual) shouldBe None
             }
           }
 
