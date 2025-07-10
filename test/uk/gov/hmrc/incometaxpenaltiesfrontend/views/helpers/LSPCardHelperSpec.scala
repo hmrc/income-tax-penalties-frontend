@@ -55,6 +55,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockPointExpiryDate(penalty1)(testPointExpiryRow)
@@ -64,6 +65,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow,
                       testPointExpiryRow
@@ -92,6 +94,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 val penalty1 = penalty.copy(penaltyOrder = Some("1"))
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
@@ -101,6 +104,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow
                     ),
@@ -126,6 +130,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
@@ -134,6 +139,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow
                     ),
@@ -225,6 +231,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
               mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
               mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+              mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
               mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
               mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
               mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
@@ -233,6 +240,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 Seq(LateSubmissionPenaltySummaryCard(
                   cardRows = Seq(
                     testTaxPeriodRow,
+                    testTaxYearRow,
                     testDueDateRow,
                     testReceivedDateRow,
                     testAppealStatusRow
@@ -260,6 +268,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               Seq(penalty1, penalty2, penalty3).foreach { penalty =>
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
                 mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
@@ -275,6 +284,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow,
                       testAppealStatusRow
@@ -290,6 +300,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow,
                       testAppealStatusRow
@@ -305,6 +316,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow,
                       testAppealStatusRow
@@ -332,6 +344,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockExpiryReasonSummaryRow(penalty1)(Some(testExpiryReasonRow))
                 mockPenaltyStatusSummaryRow(penalty1)(None)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
@@ -340,6 +353,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testExpiryReasonRow
                     ),
                     cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
@@ -362,6 +376,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockExpiryReasonSummaryRow(penalty1)(Some(testExpiryReasonRow))
 
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
@@ -370,6 +385,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
+                      testTaxYearRow,
                       testExpiryReasonRow
                     ),
                     cardTitle          = messagesForLanguage.cardTitleRemovedPoint,

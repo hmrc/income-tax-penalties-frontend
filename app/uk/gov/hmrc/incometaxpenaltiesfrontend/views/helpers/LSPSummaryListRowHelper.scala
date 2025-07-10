@@ -62,6 +62,19 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       case _ => None
     }
 
+  def taxYearSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
+
+    (penalty.taxPeriodStartDate, penalty.taxPeriodEndDate) match {
+      case (Some(startDate), Some(endDate)) =>
+        if(penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {
+          Some (summaryListRow (
+            label = messages ("lsp.updateYear.key"),
+            value = Html (messages ("lsp.updateYear.value", dateToYearString (startDate), dateToYearString (endDate)))
+          ))
+        } else None
+      case _ => None
+    }
+
   def dueDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     penalty.dueDate.map { dueDate =>
       summaryListRow(

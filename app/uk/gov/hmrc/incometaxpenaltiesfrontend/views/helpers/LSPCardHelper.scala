@@ -106,6 +106,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
+        summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
@@ -121,6 +122,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
+        summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
         if(getTagStatus(penalty).content == Text(messages("status.expired"))) summaryRow.pointExpiredOnRow(penalty)
@@ -139,6 +141,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
+        summaryRow.taxYearSummaryRow(penalty),
         summaryRow.expiryReasonSummaryRow(penalty),
         summaryRow.penaltyStatusRow(penalty),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)

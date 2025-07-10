@@ -30,6 +30,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LSPSummaryListRowHel
 trait MockLSPSummaryListRowHelper extends MockitoSugar {
 
   val testTaxPeriodRow: SummaryListRow = SummaryListRow(Key(Text("taxPeriod")), Value(Text("dateA to dateB")))
+  val testTaxYearRow: SummaryListRow = SummaryListRow(Key(Text("taxYear")), Value(Text("dateA to dateB")))
   val testDueDateRow: SummaryListRow = SummaryListRow(Key(Text("dueDate")), Value(Text("date")))
   val testExpiryReasonRow: SummaryListRow = SummaryListRow(Key(Text("expiryReason")), Value(Text("reason")))
   val testReceivedDateRow: SummaryListRow = SummaryListRow(Key(Text("receivedDate")), Value(Text("date")))
@@ -44,6 +45,10 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
 
   def mockTaxPeriodSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.taxPeriodSummaryRow(eqTo(penalty))(any()))
+      .thenReturn(value)
+
+  def mockTaxYearSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLSPSummaryListRowHelper.taxYearSummaryRow(eqTo(penalty))(any()))
       .thenReturn(value)
 
   def mockDueDateSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
