@@ -34,6 +34,12 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     )
   ))
 
+  def pointExpiredOnRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
+    Some(summaryListRow(
+      label = messages("lsp.pointExpiredOn.key"),
+      value = Html(messages(dateToString(penalty.penaltyExpiryDate)))
+    ))
+
   def penaltyStatusRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     Some(summaryListRow(
       label = messages("lpp.penaltyType.key"),

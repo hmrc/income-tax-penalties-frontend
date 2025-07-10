@@ -78,12 +78,15 @@ lsp.cardTitle.removedPoint = Pwynt cosb
 lsp.cardTitle.financialPoint = Penalty point {0}{1}: £{2} penalty (Welsh)
 lsp.cardTitle.additionalFinancialPoint = Cosb ychwanegol o £{0}{1}
 lsp.cardTitle.point = Pwynt cosb {1}{0}
+lsp.cardTitle.expiredPoint = Penalty point (Welsh)
 lpp.cardTitle = Cosb o £{0}
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
 lsp.addedOn.key = Ychwanegwyd ar
 lsp.updatePeriod.key = Cyfnod diweddaru
+lsp.penaltyType.key = Penalty type (Welsh)
+lsp.updatePeriod.key = Update period (Welsh)
 lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
@@ -91,6 +94,7 @@ lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
 lsp.noPenalties = You don’t have any active late submission penalties. (Welsh)
+lsp.pointExpiredOn.key = Point expired on (Welsh)
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
