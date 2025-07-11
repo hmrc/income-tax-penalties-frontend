@@ -43,7 +43,7 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
           "there is an appeal in progress" when {
 
-            "appeal status is NOT 'Unappealable'" should {
+            "appeal status is 'Under Appeal'" should {
 
               "construct a SummaryListRow model with the Appeal status with expected messages" in {
 
@@ -53,7 +53,38 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
                 ) shouldBe
                   Some(summaryListRowHelper.summaryListRow(
                     label = appealStatusMessages.appealStatusKey,
-                    value = Html(appealStatusMessages.underReviewHMRC)
+                    value = Html(appealStatusMessages.appealInProgress)
+                  ))
+              }
+            }
+
+            "appeal status is 'Upheld'" should {
+
+              "construct a SummaryListRow model with the Appeal status with expected messages" in {
+
+                summaryListRowHelper.appealStatusRow(
+                  Some(AppealStatusEnum.Upheld),
+                  Some(AppealLevelEnum.FirstStageAppeal)
+                ) shouldBe
+                  Some(summaryListRowHelper.summaryListRow(
+                    label = appealStatusMessages.appealStatusKey,
+                    value = Html(appealStatusMessages.appealSuccessful)
+                  ))
+              }
+            }
+
+
+            "appeal status is 'Rejected'" should {
+
+              "construct a SummaryListRow model with the Appeal status with expected messages" in {
+
+                summaryListRowHelper.appealStatusRow(
+                  Some(AppealStatusEnum.Rejected),
+                  Some(AppealLevelEnum.FirstStageAppeal)
+                ) shouldBe
+                  Some(summaryListRowHelper.summaryListRow(
+                    label = appealStatusMessages.appealStatusKey,
+                    value = Html(appealStatusMessages.appealRejected)
                   ))
               }
             }
