@@ -20,23 +20,21 @@ object AppealStatusMessages {
 
   sealed trait Messages { _: i18n =>
     val appealStatusKey = "Appeal status"
-    val underReviewHMRC = "Under review by HMRC"
-    val underReviewTaxTribunal = "Under review by the tax tribunal"
-    val acceptedTaxTribunal = "Appeal accepted by tax tribunal"
-    val accepted = "Appeal accepted"
-    val rejected = "Appeal rejected"
-    val rejectedTaxTribunal = "Appeal rejected by tax tribunal"
+    val appealInProgress = "Appeal in progress"
+    val appealRejected = "Appeal rejected"
+    val appealSuccessful = "Appeal successful"
+    val decisionUpheld = "Decision upheld"
+    val underReview = "Under review"
   }
 
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
     override val appealStatusKey = "Statws yr apêl"
-    override val underReviewHMRC = "Under review by HMRC (Welsh)"
-    override val underReviewTaxTribunal = "Under review by the tax tribunal (Welsh)"
-    override val acceptedTaxTribunal = "Appeal accepted by tax tribunal (Welsh)"
-    override val accepted = "Appeal accepted (Welsh)"
-    override val rejected = "Apêl wedi’i wrthod"
-    override val rejectedTaxTribunal = "Appeal rejected by tax tribunal (Welsh)"
+    override val appealInProgress = "Appeal in progress (Welsh)"
+    override val appealRejected = "Appeal rejected (Welsh)"
+    override val appealSuccessful = "Appeal successful (Welsh)"
+    override val decisionUpheld = "Decision upheld (Welsh)"
+    override val underReview = "Under review (Welsh)"
   }
 }

@@ -114,12 +114,13 @@ lpp.noPenalties = You have no late payment penalties that are currently due. (We
 # =============
 #TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
 appealStatus.key = Statws yr apêl
-appealStatus.A.01 = Under review by HMRC (Welsh)
-appealStatus.A.02 = Under review by the tax tribunal (Welsh)
-appealStatus.B.02 = Appeal accepted by tax tribunal (Welsh)
-appealStatus.B.01 = Appeal accepted (Welsh)
-appealStatus.C.01 = Apêl wedi’i wrthod
-appealStatus.C.02 = Appeal rejected by tax tribunal (Welsh)
+appealStatus.A.01 = Appeal in progress (Welsh)
+appealStatus.A.02 = Under review (Welsh)
+appealStatus.A.03 = Appeal rejected (Welsh)
+appealStatus.B.01 = Appeal successful (Welsh)
+appealStatus.B.02 = Appeal successful (Welsh)
+appealStatus.C.01 = Appeal rejected (Welsh)
+appealStatus.C.02 = Decision upheld (Welsh)
 
 # Expiry Reason
 # =============

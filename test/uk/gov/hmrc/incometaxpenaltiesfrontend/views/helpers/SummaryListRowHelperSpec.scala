@@ -53,7 +53,7 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
                 ) shouldBe
                   Some(summaryListRowHelper.summaryListRow(
                     label = appealStatusMessages.appealStatusKey,
-                    value = Html(appealStatusMessages.underReviewHMRC)
+                    value = Html(appealStatusMessages.appealInProgress)
                   ))
               }
             }
