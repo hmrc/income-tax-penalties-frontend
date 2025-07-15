@@ -23,7 +23,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.ExpiryReasonEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{ExpiryReasonEnum, LSPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 
 import java.time.LocalDate
@@ -94,6 +94,22 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
               Some(summaryListRow(
                 label = messagesForLanguage.updateDueKey,
                 value = Html(dateToString(sampleLateSubmissionPoint.dueDate.get))
+              ))
+          }
+        }
+
+        "calling .payPenaltyByRow()" should {
+          "construct a SummaryListRow model for pay penalty by with expected messages" in {
+            val lspDetailsAnnual = sampleLateSubmissionPoint.copy(
+              penaltyStatus = LSPPenaltyStatusEnum.Active,
+              penaltyOrder = Some("3"),
+              chargeDueDate = Some(chargeDueDate)
+            )
+
+            lspSummaryListRowHelper.payPenaltyByRow(lspDetailsAnnual, 2) shouldBe
+              Some(summaryListRow(
+                label = messagesForLanguage.payPenaltyBy,
+                value = Html(dateToString(chargeDueDate))
               ))
           }
         }

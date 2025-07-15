@@ -56,18 +56,18 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       case (Some(startDate), Some(endDate)) =>
         if(penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31))) {
           Some (summaryListRow (
-            label = messages ("lsp.updatePeriod.key"),
-            value = Html (messages ("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
+            label = messages("lsp.updatePeriod.key"),
+            value = Html(messages("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
           ))
         } else None
       case _ => None
     }
 
   def payPenaltyByRow(penalty: LSPDetails, threshold: Int)(implicit messages: Messages): Option[SummaryListRow] = {
-    if(penalty.penaltyOrder.exists(_.toInt > threshold) && !penalty.appealStatus.contains(AppealStatusEnum.Upheld) && penalty.lspTypeEnum != LSPTypeEnum.RemovedPoint) {
+    if(penalty.penaltyOrder.exists(_.toInt >= threshold) && !penalty.appealStatus.contains(AppealStatusEnum.Upheld) && penalty.lspTypeEnum != LSPTypeEnum.RemovedPoint) {
       penalty.chargeDueDate.map { chargeDueDate =>
        summaryListRow(
-          label = "Pay Penalty By",
+          label = messages("lsp.pay.penalty.by"),
           value = Html(dateToString(chargeDueDate))
         )
       }

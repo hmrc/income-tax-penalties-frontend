@@ -230,6 +230,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               val penalty1 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("1"))
 
               mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
+              mockPayPenaltyByRow(penalty1, 1)(None)
               mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
               mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
               mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
@@ -265,8 +266,9 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               val penalty2 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("2"))
               val penalty3 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("3"))
 
-              Seq(penalty1, penalty2, penalty3).foreach { penalty =>
+              Seq(penalty1, penalty2, penalty3).foreach {  penalty =>
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
+                mockPayPenaltyByRow(penalty, 2)(Some(testPayPenaltyByRow))
                 mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
@@ -281,6 +283,102 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 activePoints  = 3
               ) shouldBe
                 Seq(
+                  LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testPayPenaltyByRow,
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testAppealStatusRow
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleAdditionalFinancialPoint("200", s": Late update"),
+                    status = getTagStatus(penalty3),
+                    penaltyPoint = "3",
+                    penaltyId = penalty3.penaltyNumber,
+                    isReturnSubmitted = true,
+                    penaltyCategory = penalty3.penaltyCategory,
+                    dueDate = penalty3.dueDate.map(dateToString(_))
+                  ),
+                  LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testPayPenaltyByRow,
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testAppealStatusRow
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleFinancialPoint(2, s": Late update", "200"),
+                    status = getTagStatus(penalty2),
+                    penaltyPoint = "2",
+                    penaltyId = penalty2.penaltyNumber,
+                    isReturnSubmitted = true,
+                    penaltyCategory = penalty2.penaltyCategory,
+                    dueDate = penalty2.dueDate.map(dateToString(_))
+                  ),
+                  LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testPayPenaltyByRow,
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testAppealStatusRow
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": Late update", "200"),
+                    status = getTagStatus(penalty1),
+                    penaltyPoint = "1",
+                    penaltyId = penalty1.penaltyNumber,
+                    isReturnSubmitted = true,
+                    penaltyCategory = penalty1.penaltyCategory,
+                    dueDate = penalty1.dueDate.map(dateToString(_))
+                  )
+                )
+            }
+          }
+
+          "rendering a multiple Financial Penalty Cards so that the threshold is breached leading to additional penalty amount and display pay penalty by row" ignore {
+
+            "construct cards with correct messages including penalty amount" in {
+
+              val penalty1 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("1"))
+              val penalty2 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("2"))
+              val penalty3 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("3"))
+              val penalty4 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("4"))
+
+              Seq(penalty1, penalty2, penalty3, penalty4).foreach { penalty =>
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
+                mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
+                mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
+                mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
+
+              }
+
+              lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
+                penalties     = Seq(penalty4, penalty3, penalty2, penalty1),
+                threshold     = 4,
+                activePoints  = 3
+              ) shouldBe
+                Seq(
+                  LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testAppealStatusRow,
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleAdditionalFinancialPoint("200", s": Late update"),
+                    status = getTagStatus(penalty4),
+                    penaltyPoint = "4",
+                    penaltyId = penalty4.penaltyNumber,
+                    isReturnSubmitted = true,
+                    penaltyCategory = penalty4.penaltyCategory,
+                    dueDate = penalty4.dueDate.map(dateToString(_))
+                  ),
                   LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
