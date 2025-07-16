@@ -19,7 +19,8 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPTypeEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
 import java.time.MonthDay
@@ -55,12 +56,23 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       case (Some(startDate), Some(endDate)) =>
         if(penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31))) {
           Some (summaryListRow (
-            label = messages ("lsp.updatePeriod.key"),
-            value = Html (messages ("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
+            label = messages("lsp.updatePeriod.key"),
+            value = Html(messages("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
           ))
         } else None
       case _ => None
     }
+
+  def payPenaltyByRow(penalty: LSPDetails, threshold: Int)(implicit messages: Messages): Option[SummaryListRow] = {
+    if(penalty.penaltyOrder.exists(_.toInt >= threshold) && !penalty.appealStatus.contains(AppealStatusEnum.Upheld) && penalty.lspTypeEnum != LSPTypeEnum.RemovedPoint) {
+      penalty.chargeDueDate.map { chargeDueDate =>
+       summaryListRow(
+          label = messages("lsp.pay.penalty.by"),
+          value = Html(dateToString(chargeDueDate))
+        )
+      }
+    } else None
+  }
 
   def taxYearSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
 

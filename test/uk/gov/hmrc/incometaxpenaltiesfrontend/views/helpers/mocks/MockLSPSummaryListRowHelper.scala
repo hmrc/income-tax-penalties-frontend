@@ -36,11 +36,16 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
   val testReceivedDateRow: SummaryListRow = SummaryListRow(Key(Text("receivedDate")), Value(Text("date")))
   val testPointExpiryRow: SummaryListRow = SummaryListRow(Key(Text("expiryDate")), Value(Text("date")))
   val testAppealStatusRow: SummaryListRow = SummaryListRow(Key(Text("appealStatus")), Value(Text("status")))
+  val testPayPenaltyByRow: SummaryListRow = SummaryListRow(Key(Text("payPenaltyBy")), Value(Text("1/4/2028")))
 
   lazy val mockLSPSummaryListRowHelper: LSPSummaryListRowHelper = mock[LSPSummaryListRowHelper]
 
   def mockMissingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(eqTo(penalty))(any()))
+      .thenReturn(value)
+
+  def mockPayPenaltyByRow(penalty: LSPDetails, threshold: Int)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLSPSummaryListRowHelper.payPenaltyByRow(eqTo(penalty), eqTo(threshold))(any()))
       .thenReturn(value)
 
   def mockTaxPeriodSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =

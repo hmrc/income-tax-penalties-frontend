@@ -182,6 +182,7 @@ lsp.expiry.key = Point due to expire
 lsp.expiryReason.key = Removed reason
 lsp.noPenalties = You don’t have any active late submission penalties.
 lsp.pointExpiredOn.key = Point expired on
+lsp.pay.penalty.by = Pay Penalty By
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================

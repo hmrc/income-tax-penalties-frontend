@@ -37,6 +37,7 @@ object LSPCardMessages {
     val returnNotReceived = "Not yet received"
     val expiryDateKey = "Point due to expire"
     val expiryReasonKey = "Removed reason"
+    val payPenaltyBy = "Pay Penalty By"
 
     //Card Footer Links
     val cardLinksAdjustedPointCannotAppeal = "You cannot appeal this point"
