@@ -121,6 +121,7 @@ appealStatus.B.01 = Appeal successful (Welsh)
 appealStatus.B.02 = Appeal successful (Welsh)
 appealStatus.C.01 = Appeal rejected (Welsh)
 appealStatus.C.02 = Decision upheld (Welsh)
+appealStatus.C.03 = Decision upheld (Welsh)
 
 # Expiry Reason
 # =============

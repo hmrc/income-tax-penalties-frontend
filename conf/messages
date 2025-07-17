@@ -209,6 +209,7 @@ appealStatus.B.01 = Appeal successful
 appealStatus.B.02 = Appeal successful
 appealStatus.C.01 = Appeal rejected
 appealStatus.C.02 = Decision upheld
+appealStatus.C.03 = Decision upheld
 
 # Expiry Reason
 # =============
