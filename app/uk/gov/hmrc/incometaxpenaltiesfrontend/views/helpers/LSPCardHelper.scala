@@ -101,6 +101,13 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
       }
 
+    val submittedLabelKey =
+      if (penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {
+        "lsp.updateSubmitted.key"
+      } else {
+        "lsp.returnSubmitted.key"
+      }
+
     buildLSPSummaryCard(
       cardTitle,
       rows = Seq(
@@ -108,7 +115,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
-        Some(summaryRow.receivedDateSummaryRow(penalty)),
+        Some(summaryRow.receivedDateSummaryRow(penalty, submittedLabelKey)),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
       ).flatten,
       penalty = penalty
@@ -117,6 +124,13 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
 
   def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
+    val submittedLabelKey =
+      if (penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {
+        "lsp.returnSubmitted.key"
+      } else {
+        "lsp.updateSubmitted.key"
+      }
+
     buildLSPSummaryCard(
       cardTitle = if(getTagStatus(penalty).content == Text(messages("status.expired"))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
       rows = Seq(
@@ -124,7 +138,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
-        Some(summaryRow.receivedDateSummaryRow(penalty)),
+        Some(summaryRow.receivedDateSummaryRow(penalty, submittedLabelKey)),
         if(getTagStatus(penalty).content == Text(messages("status.expired"))) summaryRow.pointExpiredOnRow(penalty)
         else Option.when(!thresholdMet && !penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
           summaryRow.pointExpiryDate(penalty)

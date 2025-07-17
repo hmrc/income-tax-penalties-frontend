@@ -91,9 +91,9 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       )
     })
 
-  def receivedDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow =
+  def receivedDateSummaryRow(penalty: LSPDetails, submittedLabelKey: String)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
-      label = messages("lsp.updateSubmitted.key"),
+      label = messages(submittedLabelKey),
       value = Html(
         penalty.receiptDate.fold(messages("lsp.updateSubmitted.notReceived"))(dateToString(_).replace(" ", "\u00A0"))
       )

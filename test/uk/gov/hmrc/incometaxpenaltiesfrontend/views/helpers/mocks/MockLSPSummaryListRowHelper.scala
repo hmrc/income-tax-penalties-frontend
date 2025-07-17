@@ -59,8 +59,8 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
     when(mockLSPSummaryListRowHelper.expiryReasonSummaryRow(eqTo(penalty))(any()))
       .thenReturn(value)
 
-  def mockReceivedDateSummaryRow(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLSPSummaryListRowHelper.receivedDateSummaryRow(eqTo(penalty))(any()))
+  def mockReceivedDateSummaryRow(penalty: LSPDetails, submittedLabelKey: String)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
+    when(mockLSPSummaryListRowHelper.receivedDateSummaryRow(eqTo(penalty), eqTo(submittedLabelKey))(any()))
       .thenReturn(value)
 
   def mockPointExpiryDate(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =

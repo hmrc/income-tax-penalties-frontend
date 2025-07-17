@@ -118,7 +118,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
 
             "construct a SummaryListRow model for received date with expected messages" in {
 
-              lspSummaryListRowHelper.receivedDateSummaryRow(sampleLateSubmissionPoint) shouldBe
+              lspSummaryListRowHelper.receivedDateSummaryRow(sampleLateSubmissionPoint, "lsp.updateSubmitted.key") shouldBe
                 summaryListRow(
                   label = messagesForLanguage.updateSubmittedKey,
                   value = Html(dateToString(sampleLateSubmissionPoint.receiptDate.get))
@@ -134,7 +134,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
                 lateSubmissions = sampleLateSubmissionPoint.lateSubmissions.map(_.map(_.copy(
                   returnReceiptDate = None
                 )))
-              )) shouldBe
+              ), "lsp.updateSubmitted.key") shouldBe
                 summaryListRow(
                   label = messagesForLanguage.updateSubmittedKey,
                   value = Html(messagesForLanguage.returnNotReceived)
