@@ -119,6 +119,7 @@ appealStatus.A.02 = Under review (Welsh)
 appealStatus.A.03 = Appeal rejected (Welsh)
 appealStatus.B.01 = Appeal successful (Welsh)
 appealStatus.B.02 = Appeal successful (Welsh)
+appealStatus.B.03 = Appeal accepted (Welsh)
 appealStatus.C.01 = Appeal rejected (Welsh)
 appealStatus.C.02 = Decision upheld (Welsh)
 

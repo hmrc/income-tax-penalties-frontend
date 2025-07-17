@@ -207,6 +207,7 @@ appealStatus.A.02 = Under review
 appealStatus.A.03 = Appeal rejected
 appealStatus.B.01 = Appeal successful
 appealStatus.B.02 = Appeal successful
+appealStatus.B.03 = Appeal accepted
 appealStatus.C.01 = Appeal rejected
 appealStatus.C.02 = Decision upheld
 
