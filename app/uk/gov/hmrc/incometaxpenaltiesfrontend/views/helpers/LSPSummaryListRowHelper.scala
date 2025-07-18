@@ -27,15 +27,20 @@ import java.time.MonthDay
 
 class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
-  def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = Option(summaryListRow(
-    label = messages("lsp.missingOrLateIncomeSources.key"),
-    value = Html(
-      """<ul class="govuk-list govuk-list--bullet">
-        |  <li>Missing Income Sources</li>
-        |  <li>Late Income Sources</li>
-        |</ul>""".stripMargin
-    )
-  ))
+  def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = {
+    if (penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31))) {
+      Some(summaryListRow(
+        label = messages("lsp.missingOrLateIncomeSources.key"),
+        value = Html(
+          """<ul class="govuk-list govuk-list--bullet">
+            |  <li>Missing Income Sources</li>
+            |  <li>Late Income Sources</li>
+            |</ul>""".stripMargin
+        )
+      ))
+    } else None
+  }
+
 
   def pointExpiredOnRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     Some(summaryListRow(
