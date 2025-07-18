@@ -33,6 +33,17 @@ trait LSPDetailsTestData {
   val expiryDate: LocalDate = creationDate.plusYears(2)
   val chargeDueDate: LocalDate = creationDate.plusMonths(1)
 
+  lazy val lateSubmission = LateSubmission(
+    lateSubmissionID = lateSubmissionId,
+    incomeSource = Some("Income source"),
+    taxPeriod = Some(taxPeriod),
+    taxPeriodStartDate = Some(taxPeriodStart),
+    taxPeriodEndDate = Some(taxPeriodEnd),
+    taxPeriodDueDate = Some(taxPeriodDue),
+    returnReceiptDate = Some(receiptDate),
+    taxReturnStatus = Some(TaxReturnStatusEnum.Fulfilled)
+  )
+
   val sampleLateSubmissionPoint: LSPDetails = LSPDetails(
     penaltyNumber = "12345678901234",
     penaltyOrder = Some("01"),

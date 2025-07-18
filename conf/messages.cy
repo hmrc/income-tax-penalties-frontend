@@ -89,12 +89,14 @@ lsp.penaltyType.key = Penalty type (Welsh)
 lsp.updatePeriod.key = Cyfnod diweddaru
 lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
+lsp.returnDue.key = Ffurflen Dreth i’w chyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
 lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
 lsp.noPenalties = You don’t have any active late submission penalties. (Welsh)
 lsp.pointExpiredOn.key = Point expired on (Welsh)
+lsp.missingOrLateIncomeSources.key = Ffynonellau incwm sy’n hwyr neu ar goll
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
@@ -119,8 +121,10 @@ appealStatus.A.02 = Under review (Welsh)
 appealStatus.A.03 = Appeal rejected (Welsh)
 appealStatus.B.01 = Appeal successful (Welsh)
 appealStatus.B.02 = Appeal successful (Welsh)
+appealStatus.B.03 = Appeal accepted (Welsh)
 appealStatus.C.01 = Appeal rejected (Welsh)
 appealStatus.C.02 = Decision upheld (Welsh)
+appealStatus.C.03 = Decision upheld (Welsh)
 
 # Expiry Reason
 # =============

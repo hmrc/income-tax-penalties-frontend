@@ -19,22 +19,29 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPTypeEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
 import java.time.MonthDay
 
 class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
-  def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = Option(summaryListRow(
-    label = messages("lsp.missingOrLateIncomeSources.key"),
-    value = Html(
-      """<ul class="govuk-list govuk-list--bullet">
-        |  <li>Missing Income Sources</li>
-        |  <li>Late Income Sources</li>
-        |</ul>""".stripMargin
-    )
-  ))
+  def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = {
+    lazy val incomeSourcesList = penalty.lateSubmissions.fold[Seq[String]](Seq.empty)(_.flatMap(ls => ls.incomeSource))
+    lazy val incomeSourcesListBullets = incomeSourcesList.map(incomeSource => s"<li>$incomeSource</li>").mkString("")
+    if (penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31)) && incomeSourcesList.nonEmpty) {
+      Some(summaryListRow(
+        label = messages("lsp.missingOrLateIncomeSources.key"),
+        value = Html(
+          s"""<ul class="govuk-list govuk-list--bullet">
+             |  $incomeSourcesListBullets
+             |</ul>""".stripMargin
+        )
+      ))
+    } else None
+  }
+
 
   def pointExpiredOnRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     Some(summaryListRow(
@@ -55,12 +62,23 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       case (Some(startDate), Some(endDate)) =>
         if(penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31))) {
           Some (summaryListRow (
-            label = messages ("lsp.updatePeriod.key"),
-            value = Html (messages ("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
+            label = messages("lsp.updatePeriod.key"),
+            value = Html(messages("lsp.updatePeriod.value", dateToString (startDate), dateToString (endDate) ) )
           ))
         } else None
       case _ => None
     }
+
+  def payPenaltyByRow(penalty: LSPDetails, threshold: Int)(implicit messages: Messages): Option[SummaryListRow] = {
+    if(penalty.penaltyOrder.exists(_.toInt >= threshold) && !penalty.appealStatus.contains(AppealStatusEnum.Upheld) && penalty.lspTypeEnum != LSPTypeEnum.RemovedPoint) {
+      penalty.chargeDueDate.map { chargeDueDate =>
+       summaryListRow(
+          label = messages("lsp.pay.penalty.by"),
+          value = Html(dateToString(chargeDueDate))
+        )
+      }
+    } else None
+  }
 
   def taxYearSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
 
@@ -78,7 +96,8 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
   def dueDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     penalty.dueDate.map { dueDate =>
       summaryListRow(
-        label = messages("lsp.updateDue.key"),
+        label = if(penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {messages("lsp.returnDue.key")}
+               else {messages("lsp.updateDue.key")},
         value = Html(dateToString(dueDate))
       )
     }

@@ -96,7 +96,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
 
     val cardTitle =
       if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
-        messages("lsp.cardTitle.additionalFinancialPoint",currencyFormat,reason)
+        messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
       } else {
         messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
       }
@@ -105,6 +105,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       cardTitle,
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
+        summaryRow.payPenaltyByRow(penalty, threshold),
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
