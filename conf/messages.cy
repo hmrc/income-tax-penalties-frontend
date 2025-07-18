@@ -89,6 +89,7 @@ lsp.penaltyType.key = Penalty type (Welsh)
 lsp.updatePeriod.key = Cyfnod diweddaru
 lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
+lsp.returnDue.key = Ffurflen Dreth i’w chyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
 lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben

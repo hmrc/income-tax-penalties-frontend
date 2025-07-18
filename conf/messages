@@ -176,6 +176,7 @@ lsp.updateYear.key = Tax year
 lsp.updatePeriod.value = {0} to {1}
 lsp.updateYear.value = {0} to {1}
 lsp.updateDue.key = Update due
+lsp.returnDue.key = Return due
 lsp.updateSubmitted.key = Update submitted
 lsp.updateSubmitted.notReceived = Not yet received
 lsp.expiry.key = Point due to expire
