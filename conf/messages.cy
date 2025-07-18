@@ -91,6 +91,7 @@ lsp.updatePeriod.value = {0} to {1} (Welsh)
 lsp.updateDue.key = Diweddariad i’w gyflwyno
 lsp.returnDue.key = Ffurflen Dreth i’w chyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
+lsp.returnSubmitted.key = Ffurflen Dreth wedi’i chyflwyno
 lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
