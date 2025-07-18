@@ -96,6 +96,7 @@ lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.expiryReason.key = Removed reason (Welsh)
 lsp.noPenalties = You don’t have any active late submission penalties. (Welsh)
 lsp.pointExpiredOn.key = Point expired on (Welsh)
+lsp.missingOrLateIncomeSources.key = Ffynonellau incwm sy’n hwyr neu ar goll
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================

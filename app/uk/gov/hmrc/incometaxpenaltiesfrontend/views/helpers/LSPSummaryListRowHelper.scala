@@ -28,14 +28,15 @@ import java.time.MonthDay
 class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
   def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = {
-    if (penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31))) {
+    lazy val incomeSourcesList = penalty.lateSubmissions.fold[Seq[String]](Seq.empty)(_.flatMap(ls => ls.incomeSource))
+    lazy val incomeSourcesListBullets = incomeSourcesList.map(incomeSource => s"<li>$incomeSource</li>").mkString("")
+    if (penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31)) && incomeSourcesList.nonEmpty) {
       Some(summaryListRow(
         label = messages("lsp.missingOrLateIncomeSources.key"),
         value = Html(
-          """<ul class="govuk-list govuk-list--bullet">
-            |  <li>Missing Income Sources</li>
-            |  <li>Late Income Sources</li>
-            |</ul>""".stripMargin
+          s"""<ul class="govuk-list govuk-list--bullet">
+             |  $incomeSourcesListBullets
+             |</ul>""".stripMargin
         )
       ))
     } else None
