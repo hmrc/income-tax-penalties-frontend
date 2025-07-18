@@ -101,13 +101,6 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
       }
 
-    val submittedLabelKey =
-      if (penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {
-        "lsp.updateSubmitted.key"
-      } else {
-        "lsp.returnSubmitted.key"
-      }
-
     buildLSPSummaryCard(
       cardTitle,
       rows = Seq(
