@@ -95,7 +95,8 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
   def dueDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     penalty.dueDate.map { dueDate =>
       summaryListRow(
-        label = messages("lsp.updateDue.key"),
+        label = if(penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {messages("lsp.returnDue.key")}
+               else {messages("lsp.updateDue.key")},
         value = Html(dateToString(dueDate))
       )
     }
