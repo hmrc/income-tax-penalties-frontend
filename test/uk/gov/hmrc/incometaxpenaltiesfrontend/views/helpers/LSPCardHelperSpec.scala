@@ -57,7 +57,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
-                mockReceivedDateSummaryRow(penalty1, "lsp.updateSubmitted.key")(testReceivedDateRow)
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockPointExpiryDate(penalty1)(testPointExpiryRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
@@ -96,7 +96,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
-                mockReceivedDateSummaryRow(penalty1, "lsp.updateSubmitted.key")(testReceivedDateRow)
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
 
@@ -132,7 +132,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
-                mockReceivedDateSummaryRow(penalty1, "lsp.updateSubmitted.key")(testReceivedDateRow)
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
                 lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPoint), 1, 1) shouldBe
@@ -233,7 +233,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
               mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
               mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
-//              mockReceivedDateSummaryRow(penalty1, "receivedDate")(testReceivedDateRow)
+              mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
               mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
 
               lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPenaltyCharge), 1, 1) shouldBe
@@ -242,7 +242,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     testTaxPeriodRow,
                     testTaxYearRow,
                     testDueDateRow,
-//                    testReceivedDateRow,
+                    testReceivedDateRow,
                     testAppealStatusRow
                   ),
                   cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": Late update", "200"),
@@ -270,7 +270,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
                 mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
-                mockReceivedDateSummaryRow(penalty, "receivedDate")(testReceivedDateRow)
+                mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
 
               }
