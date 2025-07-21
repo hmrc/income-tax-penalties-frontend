@@ -95,7 +95,7 @@ class AuthoriseAndRetrieveMDTIndividualSpec extends AnyWordSpec with should.Matc
         mockAuthenticatedMTDIndorOrg(AffinityGroup.Agent)
         val result = testAction.invokeBlock(FakeRequest(),block)
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some("/view-penalty/self-assessment/agent")
+        redirectLocation(result) shouldBe Some("/agent")
       }
     }
 

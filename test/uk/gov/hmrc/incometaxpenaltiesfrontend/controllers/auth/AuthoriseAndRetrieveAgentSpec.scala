@@ -84,7 +84,7 @@ class AuthoriseAndRetrieveAgentSpec extends AnyWordSpec with should.Matchers wit
         mockAuthenticatedAgent(af = AffinityGroup.Individual)
         val result = testAction.invokeBlock(FakeRequest(), block)
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some("/view-penalty/self-assessment")
+        redirectLocation(result) shouldBe Some("/")
       }
     }
 
@@ -93,7 +93,7 @@ class AuthoriseAndRetrieveAgentSpec extends AnyWordSpec with should.Matchers wit
         mockAuthenticatedAgent(af = AffinityGroup.Organisation)
         val result = testAction.invokeBlock(FakeRequest(), block)
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some("/view-penalty/self-assessment")
+        redirectLocation(result) shouldBe Some("/")
       }
     }
 
