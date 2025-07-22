@@ -60,8 +60,9 @@ case class AuthorisedUserRequest[A](affinityGroup: AffinityGroup,
                                    (implicit request: Request[A]) extends WrappedRequest[A](request)
 
 case class AuthenticatedUserWithPenaltyData[A](mtdItId: String,
+                                               nino: String,
                                                penaltyDetails: PenaltyDetails,
                                                arn: Option[String] = None,
-                                               navBar: Option[Html])(implicit request: Request[A]) extends WrappedRequest[A](request) with RequestWithNavBar {
+                                               navBar: Option[Html])(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
   val isAgent: Boolean = arn.isDefined
 }

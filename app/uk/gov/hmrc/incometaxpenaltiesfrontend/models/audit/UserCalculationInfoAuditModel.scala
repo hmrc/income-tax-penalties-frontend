@@ -18,12 +18,25 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.CurrentUserRequest
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyType
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyType.PenaltyType
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
 
 case class UserCalculationInfoAuditModel(penaltyNumber: String,
                                          penaltyType: PenaltyType,
                                          penaltyTotalCost: BigDecimal,
                                          penaltyTotalPaid: BigDecimal)(implicit user: CurrentUserRequest[_]) extends AuditModel {
+
+  def this(lppDetails: LPPDetails)(implicit user: CurrentUserRequest[_]) = this(
+    penaltyNumber = lppDetails.penaltyChargeReference.getOrElse("-"),
+    penaltyType = if(lppDetails.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {
+      PenaltyType.LPP2
+    } else {
+      PenaltyType.LPP1
+    },
+    penaltyTotalCost = lppDetails.amountDue,
+    penaltyTotalPaid = lppDetails.penaltyAmountPaid.getOrElse(0)
+  )
 
   override val auditType: String = "UserCalculationInfo"
   override val detail: JsValue = user.auditJson ++ Json.obj(
