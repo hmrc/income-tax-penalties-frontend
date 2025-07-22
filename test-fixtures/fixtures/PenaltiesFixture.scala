@@ -65,7 +65,7 @@ trait PenaltiesFixture {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
     metadata = LPPDetailsMetadata(
-      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
+      principalChargeMainTr = "4700",
       timeToPay = None
     )
   )
@@ -127,7 +127,7 @@ trait PenaltiesFixture {
     latePaymentPenalty = Some(
       LatePaymentPenalty(
         Some(Seq(
-          sampleUnpaidLPP1.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = MainTransactionEnum.ITSAReturnFirstLPP, timeToPay = None))
+          sampleUnpaidLPP1.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = "4703", timeToPay = None))
         ))
       )
     ),
@@ -208,7 +208,7 @@ trait PenaltiesFixture {
     principalChargeLatestClearing = Some(LocalDate.parse("2069-10-30")),
     vatOutstandingAmount = Some(BigDecimal(123.45)),
     metadata = LPPDetailsMetadata(
-      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
+      principalChargeMainTr = "4700",
       timeToPay = None
     )
   )
@@ -726,7 +726,7 @@ trait PenaltiesFixture {
           principalChargeLatestClearing = None,
           vatOutstandingAmount = None,
           metadata = LPPDetailsMetadata(
-            principalChargeMainTr = MainTransactionEnum.ManualCharge,
+            principalChargeMainTr = "4787",
             timeToPay = None
           )
         ))

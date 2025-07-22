@@ -117,11 +117,11 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils{
 
   lazy val lppMetadataReads: Reads[LPPDetailsMetadata] = (json: JsValue) =>
     for {
-      principalChargeMainTr <- (json \ "mainTransaction").validateOpt[MainTransactionEnum.Value]
+      principalChargeMainTr <- (json \ "mainTransaction").validateOpt[String]
       timeToPay <-  (json \ "timeToPay").validateOpt[Seq[TimeToPay]](Reads.seq[TimeToPay] (timeToPayReads))
     } yield {
       LPPDetailsMetadata(
-        principalChargeMainTr = principalChargeMainTr.getOrElse(MainTransactionEnum.ITSAReturnCharge),
+        principalChargeMainTr = principalChargeMainTr.getOrElse("4700"),
         timeToPay = timeToPay
       )
     }
