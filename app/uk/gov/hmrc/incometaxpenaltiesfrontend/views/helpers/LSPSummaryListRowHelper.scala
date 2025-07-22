@@ -110,13 +110,15 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       )
     })
 
-  def receivedDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow =
+  def receivedDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow = {
+    val key = if (penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {"lsp.returnSubmitted.key"} else {"lsp.updateSubmitted.key"}
     summaryListRow(
-      label = messages("lsp.updateSubmitted.key"),
+      label = messages(key),
       value = Html(
         penalty.receiptDate.fold(messages("lsp.updateSubmitted.notReceived"))(dateToString(_).replace(" ", "\u00A0"))
       )
     )
+  }
 
   def pointExpiryDate(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
