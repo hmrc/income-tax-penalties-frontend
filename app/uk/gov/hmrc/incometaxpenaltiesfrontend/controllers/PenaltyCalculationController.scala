@@ -21,7 +21,9 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthenticatedUserWithPenaltyData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserCalculationInfoAuditModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
@@ -33,7 +35,8 @@ import javax.inject.{Inject, Singleton}
 class PenaltyCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
                                              lpp1CalculationView: Lpp1Calculation,
                                              lpp2CalculationView: Lpp2Calculation,
-                                             authActions: AuthActions)
+                                             authActions: AuthActions,
+                                             auditService: AuditService)
                                             (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
 
   def penaltyCalculationPage(penaltyId: String,
@@ -49,13 +52,15 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
           }
 
         penaltyDetailsForId match {
-          case Some(lppDetails) =>
+          case Some(lppDetails) => {
+            val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
+            auditService.audit(auditEvent)(implicitly)
             if (isLPP2) {
               Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent))
             } else {
               Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent))
             }
-
+          }
           case None =>
             Redirect(routes.IndexController.homePage(isAgent))
         }

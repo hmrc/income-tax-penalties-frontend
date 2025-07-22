@@ -20,7 +20,6 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.{H1, Link, P}
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
-
 @import java.time.LocalDate
 
 @this(
@@ -81,7 +80,7 @@
 
     <div class="govuk-!-margin-bottom-8">
         @link(
-            link = "#",
+            link = routes.IndexController.homePage(isAgent = isAgent).url,
             messageKey = messages("compliance.timeline.individual.return.to.sa.penalties") + " " + messages("common.opensInNewTab"),
             attrTarget = true,
             id = Some("returnToSA")

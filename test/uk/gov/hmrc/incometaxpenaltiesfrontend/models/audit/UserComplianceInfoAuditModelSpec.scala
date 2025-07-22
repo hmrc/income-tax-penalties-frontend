@@ -35,9 +35,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
       implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledAgent(sessionData, Some(arn))(FakeRequest())
 
       val model = UserComplianceInfoAuditModel(
-        mandationStatus = ITSAStatus.NoStatus,
-        complianceWindow = "2 days",
-        isPenaltyLate = true,
+        isMTDMandated = false,
         complianceData = obligationDetail
       )
 
@@ -48,9 +46,8 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
           "agentReferenceNumber" -> arn,
           "identifierType" -> "MTDITID",
           "taxIdentifier" -> testMtdItId,
-          "mandationStatus" -> "No Status",
-          "complianceWindow" -> "2 days",
-          "isPenaltyLate" -> true,
+          "isMTDMandated" -> false,
+          "complianceWindow" -> "2 years",
           "complianceData" -> Json.arr(
             Json.obj(
               "status" -> "Open",
@@ -79,9 +76,7 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
       implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledIndividual(mtditid, "AA123456A", None)(FakeRequest())
 
       val model = UserComplianceInfoAuditModel(
-        mandationStatus = ITSAStatus.NoStatus,
-        complianceWindow = "2 days",
-        isPenaltyLate = true,
+        isMTDMandated = false,
         complianceData = obligationDetail
       )
 
@@ -91,9 +86,8 @@ class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with Co
         model.detail shouldBe Json.obj(
           "identifierType" -> "MTDITID",
           "taxIdentifier" -> mtditid,
-          "mandationStatus" -> "No Status",
-          "complianceWindow" -> "2 days",
-          "isPenaltyLate" -> true,
+          "isMTDMandated" -> false,
+          "complianceWindow" -> "2 years",
           "complianceData" -> Json.arr(
             Json.obj(
               "status" -> "Open",
