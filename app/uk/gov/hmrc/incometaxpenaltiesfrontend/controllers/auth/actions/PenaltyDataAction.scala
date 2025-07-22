@@ -44,7 +44,7 @@ class PenaltyDataAction @Inject()(val penaltiesService: PenaltiesService,
         errorHandler.showInternalServerError().map(errorView => Left(errorView))
       },
       penaltyDetails => Future.successful(Right(
-        AuthenticatedUserWithPenaltyData(request.mtdItId, penaltyDetails, request.arn, request.navBar)
+        AuthenticatedUserWithPenaltyData(request.mtdItId, request.nino, penaltyDetails, request.arn, request.navBar)
       ))
     ))
   }

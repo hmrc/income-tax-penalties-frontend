@@ -21,16 +21,13 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.CurrentUse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.ITSAStatus.ITSAStatus
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ObligationDetail
 
-case class UserComplianceInfoAuditModel(mandationStatus: ITSAStatus,
-                                        complianceWindow: String,
-                                        isPenaltyLate: Boolean,
+case class UserComplianceInfoAuditModel(isMTDMandated: Boolean,
                                         complianceData: Seq[ObligationDetail])(implicit user: CurrentUserRequest[_]) extends AuditModel {
 
   override val auditType: String = "UserComplianceInfo"
   override val detail: JsValue = user.auditJson ++ Json.obj(
-    "mandationStatus" -> mandationStatus,
-    "complianceWindow" -> complianceWindow,
-    "isPenaltyLate" -> isPenaltyLate,
+    "isMTDMandated" -> isMTDMandated,
+    "complianceWindow" -> "2 years",
     "complianceData" -> Json.toJson(complianceData)(Writes.seq(ObligationDetail.auditWrites))
   )
 }
