@@ -61,7 +61,7 @@ trait LPPDetailsTestData {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
     metadata = LPPDetailsMetadata(
-      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
+      principalChargeMainTr = "4700",
       timeToPay = None
     )
   )
@@ -100,7 +100,7 @@ trait LPPDetailsTestData {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
       metadata = LPPDetailsMetadata(
-      principalChargeMainTr = MainTransactionEnum.ITSAReturnCharge,
+      principalChargeMainTr = "4700",
       principalChargeSubTr = None,
       principalChargeDocNumber = None,
       timeToPay = None
@@ -185,7 +185,7 @@ trait LPPDetailsTestData {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
       metadata = LPPDetailsMetadata(
-      principalChargeMainTr = MainTransactionEnum.ManualCharge,
+      principalChargeMainTr = "4787",
       None,
       None,
     )

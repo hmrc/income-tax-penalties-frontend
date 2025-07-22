@@ -189,7 +189,7 @@ object LPPDetails extends JsonUtils {
 }
 
 case class LPPDetailsMetadata(
-                               principalChargeMainTr: MainTransactionEnum.Value,
+                               principalChargeMainTr: String,
                                timeToPay: Option[Seq[TimeToPay]],
                                principalChargeDocNumber: Option[String] = None,
                                principalChargeSubTr: Option[String] = None
