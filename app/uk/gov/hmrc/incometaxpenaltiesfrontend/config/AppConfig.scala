@@ -40,7 +40,8 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
 
   def incomeTaxSessionDataBaseUrl: String = servicesConfig.baseUrl("income-tax-session-data")
 
-  lazy val ITSAPenaltiesHomeUrl = "/view-penalty/self-assessment"
+  lazy val ITSAPenaltiesHomeUrl: Boolean => String = isAgent =>
+    s"/view-penalty/self-assessment${if(isAgent) "/agent" else ""}"
 
   lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
   lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
