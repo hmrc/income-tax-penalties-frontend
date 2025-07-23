@@ -35,7 +35,7 @@
 
 @individualOrAgent = {@if(isAgent){agent} else {individual}}
 
-@main(pageTitle = messages("compliance.timeline." + individualOrAgent + ".title")) {
+@main(pageTitle = messages("compliance.timeline." + individualOrAgent + ".title"), isAgent = isAgent) {
 
     @h1("compliance.timeline." + individualOrAgent + ".title")
     @p(msg = "compliance.timeline." + individualOrAgent + ".maximum.penalty.points", classes = Some("govuk-body-l"))

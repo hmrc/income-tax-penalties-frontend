@@ -83,7 +83,7 @@
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
-    @main(pageTitle = messages("index.h1"), backLinkEnabled = false) {
+    @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent) {
 
         @h1("index.h1")
 
