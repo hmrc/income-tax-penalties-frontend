@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.{H1, Link, P}
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
 
 @import java.time.LocalDate
 
@@ -43,7 +44,7 @@
 
     <div class="govuk-!-margin-bottom-8">
         @link(
-            link = "#",
+            link = routes.IndexController.homePage(isAgent = isAgent).url,
             messageKey = messages("compliance.timeline.individual.more.information.link.text") + " " + messages("common.opensInNewTab"),
             attrTarget = true,
             id = Some("moreInformationLink")
