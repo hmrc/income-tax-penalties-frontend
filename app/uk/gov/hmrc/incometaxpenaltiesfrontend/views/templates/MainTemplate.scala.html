@@ -38,6 +38,7 @@
         disableSessionExpired: Boolean = false,
         backLinkEnabled: Boolean = true,
         signOutUrl: Option[String] = None,
+        isAgent: Boolean
 )(content: Html)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
 
@@ -98,7 +99,7 @@
 @hmrcStandardPage(
     HmrcStandardPageParams(
         serviceURLs = ServiceURLs(
-            serviceUrl = Some(appConfig.ITSAPenaltiesHomeUrl),
+            serviceUrl = Some(appConfig.ITSAPenaltiesHomeUrl(isAgent)),
             signOutUrl = Some(uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.ServiceController.signOut().url)
         ),
         serviceName = Some(messages("service.name")),
