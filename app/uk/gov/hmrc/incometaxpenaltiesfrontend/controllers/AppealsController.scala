@@ -42,16 +42,4 @@ class AppealsController @Inject()(val authActions: AuthActions,
       Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal?penaltyId=$penaltyId&isAgent=$isAgent&isLPP=$isLPP&isAdditional=$isLPP2&is2ndStageAppeal=$is2ndStageAppeal")
     }
 
-
-  def redirectToFindOutHowToAppealLPP(principalChargeReference: String,
-                                      isAgent: Boolean,
-                                      itsaAmountInPence: Int,
-                                      itsaPeriodStartDate: String,
-                                      itsaPeriodEndDate: String): Action[AnyContent] =
-    authActions.asMTDUser(isAgent) { _ =>
-      logger.debug(s"[IndexController][redirectToFindOutHowToAppealLPP] - Redirect to appeals frontend with principleChargeReference: $principalChargeReference " +
-        s"and has itsaPeriodStartDate: $itsaPeriodStartDate and has itsaPeriodEndDate: $itsaPeriodEndDate and has itsaAmountInPence: $itsaAmountInPence")
-      Redirect(s"${appConfig.incomeTaxPenaltiesAppealsBaseUrl}/initialise-appeal-find-out-how-to-appeal?principalChargeReference=$principalChargeReference&isAgent=$isAgent&itsaAmountInPence=$itsaAmountInPence&itsaPeriodStartDate=$itsaPeriodStartDate&itsaPeriodEndDate=$itsaPeriodEndDate")
-    }
-
 }
