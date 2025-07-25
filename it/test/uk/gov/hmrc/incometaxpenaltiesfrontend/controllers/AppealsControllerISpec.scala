@@ -111,29 +111,4 @@ class AppealsControllerISpec extends ControllerISpecHelper {
       result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/initialise-appeal?penaltyId=1234&isAgent=true&isLPP=false&isAdditional=false&is2ndStageAppeal=false")
     }
   }
-
-  "Get /find-out-how-to-appeal" should {
-
-    "redirect the individual to the find-out-how-to-appeal page" in {
-      stubAuthRequests(false)
-      val result = get("/find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"))
-
-      result.status shouldBe SEE_OTHER
-
-      result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&isAgent=false&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
-    }
-
-    "Get /agent-find-out-how-to-appeal" should {
-
-      "redirect the agent to the find-out-how-to-appeal page" in {
-        stubAuthRequests(true)
-        val result = get("/agent-find-out-how-to-appeal", queryParams = Map("principalChargeReference" -> "12345678901234", "itsaAmountInPence" -> "2000", "itsaPeriodStartDate" -> "11/11/22", "itsaPeriodEndDate" -> "22/11/22"), isAgent = true)
-
-        result.status shouldBe SEE_OTHER
-
-        result.headers(HeaderNames.LOCATION) shouldBe List("http://localhost:9188/appeal-penalty/self-assessment/initialise-appeal-find-out-how-to-appeal?principalChargeReference=12345678901234&isAgent=true&itsaAmountInPence=2000&itsaPeriodStartDate=11/11/22&itsaPeriodEndDate=22/11/22")
-      }
-
-    }
-  }
 }

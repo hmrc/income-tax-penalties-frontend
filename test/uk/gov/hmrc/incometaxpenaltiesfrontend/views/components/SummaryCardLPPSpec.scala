@@ -153,7 +153,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     document.select("h2").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.estimate
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                    document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksFindOutHowToAppeal
+                    document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
                   }
                 }
               }
@@ -305,7 +305,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           document.select("h2").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                           document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                           document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                          document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksAppealThisPenalty
+                          document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
                         }
                       }
                     }

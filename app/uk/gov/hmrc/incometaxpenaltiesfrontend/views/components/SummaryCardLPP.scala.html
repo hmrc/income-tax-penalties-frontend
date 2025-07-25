@@ -67,7 +67,7 @@
                                 case None =>
                                     <li class="govuk-summary-card__action no-border not-bold">
                                         <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
-                                            {messages("cardLinks.appealNoPointNumber")}
+                                            {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
                                         </a>
                                     </li>
                                 case _ =>
@@ -76,7 +76,7 @@
                     } else {
                         if(summaryCard.appealStatus.isEmpty) {
                             <li class="govuk-summary-card__action no-border not-bold">
-                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToFindOutHowToAppealLPP(summaryCard.principalChargeReference, isAgent, summaryCard.incomeTaxOutstandingAmountInPence, summaryCard.taxPeriodStartDate, summaryCard.taxPeriodEndDate).url}>
+                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
                                     {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
                                 </a>
                             </li>
