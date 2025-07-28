@@ -32,5 +32,5 @@ class LanguageSwitchController @Inject()(
     "cymraeg" -> Lang("cy")
   )
 
-  override def fallbackURL: String = appConfig.ITSAPenaltiesHomeUrl
+  override def fallbackURL: String = appConfig.ITSAPenaltiesHomeUrl(false)
 }

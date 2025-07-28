@@ -37,7 +37,7 @@
 
 @individualOrAgent = {@if(isAgent){agent}else{individual}}
 
-@main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true) {
+@main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
     <span class="govuk-caption-l" id="captionSpan">
         @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
