@@ -50,7 +50,7 @@
 
 @lspMainTab = {
 
-    @h3(msg = "index.lsp.tab.h3", elmId = "lspHeading")
+    @h2(msg = "index.lsp.tab.h2", elmId = "lspHeading", classes=Some("govuk-heading-m"))
 
     @if(lspCardData.isEmpty && lspOverviewData.isEmpty) {
         @p("lsp.noPenalties")
@@ -60,7 +60,7 @@
 }
 
 @lppMainTab(individualOrAgent: String) = {
-    @h3(msg = "index.lpp.tab.h3", elmId = "lppHeading")
+    @h2(msg = "index.lpp.tab.h2", elmId = "lppHeading", classes=Some("govuk-heading-m"))
 
     @if(lppCardData.isEmpty) {
         @p("lpp.noPenalties")
@@ -95,14 +95,14 @@
             items = Seq(
                 TabItem(
                     id = Some("lspTab"),
-                    label = messages("index.lsp.tab.h3"),
+                    label = messages("index.lsp.tab.h2"),
                     panel = TabPanel(
                         content = HtmlContent(lspMainTab)
                     )
                 ),
                 TabItem(
                     id = Some("lppTab"),
-                    label = messages("index.lpp.tab.h3"),
+                    label = messages("index.lpp.tab.h2"),
                     panel = TabPanel(
                         content = HtmlContent(lppMainTab(individualOrAgent))
                     )
