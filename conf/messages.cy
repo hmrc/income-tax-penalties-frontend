@@ -55,7 +55,7 @@ individual.index.lsp.tab.overview.actionsToRemoveLink = Actions to take to get y
 agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed (Welsh)
 
 # --- LPP Tab Content
-index.lpp.tab.h2 = Cosbau am dalu’n hwyr
+index.lpp.tab.h3 = Late payment penalties (Welsh)
 index.lpp.tab.guidanceOnLatePayments = Read the guidance about how late payment penalties are calculated (Welsh)
 individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the lower your penalties and interest will be. (Welsh)
 agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax, the lower their penalties and interest will be. (Welsh)
@@ -122,7 +122,7 @@ lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
-lpp.noPenalties = You have no late payment penalties that are currently due. (Welsh)
+lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
 
 # Appeal Status
 # =============
