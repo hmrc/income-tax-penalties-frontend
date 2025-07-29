@@ -60,7 +60,6 @@ index.lpp.tab.guidanceOnLatePayments = Darllenwch yr arweiniad am sut y cyfrifir
 individual.index.lpp.tab.payEarlyInfo = Gorau i gyd po gyntaf y byddwch yn talu eich Treth Incwm, oherwydd y bydd hyn yn lleihau swm eich cosbau a llog.
 agent.index.lpp.tab.payEarlyInfo = Gorau i gyd po gyntaf y bydd eich cleient yn talu ei Dreth Incwm, oherwydd y bydd hyn yn lleihau swm ei gosbau a llog.
 
-
 # Status tags
 # ===========
 status.upheld = Penderfyniad wedi’i gadarnhau
@@ -122,7 +121,7 @@ lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
-lpp.noPenalties = You have no late payment penalties that are currently due. (Welsh)
+lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
 
 # Appeal Status
 # =============
