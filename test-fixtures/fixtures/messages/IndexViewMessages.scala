@@ -57,7 +57,7 @@ object IndexViewMessages {
 
   object Welsh extends Messages with Cy {
     override val noLSP = "You don’t have any active late submission penalties. (Welsh)"
-    override val noLPP = "You have no late payment penalties that are currently due. (Welsh)"
+    override val noLPP = "Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd."
     override val overviewH2 = "Trosolwg"
     override val overviewP1: Boolean => String = {
       case true => "Mae gan gyfrif eich cleient y canlynol:"
