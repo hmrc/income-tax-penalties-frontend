@@ -185,7 +185,6 @@ compliance.timeline.tax.return.heading = Ffurflen Dreth: {0} i {1}
 compliance.timeline.submission.due.now = Y dyddiad cau yw {0}. Anfonwch y cyflwyniad sydd ar goll nawr.
 compliance.timeline.send.by = Anfonwch hwn erbyn {0}
 
-
 compliance.timeline.agent.title = Y camau y mae’n rhaid i’ch cleient eu cymryd i gael ei bwyntiau wedi’u dileu
 compliance.timeline.agent.maximum.penalty.points = Mae gan eich cleient uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â phwyntiau eich cleient i ben.
 compliance.timeline.agent.send.submission.listed = Fel bod modd i CThEF ddileu pwyntiau’ch cleient, mae angen iddo anfon unrhyw gyflwyniadau sydd wedi’u rhestru ar y llinell amser hon cyn y dyddiad cau.
