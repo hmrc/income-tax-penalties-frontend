@@ -42,16 +42,16 @@ object ComplianceTimelineMessages {
 
   object Welsh extends Messages with Cy {
     override def taxReturn(fromDate: LocalDate, toDate: LocalDate)(implicit messages: i18n.Messages): String =
-      s"Tax return: ${dateToString(fromDate)} to ${dateToString(toDate)} (Welsh)"
+      s"Ffurflen Dreth: ${dateToString(fromDate)} to ${dateToString(toDate)} (Welsh)"
 
     override def updatePeriod(fromDate: LocalDate, toDate: LocalDate)(implicit messages: i18n.Messages): String =
       s"Cyfnod diweddaru: ${dateToString(fromDate)} to ${dateToString(toDate)} (Welsh)"
 
     override def dueDate(dueDate: LocalDate, isLate: Boolean)(implicit messages: i18n.Messages): String =
       if(isLate) {
-        s"Due on ${dateToString(dueDate)}. Send this missing submission now. (Welsh)"
+        s"Y dyddiad cau yw ${dateToString(dueDate)}. Anfonwch y cyflwyniad sydd ar goll nawr."
       } else {
-        s"Send by ${dateToString(dueDate)} (Welsh)"
+        s"Anfonwch hwn erbyn ${dateToString(dueDate)}"
       }
   }
 }
