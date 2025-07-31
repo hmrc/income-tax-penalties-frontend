@@ -56,7 +56,7 @@ object IndexViewMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val noLSP = "You don’t have any active late submission penalties. (Welsh)"
+    override val noLSP = "Cosbau am gyflwyno’n hwyr Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd"
     override val noLPP = "You have no late payment penalties that are currently due. (Welsh)"
     override val overviewH2 = "Trosolwg"
     override val overviewP1: Boolean => String = {
@@ -82,7 +82,7 @@ object IndexViewMessages {
       case _ => "cosbau am dalu’n hwyr"
     }
     override val overviewLSPPointsMax: String = "uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr"
-    override val overviewOverdueTaxCharge: String = "overdue Income Tax charges (Welsh)"
+    override val overviewOverdueTaxCharge: String = "taliadau Treth Incwm gorddyledus"
     override val overviewInterest: String = "llog sydd heb ei dalu"
     override val overviewCheckAndPay: Boolean => String = {
       case true => "Gwirio’r symiau"
