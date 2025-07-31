@@ -64,12 +64,13 @@ object LSPCardMessages {
     //Summary Row Messages
     override val addedOnKey = "Ychwanegwyd ar"
     override val updatePeriod = "Cyfnod diweddaru"
-    override def quarterValue(fromDate: String, toDate: String) = s"$fromDate to $toDate (Welsh)"
+    override def quarterValue(fromDate: String, toDate: String) = s"$fromDate i $toDate"
     override val updateDueKey = "Diweddariad i’w gyflwyno"
     override val updateSubmittedKey = "Diweddariad wedi’i gyflwyno"
     override val returnNotReceived = "Heb ddod i law eto"
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
     override val expiryReasonKey = "Removed reason (Welsh)"
+    override val payPenaltyBy = "Pay Penalty By (Welsh)"
     override val missingOrLateIncomeSources = "Ffynonellau incwm sy’n hwyr neu ar goll"
 
     //Card Footer Links

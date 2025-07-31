@@ -128,7 +128,7 @@ calculation.individual.calc2.penalty.overdue = This penalty is now overdue and i
 
 
 
-compliance.timeline.individual.title = Actions to take to get your points removed
+compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
 compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
 compliance.timeline.individual.more.information.link.text = More information about how HMRC removes penalty points
@@ -141,7 +141,7 @@ compliance.timeline.submission.due.now = Due on {0}. Send this missing submissio
 compliance.timeline.send.by = Send by {0}
 
 
-compliance.timeline.agent.title = Actions your client must take to get their points removed
+compliance.timeline.agent.title = Actions your client needs to take to get their points removed
 compliance.timeline.agent.maximum.penalty.points = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire.
 compliance.timeline.agent.send.submission.listed = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline.
 compliance.timeline.agent.if.you.missed.deadline = If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points.
@@ -155,6 +155,7 @@ status.due = Due
 status.paid = Paid
 status.estimate = Estimate
 status.amountDue = £{0} Due
+status.late = Late
 
 # Card Title Content
 # ==================
@@ -164,6 +165,8 @@ lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
 lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
 lsp.cardTitle.point = Penalty point {1}{0}
 lsp.cardTitle.expiredPoint = Penalty point
+lsp.cardTitle.lateUpdate = Late update
+lsp.cardTitle.lateTaxReturn = Late tax return
 lpp.cardTitle = £{0} penalty
 
 # Late Submission Penalty - Summary Row Key/Values
@@ -183,8 +186,15 @@ lsp.updateSubmitted.notReceived = Not yet received
 lsp.expiry.key = Point due to expire
 lsp.expiryReason.key = Removed reason
 lsp.noPenalties = You don’t have any active late submission penalties.
+lsp.noPenalties.agent = Your client has no active late submission penalties.
 lsp.pointExpiredOn.key = Point expired on
 lsp.pay.penalty.by = Pay Penalty By
+lsp.compliance.remove.by = Your points will be removed in {0} {1} because:
+lsp.compliance.history = your submission history is up to date
+lsp.compliance.submitted =  you have submitted on time for the last {0} months
+lsp.compliance.remove.by.agent = Your client’s points will be removed in {0} {1} because:
+lsp.compliance.history.agent = their submission history is up to date
+lsp.compliance.submitted.agent =  they have submitted on time for the last {0} months
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================

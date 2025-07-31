@@ -93,65 +93,65 @@ object LSPOverviewMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val pointsTotal: Int => String = n => s"Penalty points total: (Welsh) $n"
+    override val pointsTotal: Int => String = n => s"Cyfanswm pwyntiau cosb: $n"
 
     //Messages when points are accruing < threshold
     override val pointsAccruingP1: Boolean => Int => String = {
       case true => { //Agent
-        case 1 => "Your client has 1 penalty point for sending a late submission. They should send this missing submission as soon as possible if they haven’t already. (Welsh)"
-        case n => s"Your client has $n penalty points for sending late submissions. They should send any missing submissions as soon as possible if they haven’t already. (Welsh)"
+        case 1 => "Mae gan eich cleient 1 pwynt cosb am gyflwyno’n hwyr. Dylai’ch cleient anfon y cyflwyniad sydd ar goll cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny."
+        case n => s"Mae gan eich cleient $n o bwyntiau cosb am gyflwyno’n hwyr. Dylai’ch cleient anfon unrhyw gyflwyniadau sy’n hwyr cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny."
       }
       case false => { //Individual
-        case 1 => "You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven’t already. (Welsh)"
-        case n => s"You have $n penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven’t already. (Welsh)"
+        case 1 => "Mae gennych 1 pwynt cosb am gyflwyno’n hwyr. Dylech anfon y cyflwyniad sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny."
+        case n => s"Mae gennych $n o bwyntiau cosb am gyflwyno’n hwyr. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny."
       }
     }
     override val pointsAccruingP2: Boolean => String = {
-      case true => "They’ll get another point if they send another submission after a deadline has passed. (Welsh)"
-      case false => "You’ll get another point if you send another submission after a deadline has passed. (Welsh)"
+      case true => "Bydd yn cael pwynt arall os bydd yn anfon cyflwyniad arall ar ôl i’r dyddiad cau fynd heibio."
+      case false => "Byddwch yn cael pwynt arall os byddwch yn anfon cyflwyniad arall ar ôl i’r dyddiad cau fynd heibio."
     }
     override val pointsAccruingP3: Boolean => Int => String = {
       case true => //Agent
-        n => s"Points usually expire after 24 months, but it can be longer if they keep sending late submissions. If they reach $n points, they’ll have to pay a £200 penalty. (Welsh)"
+        n => s"Mae pwyntiau fel arfer yn cael eu dileu ar ôl 24 mis, ond gall fod yn hirach os yw’n parhau i gyflwyno’n hwyr. Os bydd yn cyrraedd $n o bwyntiau, bydd angen iddo dalu cosb o £200."
       case false => //Individual
-        n => s"Points usually expire after 24 months, but it can be longer if you keep sending late submissions. If you reach $n points, you’ll have to pay a £200 penalty. (Welsh)"
+        n => s"Mae pwyntiau fel arfer yn cael eu dileu ar ôl 24 mis, ond gall fod yn hirach os ydych yn parhau i anfon cyflwyniadau’n hwyr. Os ydych yn cyrraedd $n o bwyntiau, bydd angen i chi dalu cosb o £200."
     }
     override val pointsAccruingWarning: Boolean => String = {
       case true => //Agent
-        "! Warning Your client will get a £200 penalty if they send another late submission. (Welsh)"
+        "! Warning Bydd eich cleient yn cael cosb o £200 os bydd yn gwneud cyflwyniad arall yn hwyr."
       case false => //Individual
-        "! Warning You’ll get a £200 penalty if you send another late submission. (Welsh)"
+        "! Warning Bydd cosb o £200 yn cael ei chodi arnoch os byddwch yn anfon cyflwyniad arall yn hwyr."
     }
 
     //Messages when points == threshold (1 penalty triggered)
     override val penaltyP1: Boolean => String = {
       case true => //Agent
-        "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already. (Welsh)"
+        "Codir cosb ychwanegol o £200 ar eich cleient bob tro y bydd yn anfon cyflwyniad hwyr yn y dyfodol, hyd nes y bydd pob un o’i bwyntiau wedi’u dileu. Dylai’ch cleient anfon unrhyw gyflwyniadau sy’n hwyr cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny."
       case false => //Individual
-        "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already. (Welsh)"
+        "Codir cosb ychwanegol o £200 arnoch bob tro y byddwch yn anfon cyflwyniad hwyr yn y dyfodol, hyd nes y bydd pob un o’ch pwyntiau wedi’u dileu. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny."
     }
     override val penaltyWarning: Boolean => String = {
       case true => //Agent
-        "! Warning Your client has been given a £200 penalty for reaching the penalty threshold. (Welsh)"
+        "! Warning Codwyd cosb o £200 ar eich cleient oherwydd ei fod wedi cyrraedd y trothwy ar gyfer pwyntiau cosb."
       case false => //Individual
-        "! Warning You have been given a £200 penalty for reaching the penalty threshold. (Welsh)"
+        "! Warning Codwyd cosb o £200 arnoch oherwydd eich bod wedi cyrraedd y trothwy ar gyfer pwyntiau."
     }
 
     //Messages when points == threshold (more than one financial penalty triggered)
     override val additionalPenaltyP1: Boolean => String = {
       case true => //Agent
-        "They will get another £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already. (Welsh)"
+        "Codir cosb bellach o £200 arno bob tro y bydd yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’i bwyntiau wedi’u dileu. Dylai’ch cleient anfon unrhyw gyflwyniadau sy’n hwyr cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny."
       case false => //Individual
-        "You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already. (Welsh)"
+        "Codir cosb ychwanegol o £200 arnoch bob tro y byddwch yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’ch pwyntiau wedi’u dileu. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny."
     }
     override val additionalPenaltyWarning: Boolean => String = {
       case true => //Agent
-        "! Warning Your client has been given an additional £200 penalty. (Welsh)"
+        "! Warning Codwyd cosb ychwanegol o £200 ar eich cleient."
       case false => //Individual
-        "! Warning You have been given an additional £200 penalty. (Welsh)"
+        "! Warning Codwyd cosb ychwanegol o £200 arnoch."
     }
 
-    override val pointsGuidanceLink = "Read the guidance about late submission penalties (Welsh)"
+    override val pointsGuidanceLink = "Darllenwch yr arweiniad am gosbau am dalu’n hwyr"
     override val actionsLink: Boolean => String = {
       case true =>
         "Actions your client must take to get their points removed (Welsh)"

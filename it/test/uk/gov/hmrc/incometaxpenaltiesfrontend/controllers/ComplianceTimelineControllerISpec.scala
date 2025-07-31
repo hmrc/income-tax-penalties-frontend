@@ -61,8 +61,8 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         val document = Jsoup.parse(result.body)
 
         document.getServiceName.text() shouldBe serviceName
-        document.title() shouldBe "Actions to take to get your points removed - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "Actions to take to get your points removed"
+        document.title() shouldBe "Actions you need to take to get your points removed - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Actions you need to take to get your points removed"
         document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
@@ -84,8 +84,8 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         val document = Jsoup.parse(result.body)
 
         document.getServiceName.text() shouldBe serviceName
-        document.title() shouldBe "Actions to take to get your points removed - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "Actions to take to get your points removed"
+        document.title() shouldBe "Actions you need to take to get your points removed - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Actions you need to take to get your points removed"
         document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
@@ -129,8 +129,8 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         val document = Jsoup.parse(result.body)
 
         document.getServiceName.text() shouldBe serviceName
-        document.title() shouldBe "Actions your client must take to get their points removed - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "Actions your client must take to get their points removed"
+        document.title() shouldBe "Actions your client needs to take to get their points removed - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Actions your client needs to take to get their points removed"
         document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
@@ -153,8 +153,8 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         val document = Jsoup.parse(result.body)
 
         document.getServiceName.text() shouldBe serviceName
-        document.title() shouldBe "Actions your client must take to get their points removed - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "Actions your client must take to get their points removed"
+        document.title() shouldBe "Actions your client needs to take to get their points removed - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Actions your client needs to take to get their points removed"
         document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
