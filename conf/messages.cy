@@ -129,15 +129,15 @@ lpp.noPenalties = You have no late payment penalties that are currently due. (We
 # =============
 #TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
 appealStatus.key = Statws yr apêl
-appealStatus.A.01 = Appeal in progress (Welsh)
-appealStatus.A.02 = Under review (Welsh)
-appealStatus.A.03 = Appeal rejected (Welsh)
-appealStatus.B.01 = Appeal successful (Welsh)
-appealStatus.B.02 = Appeal successful (Welsh)
+appealStatus.A.01 = Apêl ar y gweill
+appealStatus.A.02 = Dan adolygiad
+appealStatus.A.03 = Apêl wedi’i wrthod
+appealStatus.B.01 = Apêl lwyddiannus
+appealStatus.B.02 = Apêl lwyddiannus
 appealStatus.B.03 = Appeal accepted (Welsh)
-appealStatus.C.01 = Appeal rejected (Welsh)
-appealStatus.C.02 = Decision upheld (Welsh)
-appealStatus.C.03 = Decision upheld (Welsh)
+appealStatus.C.01 = Apêl wedi’i wrthod
+appealStatus.C.02 = Penderfyniad wedi’i gadarnhau
+appealStatus.C.03 = Penderfyniad wedi’i gadarnhau
 
 # Expiry Reason
 # =============
