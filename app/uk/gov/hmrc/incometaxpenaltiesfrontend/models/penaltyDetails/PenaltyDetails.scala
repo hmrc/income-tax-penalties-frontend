@@ -22,6 +22,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpa
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LatePaymentPenalty
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LateSubmissionPenalty
 
+import java.time.LocalDate
+
 
 case class PenaltyDetails(totalisations: Option[Totalisations],
                           lateSubmissionPenalty: Option[LateSubmissionPenalty],
@@ -45,6 +47,8 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 
   val hasFinancialChargeToPay: Boolean =
     (unpaidIncomeTax + totalInterest + countLPPNotPaidOrAppealed + countLSPNotPaidOrAppealed) > 0
+
+  val lspPeriodOfComplianceDate: Option[LocalDate] = lateSubmissionPenalty.flatMap(_.summary.pocAchievementDate)
 }
 
 object PenaltyDetails {

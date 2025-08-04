@@ -198,21 +198,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
           }
         }
 
-        "calling .expiryReasonSummaryRow()" should {
-
-          "construct a SummaryListRow model for expiry reason with expected messages" in {
-
-            lspSummaryListRowHelper.expiryReasonSummaryRow(sampleLateSubmissionPoint.copy(
-              expiryReason = Some(ExpiryReasonEnum.Appeal)
-            )) shouldBe
-              Some(summaryListRow(
-                label = messagesForLanguage.expiryReasonKey,
-                value = Html(expiryMessages.appeal)
-              ))
-          }
-        }
-
-        "calling .expiryReasonSummaryRow()" when {
+        "calling .receivedDateSummaryRow()" when {
 
           "return has been received" should {
 

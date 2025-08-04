@@ -184,7 +184,6 @@ lsp.updateSubmitted.key = Update submitted
 lsp.returnSubmitted.key = Return submitted
 lsp.updateSubmitted.notReceived = Not yet received
 lsp.expiry.key = Point due to expire
-lsp.expiryReason.key = Removed reason
 lsp.noPenalties = You don’t have any active late submission penalties.
 lsp.noPenalties.agent = Your client has no active late submission penalties.
 lsp.pointExpiredOn.key = Point expired on
