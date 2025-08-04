@@ -253,4 +253,4 @@ compliance.timeline.agent.if.you.missed.deadline = Os bydd eich cleient yn methu
 individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
 agent.lpp.tab.overdueTax = Oherwydd bod eich cleient wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd ganddo bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
 individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
-agent. lpp.noPenalties = Nid oes gan eich cleient unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
+agent.lpp.noPenalties = Nid oes gan eich cleient unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
