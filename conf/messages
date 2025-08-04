@@ -207,7 +207,6 @@ lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year
 lpp.incomeTaxDue.key = Income Tax due
 lpp.incomeTaxPaymentDate.key = Income Tax paid
 lpp.paymentNotReceived = Payment not yet received
-lpp.noPenalties = You have no late payment penalties that are currently due.
 
 # Appeal Status
 # =============
@@ -262,3 +261,4 @@ individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your
 agent.lpp.tab.overdueTax = Because your client has paid their outstanding tax, their penalties are no longer estimated and can be paid for immediately.
 individual.lpp.noPenalties = You have no late payment penalties that are currently due.
 agent.lpp.noPenalties = Your client has no late payment penalties that are currently due.
+

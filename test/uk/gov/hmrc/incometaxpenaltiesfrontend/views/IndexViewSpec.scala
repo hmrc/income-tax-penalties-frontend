@@ -76,7 +76,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.lspTab -> messagesForLanguage.noLSP,
-                Selectors.lppTab -> messagesForLanguage.noLPP
+                Selectors.lppTab -> (if (isAgent)messagesForLanguage.noLPPAgent else messagesForLanguage.noLPPIndividual)
               )
             }
 
