@@ -340,25 +340,59 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
           "rendering a Single Removed Point" when {
 
-            "Adjustment is a FAP" should {
-
-              "construct a card with correct messages including the expiry date for the point" in {
-
-                val penalty1 = sampleRemovedPenaltyPoint
-
+            "the penalty has Expired" should {
+              "construct a card with correct messages including the point expired on" in {
+                val penalty1 = sampleExpiredPenaltyPoint
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
-                mockExpiryReasonSummaryRow(penalty1)(Some(testExpiryReasonRow))
-                mockPenaltyStatusSummaryRow(penalty1)(None)
-                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
+                mockPointExpiredOnRow(penalty1)(testPointExpiredOnRow)
+                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
 
                 lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
                       testTaxYearRow,
-                      testExpiryReasonRow
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testPointExpiredOnRow,
+                      testAppealStatusRow
+                    ),
+                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
+                    status             = getTagStatus(penalty1),
+                    penaltyPoint       = "",
+                    penaltyId          = penalty1.penaltyNumber,
+                    isReturnSubmitted  = true,
+                    isAddedOrRemovedPoint = true,
+                    penaltyCategory    = penalty1.penaltyCategory,
+                    isManuallyRemovedPoint = true,
+                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                  ))
+              }
+            }
+
+            "Adjustment is a FAP" should {
+
+              "construct a card with correct messages" in {
+
+                val penalty1 = sampleRemovedPenaltyPoint
+
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
+                mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
+                mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
+
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1) shouldBe
+                  Seq(LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow
                     ),
                     cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
                     status             = getTagStatus(penalty1),
@@ -374,23 +408,23 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
             "Point has been manually removed" should {
 
-              "construct a card with correct messages including the expiry date for the point" in {
+              "construct a card with correct messages" in {
 
                 val penalty1 = sampleRemovedPenaltyPoint
 
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
                 mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
                 mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
-                mockExpiryReasonSummaryRow(penalty1)(Some(testExpiryReasonRow))
-
-                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
 
                 lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
                       testTaxYearRow,
-                      testExpiryReasonRow
+                      testDueDateRow,
+                      testReceivedDateRow
                     ),
                     cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
                     status             = getTagStatus(penalty1),

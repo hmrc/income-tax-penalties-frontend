@@ -49,13 +49,6 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       value = Html(messages(dateToString(penalty.penaltyExpiryDate)))
     ))
 
-  def penaltyStatusRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
-    Some(summaryListRow(
-      label = messages("lpp.penaltyType.key"),
-      value = Html(messages(s"lpp.penaltyType.${penalty.penaltyCategory}"))
-    ))
-
-
   def taxPeriodSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
 
     (penalty.taxPeriodStartDate, penalty.taxPeriodEndDate) match {
@@ -101,14 +94,6 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
         value = Html(dateToString(dueDate))
       )
     }
-
-  def expiryReasonSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] =
-    penalty.expiryReason.map(expiryReason => {
-      summaryListRow(
-        label = messages("lsp.expiryReason.key"),
-        value = Html(messages(s"expiryReason.${expiryReason.toString}"))
-      )
-    })
 
   def receivedDateSummaryRow(penalty: LSPDetails)(implicit messages: Messages): SummaryListRow = {
     val key = if (penalty.dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31))) {"lsp.returnSubmitted.key"} else {"lsp.updateSubmitted.key"}

@@ -32,9 +32,9 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
   val testTaxPeriodRow: SummaryListRow = SummaryListRow(Key(Text("taxPeriod")), Value(Text("dateA to dateB")))
   val testTaxYearRow: SummaryListRow = SummaryListRow(Key(Text("taxYear")), Value(Text("dateA to dateB")))
   val testDueDateRow: SummaryListRow = SummaryListRow(Key(Text("dueDate")), Value(Text("date")))
-  val testExpiryReasonRow: SummaryListRow = SummaryListRow(Key(Text("expiryReason")), Value(Text("reason")))
   val testReceivedDateRow: SummaryListRow = SummaryListRow(Key(Text("receivedDate")), Value(Text("date")))
   val testPointExpiryRow: SummaryListRow = SummaryListRow(Key(Text("expiryDate")), Value(Text("date")))
+  val testPointExpiredOnRow: SummaryListRow = SummaryListRow(Key(Text("pointExpiredOn")), Value(Text("date")))
   val testAppealStatusRow: SummaryListRow = SummaryListRow(Key(Text("appealStatus")), Value(Text("status")))
   val testPayPenaltyByRow: SummaryListRow = SummaryListRow(Key(Text("payPenaltyBy")), Value(Text("1/4/2028")))
 
@@ -60,10 +60,6 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
     when(mockLSPSummaryListRowHelper.dueDateSummaryRow(eqTo(penalty))(any()))
       .thenReturn(value)
 
-  def mockExpiryReasonSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.expiryReasonSummaryRow(eqTo(penalty))(any()))
-      .thenReturn(value)
-
   def mockReceivedDateSummaryRow(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
     when(mockLSPSummaryListRowHelper.receivedDateSummaryRow(eqTo(penalty))(any()))
       .thenReturn(value)
@@ -72,14 +68,13 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
     when(mockLSPSummaryListRowHelper.pointExpiryDate(eqTo(penalty))(any()))
       .thenReturn(value)
 
+  def mockPointExpiredOnRow(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLSPSummaryListRowHelper.pointExpiredOnRow(eqTo(penalty))(any()))
+      .thenReturn(Some(value))
+
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
                                  appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.appealStatusRow(eqTo(appealStatus), eqTo(appealLevel))(any()))
-      .thenReturn(value)
-
-  def mockPenaltyStatusSummaryRow(penalty: LSPDetails)
-                                 (value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.penaltyStatusRow(eqTo(penalty))(any()))
       .thenReturn(value)
 
 }

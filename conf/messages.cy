@@ -98,7 +98,6 @@ lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
 lsp.returnSubmitted.key = Ffurflen Dreth wedi’i chyflwyno
 lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
-lsp.expiryReason.key = Removed reason (Welsh)
 lsp.noPenalties = Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd
 lsp.noPenalties.agent = Nid oes gan eich cleient unrhyw gosbau actif am gyflwyno’n hwyr ar hyn o bryd.
 lsp.pointExpiredOn.key = Point expired on (Welsh)

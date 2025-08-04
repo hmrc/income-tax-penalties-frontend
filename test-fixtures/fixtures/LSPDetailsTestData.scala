@@ -134,6 +134,12 @@ trait LSPDetailsTestData {
     expiryReason = Some(ExpiryReasonEnum.Adjustment)
   )
 
+  val sampleExpiredPenaltyPoint: LSPDetails = sampleLateSubmissionPoint.copy(
+    penaltyStatus = LSPPenaltyStatusEnum.Inactive,
+    penaltyOrder = None,
+    expiryReason = Some(ExpiryReasonEnum.NaturalExpiration)
+  )
+
   val samplePenaltyPointNotSubmitted: LSPDetails = sampleLateSubmissionPoint.copy(
     lateSubmissions = Some(
       Seq(

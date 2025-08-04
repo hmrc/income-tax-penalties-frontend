@@ -32,7 +32,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
 
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,
-                                       activePoints: Int)
+                                       activePoints: Int,
+                                       pointsRemovedAfterPeriodOfCompliance: Boolean = false)
                                       (implicit messages: Messages): Seq[LateSubmissionPenaltySummaryCard] = {
 
     val activePenalties: Seq[(LSPDetails, Int)] =
@@ -43,13 +44,13 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       val reason = s": ${penaltyReason(penaltyWithPoints.dueDate)}"
       penaltyWithPoints.lspTypeEnum match {
         case LSPTypeEnum.AddedFAP =>
-          addedPointCard(penaltyWithPoints, activePoints >= threshold,reason)
+          addedPointCard(penaltyWithPoints, activePoints >= threshold, reason)
         case LSPTypeEnum.RemovedFAP | LSPTypeEnum.RemovedPoint =>
-          removedPointCard(penaltyWithPoints)
+          removedPointCard(penaltyWithPoints, pointsRemovedAfterPeriodOfCompliance)
         case LSPTypeEnum.AppealedPoint | LSPTypeEnum.Point =>
-          pointSummaryCard(penaltyWithPoints, activePoints >= threshold,reason)
+          pointSummaryCard(penaltyWithPoints, activePoints >= threshold, reason)
         case _ =>
-          financialSummaryCard(penaltyWithPoints, threshold,reason)
+          financialSummaryCard(penaltyWithPoints, threshold, reason)
       }
     }
   }
@@ -136,17 +137,23 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     )
   }
 
-  def removedPointCard(penalty: LSPDetails)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+    val pointExpiredAndAppealRow = if(penalty.lspTypeEnum == LSPTypeEnum.RemovedPoint && !pointsRemovedAfterPeriodOfCompliance) {
+      Seq(summaryRow.pointExpiredOnRow(penalty),
+        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
+      ).flatten
+    } else {
+      Seq.empty
+    }
     buildLSPSummaryCard(
       cardTitle = messages("lsp.cardTitle.removedPoint"),
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.taxYearSummaryRow(penalty),
-        summaryRow.expiryReasonSummaryRow(penalty),
-        summaryRow.penaltyStatusRow(penalty),
-        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
-      ).flatten,
+        summaryRow.dueDateSummaryRow(penalty),
+        Some(summaryRow.receivedDateSummaryRow(penalty))
+      ).flatten ++ pointExpiredAndAppealRow,
       penalty = penalty,
       isAnAddedOrRemovedPoint = true,
       isManuallyRemovedPoint = !penalty.isFAP
