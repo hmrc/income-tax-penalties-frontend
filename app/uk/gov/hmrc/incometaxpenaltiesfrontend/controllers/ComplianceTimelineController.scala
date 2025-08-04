@@ -50,7 +50,7 @@ class ComplianceTimelineController @Inject()(override val controllerComponents: 
             timelineEvents = timelineBuilder.buildTimeline(optComplianceData)
           } yield {
             auditService.audit(UserComplianceInfoAuditModel(isMandated, optComplianceData.fold(Seq.empty[ObligationDetail])(_.obligationDetails)))
-            Ok(complianceTimelineView(currentUserRequest.isAgent, timelineEvents, toDate))
+            Ok(complianceTimelineView(currentUserRequest.isAgent, timelineEvents, toDate, isMandated))
           }
         case _ =>
           logger.warn("[ComplianceTimelineController][complianceTimelinePage] - No compliance window calculated, rendering ISE")
