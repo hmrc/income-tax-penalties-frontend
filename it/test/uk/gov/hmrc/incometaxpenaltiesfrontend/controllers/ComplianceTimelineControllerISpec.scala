@@ -66,7 +66,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
-        document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points."
+        document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send all your submissions for the next 24 months on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
@@ -89,7 +89,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
-        document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send 4 more submissions on time before HMRC can remove your points."
+        document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send all your submissions for the next 24 months on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
@@ -134,7 +134,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
-        document.getElementById("missedDeadlinePara").text() shouldBe "If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points."
+        document.getElementById("missedDeadlinePara").text() shouldBe "If they miss a deadline, they will have to send all their submissions for the next 24 months on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
@@ -158,7 +158,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
         document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
-        document.getElementById("missedDeadlinePara").text() shouldBe "If your client misses a deadline, they will have to send 4 more submissions on time before HMRC can remove their points."
+        document.getElementById("missedDeadlinePara").text() shouldBe "If they miss a deadline, they will have to send all their submissions for the next 24 months on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
