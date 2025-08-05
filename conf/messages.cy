@@ -137,7 +137,7 @@ calculation.individual.paid.penalty.on = Cosb wedi’i thalu ar {0}
 calculation.charge.reference = Cyfeirnod y gosb: {0}
 
 calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {0} oedd {0}.
-calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth yyyy i yyyy wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = Os bydd eich cleient yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 3% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15-30 diwrnod, felly bydd 3% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu {0} yn cael ei chodi arno fel cosb
@@ -163,14 +163,14 @@ calculation.individual.second.h1 = Cyfrifiad yr ail gosb am dalu’n hwyr
 calculation.individual.second.title = Cyfrifiad yr ail gosb am dalu’n hwyr
 
 calculation.penalty.amount = Swm y gosb:
-calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth yyyy i yyyy oedd {0}.
+calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {0} oedd {0}.
 calculation.individual.calc2.missed.deadline.tax.unpaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.individual.calc2.penalty.increase.tax.unpaid = Bydd swm y gosb yn cynyddu’n ddyddiol ar gyfradd flynyddol o 10% o’r dreth sy’n ddyledus.
 
-calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth yyyy i yyyy wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
-calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth yyyy i yyyy wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
-calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth yyyy i yyyy wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.table.caption.charge.period = Cyfnod y tâl
 calculation.table.caption.annual.rate = Cyfradd flynyddol
