@@ -71,6 +71,7 @@ status.paid = WEDI’I DALU
 status.amountDue = £{0} YN DDYLEDUS
 status.estimate = AMCANGYFRIF
 status.late = HWYR
+status.cancelled = Wedi canslo
 
 # Card Title Content
 # ==================
