@@ -18,7 +18,8 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components
-
+@import java.time.LocalDate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToMonthYearString
 @this(
         list: components.List,
         h2: components.H2,
@@ -27,7 +28,8 @@
         link: components.Link
 )
 
-@(lsp: LSPOverviewViewModel, isAgent: Boolean)(implicit messages: Messages)
+
+@(lsp: LSPOverviewViewModel, isAgent: Boolean, actionsToRemoveLinkDate: Option[LocalDate])(implicit messages: Messages)
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
@@ -63,7 +65,7 @@
 
             @link(
                 link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
-                messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink"),
+                messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(actionsToRemoveLinkDate.getOrElse(LocalDate.now))),
                 attrTarget = false,
                 id = Some("actionsToRemoveLink")
             )

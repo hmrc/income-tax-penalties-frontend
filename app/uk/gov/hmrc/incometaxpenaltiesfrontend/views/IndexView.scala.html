@@ -22,6 +22,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
+@import java.time.LocalDate
 
 @this(
         main: MainTemplate,
@@ -45,7 +46,8 @@
         lspCardData: Seq[LateSubmissionPenaltySummaryCard],
         lppCardData: Seq[LatePaymentPenaltySummaryCard],
         penaltiesOverviewViewModel: PenaltiesOverviewViewModel,
-        isAgent: Boolean
+        isAgent: Boolean,
+        actionsToRemoveLinkDate: Option[LocalDate]
 )(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @lspMainTab = {
@@ -55,7 +57,7 @@
     @if(lspCardData.isEmpty && lspOverviewData.isEmpty) {
         @p("lsp.noPenalties")
     }
-    @lspOverviewData.map(lspTabOverview(_, isAgent))
+    @lspOverviewData.map(lspTabOverview(_, isAgent, actionsToRemoveLinkDate))
     @lspCardData.map(summaryCardLSP(_, isAgent))
 }
 

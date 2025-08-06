@@ -28,6 +28,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewBehaviours
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.LSPTabOverview
 
+import java.time.LocalDate
+
 class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with PenaltiesDetailsTestData with ViewBehaviours {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
@@ -50,7 +52,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
             "a single LSP point exists" should {
 
               val data = LSPOverviewViewModel(lateSubmissionPenalty)
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, Some(LocalDate.of(2028,4,1)))
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -75,7 +77,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, Some(LocalDate.of(2028,4,1)))
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -100,7 +102,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, Some(LocalDate.of(2028,4,1)))
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -122,7 +124,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, Some(LocalDate.of(2028,4,1)))
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -142,7 +144,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge, sampleLateSubmissionPenaltyCharge)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, Some(LocalDate.of(2028,4,1)))
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
