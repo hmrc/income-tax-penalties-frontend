@@ -102,7 +102,7 @@ lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.noPenalties = Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd
 lsp.noPenalties.agent = Nid oes gan eich cleient unrhyw gosbau actif am gyflwyno’n hwyr ar hyn o bryd.
 lsp.pointExpiredOn.key = Point expired on (Welsh)
-lsp.pay.penalty.by = Pay Penalty By (Welsh)
+lsp.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn
 lsp.compliance.remove.by = Bydd eich pwyntiau yn cael eu dileu ym mis {0} {1} am y rhesymau canlynol:
 lsp.compliance.history = mae eich cofnod cyflwyno yn gyfredol
 lsp.compliance.submitted =  rydych wedi cyflwyno mewn pryd am y {0} mis diwethaf
@@ -131,11 +131,10 @@ calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus er
 calculation.individual.first.title = Cyfrifiad y gosb gyntaf am dalu’n hwyr
 calculation.individual.first.h1 = Cyfrifiad y gosb gyntaf am dalu’n hwyr
 
-calculation.penalty.amount = Swm y gosb:
-
 calculation.individual.paid.penalty.on = Cosb wedi’i thalu ar {0}
-
+calculation.individual.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
 calculation.charge.reference = Cyfeirnod y gosb: {0}
+calculation.agent.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
 
 calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {0} oedd {2}.
 calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
@@ -181,6 +180,9 @@ calculation.table.caption.rate = Cyfradd
 calculation.table.caption.amount = Swm
 calculation.table.caption.total.penalty = Cyfanswm y gosb
 compliance.timeline.agent.if.you.missed.deadline = Os bydd eich cleient yn methu dyddiad cau, bydd yn rhaid iddo anfon pob un o’i gyflwyniadau mewn pryd ar gyfer y {0} mis nesaf cyn y gall CThEF ddileu ei bwyntiau.
+calculation.individual.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
+calculation.individual.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
+
 
 individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
 agent.lpp.tab.overdueTax = Oherwydd bod eich cleient wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd ganddo bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.

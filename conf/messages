@@ -111,6 +111,7 @@ calculation.table.caption.amount = Amount
 calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
 calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+
 calculation.agent.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
 
 calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
