@@ -53,8 +53,8 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = You will get another £
 agent.index.lsp.tab.overview.additionalPenalty.warning = Your client has been given an additional £200 penalty.
 agent.index.lsp.tab.overview.additionalPenalty.p1 = They will get another £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already.
 index.lsp.tab.overview.pointsGuidanceLink = Read the guidance about late submission penalties
-individual.index.lsp.tab.overview.actionsToRemoveLink = Actions to take to get your points removed
-agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed
+individual.index.lsp.tab.overview.actionsToRemoveLink = Actions you must take to get your points removed by {0}
+agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed by {0}
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Late payment penalties
@@ -157,14 +157,15 @@ status.paid = Paid
 status.estimate = Estimate
 status.amountDue = £{0} Due
 status.late = Late
+status.cancelled = Cancelled
 
 # Card Title Content
 # ==================
-lsp.cardTitle.addedPoint = Penalty point {0}: Adjustment point
+lsp.cardTitle.addedPoint = Penalty point: Adjustment point
 lsp.cardTitle.removedPoint = Penalty point
-lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
+lsp.cardTitle.financialPoint = Penalty point{1}
 lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
-lsp.cardTitle.point = Penalty point {1}{0}
+lsp.cardTitle.point = Penalty point{0}
 lsp.cardTitle.expiredPoint = Penalty point
 lsp.cardTitle.lateUpdate = Late update
 lsp.cardTitle.lateTaxReturn = Late tax return

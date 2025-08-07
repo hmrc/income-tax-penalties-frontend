@@ -51,9 +51,9 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb ychwanegol o
 agent.index.lsp.tab.overview.additionalPenalty.warning = Codwyd cosb ychwanegol o £200 ar eich cleient.
 agent.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb bellach o £200 arno bob tro y bydd yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’i bwyntiau wedi’u dileu. Dylai’ch cleient anfon unrhyw gyflwyniadau sy’n hwyr cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny.
 index.lsp.tab.overview.pointsGuidanceLink = Darllenwch yr arweiniad am gosbau am dalu’n hwyr
-individual.index.lsp.tab.overview.actionsToRemoveLink = Actions to take to get your points removed (Welsh)
-agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed (Welsh)
-caption.date = Blwyddyn dreth {0} i {1}
+
+individual.index.lsp.tab.overview.actionsToRemoveLink = Y camau i’w cymryd i gael eich pwyntiau wedi’u dileu erbyn mis {0}
+agent.index.lsp.tab.overview.actionsToRemoveLink = Y camau y mae’n rhaid i’ch cleient eu cymryd i gael ei bwyntiau wedi’u dileu erbyn mis {0}
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Cosbau am dalu’n hwyr
@@ -65,13 +65,16 @@ agent.index.lpp.tab.payEarlyInfo = Gorau i gyd po gyntaf y bydd eich cleient yn 
 # Status tags
 # ===========
 status.upheld = Penderfyniad wedi’i gadarnhau
-status.expired = WEDI DOD I BEN
-status.active = AR WAITH
-status.due = YN DDYLEDUS
-status.paid = WEDI’I DALU
-status.amountDue = £{0} YN DDYLEDUS
-status.estimate = AMCANGYFRIF
-status.late = HWYR
+status.expired = Wedi dod i ben
+status.active = Ar waith
+status.due = Yn ddyledus
+status.paid = Wedi’i dalu
+status.amountDue = £{0} Yn ddyledus
+status.estimate = Amcangyfrif
+status.late = Hwyr
+status.cancelled = Wedi canslo
+
+
 
 # Card Title Content
 # ==================
