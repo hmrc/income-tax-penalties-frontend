@@ -63,12 +63,13 @@
                 @p(s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.p1")
             }
 
-            @link(
+            @actionsToRemoveLinkDate.map(removeLinkDate => {link(
                 link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
-                messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(actionsToRemoveLinkDate.getOrElse(LocalDate.now))),
+                messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(removeLinkDate)),
                 attrTarget = false,
                 id = Some("actionsToRemoveLink")
-            )
+            )})
+
         }
     </div>
 }

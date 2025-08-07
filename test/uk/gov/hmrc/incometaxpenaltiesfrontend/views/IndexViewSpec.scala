@@ -39,6 +39,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  private val somePocDate: Option[LocalDate] = Some(LocalDate.of(2028, 4, 1))
 
   object Selectors extends BaseSelectors {
     val lspTab = "#lspTab"
@@ -73,7 +74,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lppCardData = Seq(),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false),
                 isAgent = isAgent,
-                actionsToRemoveLinkDate = Some(LocalDate.of(2028,4,1))
+                actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
@@ -91,7 +92,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lppCardData = Seq(),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(messagesForLanguage.overviewLSPPoints(1)), hasFinancialCharge = false),
                 isAgent = isAgent,
-                actionsToRemoveLinkDate = Some(LocalDate.of(2028,4,1))
+                actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
@@ -129,7 +130,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                   messagesForLanguage.overviewLSPPointsMax
                 ), hasFinancialCharge = true),
                 isAgent = isAgent,
-                actionsToRemoveLinkDate = Some(LocalDate.of(2028,4,1))
+                actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
