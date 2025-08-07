@@ -20,13 +20,13 @@ object LSPCardMessages {
 
   sealed trait Messages { _: i18n =>
     //Card Title Messages
-    val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: Adjustment point"
+    val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point: Adjustment point"
     val cardTitleRemovedPoint = "Penalty point"
     def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
-      s"Penalty point $point$reason - £$amount penalty"
+      s"Penalty point$reason"
     def cardTitleAdditionalFinancialPoint(amount: String, reason: String): String =
       s"Additional £$amount penalty$reason"
-    val cardTitlePoint: Int => String = point => "Penalty point " + point
+    val cardTitlePoint: Int => String = point => "Penalty point"
 
     //Summary Row Messages
     val addedOnKey = "Added on"

@@ -64,13 +64,16 @@ agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax
 # Status tags
 # ===========
 status.upheld = Penderfyniad wedi’i gadarnhau
-status.expired = WEDI DOD I BEN
-status.active = AR WAITH
-status.due = YN DDYLEDUS
-status.paid = WEDI’I DALU
-status.amountDue = £{0} YN DDYLEDUS
-status.estimate = AMCANGYFRIF
-status.late = HWYR
+status.expired = Wedi dod i ben
+status.active = Ar waith
+status.due = Yn ddyledus
+status.paid = Wedi’i dalu
+status.amountDue = £{0} Yn ddyledus
+status.estimate = Amcangyfrif
+status.late = Hwyr
+status.cancelled = Wedi canslo
+
+
 
 # Card Title Content
 # ==================
