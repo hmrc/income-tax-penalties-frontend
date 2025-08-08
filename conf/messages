@@ -156,15 +156,14 @@ status.paid = Paid
 status.estimate = Estimate
 status.amountDue = £{0} Due
 status.late = Late
-status.cancelled = Cancelled
 
 # Card Title Content
 # ==================
-lsp.cardTitle.addedPoint = Penalty point: Adjustment point
+lsp.cardTitle.addedPoint = Penalty point {0}: Adjustment point
 lsp.cardTitle.removedPoint = Penalty point
-lsp.cardTitle.financialPoint = Penalty point{1}
+lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
 lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
-lsp.cardTitle.point = Penalty point{0}
+lsp.cardTitle.point = Penalty point {1}{0}
 lsp.cardTitle.expiredPoint = Penalty point
 lsp.cardTitle.lateUpdate = Late update
 lsp.cardTitle.lateTaxReturn = Late tax return
