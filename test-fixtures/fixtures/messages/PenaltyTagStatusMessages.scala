@@ -26,20 +26,17 @@ object PenaltyTagStatusMessages {
     val amountDue: String => String = amount => s"£$amount $due"
     val paid = "Paid"
     val estimate = "Estimate"
-    val cancelled = "Cancelled"
   }
 
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val active: String = "Ar waith"
-    override val expired: String = "Wedi dod i ben"
+    override val active: String = "AR WAITH"
+    override val expired: String = "WEDI DOD I BEN"
     override val upheld: String = "Penderfyniad wedi’i gadarnhau"
-    override val due: String = "Yn ddyledus"
+    override val due: String = "YN DDYLEDUS"
     override val amountDue: String => String = amount => s"£$amount $due"
-    override val paid = "Wedi’i dalu"
-    override val estimate = "Amcangyfrif"
-    override val cancelled = "Wedi canslo"
-
+    override val paid = "WEDI’I DALU"
+    override val estimate = "AMCANGYFRIF"
   }
 }
