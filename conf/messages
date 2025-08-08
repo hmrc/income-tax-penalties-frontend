@@ -151,6 +151,7 @@ compliance.timeline.agent.if.you.missed.deadline = If they miss a deadline, they
 status.upheld = Decision upheld
 status.expired = Expired
 status.active = Active
+status.overdue = Overdue
 status.due = Due
 status.paid = Paid
 status.estimate = Estimate
