@@ -79,6 +79,7 @@ lsp.cardTitle.removedPoint = Pwynt cosb
 lsp.cardTitle.financialPoint = Penalty point {0}{1}: £{2} penalty (Welsh)
 lsp.cardTitle.additionalFinancialPoint = Cosb ychwanegol o £{0}{1}
 lsp.cardTitle.point = Pwynt cosb {1}{0}
+lsp.cardTitle.point.financialNoThreshold = Pwynt cosb {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point (Welsh)
 lsp.cardTitle.lateUpdate = Diweddariad hwyr
 lsp.cardTitle.lateTaxReturn = Ffurflen Dreth hwyr
