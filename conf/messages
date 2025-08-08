@@ -164,6 +164,7 @@ lsp.cardTitle.removedPoint = Penalty point
 lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
 lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
 lsp.cardTitle.point = Penalty point {1}{0}
+lsp.cardTitle.point.financialNoThreshold = Penalty point {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point
 lsp.cardTitle.lateUpdate = Late update
 lsp.cardTitle.lateTaxReturn = Late tax return
