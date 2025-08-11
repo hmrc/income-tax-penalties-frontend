@@ -74,7 +74,7 @@ object LSPCardMessages {
     override val returnNotReceived = "Heb ddod i law eto"
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
     override val expiryReasonKey = "Removed reason (Welsh)"
-    override val payPenaltyBy = "Pay Penalty By (Welsh)"
+    override val payPenaltyBy = "Mae’n rhaid talu’r gosb erbyn"
     override val missingOrLateIncomeSources = "Ffynonellau incwm sy’n hwyr neu ar goll"
 
     //Card Footer Links

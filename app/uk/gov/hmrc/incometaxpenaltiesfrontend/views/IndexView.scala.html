@@ -65,7 +65,7 @@
     @h2(msg = "index.lpp.tab.h2", elmId = "lppHeading", classes=Some("govuk-heading-m"))
 
     @if(lppCardData.isEmpty) {
-        @p("lpp.noPenalties")
+    @p(individualOrAgent + ".lpp.noPenalties")
     } else {
 
         @p(individualOrAgent + ".index.lpp.tab.payEarlyInfo")
