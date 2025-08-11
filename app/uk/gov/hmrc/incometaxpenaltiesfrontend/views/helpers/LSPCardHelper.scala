@@ -103,7 +103,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
           messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
         }
       } else {
-        messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
+        messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
       }
 
     buildLSPSummaryCard(
