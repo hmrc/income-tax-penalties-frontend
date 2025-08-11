@@ -100,7 +100,11 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
           messages("lsp.cardTitle.additionalFinancialPoint.successful", currencyFormat)
         } else {
-          messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
+          if (penalty.penaltyOrder.exists(_.toInt == threshold)){
+            messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
+          } else {
+            messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
+          }
         }
       } else {
         messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
