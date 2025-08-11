@@ -37,7 +37,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
       LatePaymentPenaltySummaryCard(
         index,
-        cardTitle = messages("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(lpp.amountDue)),
+        cardTitle = messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(lpp.amountDue)),
         cardRows = cardRows,
         status = getTagStatus(lpp),
         penaltyChargeReference = lpp.penaltyChargeReference,
@@ -58,7 +58,6 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
   private def lppCardBody(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
-      Some(lppSummaryRow.penaltyTypeRow(lpp)),
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),
       Some(lppSummaryRow.incomeTaxDueRow(lpp)),
       Some(lppSummaryRow.incomeTaxPaymentDateRow(lpp)),
@@ -67,7 +66,6 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
   private def lppManual(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
-      Some(lppSummaryRow.penaltyTypeRow(lpp)),
       lppSummaryRow.addedOnRow(lpp)
     ).flatten
 }
