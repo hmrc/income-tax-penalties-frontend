@@ -326,7 +326,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow,
                       testAppealStatusRow
                     ),
-                    cardTitle = messagesForLanguage.cardTitleFinancialPointNoThreshold(1, s": Late update"),
+                    cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": Late update", "200"),
                     status = getTagStatus(penalty1),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
