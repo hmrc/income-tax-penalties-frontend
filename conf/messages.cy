@@ -66,6 +66,7 @@ agent.index.lpp.tab.payEarlyInfo = Gorau i gyd po gyntaf y bydd eich cleient yn 
 # ===========
 status.upheld = Penderfyniad wedi’i gadarnhau
 status.expired = Wedi dod i ben
+status.removed = Wedi’i dynnu
 status.active = Ar waith
 status.due = Yn ddyledus
 status.overdue = Overdue (welsh)

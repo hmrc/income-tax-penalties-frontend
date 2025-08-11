@@ -387,6 +387,36 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               }
             }
 
+            "the period of compliance has been achieved" should {
+              "construct a card with correct messages" in {
+                val penalty1 = sampleRemovedPenaltyPointWithPocAchieved
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
+                mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
+                mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
+
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, pointsRemovedAfterPeriodOfCompliance = true) shouldBe
+                  Seq(LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow
+                    ),
+                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
+                    status             = getTagStatus(penalty1, pointsRemovedAfterPoc = Some(true)),
+                    penaltyPoint       = "",
+                    penaltyId          = penalty1.penaltyNumber,
+                    isReturnSubmitted  = true,
+                    isAddedOrRemovedPoint = true,
+                    penaltyCategory    = penalty1.penaltyCategory,
+                    isManuallyRemovedPoint = true,
+                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                  ))
+              }
+            }
+
             "Adjustment is a FAP" should {
 
               "construct a card with correct messages" in {

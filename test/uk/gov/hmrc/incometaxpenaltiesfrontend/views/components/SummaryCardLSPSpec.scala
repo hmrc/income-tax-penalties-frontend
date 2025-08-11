@@ -68,21 +68,21 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         cardTitle = messagesForLanguage.cardTitlePoint(1),
                         status = getTagStatus(sampleLateSubmissionPoint),
                         penaltyPoint = "1",
-                        penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
+                        penaltyId = sampleLateSubmissionPoint.penaltyNumber,
                         isReturnSubmitted = true,
-                        penaltyCategory = sampleRemovedPenaltyPoint.penaltyCategory,
-                        dueDate = samplePenaltyPointNotSubmitted.dueDate.map(dateToString(_))
+                        penaltyCategory = sampleLateSubmissionPoint.penaltyCategory,
+                        dueDate = sampleLateSubmissionPoint.dueDate.map(dateToString(_))
                       ), isAgent)
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
                       document.select("h3").text() shouldBe messagesForLanguage.cardTitlePoint(1)
-                      document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
+                      document.select(s"#penalty-id-${sampleLateSubmissionPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
 
-                      val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink")
+                      val appealLink = document.select(s"#penalty-id-${sampleLateSubmissionPoint.penaltyNumber}-appealLink")
                       appealLink.text() shouldBe messagesForLanguage.cardLinksAppeal
                       appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
-                        sampleRemovedPenaltyPoint.penaltyNumber, isAgent
+                        sampleLateSubmissionPoint.penaltyNumber, isAgent
                       ).url
                     }
                   }
