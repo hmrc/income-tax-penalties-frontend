@@ -163,9 +163,6 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
     )
   }
 
-  private def currentDate = timeMachine.getCurrentDate
-//  private def currentDate = LocalDate.of(2028,8,15)
-
   private def buildLSPSummaryCard(cardTitle: String,
                                   rows: Seq[SummaryListRow],
                                   penalty: LSPDetails,
@@ -173,8 +170,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
                                   isAnAddedOrRemovedPoint: Boolean = false,
                                   isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
-    println(s"today=$currentDate, payBy=${penalty.chargeDueDate}")
-    val statusTag = penalty.chargeDueDate.filter(_.isBefore(currentDate)).map(_=>Tag(Text(messages("status.overdue")), "govuk-tag--red")).getOrElse(getTagStatus(penalty))
+    val statusTag = penalty.chargeDueDate.filter(_.isBefore(timeMachine.getCurrentDate)).map(_=>Tag(Text(messages("status.overdue")), "govuk-tag--red")).getOrElse(getTagStatus(penalty))
 
     LateSubmissionPenaltySummaryCard(
       cardRows = rows,

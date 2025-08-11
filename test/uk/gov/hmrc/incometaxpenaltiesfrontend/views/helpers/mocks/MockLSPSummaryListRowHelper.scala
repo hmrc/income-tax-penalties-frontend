@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.{HtmlContent, Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LSPSummaryListRowHelper
 
 trait MockLSPSummaryListRowHelper extends MockitoSugar {
@@ -39,6 +40,7 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
   val testPayPenaltyByRow: SummaryListRow = SummaryListRow(Key(Text("payPenaltyBy")), Value(Text("1/4/2028")))
 
   lazy val mockLSPSummaryListRowHelper: LSPSummaryListRowHelper = mock[LSPSummaryListRowHelper]
+  lazy val mockTimeMachine: TimeMachine = mock[TimeMachine]
 
   def mockMissingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(eqTo(penalty))(any()))
