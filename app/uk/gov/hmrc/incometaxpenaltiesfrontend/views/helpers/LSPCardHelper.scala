@@ -37,7 +37,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
                                        threshold: Int,
                                        activePoints: Int,
                                        pointsRemovedAfterPeriodOfCompliance: Boolean = false)
-                                      (implicit messages: Messages): Seq[LateSubmissionPenaltySummaryCard] = {
+                                      (implicit messages: Messages, timeMachine: TimeMachine): Seq[LateSubmissionPenaltySummaryCard] = {
 
     val activePenalties: Seq[(LSPDetails, Int)] =
       penalties.filter(_.penaltyStatus != LSPPenaltyStatusEnum.Inactive).reverse.zipWithIndex
@@ -65,7 +65,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
       "Late update"
 
   private def addedPointCard(p: LSPDetails, thresholdMet: Boolean, reason: String)
-                            (implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+                            (implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
 
     val order = p.penaltyOrder.getOrElse("")
 
@@ -93,7 +93,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
   }
 
 
-  def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
 
     val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
     val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
@@ -120,7 +120,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
     )
   }
 
-  def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
 
     buildLSPSummaryCard(
       cardTitle = if(getTagStatus(penalty).content == Text(messages("status.expired"))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
@@ -140,7 +140,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
     )
   }
 
-  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
     val pointExpiredAndAppealRow = if(penalty.lspTypeEnum == LSPTypeEnum.RemovedPoint && !pointsRemovedAfterPeriodOfCompliance) {
       Seq(summaryRow.pointExpiredOnRow(penalty),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
@@ -168,14 +168,12 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: 
                                   penalty: LSPDetails,
                                   isAnAddedPoint: Boolean = false,
                                   isAnAddedOrRemovedPoint: Boolean = false,
-                                  isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
-
-    val statusTag = penalty.chargeDueDate.filter(_.isBefore(timeMachine.getCurrentDate)).map(_=>Tag(Text(messages("status.overdue")), "govuk-tag--red")).getOrElse(getTagStatus(penalty))
+                                  isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
 
     LateSubmissionPenaltySummaryCard(
       cardRows = rows,
       cardTitle = cardTitle,
-      status = statusTag,
+      status = getTagStatus(penalty),
       penaltyPoint = penalty.penaltyOrder.getOrElse(""),
       penaltyId = penalty.penaltyNumber,
       isReturnSubmitted = penalty.isReturnSubmitted,

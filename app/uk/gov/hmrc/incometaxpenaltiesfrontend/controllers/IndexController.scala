@@ -36,8 +36,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
                                 authActions: AuthActions,
                                 lspCardHelper: LSPCardHelper,
                                 lppCardHelper: LPPCardHelper,
-                                indexView: IndexView,
-                                timeMachine: TimeMachine)(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                indexView: IndexView)(implicit appConfig: AppConfig, ec: ExecutionContext,timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
 
 
   def homePage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUserWithPenaltyData(isAgent).async { implicit penaltyDataUserRequest =>

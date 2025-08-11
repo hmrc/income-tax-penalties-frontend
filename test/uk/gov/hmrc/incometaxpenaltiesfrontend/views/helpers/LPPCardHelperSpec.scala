@@ -33,6 +33,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val lppSummaryListRowHelper: LPPCardHelper = new LPPCardHelper(mockLPPSummaryListRowHelper)
 
+
   "LPPCardHelper" when {
 
     Seq(LPPCardMessages.English, LPPCardMessages.Welsh).foreach { messagesForLanguage =>

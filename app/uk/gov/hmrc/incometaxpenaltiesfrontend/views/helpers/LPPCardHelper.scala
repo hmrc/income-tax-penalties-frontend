@@ -19,14 +19,14 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 
 import javax.inject.Inject
 
 class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends DateFormatter with TagHelper {
 
-  def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)])(implicit messages: Messages): Seq[LatePaymentPenaltySummaryCard] =
+  def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)])(implicit messages: Messages, timeMachine: TimeMachine): Seq[LatePaymentPenaltySummaryCard] =
     lpps.map { case (lpp, index) =>
 
       val cardRows: Seq[SummaryListRow] =
