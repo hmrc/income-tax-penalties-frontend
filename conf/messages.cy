@@ -67,6 +67,7 @@ status.upheld = Penderfyniad wedi’i gadarnhau
 status.expired = WEDI DOD I BEN
 status.active = AR WAITH
 status.due = YN DDYLEDUS
+status.overdue = Overdue (welsh)
 status.paid = WEDI’I DALU
 status.amountDue = £{0} YN DDYLEDUS
 status.estimate = AMCANGYFRIF

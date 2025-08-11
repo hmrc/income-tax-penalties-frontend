@@ -29,7 +29,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Tag, Text}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLSPSummaryListRowHelper
 
@@ -40,11 +40,12 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
   with BeforeAndAfterEach {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
-  lazy val lspSummaryListRowHelper: LSPCardHelper = new LSPCardHelper(mockLSPSummaryListRowHelper,mockTimeMachine)
+  implicit val tm: TimeMachine = mock[TimeMachine]
+  lazy val lspSummaryListRowHelper: LSPCardHelper = new LSPCardHelper(mockLSPSummaryListRowHelper)
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    when(mockTimeMachine.getCurrentDate).thenReturn(LocalDate.of(2021, 3, 6))
+    when(tm.getCurrentDate).thenReturn(LocalDate.of(2021, 3, 6))
   }
 
   "LSPCardHelper" when {
@@ -454,7 +455,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
           "Status Tag" should {
             "become 'Overdue' when chargeDueDate is before today" in {
               implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
-              when(mockTimeMachine.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
 
               val penalty = sampleLateSubmissionPenaltyCharge.copy(
                 penaltyOrder = Some("1"),
@@ -473,13 +474,13 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 Seq(penalty),
                 threshold = 1,
                 activePoints = 1
-              )(messages)
+              )(messages,tm)
 
               cards.head.status shouldBe Tag(Text(messages("status.overdue")), "govuk-tag--red")
             }
             "become 'due' when chargeDueDate is after today" in {
               implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
-              when(mockTimeMachine.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
 
               val penalty = sampleLateSubmissionPenaltyCharge.copy(
                 penaltyOrder = Some("1"),
@@ -498,7 +499,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 Seq(penalty),
                 threshold = 1,
                 activePoints = 1
-              )(messages)
+              )(messages,tm)
 
               cards.head.status shouldBe Tag(Text(messages("status.due")), "govuk-tag--red")
             }

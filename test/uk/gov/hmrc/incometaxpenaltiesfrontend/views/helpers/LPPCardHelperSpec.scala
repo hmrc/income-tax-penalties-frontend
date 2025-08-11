@@ -23,7 +23,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLPPSummaryListRowHelper
 
@@ -33,12 +33,12 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val lppSummaryListRowHelper: LPPCardHelper = new LPPCardHelper(mockLPPSummaryListRowHelper)
 
-
   "LPPCardHelper" when {
 
     Seq(LPPCardMessages.English, LPPCardMessages.Welsh).foreach { messagesForLanguage =>
 
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
+      implicit val tm: TimeMachine = mock[TimeMachine]
 
       s"when language is set to '${messagesForLanguage.lang.name}'" when {
 

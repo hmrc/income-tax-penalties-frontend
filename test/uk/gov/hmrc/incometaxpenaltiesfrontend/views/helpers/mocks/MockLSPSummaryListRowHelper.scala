@@ -40,7 +40,6 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
   val testPayPenaltyByRow: SummaryListRow = SummaryListRow(Key(Text("payPenaltyBy")), Value(Text("1/4/2028")))
 
   lazy val mockLSPSummaryListRowHelper: LSPSummaryListRowHelper = mock[LSPSummaryListRowHelper]
-  lazy val mockTimeMachine: TimeMachine = mock[TimeMachine]
 
   def mockMissingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLSPSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(eqTo(penalty))(any()))

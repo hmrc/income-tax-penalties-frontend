@@ -31,7 +31,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySu
 import java.time.{LocalDate, MonthDay}
 import javax.inject.Inject
 
-class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper, timeMachine: TimeMachine) extends SummaryListRowHelper with TagHelper with DateFormatter {
+class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends SummaryListRowHelper with TagHelper with DateFormatter {
 
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,
