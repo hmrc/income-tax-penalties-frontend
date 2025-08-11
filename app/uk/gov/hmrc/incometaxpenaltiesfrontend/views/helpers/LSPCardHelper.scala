@@ -97,9 +97,11 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
 
     val cardTitle =
       if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
-        messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
-      } else if (penalty.penaltyOrder.exists(_.toInt == threshold)){
-        messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
+        if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
+          messages("lsp.cardTitle.additionalFinancialPoint.successful", currencyFormat)
+        } else {
+          messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
+        }
       } else {
         messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
       }
@@ -122,7 +124,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
   def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     buildLSPSummaryCard(
-      cardTitle = if(getTagStatus(penalty).content == Text(messages("status.expired"))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
+      cardTitle = if(getTagStatus(penalty).content == Text(messages("status.expired"))) messages("lsp.cardTitle.expiredPoint") else if(getTagStatus(penalty).content == Text(messages("status.cancelled"))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),

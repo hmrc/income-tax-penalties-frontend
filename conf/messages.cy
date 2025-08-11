@@ -65,13 +65,14 @@ agent.index.lpp.tab.payEarlyInfo = Gorau i gyd po gyntaf y bydd eich cleient yn 
 # Status tags
 # ===========
 status.upheld = Penderfyniad wedi’i gadarnhau
-status.expired = WEDI DOD I BEN
-status.active = AR WAITH
-status.due = YN DDYLEDUS
-status.paid = WEDI’I DALU
-status.amountDue = £{0} YN DDYLEDUS
-status.estimate = AMCANGYFRIF
-status.late = HWYR
+status.expired = Wedi dod i ben
+status.active = Ar waith
+status.due = Yn ddyledus
+status.paid = Wedi’i dalu
+status.amountDue = £{0} Yn ddyledus
+status.estimate = Amcangyfrif
+status.late = Hwyr
+status.cancelled = Wedi canslo
 
 # Card Title Content
 # ==================
@@ -79,6 +80,7 @@ lsp.cardTitle.addedPoint = Pwynt cosb {0}: pwynt addasu
 lsp.cardTitle.removedPoint = Pwynt cosb
 lsp.cardTitle.financialPoint = Penalty point {0}{1}: £{2} penalty (Welsh)
 lsp.cardTitle.additionalFinancialPoint = Cosb ychwanegol o £{0}{1}
+lsp.cardTitle.additionalFinancialPoint.successful = Cosb ychwanegol o £200
 lsp.cardTitle.point = Pwynt cosb {1}{0}
 lsp.cardTitle.point.financialNoThreshold = Pwynt cosb {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point (Welsh)
