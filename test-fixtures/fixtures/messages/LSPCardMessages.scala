@@ -24,6 +24,8 @@ object LSPCardMessages {
     val cardTitleRemovedPoint = "Penalty point"
     def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
       s"Penalty point $point$reason - £$amount penalty"
+    def cardTitleFinancialPointNoThreshold(point: Int, reason: String): String =
+      s"Penalty point $point$reason"
     def cardTitleAdditionalFinancialPoint(amount: String, reason: String): String =
       s"Additional £$amount penalty$reason"
     val cardTitlePoint: Int => String = point => "Penalty point " + point
@@ -56,6 +58,8 @@ object LSPCardMessages {
     override val cardTitleRemovedPoint = "Pwynt cosb"
     override def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
       s"Penalty point $point$reason: £$amount penalty (Welsh)"
+    override def cardTitleFinancialPointNoThreshold(point: Int, reason: String): String =
+      s"Pwynt cosb $point$reason"
     override def cardTitleAdditionalFinancialPoint(amount: String, reason: String): String =
       s"Cosb ychwanegol o £$amount$reason"
 
@@ -70,7 +74,7 @@ object LSPCardMessages {
     override val returnNotReceived = "Heb ddod i law eto"
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
     override val expiryReasonKey = "Removed reason (Welsh)"
-    override val payPenaltyBy = "Pay Penalty By (Welsh)"
+    override val payPenaltyBy = "Mae’n rhaid talu’r gosb erbyn"
     override val missingOrLateIncomeSources = "Ffynonellau incwm sy’n hwyr neu ar goll"
 
     //Card Footer Links

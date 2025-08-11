@@ -63,7 +63,8 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
           lspCardData = lspSummaryCards,
           lppCardData = lppSummaryCards,
           penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
-          isAgent = penaltyDataUserRequest.isAgent
+          isAgent = penaltyDataUserRequest.isAgent,
+          actionsToRemoveLinkDate = penaltyData.lspPeriodOfComplianceDate
         ))
       }
     )

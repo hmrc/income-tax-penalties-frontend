@@ -77,7 +77,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                 "the appeal status is 'Upheld'" should {
 
-                  "generate an Upheld tag model with correct message and class" in {
+                  "generate an Cancelled tag model with correct message and class" in {
 
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(
                       penaltyStatus = Inactive,
@@ -90,7 +90,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     ))
 
                     tag.classes shouldBe ""
-                    tag.content shouldBe Text(messagesForLanguage.upheld)
+                    tag.content shouldBe Text(messagesForLanguage.cancelled)
                   }
                 }
 
@@ -174,7 +174,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                 "the appeal status is 'Upheld'" should {
 
-                  "generate an Upheld tag model with correct message and class" in {
+                  "generate an Cancelled tag model with correct message and class" in {
 
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(
                       penaltyStatus = Inactive,
@@ -187,7 +187,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     ))
 
                     tag.classes shouldBe ""
-                    tag.content shouldBe Text(messagesForLanguage.upheld)
+                    tag.content shouldBe Text(messagesForLanguage.cancelled)
                   }
                 }
 

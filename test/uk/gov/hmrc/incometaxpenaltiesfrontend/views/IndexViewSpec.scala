@@ -31,12 +31,15 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 
+import java.time.LocalDate
+
 class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with ScalaFutures with PenaltiesDetailsTestData with ViewBehaviours {
 
   lazy val indexView: IndexView = app.injector.instanceOf[IndexView]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  private val somePocDate: Option[LocalDate] = Some(LocalDate.of(2028, 4, 1))
 
   object Selectors extends BaseSelectors {
     val lspTab = "#lspTab"
@@ -70,13 +73,15 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspCardData = Seq(),
                 lppCardData = Seq(),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false),
-                isAgent = isAgent
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.lspTab -> messagesForLanguage.noLSP,
-                Selectors.lppTab -> messagesForLanguage.noLPP
+                Selectors.lppTab -> (if
+                (isAgent)messagesForLanguage.noLPPAgent else messagesForLanguage.noLPPIndividual)
               )
             }
 
@@ -87,7 +92,8 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspCardData = Seq(),
                 lppCardData = Seq(),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(messagesForLanguage.overviewLSPPoints(1)), hasFinancialCharge = false),
-                isAgent = isAgent
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
@@ -124,7 +130,8 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                   messagesForLanguage.overviewLSPFinancial(1),
                   messagesForLanguage.overviewLSPPointsMax
                 ), hasFinancialCharge = true),
-                isAgent = isAgent
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 

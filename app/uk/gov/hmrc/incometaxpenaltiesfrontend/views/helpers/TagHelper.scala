@@ -32,7 +32,7 @@ trait TagHelper {
     penalty.penaltyStatus match {
       case LSPPenaltyStatusEnum.Inactive =>
         Tag(Text(messages(
-          if (penalty.appealStatus.contains(AppealStatusEnum.Upheld)) messages("status.upheld") else messages("status.expired")
+          if (penalty.appealStatus.contains(AppealStatusEnum.Upheld)) messages("status.cancelled") else messages("status.expired")
         )))
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount,penalty.amountPaid, penalty.chargeDueDate)
