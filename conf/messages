@@ -111,6 +111,7 @@ calculation.table.caption.amount = Amount
 calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
 calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+
 calculation.agent.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
 
 calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
@@ -166,6 +167,7 @@ lsp.cardTitle.financialPoint = Penalty point {0}{1} - £{2} penalty
 lsp.cardTitle.additionalFinancialPoint = Additional £{0} penalty{1}
 lsp.cardTitle.additionalFinancialPoint.successful = Additional £200 penalty
 lsp.cardTitle.point = Penalty point {1}{0}
+lsp.cardTitle.point.financialNoThreshold = Penalty point {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point
 lsp.cardTitle.lateUpdate = Late update
 lsp.cardTitle.lateTaxReturn = Late tax return
@@ -209,7 +211,6 @@ lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year
 lpp.incomeTaxDue.key = Income Tax due
 lpp.incomeTaxPaymentDate.key = Income Tax paid
 lpp.paymentNotReceived = Payment not yet received
-lpp.noPenalties = You have no late payment penalties that are currently due.
 
 # Appeal Status
 # =============
@@ -259,3 +260,8 @@ month.9 = September
 month.10 = October
 month.11 = November
 month.12 = December
+
+individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your penalties are no longer estimated and can be paid for immediately.
+agent.lpp.tab.overdueTax = Because your client has paid their outstanding tax, their penalties are no longer estimated and can be paid for immediately.
+individual.lpp.noPenalties = You have no late payment penalties that are currently due.
+agent.lpp.noPenalties = Your client has no late payment penalties that are currently due.
