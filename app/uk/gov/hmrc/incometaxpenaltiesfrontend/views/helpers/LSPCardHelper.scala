@@ -110,15 +110,6 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
         messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
       }
 
-    val cardTitle2 =
-      if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
-        messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
-      } else if (penalty.penaltyOrder.exists(_.toInt == threshold)){
-        messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
-      } else {
-        messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
-      }
-
     buildLSPSummaryCard(
       cardTitle,
       rows = Seq(
