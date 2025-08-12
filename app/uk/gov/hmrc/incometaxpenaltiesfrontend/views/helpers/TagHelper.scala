@@ -42,7 +42,7 @@ trait TagHelper {
 
   def getTagStatus(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     (penalty.appealStatus, penalty.penaltyStatus) match {
-      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.upheld")))
+      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
       case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
       case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)))

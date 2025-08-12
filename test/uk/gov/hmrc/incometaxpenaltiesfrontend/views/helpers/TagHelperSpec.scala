@@ -212,12 +212,12 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
             "the penalty has been appealed and upheld" should {
 
-              "generate a Paid tag model with correct message and class" in {
+              "generate a Cancelled tag model with correct message and class" in {
 
                 val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal))
 
                 tag.classes shouldBe ""
-                tag.content shouldBe Text(messagesForLanguage.upheld)
+                tag.content shouldBe Text(messagesForLanguage.cancelled)
               }
             }
 
