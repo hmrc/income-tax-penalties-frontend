@@ -68,11 +68,13 @@ status.upheld = Penderfyniad wedi’i gadarnhau
 status.expired = Wedi dod i ben
 status.active = Ar waith
 status.due = Yn ddyledus
+status.overdue = Overdue (welsh)
 status.paid = Wedi’i dalu
 status.amountDue = £{0} Yn ddyledus
 status.estimate = Amcangyfrif
 status.late = Hwyr
 status.cancelled = Wedi canslo
+
 
 # Card Title Content
 # ==================

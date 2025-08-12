@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.{HtmlContent, Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LSPSummaryListRowHelper
 
 trait MockLSPSummaryListRowHelper extends MockitoSugar {

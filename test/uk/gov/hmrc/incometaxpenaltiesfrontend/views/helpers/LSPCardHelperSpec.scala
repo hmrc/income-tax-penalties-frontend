@@ -18,22 +18,35 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import fixtures.LSPDetailsTestData
 import fixtures.messages.LSPCardMessages
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.Aliases.{Tag, Text}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLSPSummaryListRowHelper
 
+import java.time.LocalDate
+
 class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with DateFormatter
-  with LSPDetailsTestData with MockLSPSummaryListRowHelper with TagHelper with SummaryListRowHelper {
+  with LSPDetailsTestData with MockLSPSummaryListRowHelper with TagHelper with SummaryListRowHelper with MockitoSugar
+  with BeforeAndAfterEach {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  implicit val tm: TimeMachine = mock[TimeMachine]
   lazy val lspSummaryListRowHelper: LSPCardHelper = new LSPCardHelper(mockLSPSummaryListRowHelper)
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    when(tm.getCurrentDate).thenReturn(LocalDate.of(2021, 3, 6))
+  }
 
   "LSPCardHelper" when {
 
@@ -439,6 +452,58 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
             }
           }
 
+          "Status Tag" should {
+            "become 'Overdue' when chargeDueDate is before today" in {
+              implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
+              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+
+              val penalty = sampleLateSubmissionPenaltyCharge.copy(
+                penaltyOrder = Some("1"),
+                chargeDueDate = Some(LocalDate.of(2025, 8, 10))
+              )
+
+              mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
+              mockPayPenaltyByRow(penalty, threshold = 1)(None)
+              mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
+              mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
+              mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
+              mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
+              mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(None)
+
+              val cards = lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
+                Seq(penalty),
+                threshold = 1,
+                activePoints = 1
+              )(messages)
+
+              cards.head.status shouldBe Tag(Text(messages("status.overdue")), "govuk-tag--red")
+            }
+            "become 'due' when chargeDueDate is after today" in {
+              implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
+              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+
+              val penalty = sampleLateSubmissionPenaltyCharge.copy(
+                penaltyOrder = Some("1"),
+                chargeDueDate = Some(LocalDate.of(2025, 8, 12))
+              )
+
+              mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
+              mockPayPenaltyByRow(penalty, threshold = 1)(None)
+              mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
+              mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
+              mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
+              mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
+              mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(None)
+
+              val cards = lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
+                Seq(penalty),
+                threshold = 1,
+                activePoints = 1
+              )(messages)
+
+              cards.head.status shouldBe Tag(Text(messages("status.due")), "govuk-tag--red")
+            }
+          }
         }
       }
     }

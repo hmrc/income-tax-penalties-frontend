@@ -23,6 +23,7 @@ object PenaltyTagStatusMessages {
     val expired: String = "Expired"
     val upheld: String = "Decision upheld"
     val due: String = "Due"
+    val overdue: String = "Overdue"
     val amountDue: String => String = amount => s"£$amount $due"
     val paid = "Paid"
     val estimate = "Estimate"
@@ -35,7 +36,9 @@ object PenaltyTagStatusMessages {
     override val active: String = "Ar waith"
     override val expired: String = "Wedi dod i ben"
     override val upheld: String = "Penderfyniad wedi’i gadarnhau"
+
     override val due: String = "Yn ddyledus"
+    override val overdue: String = "Overdue (welsh)"
     override val amountDue: String => String = amount => s"£$amount $due"
     override val paid = "Wedi’i dalu"
     override val estimate = "Amcangyfrif"

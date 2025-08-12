@@ -25,7 +25,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.TagHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.SummaryCardLSP
@@ -34,6 +34,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
   with LSPDetailsTestData with TagHelper with DateFormatter {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  lazy val timeMachine: TimeMachine = app.injector.instanceOf[TimeMachine]
   lazy val summaryCard: SummaryCardLSP = app.injector.instanceOf[SummaryCardLSP]
 
   "SummaryCardLSP" when {
@@ -44,6 +45,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
     ).foreach { case (messagesForLanguage, penaltyStatusMessages) =>
 
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
+      implicit val tm: TimeMachine = timeMachine
 
       s"rendering in language '${messagesForLanguage.lang.name}'" when {
 

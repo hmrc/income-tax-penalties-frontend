@@ -20,15 +20,18 @@ import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum, LSPTypeEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 
 import java.time.{LocalDate, MonthDay}
 import javax.inject.Inject
 
-class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends SummaryListRowHelper with TagHelper with DateFormatter {
+class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit timeMachine: TimeMachine) extends SummaryListRowHelper with TagHelper with DateFormatter {
 
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,

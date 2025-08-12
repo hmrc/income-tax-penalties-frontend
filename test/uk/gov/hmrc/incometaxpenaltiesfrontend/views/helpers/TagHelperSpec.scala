@@ -18,26 +18,41 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import fixtures.{LPPDetailsTestData, LSPDetailsTestData}
 import fixtures.messages.PenaltyTagStatusMessages
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum.Inactive
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
+
+import java.time.LocalDate
 
 class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
-  with LSPDetailsTestData with LPPDetailsTestData {
+  with LSPDetailsTestData with LPPDetailsTestData with MockitoSugar
+  with BeforeAndAfterEach {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  implicit val tm: TimeMachine = mock[TimeMachine]
   lazy val tagHelper: TagHelper = new TagHelper {}
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    when(tm.getCurrentDate).thenReturn(LocalDate.of(2021, 3, 7))
+  }
 
   "TagHelper" when {
 
     Seq(PenaltyTagStatusMessages.English, PenaltyTagStatusMessages.Welsh).foreach { messagesForLanguage =>
 
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
+
 
       s"rendering in language '${messagesForLanguage.lang.name}'" when {
 
@@ -117,6 +132,15 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                     tag.classes shouldBe "govuk-tag--red"
                     tag.content shouldBe Text(messagesForLanguage.due)
+                  }
+
+                  "generate an Overdue tag model with correct message and class with outstanding amount which is not paid in time" in {
+                    when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+
+                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge)
+
+                    tag.classes shouldBe "govuk-tag--red"
+                    tag.content shouldBe Text(messagesForLanguage.overdue)
                   }
                 }
 

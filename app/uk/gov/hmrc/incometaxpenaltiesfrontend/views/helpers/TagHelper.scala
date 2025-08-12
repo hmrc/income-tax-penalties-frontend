@@ -22,23 +22,25 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.CurrencyFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
+
+import java.time.LocalDate
 
 trait TagHelper {
 
-  def getTagStatus(penalty: LSPDetails)(implicit messages: Messages): Tag =
+  def getTagStatus(penalty: LSPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     penalty.penaltyStatus match {
       case LSPPenaltyStatusEnum.Inactive =>
         Tag(Text(messages(
           if (penalty.appealStatus.contains(AppealStatusEnum.Upheld)) messages("status.cancelled") else messages("status.expired")
         )))
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
-        showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid)
+        showDueOrPartiallyPaidDueTag(penalty.outstandingAmount,penalty.amountPaid, penalty.chargeDueDate)
       case _ =>
         Tag(Text(messages("status.active")))
     }
 
-  def getTagStatus(penalty: LPPDetails)(implicit messages: Messages): Tag =
+  def getTagStatus(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     (penalty.appealStatus, penalty.penaltyStatus) match {
       case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.upheld")))
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
@@ -46,11 +48,13 @@ trait TagHelper {
       case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)))
     }
 
-  private def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: BigDecimal, penaltyAmountPaid: BigDecimal)(implicit messages: Messages): Tag =
-    (penaltyAmountOutstanding, penaltyAmountPaid) match {
-      case (outstanding, _) if outstanding == 0 =>
+  private def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: BigDecimal, penaltyAmountPaid: BigDecimal, chargeDueDate: Option[LocalDate] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+    (penaltyAmountOutstanding, penaltyAmountPaid, chargeDueDate) match {
+      case (outstanding, _, _) if outstanding == 0 =>
         Tag(Text(messages("status.paid")), "govuk-tag--green")
-      case (outstanding, paid) if paid > 0 =>
+      case (outstanding,_,dueDate) if outstanding != 0 && dueDate.exists(payBy => timeMachine.getCurrentDate.isAfter(payBy)) =>
+        Tag(Text(messages("status.overdue")), "govuk-tag--red")
+      case (outstanding, paid,dueDate) if paid > 0 && dueDate.forall(payBy => !timeMachine.getCurrentDate.isAfter(payBy)) =>
         Tag(Text(messages("status.amountDue", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(outstanding))), "govuk-tag--red")
       case _ =>
         Tag(Text(messages("status.due")), "govuk-tag--red")
