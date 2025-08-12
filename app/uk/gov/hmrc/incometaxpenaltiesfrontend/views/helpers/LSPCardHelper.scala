@@ -96,7 +96,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
 
     val cardTitle =
-      if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
+      if(penalty.penaltyOrder.exists(_.toInt >= threshold)) {
         if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
           messages("lsp.cardTitle.additionalFinancialPoint.successful", currencyFormat)
         } else {
@@ -106,6 +106,15 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
             messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
           }
         }
+      } else {
+        messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
+      }
+
+    val cardTitle2 =
+      if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
+        messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
+      } else if (penalty.penaltyOrder.exists(_.toInt == threshold)){
+        messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
       } else {
         messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
       }
