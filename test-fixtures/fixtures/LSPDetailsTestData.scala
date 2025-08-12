@@ -134,6 +134,14 @@ trait LSPDetailsTestData {
     expiryReason = Some(ExpiryReasonEnum.Adjustment)
   )
 
+
+  val sampleRemovedPenaltyPointWithPocAchieved: LSPDetails = sampleLateSubmissionPoint.copy(
+    penaltyStatus = LSPPenaltyStatusEnum.Inactive,
+    penaltyOrder = None,
+    fapIndicator = None,
+    expiryReason = Some(ExpiryReasonEnum.Compliance)
+  )
+
   val sampleExpiredPenaltyPoint: LSPDetails = sampleLateSubmissionPoint.copy(
     penaltyStatus = LSPPenaltyStatusEnum.Inactive,
     penaltyOrder = None,
