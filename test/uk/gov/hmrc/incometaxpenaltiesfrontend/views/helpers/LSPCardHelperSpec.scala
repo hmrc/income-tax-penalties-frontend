@@ -474,7 +474,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 Seq(penalty),
                 threshold = 1,
                 activePoints = 1
-              )(messages,tm)
+              )(messages)
 
               cards.head.status shouldBe Tag(Text(messages("status.overdue")), "govuk-tag--red")
             }
@@ -499,7 +499,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 Seq(penalty),
                 threshold = 1,
                 activePoints = 1
-              )(messages,tm)
+              )(messages)
 
               cards.head.status shouldBe Tag(Text(messages("status.due")), "govuk-tag--red")
             }

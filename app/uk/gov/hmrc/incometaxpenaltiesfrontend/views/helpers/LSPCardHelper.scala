@@ -31,13 +31,13 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySu
 import java.time.{LocalDate, MonthDay}
 import javax.inject.Inject
 
-class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends SummaryListRowHelper with TagHelper with DateFormatter {
+class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit timeMachine: TimeMachine) extends SummaryListRowHelper with TagHelper with DateFormatter {
 
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,
                                        activePoints: Int,
                                        pointsRemovedAfterPeriodOfCompliance: Boolean = false)
-                                      (implicit messages: Messages, timeMachine: TimeMachine): Seq[LateSubmissionPenaltySummaryCard] = {
+                                      (implicit messages: Messages): Seq[LateSubmissionPenaltySummaryCard] = {
 
     val activePenalties: Seq[(LSPDetails, Int)] =
       penalties.filter(_.penaltyStatus != LSPPenaltyStatusEnum.Inactive).reverse.zipWithIndex
@@ -65,7 +65,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
       "Late update"
 
   private def addedPointCard(p: LSPDetails, thresholdMet: Boolean, reason: String)
-                            (implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
+                            (implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     val order = p.penaltyOrder.getOrElse("")
 
@@ -93,7 +93,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
   }
 
 
-  def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
+  def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
     val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
@@ -124,7 +124,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     )
   }
 
-  def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
+  def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     buildLSPSummaryCard(
       cardTitle = if(getTagStatus(penalty).content == Text(messages("status.expired"))) messages("lsp.cardTitle.expiredPoint") else if(getTagStatus(penalty).content == Text(messages("status.cancelled"))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
@@ -144,7 +144,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
     )
   }
 
-  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
+  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val pointExpiredAndAppealRow = if(penalty.lspTypeEnum == LSPTypeEnum.RemovedPoint && !pointsRemovedAfterPeriodOfCompliance) {
       Seq(summaryRow.pointExpiredOnRow(penalty),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
@@ -172,7 +172,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper) extends Summa
                                   penalty: LSPDetails,
                                   isAnAddedPoint: Boolean = false,
                                   isAnAddedOrRemovedPoint: Boolean = false,
-                                  isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages, timeMachine: TimeMachine): LateSubmissionPenaltySummaryCard = {
+                                  isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     LateSubmissionPenaltySummaryCard(
       cardRows = rows,
