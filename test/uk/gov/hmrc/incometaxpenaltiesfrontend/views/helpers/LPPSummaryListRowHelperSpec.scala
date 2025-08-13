@@ -23,7 +23,6 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 
 class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with LPPDetailsTestData with SummaryListRowHelper with DateFormatter {
@@ -38,24 +37,6 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
 
       s"when language is set to '${messagesForLanguage.lang.name}'" when {
-
-        "calling .penaltyTypeRow()" when {
-
-          Seq(LPPPenaltyCategoryEnum.LPP1, LPPPenaltyCategoryEnum.LPP2, LPPPenaltyCategoryEnum.MANUAL).foreach { penaltyType =>
-
-            s"when penalty type is '$penaltyType'" should {
-
-              "construct a SummaryListRow model for the penalty type with expected messages" in {
-
-                lspSummaryListRowHelper.penaltyTypeRow(samplePaidLPP1.copy(penaltyCategory = penaltyType)) shouldBe
-                  summaryListRow(
-                    label = messagesForLanguage.penaltyTypeKey,
-                    value = Html(messagesForLanguage.penaltyTypeValue(penaltyType))
-                  )
-              }
-            }
-          }
-        }
 
         "calling .addedOnRow()" when {
 

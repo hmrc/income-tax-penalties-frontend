@@ -204,8 +204,8 @@ lsp.compliance.submitted.agent =  they have submitted on time for the last {0} m
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
 lpp.penaltyType.key = Penalty type
-lpp.penaltyType.LPP1 = First late payment penalty
-lpp.penaltyType.LPP2 = Second late payment penalty
+lpp.penaltyType.LPP1 = First late payment penalty: £{0}
+lpp.penaltyType.LPP2 = Second late payment penalty: £{0}
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you
 lpp.addedOn.key = Added on
 lpp.incomeTaxPeriod.key = Overdue charge

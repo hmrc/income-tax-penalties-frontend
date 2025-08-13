@@ -38,10 +38,6 @@ trait MockLPPSummaryListRowHelper extends MockitoSugar {
 
   lazy val mockLPPSummaryListRowHelper: LPPSummaryListRowHelper = mock[LPPSummaryListRowHelper]
 
-  def mockPenaltyTypeRow(penalty: LPPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLPPSummaryListRowHelper.penaltyTypeRow(eqTo(penalty))(any()))
-      .thenReturn(value)
-
   def mockAddedOnRow(penalty: LPPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLPPSummaryListRowHelper.addedOnRow(eqTo(penalty))(any()))
       .thenReturn(value)

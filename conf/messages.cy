@@ -120,8 +120,8 @@ lsp.missingOrLateIncomeSources.key = Ffynonellau incwm sy’n hwyr neu ar goll
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
 lpp.penaltyType.key = Math o gosb
-lpp.penaltyType.LPP1 = First late payment penalty (Welsh)
-lpp.penaltyType.LPP2 = Second late payment penalty (Welsh)
+lpp.penaltyType.LPP1 = First late payment penalty: £{0} (Welsh)
+lpp.penaltyType.LPP2 = Second late payment penalty: £{0} (Welsh)
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you (Welsh)
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
