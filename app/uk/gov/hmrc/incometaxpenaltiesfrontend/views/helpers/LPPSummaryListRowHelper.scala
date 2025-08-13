@@ -73,8 +73,10 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       )
     )
 
-  def payPenaltyByRow(penalty:LPPDetails)(implicit messages: Messages): SummaryListRow = summaryListRow(
-    label = messages("lpp.payPenaltyBy.key"),
-    value = Html(dateToString(penalty.principalChargeDueDate))
-  )
+  def payPenaltyByRow(penalty:LPPDetails)(implicit messages: Messages): Option[SummaryListRow] = Option.unless(penalty.incomeTaxIsPaid || penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Accruing)){
+    summaryListRow(
+      label = messages("lpp.payPenaltyBy.key"),
+      value = Html(dateToString(penalty.principalChargeDueDate))
+    )
+  }
 }
