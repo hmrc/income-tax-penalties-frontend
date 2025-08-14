@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import fixtures.LPPDetailsTestData
 import fixtures.messages.LPPCardMessages
+import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -27,10 +28,13 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateForm
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLPPSummaryListRowHelper
 
+import java.time.LocalDate
+
 class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with DateFormatter
   with LPPDetailsTestData with MockLPPSummaryListRowHelper with TagHelper with SummaryListRowHelper {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  implicit val tm: TimeMachine = mock[TimeMachine]
   lazy val lppSummaryListRowHelper: LPPCardHelper = new LPPCardHelper(mockLPPSummaryListRowHelper)
 
   "LPPCardHelper" when {
@@ -52,18 +56,21 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 val penalty1 = sampleUnpaidLPP1
 
+                mockPayPenaltyByRow(penalty1)(None)
                 mockPenaltyTypeRow(penalty1)(testPenaltyType)
                 mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
                 mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                 mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 1, 1))
+
+                val penaltyTypeTitle = msgs(s"lpp.penaltyType.${penalty1.penaltyCategory}")
 
                 lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
                   Seq(LatePaymentPenaltySummaryCard(
                     index = 1,
-                    cardTitle = messagesForLanguage.cardTitlePenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
+                    cardTitle = msgs("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue), penaltyTypeTitle),
                     cardRows = Seq(
-                      testPenaltyType,
                       testTaxPeriodRow,
                       testDueDateRow,
                       testPaymentDateRow
@@ -92,18 +99,21 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                 val penalty1 = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
 
+                mockPayPenaltyByRow(penalty1)(None)
                 mockPenaltyTypeRow(penalty1)(testPenaltyType)
                 mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
                 mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                 mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
+                when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 1, 1))
+
+                val penaltyTypeTitle = msgs(s"lpp.penaltyType.${penalty1.penaltyCategory}")
 
                 lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
                   Seq(LatePaymentPenaltySummaryCard(
                     index = 1,
-                    cardTitle = messagesForLanguage.cardTitlePenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
+                    cardTitle = msgs("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue), penaltyTypeTitle),
                     cardRows = Seq(
-                      testPenaltyType,
                       testTaxPeriodRow,
                       testDueDateRow,
                       testPaymentDateRow,
@@ -134,13 +144,17 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
               val penalty1 = sampleManualLPP
 
+              mockPayPenaltyByRow(penalty1)(None)
               mockPenaltyTypeRow(penalty1)(testPenaltyType)
               mockAddedOnRow(penalty1)(Some(testAddedOnRow))
+              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 1, 1))
+
+              val penaltyTypeTitle = msgs(s"lpp.penaltyType.${penalty1.penaltyCategory}")
 
               lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
                 Seq(LatePaymentPenaltySummaryCard(
                   index = 1,
-                  cardTitle = messagesForLanguage.cardTitlePenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
+                  cardTitle = msgs("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue), penaltyTypeTitle),
                   cardRows = Seq(
                     testPenaltyType,
                     testAddedOnRow

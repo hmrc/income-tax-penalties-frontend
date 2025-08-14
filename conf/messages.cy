@@ -88,7 +88,7 @@ lsp.cardTitle.point.financialNoThreshold = Pwynt cosb {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point (Welsh)
 lsp.cardTitle.lateUpdate = Diweddariad hwyr
 lsp.cardTitle.lateTaxReturn = Ffurflen Dreth hwyr
-lpp.cardTitle = Cosb o £{0}
+lpp.cardTitle = Cosb {1} o £{0} (welsh)
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================

@@ -35,9 +35,11 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
           case _ => lppCardBody(lpp)
         }
 
+      val penaltyTypeTitle = messages(s"lpp.penaltyType.${lpp.penaltyCategory}")
+
       LatePaymentPenaltySummaryCard(
         index,
-        cardTitle = messages("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(lpp.amountDue)),
+        cardTitle = messages("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(lpp.amountDue), penaltyTypeTitle),
         cardRows = cardRows,
         status = getTagStatus(lpp),
         penaltyChargeReference = lpp.penaltyChargeReference,
@@ -58,7 +60,6 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
   private def lppCardBody(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
-      Some(lppSummaryRow.penaltyTypeRow(lpp)),
       lppSummaryRow.payPenaltyByRow(lpp),
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),
       Some(lppSummaryRow.incomeTaxDueRow(lpp)),
