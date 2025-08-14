@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
 import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.CurrentUserRequest
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.ITSAStatus.ITSAStatus
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ObligationDetail
 
 case class UserComplianceInfoAuditModel(isMTDMandated: Boolean,

@@ -55,31 +55,21 @@
                             {messages("cardLinks.viewCalculation")}
                         </a>
                     </li>
-                    {if(summaryCard.incomeTaxIsPaid || summaryCard.isTTPActive) {
-                        if(summaryCard.penaltyChargeReference.isDefined) {
-                            summaryCard.appealStatus match {
-                                case Some(AppealStatusEnum.Rejected) if summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal) =>
-                                    <li class="govuk-summary-card__action no-border not-bold">
-                                        <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2), is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
-                                            {messages("cardLinks.reviewAppeal")}
-                                        </a>
-                                    </li>
-                                case None =>
-                                    <li class="govuk-summary-card__action no-border not-bold">
-                                        <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
-                                            {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
-                                        </a>
-                                    </li>
-                                case _ =>
-                            }
-                        }
-                    } else {
-                        if(summaryCard.appealStatus.isEmpty) {
-                            <li class="govuk-summary-card__action no-border not-bold">
-                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
-                                    {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
-                                </a>
-                            </li>
+                    {if(summaryCard.penaltyChargeReference.isDefined) {
+                        summaryCard.appealStatus match {
+                            case Some(AppealStatusEnum.Rejected) if summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal) =>
+                                <li class="govuk-summary-card__action no-border not-bold">
+                                    <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2), is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
+                                        {messages("cardLinks.reviewAppeal")}
+                                    </a>
+                                </li>
+                            case None =>
+                                <li class="govuk-summary-card__action no-border not-bold">
+                                    <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
+                                        {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
+                                    </a>
+                                </li>
+                            case _ =>
                         }
                     }}
                 </ul>
