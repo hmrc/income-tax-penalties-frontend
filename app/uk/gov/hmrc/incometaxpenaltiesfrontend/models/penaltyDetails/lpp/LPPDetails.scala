@@ -50,8 +50,9 @@ case class LPPDetails(principalChargeReference: String,
                       vatOutstandingAmount: Option[BigDecimal],
                       metadata: LPPDetailsMetadata) extends Ordered[LPPDetails] {
 
-  val appealStatus: Option[AppealStatusEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
-  val appealLevel: Option[AppealLevelEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
+  private val AppealInfoWithHighestAppealLevel: Option[AppealInformationType] = appealInformation.flatMap(_.maxByOption(_.appealLevel.map(_.id).getOrElse(-1)))
+  val appealStatus: Option[AppealStatusEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealStatus)
+  val appealLevel: Option[AppealLevelEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealLevel)
 
   val amountDue: BigDecimal = if (penaltyStatus == Posted) penaltyAmountPosted else penaltyAmountAccruing
 
