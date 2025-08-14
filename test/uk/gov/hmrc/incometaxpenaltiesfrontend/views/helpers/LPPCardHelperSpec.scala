@@ -156,7 +156,6 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   index = 1,
                   cardTitle = msgs("lpp.cardTitle", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue), penaltyTypeTitle),
                   cardRows = Seq(
-                    testPenaltyType,
                     testAddedOnRow
                   ),
                   status = getTagStatus(penalty1),

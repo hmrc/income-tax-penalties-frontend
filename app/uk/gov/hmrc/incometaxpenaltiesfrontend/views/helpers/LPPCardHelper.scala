@@ -69,7 +69,6 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
   private def lppManual(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
-      Some(lppSummaryRow.penaltyTypeRow(lpp)),
       lppSummaryRow.addedOnRow(lpp)
     ).flatten
 }

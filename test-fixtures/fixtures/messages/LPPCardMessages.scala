@@ -25,6 +25,9 @@ object LPPCardMessages {
 
     //Card Title Messages
     val cardTitlePenalty: String => String = amount => s"£$amount penalty"
+    val cardTitleFirstPenalty: String => String = amount => s"First late payment penalty: £$amount"
+    val cardTitleSecondPenalty: String => String = amount => s"Second late payment penalty: £$amount"
+    val cardTitlePenaltyDetailsLetter: String => String = amount => "Penalty for late payment - details are in the letter we sent you"
 
     //Summary Row Messages
     val penaltyTypeKey = "Penalty type"
@@ -53,6 +56,9 @@ object LPPCardMessages {
 
     //Card Title Messages
     override val cardTitlePenalty: String => String = amount => s"Cosb o £$amount"
+    override val cardTitleFirstPenalty: String => String = amount => s"First late payment penalty: £$amount (Welsh)"
+    override val cardTitleSecondPenalty: String => String = amount => s"Second late payment penalty: £$amount (Welsh)"
+    override val cardTitlePenaltyDetailsLetter: String => String = amount => "Penalty for late payment - details are in the letter we sent you (Welsh)"
 
     //Summary Row Messages
     override val penaltyTypeKey = "Math o gosb"

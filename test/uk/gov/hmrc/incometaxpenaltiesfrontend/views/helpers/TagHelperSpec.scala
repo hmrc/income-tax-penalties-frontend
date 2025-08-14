@@ -94,14 +94,28 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                   }
                 }
 
-                "the appeal status is not 'Upheld'" should {
+                "the appeal status is not 'Upheld'" when {
 
-                  "generate an Inactive tag model with correct message and class" in {
+                  "period of compliance has not been achieved" should {
 
-                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive))
+                    "generate an Inactive tag model with correct message and class" in {
 
-                    tag.classes shouldBe ""
-                    tag.content shouldBe Text(messagesForLanguage.expired)
+                      val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive))
+
+                      tag.classes shouldBe ""
+                      tag.content shouldBe Text(messagesForLanguage.expired)
+                    }
+                  }
+
+                  "period of compliance has been achieved" should {
+
+                    "generate an Inactive tag model with correct message and class" in {
+
+                      val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive), pointsRemovedAfterPoc = Some(true))
+
+                      tag.classes shouldBe ""
+                      tag.content shouldBe Text(messagesForLanguage.removed)
+                    }
                   }
                 }
               }
@@ -212,12 +226,12 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
             "the penalty has been appealed and upheld" should {
 
-              "generate a Paid tag model with correct message and class" in {
+              "generate a Cancelled tag model with correct message and class" in {
 
                 val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal))
 
                 tag.classes shouldBe ""
-                tag.content shouldBe Text(messagesForLanguage.upheld)
+                tag.content shouldBe Text(messagesForLanguage.cancelled)
               }
             }
 

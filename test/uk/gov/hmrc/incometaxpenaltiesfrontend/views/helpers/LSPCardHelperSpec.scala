@@ -259,7 +259,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     testReceivedDateRow,
                     testAppealStatusRow
                   ),
-                  cardTitle = messagesForLanguage.cardTitleFinancialPointNoThreshold(1, s": Late update"),
+                  cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": Late update", "200"),
                   status = getTagStatus(penalty1),
                   penaltyPoint = "1",
                   penaltyId = penalty1.penaltyNumber,
@@ -305,7 +305,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow,
                       testAppealStatusRow
                     ),
-                    cardTitle = messagesForLanguage.cardTitleAdditionalFinancialPoint("200", s": Late update"),
+                    cardTitle = messagesForLanguage.cardTitleAdditionalFinancialPoint("200", ": Late update"),
                     status = getTagStatus(penalty3),
                     penaltyPoint = "3",
                     penaltyId = penalty3.penaltyNumber,
@@ -322,7 +322,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow,
                       testAppealStatusRow
                     ),
-                    cardTitle = messagesForLanguage.cardTitleFinancialPointNoThreshold(2, s": Late update"),
+                    cardTitle = messagesForLanguage.cardTitleFinancialPoint(2, s": Late update", "200"),
                     status = getTagStatus(penalty2),
                     penaltyPoint = "2",
                     penaltyId = penalty2.penaltyNumber,
@@ -376,6 +376,36 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     ),
                     cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
                     status             = getTagStatus(penalty1),
+                    penaltyPoint       = "",
+                    penaltyId          = penalty1.penaltyNumber,
+                    isReturnSubmitted  = true,
+                    isAddedOrRemovedPoint = true,
+                    penaltyCategory    = penalty1.penaltyCategory,
+                    isManuallyRemovedPoint = true,
+                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                  ))
+              }
+            }
+
+            "the period of compliance has been achieved" should {
+              "construct a card with correct messages" in {
+                val penalty1 = sampleRemovedPenaltyPointWithPocAchieved
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
+                mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
+                mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
+
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, pointsRemovedAfterPeriodOfCompliance = true) shouldBe
+                  Seq(LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow
+                    ),
+                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
+                    status             = getTagStatus(penalty1, pointsRemovedAfterPoc = Some(true)),
                     penaltyPoint       = "",
                     penaltyId          = penalty1.penaltyNumber,
                     isReturnSubmitted  = true,

@@ -25,18 +25,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
 class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
-  def penaltyTypeRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
-    summaryListRow(
-      label = messages("lpp.penaltyType.key"),
-      value = Html(messages(s"lpp.penaltyType.${penalty.penaltyCategory}"))
-    )
-
-  def penaltyStatusRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
-    summaryListRow(
-      label = messages("lpp.penaltyType.key"),
-      value = Html(messages(s"lpp.penaltyType.${penalty.penaltyCategory}"))
-    )
-
   def addedOnRow(penalty: LPPDetails)(implicit messages: Messages): Option[SummaryListRow] =
     penalty.penaltyChargeCreationDate.map { creationDate =>
       summaryListRow(

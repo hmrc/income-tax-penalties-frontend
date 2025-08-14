@@ -21,10 +21,8 @@ import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum, LSPTypeEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LateSubmissionPenaltySummaryCard
 
@@ -99,11 +97,15 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
 
     val cardTitle =
-      if(penalty.penaltyOrder.exists(_.toInt > threshold)) {
+      if(penalty.penaltyOrder.exists(_.toInt >= threshold)) {
         if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
           messages("lsp.cardTitle.additionalFinancialPoint.successful", currencyFormat)
         } else {
-          messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
+          if (penalty.penaltyOrder.exists(_.toInt == threshold)){
+            messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
+          } else {
+            messages("lsp.cardTitle.additionalFinancialPoint", currencyFormat, reason)
+          }
         }
       } else {
         messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
@@ -125,9 +127,13 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
   }
 
   def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
-
+    val expiredPointStatusTags: Set[Tag] = Set(
+      Tag(Text(messages("status.expired"))),
+      Tag(Text(messages("status.removed"))),
+      Tag(Text(messages("status.cancelled"))),
+    )
     buildLSPSummaryCard(
-      cardTitle = if(getTagStatus(penalty).content == Text(messages("status.expired"))) messages("lsp.cardTitle.expiredPoint") else if(getTagStatus(penalty).content == Text(messages("status.cancelled"))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
+      cardTitle = if(expiredPointStatusTags.contains(getTagStatus(penalty))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
       rows = Seq(
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
@@ -163,7 +169,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
       ).flatten ++ pointExpiredAndAppealRow,
       penalty = penalty,
       isAnAddedOrRemovedPoint = true,
-      isManuallyRemovedPoint = !penalty.isFAP
+      isManuallyRemovedPoint = !penalty.isFAP,
+      pointsRemovedAfterPoc = Some(pointsRemovedAfterPeriodOfCompliance)
     )
   }
 
@@ -172,12 +179,14 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
                                   penalty: LSPDetails,
                                   isAnAddedPoint: Boolean = false,
                                   isAnAddedOrRemovedPoint: Boolean = false,
-                                  isManuallyRemovedPoint: Boolean = false)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+                                  isManuallyRemovedPoint: Boolean = false,
+                                  pointsRemovedAfterPoc: Option[Boolean] = None
+                                 )(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     LateSubmissionPenaltySummaryCard(
       cardRows = rows,
       cardTitle = cardTitle,
-      status = getTagStatus(penalty),
+      status = getTagStatus(penalty, pointsRemovedAfterPoc),
       penaltyPoint = penalty.penaltyOrder.getOrElse(""),
       penaltyId = penalty.penaltyNumber,
       isReturnSubmitted = penalty.isReturnSubmitted,

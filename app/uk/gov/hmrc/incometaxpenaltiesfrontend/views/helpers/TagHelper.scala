@@ -28,12 +28,18 @@ import java.time.LocalDate
 
 trait TagHelper {
 
-  def getTagStatus(penalty: LSPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+  def getTagStatus(penalty: LSPDetails, pointsRemovedAfterPoc: Option[Boolean] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     penalty.penaltyStatus match {
       case LSPPenaltyStatusEnum.Inactive =>
-        Tag(Text(messages(
-          if (penalty.appealStatus.contains(AppealStatusEnum.Upheld)) messages("status.cancelled") else messages("status.expired")
-        )))
+        val isAppealStatusUpheld: Boolean = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
+        val isRemovedAfterPoc: Boolean = pointsRemovedAfterPoc.contains(true)
+        val tagStatusMessage: String =
+          (isAppealStatusUpheld, isRemovedAfterPoc) match {
+          case (true, _) => messages("status.cancelled")
+          case (_, true) => messages("status.removed")
+          case _ => messages("status.expired")
+        }
+        Tag(Text(messages(tagStatusMessage)))
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount,penalty.amountPaid, penalty.chargeDueDate)
       case _ =>
@@ -42,7 +48,7 @@ trait TagHelper {
 
   def getTagStatus(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     (penalty.appealStatus, penalty.penaltyStatus) match {
-      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.upheld")))
+      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
       case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
       case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)),penalty.penaltyChargeDueDate)
