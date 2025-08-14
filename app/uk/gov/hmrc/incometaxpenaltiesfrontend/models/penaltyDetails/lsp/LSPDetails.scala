@@ -39,8 +39,9 @@ case class LSPDetails(penaltyNumber: String,
                       triggeringProcess: Option[String],
                       chargeReference: Option[String]) {
 
-  val appealStatus: Option[AppealStatusEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealStatus))
-  val appealLevel: Option[AppealLevelEnum.Value] = appealInformation.flatMap(_.headOption.flatMap(_.appealLevel))
+  private val AppealInfoWithHighestAppealLevel: Option[AppealInformationType] = appealInformation.flatMap(_.maxByOption(_.appealLevel.map(_.id).getOrElse(-1)))
+  val appealLevel: Option[AppealLevelEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealLevel)
+  val appealStatus: Option[AppealStatusEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealStatus)
 
   val lspTypeEnum: LSPTypeEnum.Value =
     (penaltyCategory, appealStatus) match {
