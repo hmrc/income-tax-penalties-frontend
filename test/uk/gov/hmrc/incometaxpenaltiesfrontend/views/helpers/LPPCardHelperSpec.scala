@@ -57,7 +57,6 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 val penalty1 = sampleUnpaidLPP1
 
                 mockPayPenaltyByRow(penalty1)(None)
-                mockPenaltyTypeRow(penalty1)(testPenaltyType)
                 mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
                 mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                 mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
@@ -100,7 +99,6 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 val penalty1 = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
 
                 mockPayPenaltyByRow(penalty1)(None)
-                mockPenaltyTypeRow(penalty1)(testPenaltyType)
                 mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
                 mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                 mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
@@ -145,7 +143,6 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               val penalty1 = sampleManualLPP
 
               mockPayPenaltyByRow(penalty1)(None)
-              mockPenaltyTypeRow(penalty1)(testPenaltyType)
               mockAddedOnRow(penalty1)(Some(testAddedOnRow))
               when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 1, 1))
 
