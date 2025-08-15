@@ -17,9 +17,9 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 
 import play.api.libs.json._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
-import LPPPenaltyStatusEnum.Posted
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum.Posted
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 
 import java.time.LocalDate
 
