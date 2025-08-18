@@ -49,6 +49,10 @@ trait AuthoriseHelper {
         logger.info("Auth failed: NO_ASSIGNMENT – agent user not assigned to this client.")
         errorHandler.agentServiceError().map(html=> Unauthorized(html))
 
+      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains("NO_RELATIONSHIP") =>
+        logger.info("Auth failed: NO_RELATIONSHIP – agent user has no authorisation for this client.")
+        Future.successful(Unauthorized)
+
       case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(agentEnrolmentKey) =>
         logger.warn(s"Agent enrolment missing")
         //ToDo need create not an agent page
