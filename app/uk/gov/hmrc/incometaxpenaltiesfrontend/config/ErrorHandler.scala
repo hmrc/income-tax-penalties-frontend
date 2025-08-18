@@ -20,14 +20,14 @@ import play.api.i18n.MessagesApi
 import play.api.mvc.Results.InternalServerError
 import play.api.mvc.{RequestHeader, Result}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.ErrorView
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.{AgentErrorView, ErrorView}
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class ErrorHandler @Inject()(errorView: ErrorView, val messagesApi: MessagesApi)(implicit val ec: ExecutionContext, appConfig: AppConfig) extends FrontendErrorHandler {
+class ErrorHandler @Inject()(errorView: ErrorView, agentErrorView: AgentErrorView, val messagesApi: MessagesApi)(implicit val ec: ExecutionContext, appConfig: AppConfig) extends FrontendErrorHandler {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] =
     Future.successful(errorView(pageTitle, heading, message))
@@ -35,4 +35,6 @@ class ErrorHandler @Inject()(errorView: ErrorView, val messagesApi: MessagesApi)
   def showInternalServerError()(implicit request: RequestHeader): Future[Result] =
     internalServerErrorTemplate.map(InternalServerError(_))
 
+  def agentServiceError()(implicit request: RequestHeader): Future[AgentErrorView] =
+    Future.successful(agentErrorView)
 }
