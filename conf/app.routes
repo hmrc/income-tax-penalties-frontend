@@ -21,3 +21,5 @@ GET        /actions-to-get-points-removed             uk.gov.hmrc.incometaxpenal
 GET        /agent-actions-to-get-points-removed       uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage(isAgent:Boolean = true)
 
 GET        /language/:lang                            uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)
+
+GET        /agent-error-view                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AgentErrorViewController.onPageLoad()

@@ -265,3 +265,9 @@ compliance.timeline.agent.title = Y camau y mae’n rhaid i’ch cleient eu cymr
 compliance.timeline.agent.maximum.penalty.points = Mae gan eich cleient uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â phwyntiau eich cleient i ben.
 compliance.timeline.agent.send.submission.listed = Fel bod modd i CThEF ddileu pwyntiau’ch cleient, mae angen iddo anfon unrhyw gyflwyniadau sydd wedi’u rhestru ar y llinell amser hon cyn y dyddiad cau.
 compliance.timeline.agent.if.you.missed.deadline = Os bydd eich cleient yn methu dyddiad cau, bydd yn rhaid iddo anfon pob un o’i gyflwyniadau mewn pryd ar gyfer y {0} mis nesaf cyn y gall CThEF ddileu ei bwyntiau.
+
+# Agent Error View
+agentErrorView.h1 = Nid yw’ch sefydliad wedi rhoi’r caniatâd i chi gael mynediad at y cleient hwn
+agentErrorView.p1 = Mae’r cleient hwn wedi awdurdodi’ch sefydliad. Nid yw’ch tîm  wedi rhoi’r caniatâd i chi gael mynediad at y cleient hwn.
+agentErrorView.p2 = Gofynnwch i’ch tîm pwy sy’n rheoli grwpiau mynediad. Fe fydd  yn rhywun sydd â mynediad gweinyddol i’ch cyfrif gwasanaethau asiant.
+agentErrorView.link = Ewch i gyfrif gwasanaethau asiant
