@@ -51,7 +51,7 @@ trait TagHelper {
       case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
       case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
-      case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)))
+      case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)),penalty.penaltyChargeDueDate)
     }
 
   private def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: BigDecimal, penaltyAmountPaid: BigDecimal, chargeDueDate: Option[LocalDate] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =

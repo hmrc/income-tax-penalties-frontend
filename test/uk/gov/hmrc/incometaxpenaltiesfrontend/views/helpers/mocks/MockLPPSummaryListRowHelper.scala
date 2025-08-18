@@ -20,6 +20,7 @@ import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
@@ -57,6 +58,11 @@ trait MockLPPSummaryListRowHelper extends MockitoSugar {
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
                                  appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
     when(mockLPPSummaryListRowHelper.appealStatusRow(eqTo(appealStatus), eqTo(appealLevel))(any()))
+      .thenReturn(value)
+
+  def mockPayPenaltyByRow(penalty: LPPDetails)(value: Option[SummaryListRow])
+  : OngoingStubbing[Option[SummaryListRow]] =
+    when(mockLPPSummaryListRowHelper.payPenaltyByRow(eqTo(penalty))(any[Messages]))
       .thenReturn(value)
 
 }

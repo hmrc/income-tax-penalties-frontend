@@ -173,7 +173,7 @@ lsp.cardTitle.point.financialNoThreshold = Penalty point {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point
 lsp.cardTitle.lateUpdate = Late update
 lsp.cardTitle.lateTaxReturn = Late tax return
-lpp.cardTitle = £{0} penalty
+lpp.cardTitle = {1}: £{0} penalty
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
@@ -213,6 +213,7 @@ lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year
 lpp.incomeTaxDue.key = Income Tax due
 lpp.incomeTaxPaymentDate.key = Income Tax paid
 lpp.paymentNotReceived = Payment not yet received
+lpp.payPenaltyBy.key = Pay penalty by
 
 # Appeal Status
 # =============
