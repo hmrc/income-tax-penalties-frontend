@@ -35,7 +35,7 @@ trait AuthoriseHelper {
 
   def handleAuthFailure(authorisationException: AuthorisationException,
                         isAgent: Boolean)
-                       (implicit rh: RequestHeader,
+                       (implicit rh: Request[_],
                         ec: ExecutionContext): Future[Result] = {
     authorisationException match {
       case _: BearerTokenExpired =>
@@ -47,7 +47,7 @@ trait AuthoriseHelper {
 
       case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains("NO_ASSIGNMENT") =>
         logger.info("Auth failed: NO_ASSIGNMENT – agent user not assigned to this client.")
-        errorHandler.agentServiceError().map(_=> Unauthorized)
+        errorHandler.agentServiceError().map(html=> Unauthorized(html))
 
       case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(agentEnrolmentKey) =>
         logger.warn(s"Agent enrolment missing")

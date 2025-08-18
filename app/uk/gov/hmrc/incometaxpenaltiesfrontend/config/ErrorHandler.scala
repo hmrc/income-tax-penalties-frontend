@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.InternalServerError
-import play.api.mvc.{RequestHeader, Result}
+import play.api.mvc.{Request, RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.{AgentErrorView, ErrorView}
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
@@ -35,6 +35,6 @@ class ErrorHandler @Inject()(errorView: ErrorView, agentErrorView: AgentErrorVie
   def showInternalServerError()(implicit request: RequestHeader): Future[Result] =
     internalServerErrorTemplate.map(InternalServerError(_))
 
-  def agentServiceError()(implicit request: RequestHeader): Future[AgentErrorView] =
-    Future.successful(agentErrorView)
+  def agentServiceError()(implicit request: Request[_]): Future[Html] =
+    Future.successful(agentErrorView())
 }
