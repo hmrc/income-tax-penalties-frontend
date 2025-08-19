@@ -17,11 +17,12 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions
 
 import play.api.Logger
-import play.api.mvc.Results.{InternalServerError, Redirect}
+import play.api.mvc.Results.{InternalServerError, Redirect, Unauthorized}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.agentEnrolmentKey
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -32,9 +33,12 @@ trait AuthoriseHelper {
 
   val logger: Logger
 
+  private val noAssignment = "NO_ASSIGNMENT"
+  private val noRelationship = "NO_RELATIONSHIP"
+
   def handleAuthFailure(authorisationException: AuthorisationException,
                         isAgent: Boolean)
-                       (implicit rh: RequestHeader,
+                       (implicit rh: Request[_],
                         ec: ExecutionContext): Future[Result] = {
     authorisationException match {
       case _: BearerTokenExpired =>
@@ -43,6 +47,15 @@ trait AuthoriseHelper {
         errorHandler.internalServerErrorTemplate.map(html =>
           InternalServerError(html)
         )
+
+      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(noAssignment) =>
+        logger.info("Auth failed: NO_ASSIGNMENT – agent user not assigned to this client.")
+        errorHandler.agentServiceError().map(html=> Unauthorized(html))
+
+      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(noRelationship) =>
+        logger.info("Auth failed: NO_RELATIONSHIP – agent user has no authorisation for this client.")
+        Future.successful(Unauthorized)
+
       case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(agentEnrolmentKey) =>
         logger.warn(s"Agent enrolment missing")
         //ToDo need create not an agent page

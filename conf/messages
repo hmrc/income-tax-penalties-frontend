@@ -268,3 +268,9 @@ individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your
 agent.lpp.tab.overdueTax = Because your client has paid their outstanding tax, their penalties are no longer estimated and can be paid for immediately.
 individual.lpp.noPenalties = You have no late payment penalties that are currently due.
 agent.lpp.noPenalties = Your client has no late payment penalties that are currently due.
+
+# Agent Error View
+agentErrorView.h1 = Your organisation has not given you access to this client
+agentErrorView.p1 = This client has authorised your organisation. Your team has not given you access to the client’s tax.
+agentErrorView.p2 = Ask your team who manages access groups. It will be someone with administrative access to your agent services account.
+agentErrorView.link = Go to agent services account

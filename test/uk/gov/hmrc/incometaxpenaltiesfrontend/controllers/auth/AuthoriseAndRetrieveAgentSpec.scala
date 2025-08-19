@@ -77,6 +77,15 @@ class AuthoriseAndRetrieveAgentSpec extends AnyWordSpec with should.Matchers wit
           status(result) shouldBe INTERNAL_SERVER_ERROR
         }
       }
+
+      "has insufficient enrolments: NO_ASSIGNMENT" should {
+        "return an 401 Unauthorised and display error" in {
+          mockAuthenticatedAgentNoAssigment()
+          val result = testAction.invokeBlock(FakeRequest(), block)
+          status(result) shouldBe UNAUTHORIZED
+          contentType(result) shouldBe Some("text/html")
+        }
+      }
     }
 
     "the user is not an Individual" should {
@@ -116,7 +125,6 @@ class AuthoriseAndRetrieveAgentSpec extends AnyWordSpec with should.Matchers wit
         redirectLocation(result) shouldBe Some("http://localhost:9949/auth-login-stub/gg-sign-in")
       }
     }
-
 
 
     "the user has an expired Session" should {

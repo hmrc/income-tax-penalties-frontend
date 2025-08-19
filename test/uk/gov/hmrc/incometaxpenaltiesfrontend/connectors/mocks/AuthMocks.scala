@@ -101,6 +101,14 @@ trait AuthMocks extends MockitoSugar {
     )
   }
 
+  def mockAuthenticatedAgentNoAssigment(): Unit = {
+    when(mockAuthConnector.authorise(ameq(predicateInitial), ameq(retrievalAgent))(
+      any(), any())
+    ).thenReturn(
+      Future.failed(InsufficientEnrolments("NO_ASSIGNMENT"))
+    )
+  }
+
   def mockAuthenticatedMTDIndorOrg(af: AffinityGroup, hasNino: Boolean = true, hasEnrolment: Boolean = true): Unit = {
     when(mockAuthConnector.authorise(ameq(predicateMTDIndOrOrg), ameq(retrievalInitial))(
       any(), any())
