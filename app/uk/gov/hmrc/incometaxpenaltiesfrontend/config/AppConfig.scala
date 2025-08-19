@@ -100,5 +100,5 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
     }
   }
 
-  lazy val agentServicesUrl: String = servicesConfig.baseUrl("agent-services-account") +"/agent-services-account/no-assignment"
+  lazy val agentServicesUrl: String = servicesConfig.baseUrl("agent-services-account-frontend") +"/agent-services-account/no-assignment"
 }

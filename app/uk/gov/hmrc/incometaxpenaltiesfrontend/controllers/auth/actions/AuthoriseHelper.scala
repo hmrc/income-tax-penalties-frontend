@@ -73,7 +73,7 @@ trait AuthoriseHelper {
         )
       case authorisationException: AuthorisationException =>
         logger.error(s"Unauthorised request: ${authorisationException.reason}. Redirect to Sign In.")
-        Future.successful(Redirect(appConfig.signInUrl))
+        errorHandler.agentServiceError().map(html=> Unauthorized(html))
     }
   }
 }
