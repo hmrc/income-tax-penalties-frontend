@@ -33,6 +33,9 @@ trait AuthoriseHelper {
 
   val logger: Logger
 
+  private val noAssignment = "NO_ASSIGNMENT"
+  private val noRelationship = "NO_RELATIONSHIP"
+
   def handleAuthFailure(authorisationException: AuthorisationException,
                         isAgent: Boolean)
                        (implicit rh: Request[_],
@@ -45,11 +48,11 @@ trait AuthoriseHelper {
           InternalServerError(html)
         )
 
-      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains("NO_ASSIGNMENT") =>
+      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(noAssignment) =>
         logger.info("Auth failed: NO_ASSIGNMENT – agent user not assigned to this client.")
         errorHandler.agentServiceError().map(html=> Unauthorized(html))
 
-      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains("NO_RELATIONSHIP") =>
+      case insufficientEnrolments: InsufficientEnrolments if insufficientEnrolments.msg.contains(noRelationship) =>
         logger.info("Auth failed: NO_RELATIONSHIP – agent user has no authorisation for this client.")
         Future.successful(Unauthorized)
 
@@ -73,7 +76,7 @@ trait AuthoriseHelper {
         )
       case authorisationException: AuthorisationException =>
         logger.error(s"Unauthorised request: ${authorisationException.reason}. Redirect to Sign In.")
-        errorHandler.agentServiceError().map(html=> Unauthorized(html))
+        Future.successful(Redirect(appConfig.signInUrl))
     }
   }
 }
