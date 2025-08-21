@@ -173,7 +173,6 @@ lsp.cardTitle.point.financialNoThreshold = Penalty point {0}{1}
 lsp.cardTitle.expiredPoint = Penalty point
 lsp.cardTitle.lateUpdate = Late update
 lsp.cardTitle.lateTaxReturn = Late tax return
-lpp.cardTitle = {1}: £{0} penalty
 
 # Late Submission Penalty - Summary Row Key/Values
 # ================================================
