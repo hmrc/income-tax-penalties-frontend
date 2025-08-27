@@ -325,14 +325,14 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                         "not display view calculation link when appeal status under appeal" in {
 
-//                          val penalty = sampleLPP1AppealUnpaid.copy(appealInformation = Some(
-//                            Seq(
-//                              AppealInformationType(
-//                                appealStatus = Some(AppealStatusEnum.Upheld), appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
-//                              )
-//                            )))
+                          val penalty = sampleUnpaidLPP1.copy(appealInformation = Some(
+                            Seq(
+                              AppealInformationType(
+                                appealStatus = Some(AppealStatusEnum.Upheld), appealLevel = Some(AppealLevelEnum.FirstStageAppeal), appealDescription = Some("Test")
+                              )
+                            )))
 
-                          val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
+//                          val penalty = customLPP
                           val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
                           val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
@@ -344,6 +344,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             principalChargeReference = penalty.principalChargeReference,
                             isPenaltyPaid = penalty.isPaid,
                             amountDue = penalty.penaltyAmountPosted,
+                            appealStatus = penalty.appealStatus,
                             incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
                             penaltyCategory = penalty.penaltyCategory,
                             dueDate = dateToString(penalty.principalChargeDueDate),
@@ -353,8 +354,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           ),isAgent)
 
                           val document = Jsoup.parse(summaryCardHtml.toString)
-println(document)
-                          document.select("#lpp-view-calculation-link-1").empty shouldBe true
+                          document.select("#lpp-view-calculation-link-1") shouldBe empty
                         }
                       }
                     }
