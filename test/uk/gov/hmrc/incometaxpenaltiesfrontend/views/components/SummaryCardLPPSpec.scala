@@ -23,12 +23,10 @@ import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.TagHelper
@@ -325,12 +323,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                         "not display view calculation link when appeal status under appeal" in {
 
-                          val penalty = sampleUnpaidLPP1.copy(appealInformation = Some(
-                            Seq(
-                              AppealInformationType(
-                                appealStatus = Some(AppealStatusEnum.Upheld), appealLevel = Some(AppealLevelEnum.FirstStageAppeal), appealDescription = Some("Test")
-                              )
-                            )))
+                          val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
 
 //                          val penalty = customLPP
                           val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
