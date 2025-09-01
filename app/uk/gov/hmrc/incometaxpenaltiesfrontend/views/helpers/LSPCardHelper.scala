@@ -99,7 +99,11 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     val cardTitle =
       if(penalty.penaltyOrder.exists(_.toInt >= threshold)) {
         if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
-          messages("lsp.cardTitle.additionalFinancialPoint.successful", currencyFormat)
+          if(penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
+            messages("lsp.cardTitle.removedPoint")
+          } else {
+              messages("lsp.cardTitle.additionalFinancialPoint.successful2", currencyFormat)
+          }
         } else {
           if (penalty.penaltyOrder.exists(_.toInt == threshold)){
             messages(s"lsp.cardTitle.financialPoint",penaltyOrder, reason, currencyFormat)
