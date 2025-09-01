@@ -102,7 +102,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
           if(penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
             messages("lsp.cardTitle.removedPoint")
           } else {
-              messages("lsp.cardTitle.additionalFinancialPoint.successful2", currencyFormat)
+              messages("lsp.cardTitle.additionalFinancialPoint.successful", currencyFormat)
           }
         } else {
           if (penalty.penaltyOrder.exists(_.toInt == threshold)){
