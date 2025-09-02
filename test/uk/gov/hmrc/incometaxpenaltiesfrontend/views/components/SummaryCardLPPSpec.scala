@@ -23,7 +23,6 @@ import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
@@ -318,6 +317,37 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                           document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                           document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
+                        }
+                      }
+                      "penalty cancelled after successful appeal " should {
+
+                        "not display view calculation link when appeal status under appeal" in {
+
+                          val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
+
+//                          val penalty = customLPP
+                          val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+
+                          val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                            index = 1,
+                            cardTitle = messagesForLanguage.cardTitlePenalty(amount),
+                            cardRows = Seq.empty,
+                            status = getTagStatus(penalty),
+                            penaltyChargeReference = penalty.penaltyChargeReference,
+                            principalChargeReference = penalty.principalChargeReference,
+                            isPenaltyPaid = penalty.isPaid,
+                            amountDue = penalty.penaltyAmountPosted,
+                            appealStatus = penalty.appealStatus,
+                            incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                            penaltyCategory = penalty.penaltyCategory,
+                            dueDate = dateToString(penalty.principalChargeDueDate),
+                            taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                            taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                            incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
+                          ),isAgent)
+
+                          val document = Jsoup.parse(summaryCardHtml.toString)
+                          document.select("#lpp-view-calculation-link-1") shouldBe empty
                         }
                       }
                     }
