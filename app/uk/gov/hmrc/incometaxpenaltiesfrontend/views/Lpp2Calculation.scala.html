@@ -39,7 +39,7 @@
 @main(pageTitle = messages(s"calculation.individual.second.title"), backLinkEnabled = true, isAgent = isAgent) {
 
     <span class="govuk-caption-l" id="captionSpan">
-        @messages("caption.date", dateToString(calculationData.principleChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate.minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))
+        @messages("caption.date", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))
     </span>
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.second.h1")</h1>
