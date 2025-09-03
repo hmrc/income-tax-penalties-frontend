@@ -53,13 +53,14 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils{
   }
 
   lazy val lateSubmissionReads: Reads[LateSubmission] = (json: JsValue) => for {
+    incomeSource <- (json \ "incomeSource").validateOpt[String]
     taxPeriodStartDate <- (json \ "taxPeriodStartDate").validateOpt[LocalDate]
     taxPeriodEndDate <- (json \ "taxPeriodEndDate").validateOpt[LocalDate]
     taxPeriodDueDate <- (json \ "taxPeriodDueDate").validateOpt[LocalDate]
     returnReceiptDate <- (json \ "returnReceiptDate").validateOpt[LocalDate]
     taxReturnStatus <- (json \ "taxReturnStatus").validateOpt[TaxReturnStatusEnum.Value]
   } yield {
-    LateSubmission("lateSubmissionID", None, None, taxPeriodStartDate, taxPeriodEndDate, taxPeriodDueDate, returnReceiptDate, taxReturnStatus)
+    LateSubmission("lateSubmissionID", incomeSource, None, taxPeriodStartDate, taxPeriodEndDate, taxPeriodDueDate, returnReceiptDate, taxReturnStatus)
   }
 
   lazy val lspDetailsReads: Reads[LSPDetails] = (json: JsValue) =>
