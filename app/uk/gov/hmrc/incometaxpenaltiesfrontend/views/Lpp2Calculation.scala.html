@@ -22,7 +22,6 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.SecondLatePaymentCalculationHelper
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
-@import java.time.LocalDate
 
 
 @this(
@@ -105,7 +104,7 @@
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">£@calculationData.formattedAmountPenaltyAppliedTo</td>
-                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.principleChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate.minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))</td>
+                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.principalChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate.minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))</td>
                 <td class="govuk-table__cell">@{calculationData.penaltyPercentage}%</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
             </tr>
