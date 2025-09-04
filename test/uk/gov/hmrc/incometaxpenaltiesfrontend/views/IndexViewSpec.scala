@@ -79,7 +79,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               implicit lazy val document: Document = asDocument(html)
 
               behave like pageWithExpectedElementsAndMessages(
-                Selectors.lspTab -> messagesForLanguage.noLSP,
+                Selectors.lspTab -> (if (isAgent) messagesForLanguage.noLSPAgent else messagesForLanguage.noLSP),
                 Selectors.lppTab -> (if
                 (isAgent)messagesForLanguage.noLPPAgent else messagesForLanguage.noLPPIndividual)
               )
