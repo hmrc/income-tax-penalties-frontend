@@ -76,7 +76,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
-                      document.select("h3").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitlePoint(1)
                       document.select(s"#penalty-id-${sampleLateSubmissionPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
 
                       val appealLink = document.select(s"#penalty-id-${sampleLateSubmissionPoint.penaltyNumber}-appealLink")
@@ -104,7 +104,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
-                      document.select("h3").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitlePoint(1)
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
 
                       val appealLink = document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-appealLink")
@@ -137,7 +137,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
-                      document.select("h3").text() shouldBe messagesForLanguage.cardTitleAdjustmentPoint(1)
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitleAdjustmentPoint(1)
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").text() shouldBe messagesForLanguage.cardLinksAdjustedPointCannotAppeal
                     }
@@ -161,7 +161,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
-                      document.select("h3").text() shouldBe messagesForLanguage.cardTitleRemovedPoint
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitleRemovedPoint
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
@@ -194,7 +194,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h3").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePoint(1)
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
@@ -230,7 +230,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h3").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePoint(1)
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true
@@ -259,7 +259,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h3").text() shouldBe messagesForLanguage.cardTitlePoint(1)
+                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePoint(1)
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-cannotAppeal").isEmpty shouldBe true
                     document.select(s"#penalty-id-${appealedPenalty.penaltyNumber}-findOutHowAppeal").isEmpty shouldBe true

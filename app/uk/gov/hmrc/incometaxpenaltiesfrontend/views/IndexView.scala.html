@@ -52,7 +52,7 @@
 
 @lspMainTab = {
     @h3(msg = "index.lsp.tab.h2", elmId = "lspHeading", classes=Some("govuk-heading-m"))
-    
+
     @if(lspCardData.isEmpty && lspOverviewData.isEmpty) {
         @if(isAgent){
             @p("lsp.noPenalties.agent")
