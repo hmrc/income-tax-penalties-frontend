@@ -85,7 +85,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                 val document = Jsoup.parse(summaryCardHtml.toString)
 
-                document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                 document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.due
                 document.select("#lpp-actions-1").text() shouldBe messagesForLanguage.cannotAppeal
               }
@@ -125,7 +125,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.amountDue(amountOutstanding)
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                     document.select("#lpp-appeal-link-1").isEmpty shouldBe true
@@ -160,7 +160,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.estimate
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                     document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
@@ -199,7 +199,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
-                    document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                     document.select("#lpp-appeal-link-1").isEmpty shouldBe true
@@ -236,7 +236,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
-                      document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                       document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                       document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
 
@@ -281,7 +281,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                         val document = Jsoup.parse(summaryCardHtml.toString)
 
-                        document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                        document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                         document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                         document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                         document.select("#lpp-appeal-link-1").isEmpty shouldBe true
@@ -313,7 +313,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                           val document = Jsoup.parse(summaryCardHtml.toString)
 
-                          document.select("h3").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                          document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                           document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                           document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                           document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
