@@ -51,12 +51,16 @@
 )(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @lspMainTab = {
-
     @h3(msg = "index.lsp.tab.h2", elmId = "lspHeading", classes=Some("govuk-heading-m"))
-
+    
     @if(lspCardData.isEmpty && lspOverviewData.isEmpty) {
-        @p("lsp.noPenalties")
+        @if(isAgent){
+            @p("lsp.noPenalties.agent")
+        } else {
+            @p("lsp.noPenalties")
+        }
     }
+
     @lspOverviewData.map(lspTabOverview(_, isAgent, actionsToRemoveLinkDate))
     @lspCardData.map(summaryCardLSP(_, isAgent))
 }

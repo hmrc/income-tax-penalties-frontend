@@ -20,6 +20,7 @@ object IndexViewMessages {
 
   sealed trait Messages { _: i18n =>
     val noLSP = "You don’t have any active late submission penalties"
+    val noLSPAgent = "Your client has no active late submission penalties."
     val noLPPIndividual = "You have no late payment penalties that are currently due"
     val noLPPAgent = "Your client has no late payment penalties that are currently due."
     val overviewH2 = "Overview"
@@ -60,6 +61,7 @@ object IndexViewMessages {
     override val noLPPIndividual = "Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd."
     override val noLPPAgent = "Nid oes gan eich cleient unrhyw gosbau am dalu’n hwyr ar hyn o bryd."
     override val noLSP = "Cosbau am gyflwyno’n hwyr Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd"
+    override val noLSPAgent = "Nid oes gan eich cleient unrhyw gosbau actif am gyflwyno’n hwyr ar hyn o bryd."
     override val overviewH2 = "Trosolwg"
     override val overviewP1: Boolean => String = {
       case true => "Mae gan gyfrif eich cleient y canlynol:"
