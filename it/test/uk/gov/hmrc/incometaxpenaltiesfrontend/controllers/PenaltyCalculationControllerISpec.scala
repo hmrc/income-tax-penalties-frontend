@@ -289,7 +289,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
-            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, $youOrClient should pay this penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}."
 
           }
 
