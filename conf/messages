@@ -157,7 +157,7 @@ status.overdue = Overdue
 status.due = Due
 status.paid = Paid
 status.estimate = Estimate
-status.amountDue = £{0} Due
+status.amountDue = £{0} due
 status.late = Late
 status.cancelled = Cancelled
 
@@ -205,6 +205,8 @@ lsp.compliance.submitted.agent =  they have submitted on time for the last {0} m
 lpp.penaltyType.key = Penalty type
 lpp.penaltyType.LPP1 = First late payment penalty: £{0}
 lpp.penaltyType.LPP2 = Second late payment penalty: £{0}
+lpp.penaltyType.LPP1.due = First late payment penalty
+lpp.penaltyType.LPP2.due = Second late payment penalty
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you
 lpp.addedOn.key = Added on
 lpp.incomeTaxPeriod.key = Overdue charge
