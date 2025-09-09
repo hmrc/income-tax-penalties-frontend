@@ -36,8 +36,9 @@ class SecondLatePaymentCalculationHelper {
 
   def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData,
                         isAgent: Boolean)(implicit messages: Messages): String = {
-    if(!calculationData.incomeTaxIsPaid) {
-      messages("calculation.individual.calc2.penalty.isEstimate",
+    val isAgentTag = if(isAgent) "agent" else "individual"
+    if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
+      messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
     } else if(calculationData.isPenaltyOverdue) {
