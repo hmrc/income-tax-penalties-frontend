@@ -63,11 +63,11 @@
 
 
     <p class="govuk-body" id="paymentDeadline">
-        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.payPenaltyBy))
+        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
     </p>
 
 
-    @if(!calculationData.incomeTaxIsPaid){
+    @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
         <p class="govuk-body" id="missedDeadline">
             @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.unpaid")
         </p>
