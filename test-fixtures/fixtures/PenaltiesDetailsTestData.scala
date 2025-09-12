@@ -102,7 +102,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       daysOverdue = "4",
       amountPenaltyAppliedTo =  20.00,
       chargeStartDate = LocalDate.now(),
-      chargeEndDate = LocalDate.now()
+      chargeEndDate = LocalDate.now(),
+      principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
     )
   }
 

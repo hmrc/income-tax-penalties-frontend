@@ -16,12 +16,12 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToString
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenaltyCalculationData
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.SecondLatePaymentCalculationHelper
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.SecondLatePaymentCalculationHelper
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToYearString
 
 
 @this(
@@ -33,9 +33,13 @@
         calculationHelper: SecondLatePaymentCalculationHelper,
 )
 
-@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@individualOrAgent = {@if(isAgent){agent}else{individual}}
 
 @main(pageTitle = messages(s"calculation.individual.second.title"), backLinkEnabled = true, isAgent = isAgent) {
+
+
 
     <span class="govuk-caption-l" id="captionSpan">
         @messages("caption.date", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))
@@ -45,8 +49,6 @@
 
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.penaltyAmount</p>
-
-
 
 
     @if(calculationData.incomeTaxIsPaid){
@@ -61,24 +63,23 @@
 
 
     <p class="govuk-body" id="paymentDeadline">
-        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.payPenaltyBy))
+        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
     </p>
 
 
-    @if(!calculationData.incomeTaxIsPaid){
+    @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
         <p class="govuk-body" id="missedDeadline">
-            @messages("calculation.individual.calc2.missed.deadline.tax.unpaid")
+            @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.unpaid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
-            @messages("calculation.individual.calc2.penalty.increase.tax.unpaid")
+            @messages(s"calculation.individual.calc2.penalty.increase.tax.unpaid")
         </p>
 
     } else {
 
-
         <p class="govuk-body" id="missedDeadline">
-            @messages("calculation.individual.calc2.missed.deadline.tax.paid")
+            @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.paid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
@@ -104,7 +105,7 @@
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">£@calculationData.formattedAmountPenaltyAppliedTo</td>
-                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.chargeStartDate), dateToString(calculationData.chargeEndDate))</td>
+                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.principalChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate.minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))</td>
                 <td class="govuk-table__cell">@{calculationData.penaltyPercentage}%</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
             </tr>
