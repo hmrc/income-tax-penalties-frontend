@@ -76,7 +76,7 @@ object LPPCardMessages {
 
     //Card Footer Links
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"
-    override val cardLinksCheckIfCanAppeal = "Check if you can appeal this penalty (Welsh)"
+    override val cardLinksCheckIfCanAppeal = "Gwirio a allwch apelio yn erbyn y gosb hon"
     override val cardLinksReviewAppeal = "Gofyn am adolygiad"
     override val cannotAppeal = "YNi allwch apelio yn erbyn y pwynt hwn"
   }

@@ -56,11 +56,12 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     }
   }
 
-  private def penaltyReason(dueDate: Option[LocalDate]): String =
+  private def penaltyReason(dueDate: Option[LocalDate])(implicit messages: Messages): String = {
     if (dueDate.exists(d => MonthDay.from(d) == MonthDay.of(1, 31)))
-      "Late tax return"
+      messages("lsp.cardTitle.lateTaxReturn")
     else
-      "Late update"
+      messages("lsp.cardTitle.lateUpdate")
+  }
 
   private def addedPointCard(p: LSPDetails, thresholdMet: Boolean, reason: String)
                             (implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
