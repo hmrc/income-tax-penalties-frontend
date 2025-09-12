@@ -41,6 +41,7 @@ object LSPCardMessages {
     val expiryReasonKey = "Removed reason"
     val payPenaltyBy = "Pay Penalty By"
     val missingOrLateIncomeSources = "Missing or late income sources"
+    val lateUpdate = "Late update"
 
     //Card Footer Links
     val cardLinksAdjustedPointCannotAppeal = "You cannot appeal this point"
@@ -76,12 +77,13 @@ object LSPCardMessages {
     override val expiryReasonKey = "Removed reason (Welsh)"
     override val payPenaltyBy = "Mae’n rhaid talu’r gosb erbyn"
     override val missingOrLateIncomeSources = "Ffynonellau incwm sy’n hwyr neu ar goll"
+    override val lateUpdate = "Diweddariad hwyr"
 
     //Card Footer Links
     override val cardLinksAdjustedPointCannotAppeal = "YNi allwch apelio yn erbyn y pwynt hwn"
-    override val cardLinksFindOutHowToAppeal = "Check if you can appeal this penalty (Welsh)"
+    override val cardLinksFindOutHowToAppeal = "Gwirio a allwch apelio yn erbyn y gosb hon"
     override val cardLinksAppealNoPointNumber = "Apelio yn erbyn cosb"
-    override val cardLinksAppeal: String =  "Check if you can appeal this penalty (Welsh)"
+    override val cardLinksAppeal: String =  "Gwirio a allwch apelio yn erbyn y gosb hon"
     override val cardLinksReviewAppeal: String = "Gofyn am adolygiad"
   }
 }

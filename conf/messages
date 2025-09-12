@@ -1,7 +1,7 @@
 service.name = Manage your Self Assessment
 
 common.opensInNewTab = (opens in new tab)
-common.late = Late
+common.late = LATE
 
 
 phaseBanner.tag = Beta
