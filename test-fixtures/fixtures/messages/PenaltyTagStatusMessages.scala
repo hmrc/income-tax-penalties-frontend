@@ -25,7 +25,7 @@ object PenaltyTagStatusMessages {
     val upheld: String = "Decision upheld"
     val due: String = "Due"
     val overdue: String = "Overdue"
-    val amountDue: String => String = amount => s"£$amount $due"
+    val amountDue: String => String = amount => s"£$amount due"
     val paid = "Paid"
     val estimate = "Estimate"
     val cancelled = "Cancelled"
@@ -41,7 +41,7 @@ object PenaltyTagStatusMessages {
 
     override val due: String = "Yn ddyledus"
     override val overdue: String = "Overdue (welsh)"
-    override val amountDue: String => String = amount => s"£$amount $due"
+    override val amountDue: String => String = amount => s"£$amount yn ddyledus"
     override val paid = "Wedi’i dalu"
     override val estimate = "Amcangyfrif"
     override val cancelled = "Wedi canslo"
