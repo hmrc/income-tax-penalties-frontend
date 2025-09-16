@@ -56,15 +56,15 @@ object LPPCardMessages {
 
     //Card Title Messages
     override val cardTitlePenalty: String => String = amount => s"Cosb o £$amount"
-    override val cardTitleFirstPenalty: String => String = amount => s"First late payment penalty: £$amount (Welsh)"
-    override val cardTitleSecondPenalty: String => String = amount => s"Second late payment penalty: £$amount (Welsh)"
+    override val cardTitleFirstPenalty: String => String = amount => s"Cosb gyntaf am dalu’n hwyr: £$amount"
+    override val cardTitleSecondPenalty: String => String = amount => s"Ail gosb am dalu’n hwyr: £$amount"
     override val cardTitlePenaltyDetailsLetter: String => String = amount => "Penalty for late payment - details are in the letter we sent you (Welsh)"
 
     //Summary Row Messages
     override val penaltyTypeKey = "Math o gosb"
     override val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
-      case LPP1 => "First late payment penalty (Welsh)"
-      case LPP2 => "Second late payment penalty (Welsh)"
+      case LPP1 => "Cosb gyntaf am dalu’n hwyr"
+      case LPP2 => "Ail gosb am dalu’n hwyr"
       case _    => "Penalty for late payment - details are in the letter we sent you (Welsh)"
     }
     override val incomeTaxPeriodKey = "Taliad sy’n hwyr"
@@ -78,6 +78,6 @@ object LPPCardMessages {
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"
     override val cardLinksCheckIfCanAppeal = "Gwirio a allwch apelio yn erbyn y gosb hon"
     override val cardLinksReviewAppeal = "Gofyn am adolygiad"
-    override val cannotAppeal = "YNi allwch apelio yn erbyn y pwynt hwn"
+    override val cannotAppeal = "Ni allwch apelio yn erbyn y pwynt hwn"
   }
 }

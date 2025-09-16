@@ -40,7 +40,7 @@ object PenaltyTagStatusMessages {
     override val upheld: String = "Penderfyniad wedi’i gadarnhau"
 
     override val due: String = "Yn ddyledus"
-    override val overdue: String = "Overdue (welsh)"
+    override val overdue: String = "Yn hwyr"
     override val amountDue: String => String = amount => s"£$amount yn ddyledus"
     override val paid = "Wedi’i dalu"
     override val estimate = "Amcangyfrif"
