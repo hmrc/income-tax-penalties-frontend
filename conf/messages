@@ -1,7 +1,7 @@
 service.name = Manage your Self Assessment
 
 common.opensInNewTab = (opens in new tab)
-common.late = Late
+common.late = LATE
 
 
 phaseBanner.tag = Beta
@@ -130,7 +130,7 @@ calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased 
 calculation.individual.calc2.penalty.due = To avoid interest charges, you should pay this penalty by {0}.
 calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 
-calculation.agent.calc2.penalty.due = To avoid interest charges, your client should pay this penalty by {0}.
+calculation.agent.calc2.penalty.due = To avoid interest charges, they should pay this penalty by {0}.
 calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
 
 calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.

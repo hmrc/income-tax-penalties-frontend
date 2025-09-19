@@ -21,7 +21,7 @@ import uk.gov.hmrc.hmrcfrontend.views.viewmodels.language.Language
 
 sealed trait i18n {
   val lang: Language
-  val late = "Late"
+  val late = "LATE"
 }
 
 trait En extends i18n {
@@ -30,5 +30,5 @@ trait En extends i18n {
 
 trait Cy extends i18n {
   override val lang: Language = language.Cy
-  override val late = "Late (Welsh)"
+  override val late = "HWYR"
 }

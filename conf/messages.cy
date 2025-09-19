@@ -1,14 +1,15 @@
-service.name = Manage your Self Assessment (Welsh)
+service.name = Rheoli’ch Hunanasesiad
 
-common.late = Late (Welsh)
+common.late = HWYR
+common.opensInNewTab = (yn agor tab newydd)
 
-phaseBanner.tag = Beta (Welsh)
-phaseBanner.message = This is a new service – your {0} will help us to improve it. (Welsh)
-phaseBanner.linkText = feedback (Welsh)
+phaseBanner.tag = Beta
+phaseBanner.message = Mae hwn yn wasanaeth newydd – bydd eich {0} yn ein helpu i’w wella.
+phaseBanner.linkText = adborth
 
 # Index View
 # ==========
-index.h1 = Self Assessment penalties and appeals (Welsh)
+index.h1 = Cosbau ac apeliadau Hunanasesiad
 index.h2 = Manylion y gosb a’r apêl
 
 # --- Overview Content
@@ -69,7 +70,7 @@ status.expired = Wedi dod i ben
 status.removed = Wedi’i dynnu
 status.active = Ar waith
 status.due = Yn ddyledus
-status.overdue = Overdue (welsh)
+status.overdue = Yn hwyr
 status.paid = Wedi’i dalu
 status.amountDue = £{0} yn ddyledus
 status.estimate = Amcangyfrif
@@ -81,12 +82,12 @@ status.cancelled = Wedi canslo
 # ==================
 lsp.cardTitle.addedPoint = Pwynt cosb {0}: pwynt addasu
 lsp.cardTitle.removedPoint = Pwynt cosb
-lsp.cardTitle.financialPoint = Penalty point {0}{1}: £{2} penalty (Welsh)
+lsp.cardTitle.financialPoint = Pwynt cosb {0}{1} - Cosb o £{2}
 lsp.cardTitle.additionalFinancialPoint = Cosb ychwanegol o £{0}{1}
 lsp.cardTitle.additionalFinancialPoint.successful = Cosb ychwanegol o £{0}
 lsp.cardTitle.point = Pwynt cosb {1}{0}
 lsp.cardTitle.point.financialNoThreshold = Pwynt cosb {0}{1}
-lsp.cardTitle.expiredPoint = Penalty point (Welsh)
+lsp.cardTitle.expiredPoint = Pwynt cosb
 lsp.cardTitle.lateUpdate = Diweddariad hwyr
 lsp.cardTitle.lateTaxReturn = Ffurflen Dreth hwyr
 
@@ -95,10 +96,11 @@ lsp.cardTitle.lateTaxReturn = Ffurflen Dreth hwyr
 # ================================================
 lsp.addedOn.key = Ychwanegwyd ar
 lsp.updatePeriod.key = Cyfnod diweddaru
-lsp.penaltyType.key = Penalty type (Welsh)
+lsp.penaltyType.key = Math o gosb
 lsp.updatePeriod.key = Cyfnod diweddaru
 lsp.updatePeriod.value = {0} i {1}
 lsp.updateYear.value = {0} i {1}
+lsp.updateYear.key = Blwyddyn dreth
 lsp.updateDue.key = Diweddariad i’w gyflwyno
 lsp.returnDue.key = Ffurflen Dreth i’w chyflwyno
 lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
@@ -107,7 +109,7 @@ lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
 lsp.noPenalties = Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd
 lsp.noPenalties.agent = Nid oes gan eich cleient unrhyw gosbau actif am gyflwyno’n hwyr ar hyn o bryd.
-lsp.pointExpiredOn.key = Point expired on (Welsh)
+lsp.pointExpiredOn.key = Pwynt cosb wedi dod i ben ar
 lsp.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn
 lsp.compliance.remove.by = Bydd eich pwyntiau yn cael eu dileu ym mis {0} {1} am y rhesymau canlynol:
 lsp.compliance.history = mae eich cofnod cyflwyno yn gyfredol
@@ -120,10 +122,10 @@ lsp.missingOrLateIncomeSources.key = Ffynonellau incwm sy’n hwyr neu ar goll
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
 lpp.penaltyType.key = Math o gosb
-lpp.penaltyType.LPP1 = First late payment penalty: £{0} (Welsh)
-lpp.penaltyType.LPP2 = Second late payment penalty: £{0} (Welsh)
-lpp.penaltyType.LPP1.due = First late payment penalty (Welsh)
-lpp.penaltyType.LPP2.due = Second late payment penalty (Welsh)
+lpp.penaltyType.LPP1 = Cosb gyntaf am dalu’n hwyr: £{0}
+lpp.penaltyType.LPP2 = Ail gosb am dalu’n hwyr: £{0}
+lpp.penaltyType.LPP1.due = Cosb gyntaf am dalu’n hwyr
+lpp.penaltyType.LPP2.due = Ail gosb am dalu’n hwyr
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you (Welsh)
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
@@ -132,6 +134,7 @@ lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
 lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
+lpp.payPenaltyBy.key = Talu cosb erbyn
 
 calculation.individual.penalty.isOverdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
@@ -190,7 +193,14 @@ calculation.table.caption.total.penalty = Cyfanswm y gosb
 compliance.timeline.agent.if.you.missed.deadline = Os bydd eich cleient yn methu dyddiad cau, bydd yn rhaid iddo anfon pob un o’i gyflwyniadau mewn pryd ar gyfer y {0} mis nesaf cyn y gall CThEF ddileu ei bwyntiau.
 calculation.individual.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
 calculation.individual.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
+calculation.return.link = Dychwelyd i’r dudalen cosbau ac apeliadau Hunanasesiad
+caption.date = Blwyddyn dreth {0} i {1}
 
+calculation.agent.calc2.missed.deadline.tax.unpaid = Oherwydd bod eich cleient wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arno.
+calculation.agent.calc2.missed.deadline.tax.paid = Oherwydd bod eich cleient wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arno.
+calculation.agent.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
+calculation.agent.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
 individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
 agent.lpp.tab.overdueTax = Oherwydd bod eich cleient wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd ganddo bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
@@ -228,9 +238,9 @@ expiryReason.RES = Reset (Welsh)
 
 # Card Footer Links
 # =================
-cardLinks.cannotAppeal = YNi allwch apelio yn erbyn y pwynt hwn
-cardLinks.checkIfYouCanAppealThisPenalty = Check if you can appeal this penalty (Welsh)
-cardLinks.appeal = Check if you can appeal this penalty (Welsh)
+cardLinks.cannotAppeal = Ni allwch apelio yn erbyn y pwynt hwn
+cardLinks.checkIfYouCanAppealThisPenalty = Gwirio a allwch apelio yn erbyn y gosb hon
+cardLinks.appeal = Gwirio a allwch apelio yn erbyn y gosb hon
 cardLinks.viewCalculation = Gweld y cyfrifiad
 cardLinks.reviewAppeal = Gofyn am adolygiad
 

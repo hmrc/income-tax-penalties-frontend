@@ -35,8 +35,8 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
   val pointsToBeRemoved = s"Points to be removed: December 2024"
   val taxYear1 = "Tax return: 6 April 2021 to 5 April 2022"
   val quarter1 = "Update period: 1 July 2022 to 30 September 2022"
-  val timeline1 =  "Late Due on 31 January 2023. Send this missing submission now."
-  val timeline2 =  "Late Due on 31 October 2022. Send this missing submission now."
+  val timeline1 =  "LATE Due on 31 January 2023. Send this missing submission now."
+  val timeline2 =  "LATE Due on 31 October 2022. Send this missing submission now."
 
   override def beforeEach(): Unit = {
     super.beforeEach()
