@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils._
 
@@ -61,12 +62,21 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       )
     )
 
-  def payPenaltyByRow(penalty:LPPDetails)(implicit messages: Messages): Option[SummaryListRow] = Option.unless(penalty.incomeTaxIsPaid || penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Accruing)){
-    penalty.penaltyChargeDueDate.map{
-      payBy => summaryListRow(
-        label = messages("lpp.payPenaltyBy.key"),
-        value = Html(dateToString(payBy))
-      )
-    }
-  }.flatten
+  def payPenaltyByRow(penalty: LPPDetails)(implicit messages: Messages): Option[SummaryListRow] = {
+    val noAmountLeftToPay = penalty.penaltyAmountOutstanding.contains(0)
+    val penaltyAccruing = penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Accruing)
+    val penaltyAppealed = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
+
+    Option.unless(
+      penaltyAccruing || noAmountLeftToPay || penaltyAppealed
+    ) {
+      penalty.penaltyChargeDueDate.map {
+        payBy =>
+          summaryListRow(
+            label = messages("lpp.payPenaltyBy.key"),
+            value = Html(dateToString(payBy))
+          )
+      }
+    }.flatten
+  }
 }
