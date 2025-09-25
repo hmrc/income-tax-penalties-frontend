@@ -161,6 +161,7 @@ status.due = Due
 status.paid = Paid
 status.estimate = Estimate
 status.amountDue = £{0} due
+status.amountOverdue = £{0} overdue
 status.late = Late
 status.cancelled = Cancelled
 
