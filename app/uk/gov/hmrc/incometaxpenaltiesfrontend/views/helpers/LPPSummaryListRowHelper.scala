@@ -63,12 +63,12 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     )
 
   def payPenaltyByRow(penalty: LPPDetails)(implicit messages: Messages): Option[SummaryListRow] = {
-    val noAmountLeftToPay = penalty.penaltyAmountOutstanding.contains(0)
+    val penaltyPaid = penalty.isPaid
     val penaltyAccruing = penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Accruing)
     val penaltyAppealed = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
 
     Option.unless(
-      penaltyAccruing || noAmountLeftToPay || penaltyAppealed
+      penaltyAccruing || penaltyPaid || penaltyAppealed
     ) {
       penalty.penaltyChargeDueDate.map {
         payBy =>
