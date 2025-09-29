@@ -156,11 +156,12 @@ status.upheld = Penderfyniad wedi’i gadarnhau
 status.expired = Wedi dod i ben
 status.removed = Wedi’i dynnu
 status.active = Ar waith
-status.due = Yn ddyledus
 status.overdue = Yn hwyr
+status.due = Yn ddyledus
 status.paid = Wedi’i dalu
-status.amountDue = £{0} yn ddyledus
 status.estimate = Amcangyfrif
+status.amountDue = £{0} yn ddyledus
+status.amountOverdue = £{0} overdue (Welsh)
 status.late = Hwyr
 status.cancelled = Wedi canslo
 
