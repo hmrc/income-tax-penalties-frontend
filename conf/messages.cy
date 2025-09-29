@@ -172,6 +172,7 @@ lsp.cardTitle.financialPoint = Pwynt cosb {0}{1} - Cosb o £{2}
 lsp.cardTitle.additionalFinancialPoint = Cosb ychwanegol o £{0}{1}
 lsp.cardTitle.additionalFinancialPoint.successful = Cosb ychwanegol o £{0}
 lsp.cardTitle.point = Pwynt cosb {0}{1}
+lsp.cardTitle.point.thresholdMet = Pwynt cosb {0}{1} - Cosb o £{2}
 lsp.cardTitle.point.financialNoThreshold = Pwynt cosb {0}{1}
 lsp.cardTitle.expiredPoint = Pwynt cosb
 lsp.cardTitle.lateUpdate = Diweddariad hwyr
