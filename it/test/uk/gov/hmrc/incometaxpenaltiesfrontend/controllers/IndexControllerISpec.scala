@@ -19,10 +19,12 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import fixtures.PenaltiesDetailsTestData
 import org.jsoup.Jsoup
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.ExpiryReasonEnum.{Appeal, NaturalExpiration}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
 class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
@@ -35,10 +37,10 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
     disable(UseStubForBackend)
   }
 
-  "GET /view-penalty/self-assessment" should {
-    "when call to penalties backend returns data" when {
-      "the user is an authorised individual" should {
-        "have the correct page has correct elements" in {
+  "GET /view-penalty/self-assessment" when {
+    "the call to penalties backend returns data" should {
+      "have the correct page has correct elements" when {
+        "the user is an authorised individual" in {
           stubAuthRequests(false)
           stubGetPenalties(testAgentNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
@@ -56,10 +58,8 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
           document.getSubmitButton.text() shouldBe "Check amounts and pay"
         }
-      }
 
-      "the user is an authorised agent" should {
-        "have the correct page has correct elements" in {
+        "the user is an authorised agent" in {
           stubAuthRequests(true)
           stubGetPenalties(testAgentNino, Some("123456789"))(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
@@ -76,6 +76,53 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
           document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
           document.getSubmitButton.text() shouldBe "Check amounts"
+        }
+      }
+    }
+
+    "the call to the backend includes cancelled penalties" should {
+      val createdDate1 = creationDate
+      val createdDate2 = createdDate1.plusMonths(4)
+      val createdDate3 = createdDate2.plusMonths(4)
+      val lspDetails1 = sampleLateSubmissionPoint.copy(
+        penaltyNumber = "1234567890",
+        penaltyCreationDate = createdDate1,
+        penaltyStatus = LSPPenaltyStatusEnum.Inactive,
+        expiryReason = Some(NaturalExpiration)
+      )
+      val lspDetails2 = sampleLateSubmissionPoint.copy(
+        penaltyNumber = "0987654321",
+        penaltyCreationDate = createdDate2,
+        penaltyStatus = LSPPenaltyStatusEnum.Active
+      )
+      val lspDetails3 = lspDetails1.copy(
+        penaltyNumber = "1122334455",
+        penaltyCreationDate = createdDate3,
+        penaltyStatus = LSPPenaltyStatusEnum.Inactive,
+        expiryReason = Some(Appeal),
+        appealInformation = Some(Seq(AppealInformationType(
+          appealStatus = Some(AppealStatusEnum.Upheld),
+          appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
+        )))
+      )
+      val lsp = lateSubmissionPenalty.copy(details = Seq(lspDetails3, lspDetails1, lspDetails2))
+      val penaltyDetailsWithCancelledPenalties = samplePenaltyDetailsModel.copy(lateSubmissionPenalty = Some(lsp), latePaymentPenalty = None)
+      "render the page with penalties in the correct order" when {
+        "the user is an authorised individual" in {
+          stubAuthRequests(false)
+          stubGetPenalties(testAgentNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(penaltyDetailsWithCancelledPenalties))
+
+          val result = get("/")
+
+          val document = Jsoup.parse(result.body)
+
+          val penaltyCards = document.getElementsByClass("govuk-summary-card__title").eachText()
+
+          penaltyCards.size shouldBe 3
+          penaltyCards.get(0) shouldBe "Penalty point"
+          penaltyCards.get(1) shouldBe  "Penalty point 1: Late update"
+          penaltyCards.get(2) shouldBe  "Penalty point"
+
         }
       }
     }
