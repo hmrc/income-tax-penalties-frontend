@@ -49,7 +49,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         case LSPTypeEnum.RemovedFAP | LSPTypeEnum.RemovedPoint =>
           removedPointCard(penaltyWithPoints, pointsRemovedAfterPeriodOfCompliance)
         case LSPTypeEnum.AppealedPoint | LSPTypeEnum.Point =>
-          pointSummaryCard(penaltyWithPoints, activePoints >= threshold, reason)
+          pointSummaryCard(penaltyWithPoints, threshold, activePoints >= threshold, reason)
         case _ =>
           financialSummaryCard(penaltyWithPoints, threshold, reason)
       }
@@ -131,15 +131,32 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     )
   }
 
-  def pointSummaryCard(penalty: LSPDetails, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def pointSummaryCard(penalty: LSPDetails, threshold: Int, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val expiredPointStatusTags: Set[Tag] = Set(
       Tag(Text(messages("status.expired"))),
       Tag(Text(messages("status.removed"))),
       Tag(Text(messages("status.cancelled"))),
     )
+
+    val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
+    val pointStatusExpired = expiredPointStatusTags.contains(getTagStatus(penalty))
+    val thresholdMetPenalty = thresholdMet && penalty.originalAmount > 0
+
+    val cardTitle =
+      if(pointStatusExpired){
+        messages("lsp.cardTitle.expiredPoint")
+      } else {
+        if(thresholdMetPenalty){
+          messages("lsp.cardTitle.point.thresholdMet", penalty.penaltyOrder.getOrElse(""), reason, currencyFormat)
+        }
+        else {
+          messages("lsp.cardTitle.point", penalty.penaltyOrder.getOrElse(""), reason)
+        }
+      }
     buildLSPSummaryCard(
-      cardTitle = if(expiredPointStatusTags.contains(getTagStatus(penalty))) messages("lsp.cardTitle.expiredPoint") else messages("lsp.cardTitle.point",reason, penalty.penaltyOrder.getOrElse("")),
+      cardTitle = cardTitle,
       rows = Seq(
+        Option.when(thresholdMetPenalty){summaryRow.payPenaltyByRow(penalty, threshold)}.flatten,
         summaryRow.missingOrLateIncomeSourcesSummaryRow(penalty),
         summaryRow.taxPeriodSummaryRow(penalty),
         summaryRow.taxYearSummaryRow(penalty),
