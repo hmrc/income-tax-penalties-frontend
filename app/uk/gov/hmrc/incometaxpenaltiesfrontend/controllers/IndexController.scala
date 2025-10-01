@@ -89,17 +89,14 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
   }
 
   def sortPointsInDescendingOrder(points: Seq[LSPDetails]): Seq[LSPDetails] = {
-    val pointsWithOrder = points.zipWithIndex.map {
+    val pointsInDateOrder = points.sortWith((thisElement, nextElement) => thisElement.penaltyCreationDate.isBefore(nextElement.penaltyCreationDate))
+    val pointsWithOrder = pointsInDateOrder.zipWithIndex.map {
       case (point, idx) =>
-        val newPenaltyOrder = (point.penaltyOrder, point.penaltyStatus) match {
-          case (None, LSPPenaltyStatusEnum.Inactive) => Some("0")
-          case (None, LSPPenaltyStatusEnum.Active) => Some((idx + 1).toString)
-          case _ => point.penaltyOrder
-        }
-        point.copy(penaltyOrder = newPenaltyOrder)
+        val newPenaltyOrder = point.penaltyOrder.getOrElse((idx + 1).toString)
+        point.copy(penaltyOrder = Some(newPenaltyOrder))
     }
 
-    pointsWithOrder.sortWith((thisElement, nextElement) => thisElement.penaltyOrder.getOrElse("0").toInt > nextElement.penaltyOrder.getOrElse("0").toInt)
+    pointsWithOrder.sortWith((thisElement, nextElement) => thisElement.penaltyOrder.getOrElse("0").toInt >= nextElement.penaltyOrder.getOrElse("0").toInt)
   }
 }
 
