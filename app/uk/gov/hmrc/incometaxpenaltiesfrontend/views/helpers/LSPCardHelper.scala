@@ -94,6 +94,12 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
 
   def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
+    val expiredPointStatusTags: Set[Tag] = Set(
+      Tag(Text(messages("status.expired"))),
+      Tag(Text(messages("status.removed"))),
+      Tag(Text(messages("status.cancelled"))),
+    )
+
     val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
     val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
 
@@ -113,7 +119,11 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
           }
         }
       } else {
-        messages(s"lsp.cardTitle.point.financialNoThreshold",penaltyOrder, reason)
+        if(expiredPointStatusTags.contains(getTagStatus(penalty))){
+          messages("lsp.cardTitle.removedPoint")
+        } else {
+          messages(s"lsp.cardTitle.point.financialNoThreshold", penaltyOrder, reason)
+        }
       }
 
     buildLSPSummaryCard(
