@@ -50,29 +50,30 @@
                 <span class="govuk-body">{messages("cardLinks.cannotAppeal")}</span>
             } else {
                 <ul class="govuk-summary-card__actions">
-                    {if(!summaryCard.appealStatus.contains(AppealStatusEnum.Upheld)) {
-                        <li class="govuk-summary-card__action no-border not-bold">
-                            <a id={"lpp-view-calculation-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.PenaltyCalculationController.penaltyCalculationPage(summaryCard.principalChargeReference, isAgent = isAgent, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
-                            {messages("cardLinks.viewCalculation")}
-                            </a>
-                        </li>
+                    {summaryCard.optCalculationDetailsLink(isAgent) match {
+                        case Some(calculationDetailsLink) =>
+                            <li class="govuk-summary-card__action no-border not-bold">
+                                <a id={"lpp-view-calculation-link-" + summaryCard.index} class="govuk-link" href={calculationDetailsLink}>
+                                    {messages("cardLinks.viewCalculation")}
+                                </a>
+                            </li>
+                        case None =>
                     }}
-                    {if(summaryCard.penaltyChargeReference.isDefined) {
-                        summaryCard.appealStatus match {
-                            case Some(AppealStatusEnum.Rejected) if summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal) =>
-                                <li class="govuk-summary-card__action no-border not-bold">
-                                    <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2), is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
+                    {summaryCard.optAppealLink(isAgent) match {
+                        case Some(appealLink) if summaryCard.isRejectedFirstStageAppeal =>
+                            <li class="govuk-summary-card__action no-border not-bold">
+                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={appealLink}>
                                         {messages("cardLinks.reviewAppeal")}
-                                    </a>
-                                </li>
-                            case None =>
-                                <li class="govuk-summary-card__action no-border not-bold">
-                                    <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyChargeReference.get, isAgent, isLPP = true, isLPP2 = summaryCard.penaltyCategory.equals(LPP2)).url}>
-                                        {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
-                                    </a>
-                                </li>
-                            case _ =>
-                        }
+                                </a>
+                            </li>
+                        case Some(appealLink) =>
+                            <li class="govuk-summary-card__action no-border not-bold">
+                                <a id={"lpp-appeal-link-" + summaryCard.index} class="govuk-link" href={appealLink}>
+                                    {messages("cardLinks.checkIfYouCanAppealThisPenalty")}
+                                </a>
+                            </li>
+                        case None =>
+
                     }}
                 </ul>
             }

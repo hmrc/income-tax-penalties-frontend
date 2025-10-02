@@ -16,14 +16,13 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
-import fixtures.{LPPDetailsTestData, LSPDetailsTestData}
 import fixtures.messages.PenaltyTagStatusMessages
+import fixtures.{LPPDetailsTestData, LSPDetailsTestData}
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text

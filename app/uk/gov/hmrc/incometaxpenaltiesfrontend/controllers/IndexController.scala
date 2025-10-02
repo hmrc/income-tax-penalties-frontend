@@ -21,7 +21,7 @@ import play.api.mvc._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{IncomeTaxSessionKeys, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}

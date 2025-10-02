@@ -23,7 +23,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{ExpiryReasonEnum, LSPPenaltyStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 
 import java.time.LocalDate
