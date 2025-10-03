@@ -80,7 +80,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                   dueDate = dateToString(penalty.principalChargeDueDate),
                   taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                   taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                  incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
+                  incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                  isEstimatedLPP1 = false
                 ),isAgent)
 
                 val document = Jsoup.parse(summaryCardHtml.toString)
@@ -120,7 +121,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                       incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                       appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
-                      appealStatus = Some(AppealStatusEnum.Under_Appeal)
+                      appealStatus = Some(AppealStatusEnum.Under_Appeal),
+                      isEstimatedLPP1 = false
                     ),isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
@@ -155,7 +157,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       dueDate = dateToString(penalty.principalChargeDueDate),
                       taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
+                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                      isEstimatedLPP1 = true
                     ),isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
@@ -163,7 +166,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                     document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.estimate
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                    document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
+                    document.select("#lpp-appeal-link-1").size() shouldBe 0
                   }
                 }
               }
@@ -194,7 +197,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                       incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                       appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
-                      appealStatus = Some(AppealStatusEnum.Under_Appeal)
+                      appealStatus = Some(AppealStatusEnum.Under_Appeal),
+                      isEstimatedLPP1 = false
                     ),isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
@@ -231,7 +235,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                         incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                         appealStatus = Some(AppealStatusEnum.Rejected),
-                        appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
+                        appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
+                        isEstimatedLPP1 = false
                       ),isAgent)
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
@@ -276,7 +281,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                           incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                           appealStatus = Some(AppealStatusEnum.Rejected),
-                          appealLevel = Some(AppealLevelEnum.SecondStageAppeal)
+                          appealLevel = Some(AppealLevelEnum.SecondStageAppeal),
+                          isEstimatedLPP1 = false
                         ),isAgent)
 
                         val document = Jsoup.parse(summaryCardHtml.toString)
@@ -308,7 +314,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             dueDate = dateToString(penalty.principalChargeDueDate),
                             taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                             taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                            incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
+                            incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                            isEstimatedLPP1 = false
                           ),isAgent)
 
                           val document = Jsoup.parse(summaryCardHtml.toString)
@@ -343,7 +350,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             dueDate = dateToString(penalty.principalChargeDueDate),
                             taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                             taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                            incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence
+                            incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                            isEstimatedLPP1 = false
                           ),isAgent)
 
                           val document = Jsoup.parse(summaryCardHtml.toString)

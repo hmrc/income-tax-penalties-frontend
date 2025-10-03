@@ -22,7 +22,6 @@ import play.api.mvc._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.agentEnrolmentKey
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 

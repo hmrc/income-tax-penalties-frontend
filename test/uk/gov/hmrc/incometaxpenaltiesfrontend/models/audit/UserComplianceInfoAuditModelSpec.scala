@@ -23,7 +23,6 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.IncomeTaxSessionMocks
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledAgent, AuthorisedAndEnrolledIndividual, CurrentUserRequest}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.ITSAStatus
 
 class UserComplianceInfoAuditModelSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with IncomeTaxSessionMocks {
 

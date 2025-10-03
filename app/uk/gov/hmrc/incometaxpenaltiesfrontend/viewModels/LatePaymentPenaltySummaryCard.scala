@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 
@@ -38,5 +39,21 @@ case class LatePaymentPenaltySummaryCard(
                                           taxPeriodStartDate: String,
                                           taxPeriodEndDate: String,
                                           incomeTaxOutstandingAmountInPence: Int,
-                                          isTTPActive: Boolean = false
-                                        )
+                                          isTTPActive: Boolean = false,
+                                          isEstimatedLPP1: Boolean
+                                        ) {
+  val isLPP2: Boolean = penaltyCategory.equals(LPPPenaltyCategoryEnum.LPP2)
+  def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if(!appealStatus.contains(AppealStatusEnum.Upheld)) {
+    Some(routes.PenaltyCalculationController.penaltyCalculationPage(principalChargeReference, isAgent, isLPP2).url)
+  } else {
+    None
+  }
+  val isSecondStageAppeal: Boolean = appealLevel.contains(AppealLevelEnum.FirstStageAppeal)
+  val isRejectedFirstStageAppeal: Boolean = appealStatus.contains(AppealStatusEnum.Rejected) && isSecondStageAppeal
+  val canAppeal: Boolean = isRejectedFirstStageAppeal || (appealStatus.isEmpty && !isEstimatedLPP1)
+  def optAppealLink(isAgent: Boolean): Option[String] = penaltyChargeReference match {
+    case Some(pcr) if canAppeal => Some(routes.AppealsController.redirectToAppeals(
+      pcr, isAgent, true, isLPP2 = isLPP2, is2ndStageAppeal = isSecondStageAppeal).url)
+    case _ => None
+  }
+}
