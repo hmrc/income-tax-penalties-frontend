@@ -39,7 +39,7 @@ object LSPCardMessages {
     val returnNotReceived = "Not yet received"
     val expiryDateKey = "Point due to expire"
     val expiryReasonKey = "Removed reason"
-    val payPenaltyBy = "Pay Penalty By"
+    val payPenaltyBy = "Pay penalty by"
     val missingOrLateIncomeSources = "Missing or late income sources"
     val lateUpdate = "Late update"
 
@@ -75,7 +75,7 @@ object LSPCardMessages {
     override val returnNotReceived = "Heb ddod i law eto"
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
     override val expiryReasonKey = "Removed reason (Welsh)"
-    override val payPenaltyBy = "Mae’n rhaid talu’r gosb erbyn"
+    override val payPenaltyBy = "Talu cosb erbyn"
     override val missingOrLateIncomeSources = "Ffynonellau incwm sy’n hwyr neu ar goll"
     override val lateUpdate = "Diweddariad hwyr"
 
