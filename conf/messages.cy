@@ -3,10 +3,6 @@ service.name = Rheoli’ch Hunanasesiad
 common.opensInNewTab = (yn agor tab newydd)
 common.late = HWYR
 
-phaseBanner.tag = Beta
-phaseBanner.message = Mae hwn yn wasanaeth newydd – bydd eich {0} yn ein helpu i’w wella.
-phaseBanner.linkText = adborth
-
 # Index View
 # ==========
 index.h1 = Cosbau ac apeliadau Hunanasesiad

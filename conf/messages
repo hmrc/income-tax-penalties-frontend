@@ -3,10 +3,6 @@ service.name = Manage your Self Assessment
 common.opensInNewTab = (opens in new tab)
 common.late = LATE
 
-phaseBanner.tag = Beta
-phaseBanner.message = This is a new service – your {0} will help us to improve it.
-phaseBanner.linkText = feedback
-
 # Index View
 # ==========
 index.h1 = Self Assessment penalties and appeals
