@@ -58,14 +58,14 @@ object LPPCardMessages {
     override val cardTitlePenalty: String => String = amount => s"Cosb o £$amount"
     override val cardTitleFirstPenalty: String => String = amount => s"Cosb gyntaf am dalu’n hwyr: £$amount"
     override val cardTitleSecondPenalty: String => String = amount => s"Ail gosb am dalu’n hwyr: £$amount"
-    override val cardTitlePenaltyDetailsLetter: String => String = amount => "Penalty for late payment - details are in the letter we sent you (Welsh)"
+    override val cardTitlePenaltyDetailsLetter: String => String = amount => "Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch"
 
     //Summary Row Messages
     override val penaltyTypeKey = "Math o gosb"
     override val penaltyTypeValue: LPPPenaltyCategoryEnum.Value => String = {
       case LPP1 => "Cosb gyntaf am dalu’n hwyr"
       case LPP2 => "Ail gosb am dalu’n hwyr"
-      case _    => "Penalty for late payment - details are in the letter we sent you (Welsh)"
+      case _    => "Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch"
     }
     override val incomeTaxPeriodKey = "Taliad sy’n hwyr"
     override def overdueChargeValue(fromYear: String, toYear: String) = s"Treth Incwm ar gyfer blwyddyn dreth $fromYear i $toYear"
