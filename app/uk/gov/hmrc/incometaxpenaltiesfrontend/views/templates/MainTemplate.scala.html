@@ -14,23 +14,25 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.models.RequestWithNavBar
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import views.html.helper.CSPNonce
+@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
+@import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
+
 
 @this(
         govukBackLink: GovukBackLink,
-        alphaBanner: StandardAlphaBanner,
+        standardBetaBanner: StandardBetaBanner,
         hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
         govukPhaseBanner: GovukPhaseBanner,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
         hmrcStandardPage: HmrcStandardPage,
         link: Link
-)
+)(implicit cfConfig: ContactFrontendConfig)
 
 @(
         pageTitle: String,
@@ -61,16 +63,7 @@
         case _ => Html("")
     }}
 
-    @govukPhaseBanner(PhaseBanner(
-        tag = Some(Tag(
-            content = Text(messages("phaseBanner.tag")),
-        )),
-        content =   HtmlContent(messages("phaseBanner.message",
-            link(link=appConfig.alphaBannerUrl,
-                messageKey="phaseBanner.linkText",
-                inParagraph = true)
-        ))
-    ))
+   @govukPhaseBanner(standardBetaBanner())
 
     @if(backLinkEnabled) {
         <div class="govuk-grid-row">
