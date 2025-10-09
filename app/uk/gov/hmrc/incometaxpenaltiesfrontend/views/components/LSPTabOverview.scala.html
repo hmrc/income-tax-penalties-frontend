@@ -54,6 +54,16 @@
                 attrTarget = true,
                 id = Some("pointsGuidanceLink")
             )
+
+            @if(lsp.addedPoint){
+                @link(
+                    link = "#", //TODO: Update link as part of future story
+                    messageKey = messages("index.lsp.tab.overview.addedPointsGuidanceLink") + " " + messages("common.opensInNewTab"),
+                    attrTarget = true,
+                    id = Some("addedPointsGuidanceLink")
+                )
+            }
+
         } else {
             @if(lsp.numberOfFinancialPenalties == 1) {
                 @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")

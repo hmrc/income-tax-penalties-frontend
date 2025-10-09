@@ -156,6 +156,33 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.link(1) -> messagesForLanguage.actionsLink(isAgent)
               )
             }
+
+
+            "1 adjusted LSP point" should {
+
+
+              val data = LSPOverviewViewModel(lateSubmissionPenalty.copy(
+                details = Seq(sampleAdditionalLateSubmissionPenaltyCharge)
+              ))
+
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+
+              implicit val document: Document = asDocument(lspTabOverviewHtml)
+
+              behave like pageWithExpectedElementsAndMessages(
+                Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
+                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(isAgent)(data.activePoints),
+                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2(isAgent),
+                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(isAgent)(data.threshold),
+                Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink,
+                Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
+              )
+
+              behave like pageWithoutElementsRendered(
+                Selectors.warning
+              )
+            }
+
           }
         }
       }
