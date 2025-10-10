@@ -23,6 +23,7 @@ trait BaseSelectors {
   val p: Int => String = i => s"p:nth-of-type($i)"
   val bullet: Int => String = i => s"ul li:nth-of-type($i)"
   val link: Int => String = i => s"a.govuk-link:nth-of-type($i)"
+  val linkWithId: String => String = i => s"a#$i"
   val details: String = "details"
   val warning: String = "div.govuk-warning-text"
   val detailsSummary: String = s"$details summary"

@@ -28,4 +28,6 @@ case class LSPOverviewViewModel(lateSubmission: LateSubmissionPenalty) {
 
   val numberOfFinancialPenalties: Int =
     lateSubmission.withoutAppealedPenalties.count(_.lspTypeEnum == LSPTypeEnum.Financial)
+
+  val addedPoint: Boolean = lateSubmission.details.exists(_.lspTypeEnum == LSPTypeEnum.AddedFAP)
 }

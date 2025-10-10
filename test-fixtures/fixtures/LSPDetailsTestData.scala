@@ -81,6 +81,11 @@ trait LSPDetailsTestData {
     chargeDueDate = Some(chargeDueDate)
   )
 
+  val sampleAdditionalLateSubmissionPenaltyCharge: LSPDetails = sampleLateSubmissionPoint.copy(
+    penaltyStatus = LSPPenaltyStatusEnum.Active,
+    fapIndicator = Some("X")
+  )
+
   val sampleLateSubmissionPenaltyChargeWithMultiplePeriods: LSPDetails = sampleLateSubmissionPenaltyCharge.copy(
     lateSubmissions = Some(Seq(
       LateSubmission(

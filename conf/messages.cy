@@ -48,6 +48,7 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb ychwanegol o
 agent.index.lsp.tab.overview.additionalPenalty.warning = Codwyd cosb ychwanegol o £200 ar eich cleient.
 agent.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb bellach o £200 arno bob tro y bydd yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’i bwyntiau wedi’u dileu. Dylai’ch cleient anfon unrhyw gyflwyniadau sy’n hwyr cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny.
 index.lsp.tab.overview.pointsGuidanceLink = Darllenwch yr arweiniad am gosbau am dalu’n hwyr
+index.lsp.tab.overview.addedPointsGuidanceLink = Read the guidance about adjustment points (Welsh)
 individual.index.lsp.tab.overview.actionsToRemoveLink = Y camau i’w cymryd i gael eich pwyntiau wedi’u dileu erbyn mis {0}
 agent.index.lsp.tab.overview.actionsToRemoveLink = Y camau y mae’n rhaid i’ch cleient eu cymryd i gael ei bwyntiau wedi’u dileu erbyn mis {0}
 

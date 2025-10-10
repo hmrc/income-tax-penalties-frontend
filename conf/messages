@@ -48,6 +48,7 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = You will get another £
 agent.index.lsp.tab.overview.additionalPenalty.warning = Your client has been given an additional £200 penalty.
 agent.index.lsp.tab.overview.additionalPenalty.p1 = They will get another £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already.
 index.lsp.tab.overview.pointsGuidanceLink = Read the guidance about late submission penalties
+index.lsp.tab.overview.addedPointsGuidanceLink = Read the guidance about adjustment points
 individual.index.lsp.tab.overview.actionsToRemoveLink = Actions you must take to get your points removed by {0}
 agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed by {0}
 

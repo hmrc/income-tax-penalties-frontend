@@ -82,6 +82,8 @@ object LSPOverviewMessages {
     }
 
     val pointsGuidanceLink = "Read the guidance about late submission penalties"
+    val addedPointsGuidanceLink = "Read the guidance about adjustment points"
+
     val actionsLink: Boolean => String = {
       case true =>
         "Actions your client must take to get their points removed by April 2028"
@@ -152,6 +154,7 @@ object LSPOverviewMessages {
     }
 
     override val pointsGuidanceLink = "Darllenwch yr arweiniad am gosbau am dalu’n hwyr"
+    override val addedPointsGuidanceLink = "Read the guidance about adjustment points (Welsh)"
     override val actionsLink: Boolean => String = {
       case true =>
         "Y camau y mae’n rhaid i’ch cleient eu cymryd i gael ei bwyntiau wedi’u dileu erbyn mis Ebrill 2028"
