@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 
@@ -58,7 +58,8 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         taxPeriodStartDate = lpp.principalChargeBillingFrom.toString,
         taxPeriodEndDate = lpp.principalChargeBillingTo.toString,
         incomeTaxOutstandingAmountInPence = lpp.incomeTaxOutstandingAmountInPence,
-        isTTPActive = false //TODO: Need to add Time To Pay logic in future???
+        isTTPActive = false, //TODO: Need to add Time To Pay logic in future???
+        isEstimatedLPP1 = lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing
       )
     }
 
