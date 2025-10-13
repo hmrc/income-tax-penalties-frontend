@@ -17,9 +17,8 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import fixtures.ComplianceDataTestData
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.test.Helpers._
@@ -31,22 +30,21 @@ import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData {
+class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with MockFactory { _: TestSuite =>
 
-  val mockPenaltiesConnector: PenaltiesConnector = mock(classOf[PenaltiesConnector])
+  val mockPenaltiesConnector: PenaltiesConnector = mock[PenaltiesConnector]
   val nino = "AA123456A"
 
   class Setup {
     val service: ComplianceService = new ComplianceService(mockPenaltiesConnector)
-    reset(mockPenaltiesConnector)
   }
 
   "getDESComplianceData" should {
     s"return a successful response and pass the result back to the controller" in new Setup {
 
-      when(mockPenaltiesConnector.getComplianceData(any(),
-        ArgumentMatchers.eq(LocalDate.of(2020, 1, 1)),
-        ArgumentMatchers.eq(LocalDate.of(2022, 1, 1)))(any())).thenReturn(Future.successful(Right(sampleCompliancePayload)))
+      (mockPenaltiesConnector.getComplianceData(_: String, _: LocalDate, _: LocalDate)(_: HeaderCarrier))
+        .expects(*, LocalDate.of(2020, 1, 1), LocalDate.of(2022, 1, 1), *)
+        .returning(Future.successful(Right(sampleCompliancePayload)))
 
       val result: Option[ComplianceData] = await(service.getDESComplianceData(
         nino = nino,
@@ -59,8 +57,9 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
     }
 
     s"return an exception and pass the result back to the controller" in new Setup {
-      when(mockPenaltiesConnector.getComplianceData(any(), any(), any())(any()))
-        .thenReturn(Future.failed(UpstreamErrorResponse.apply("Upstream error", INTERNAL_SERVER_ERROR)))
+      (mockPenaltiesConnector.getComplianceData(_: String, _: LocalDate, _: LocalDate)(_: HeaderCarrier))
+        .expects(*, *, *, *)
+        .returning(Future.failed(UpstreamErrorResponse.apply("Upstream error", INTERNAL_SERVER_ERROR)))
 
       val result: Exception = intercept[Exception](await(service.getDESComplianceData(
         nino = nino,

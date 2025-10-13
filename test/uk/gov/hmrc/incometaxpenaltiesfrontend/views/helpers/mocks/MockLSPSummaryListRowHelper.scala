@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.mockito.Mockito.when
-import org.mockito.stubbing.OngoingStubbing
-import org.scalatestplus.mockito.MockitoSugar
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
+import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LSPSummaryListRowHelper
 
-trait MockLSPSummaryListRowHelper extends MockitoSugar {
+trait MockLSPSummaryListRowHelper extends MockFactory {
+  _: TestSuite =>
 
   val testTaxPeriodRow: SummaryListRow = SummaryListRow(Key(Text("taxPeriod")), Value(Text("dateA to dateB")))
   val testTaxYearRow: SummaryListRow = SummaryListRow(Key(Text("taxYear")), Value(Text("dateA to dateB")))
@@ -39,41 +40,52 @@ trait MockLSPSummaryListRowHelper extends MockitoSugar {
 
   lazy val mockLSPSummaryListRowHelper: LSPSummaryListRowHelper = mock[LSPSummaryListRowHelper]
 
-  def mockMissingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockMissingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] = {
+    (mockLSPSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(value)
+  }
 
-  def mockPayPenaltyByRow(penalty: LSPDetails, threshold: Int)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.payPenaltyByRow(eqTo(penalty), eqTo(threshold))(any()))
-      .thenReturn(value)
+  def mockPayPenaltyByRow(penalty: LSPDetails, threshold: Int)(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] = {
+    (mockLSPSummaryListRowHelper.payPenaltyByRow(_: LSPDetails, _: Int)(_: Messages))
+      .expects(penalty, threshold, *)
+      .returning(value)
+  }
 
-  def mockTaxPeriodSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.taxPeriodSummaryRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockTaxPeriodSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLSPSummaryListRowHelper.taxPeriodSummaryRow(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockTaxYearSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.taxYearSummaryRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockTaxYearSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLSPSummaryListRowHelper.taxYearSummaryRow(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockDueDateSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.dueDateSummaryRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockDueDateSummaryRow(penalty: LSPDetails)(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLSPSummaryListRowHelper.dueDateSummaryRow(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockReceivedDateSummaryRow(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLSPSummaryListRowHelper.receivedDateSummaryRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockReceivedDateSummaryRow(penalty: LSPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLSPSummaryListRowHelper.receivedDateSummaryRow(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockPointExpiryDate(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLSPSummaryListRowHelper.pointExpiryDate(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockPointExpiryDate(penalty: LSPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLSPSummaryListRowHelper.pointExpiryDate(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockPointExpiredOnRow(penalty: LSPDetails)(value: SummaryListRow): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.pointExpiredOnRow(eqTo(penalty))(any()))
-      .thenReturn(Some(value))
+  def mockPointExpiredOnRow(penalty: LSPDetails)(value: SummaryListRow): CallHandler[Option[SummaryListRow]] =
+    (mockLSPSummaryListRowHelper.pointExpiredOnRow(_: LSPDetails)(_: Messages))
+      .expects(penalty, *)
+      .returning(Some(value))
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
-                                 appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLSPSummaryListRowHelper.appealStatusRow(eqTo(appealStatus), eqTo(appealLevel))(any()))
-      .thenReturn(value)
+                                 appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLSPSummaryListRowHelper.appealStatusRow(_:Option[AppealStatusEnum.Value], _:Option[AppealLevelEnum.Value])(_:Messages))
+      .expects(appealStatus, appealLevel, *)
+      .returning(value)
 
 }

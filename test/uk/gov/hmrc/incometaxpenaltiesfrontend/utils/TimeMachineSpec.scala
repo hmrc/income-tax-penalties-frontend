@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Configuration
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
@@ -27,7 +28,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
 
-class TimeMachineSpec extends AnyWordSpec with Matchers {
+class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: TestSuite =>
 
 
   "TimeMachine -getCurrentDate" should {

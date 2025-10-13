@@ -18,11 +18,9 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import fixtures.messages.PenaltyTagStatusMessages
 import fixtures.{LPPDetailsTestData, LSPDetailsTestData}
-import org.mockito.Mockito.when
-import org.scalatest.BeforeAndAfterEach
+import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
@@ -34,17 +32,11 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import java.time.LocalDate
 
 class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
-  with LSPDetailsTestData with LPPDetailsTestData with MockitoSugar
-  with BeforeAndAfterEach {
+  with LSPDetailsTestData with LPPDetailsTestData with MockFactory {
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit val tm: TimeMachine = mock[TimeMachine]
   lazy val tagHelper: TagHelper = new TagHelper {}
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    when(tm.getCurrentDate).thenReturn(LocalDate.of(2021, 3, 7))
-  }
 
   "TagHelper" when {
 
@@ -140,7 +132,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                 "their is an outstanding amount, that is not paid at all" should {
 
                   "generate a Due tag model with correct message and class with outstanding amount" in {
-
+                    (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7))
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge)
 
                     tag.classes shouldBe "govuk-tag--red"
@@ -148,7 +140,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                   }
 
                   "generate an Overdue tag model with correct message and class with outstanding amount which is not paid in time" in {
-                    when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+                    (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 8, 11))
 
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge)
 
@@ -160,7 +152,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                 "their is an outstanding amount, that is partially paid" should {
 
                   "generate a Partially Paid tag model with correct message and class with outstanding amount" in {
-
+                    (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7)).atLeastOnce()
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(
                       chargeAmount = Some(BigDecimal(100)),
                       chargeOutstandingAmount = Some(BigDecimal(25.69))
@@ -171,7 +163,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                   }
 
                   "when left to pay amount has .00 as decimals, then don't show pence" in {
-
+                    (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7)).atLeastOnce()
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(
                       chargeAmount = Some(BigDecimal(100)),
                       chargeOutstandingAmount = Some(BigDecimal(25))
@@ -248,7 +240,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
             "the penalty has NOT been paid (NOT accruing interest)" should {
 
               "generate an Estimate tag model with correct message and class" in {
-
+                (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7))
                 val tag = tagHelper.getTagStatus(sampleUnpaidLPP1.copy(
                   penaltyStatus = LPPPenaltyStatusEnum.Posted
                 ))
@@ -272,7 +264,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
             "the penalty has been partially paid" should {
 
               "generate a Paid tag model with correct message and class" in {
-
+                (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7)).atLeastOnce()
                 val tag = tagHelper.getTagStatus(samplePaidLPP1.copy(
                   penaltyAmountPaid = Some(500),
                   penaltyAmountOutstanding = Some(501.45)
