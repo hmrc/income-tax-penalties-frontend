@@ -17,33 +17,37 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks
 
 import fixtures.PenaltiesDetailsTestData
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.{GetPenaltyDetailsBadRequest, GetPenaltyDetailsUnexpectedFailure}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.CurrentUserRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
 
 import scala.concurrent.Future
 
-trait PenaltiesMocks extends MockitoSugar with PenaltiesDetailsTestData {
+trait PenaltiesMocks extends MockFactory with PenaltiesDetailsTestData { _: TestSuite =>
 
   lazy val mockPenaltiesService: PenaltiesService = mock[PenaltiesService]
 
   def mockGetPenaltyDataForUser(): Unit =
-    when(mockPenaltiesService.getPenaltyDataForUser()(any(), any()))
-      .thenReturn(
+    (mockPenaltiesService.getPenaltyDataForUser()(_: CurrentUserRequest[_], _:HeaderCarrier))
+      .expects(*, *)
+      .returning(
       Future.successful(Right(samplePenaltyDetailsModel))
     )
 
   def mockIncomeTaxSessionDataBadRequest(): Unit =
-    when(mockPenaltiesService.getPenaltyDataForUser()(any(), any()))
-      .thenReturn(
+    (mockPenaltiesService.getPenaltyDataForUser()(_: CurrentUserRequest[_], _:HeaderCarrier))
+      .expects(*,*)
+      .returning(
         Future.successful(Left(GetPenaltyDetailsBadRequest))
       )
 
   def mockGetPenaltyDataInternalErrorRequest(): Unit =
-    when(mockPenaltiesService.getPenaltyDataForUser()(any(), any()))
-      .thenReturn(
+    (mockPenaltiesService.getPenaltyDataForUser()(_: CurrentUserRequest[_], _:HeaderCarrier))
+      .expects(*, *)
+      .returning(
         Future.successful(Left(GetPenaltyDetailsUnexpectedFailure(500)))
       )
 

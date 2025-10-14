@@ -17,8 +17,8 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import fixtures.PenaltiesDetailsTestData
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{mock, reset, when}
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -35,24 +35,24 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetai
 
 import scala.concurrent.Future
 
-class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetailsTestData with GuiceOneAppPerSuite {
+class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetailsTestData with GuiceOneAppPerSuite with MockFactory { _: TestSuite =>
 
   class Setup {
 
     implicit val userRequest: CurrentUserRequest[AnyContentAsEmpty.type] = AuthorisedAndEnrolledIndividual("1234567890", "AA123456A", None)(FakeRequest())
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val mockPenaltiesConnector: PenaltiesConnector = mock(classOf[PenaltiesConnector])
+    val mockPenaltiesConnector: PenaltiesConnector = mock[PenaltiesConnector]
     val service: PenaltiesService = new PenaltiesService(mockPenaltiesConnector)
     val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
-    reset(mockPenaltiesConnector)
   }
 
-  "getPenaltyDataFromEnrolmentKey" when  {
+  "getPenaltyDataFromEnrolmentKey" when {
     s"$OK (Ok) is returned from the parser " should {
       "return a Right with the correct model" in new Setup {
-        when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
-          .thenReturn(Future.successful(Right(samplePenaltyDetailsModel)))
+        (mockPenaltiesConnector.getPenaltyDetails(_: String, _:Option[String])(_:HeaderCarrier))
+          .expects(*, *, *)
+          .returning(Future.successful(Right(samplePenaltyDetailsModel)))
 
         val result = await(service.getPenaltyDataForUser())
         
@@ -63,8 +63,9 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
 
     s"$NO_CONTENT (No content) is returned from the parser" should {
       "return an empty Right PenaltyDetails model" in new Setup {
-        when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
-          .thenReturn(Future.successful(Right(PenaltyDetails(None, None, None, None))))
+        (mockPenaltiesConnector.getPenaltyDetails(_: String, _:Option[String])(_:HeaderCarrier))
+          .expects(*, *, *)
+          .returning(Future.successful(Right(PenaltyDetails(None, None, None, None))))
 
         val result = await(service.getPenaltyDataForUser())
         result.isRight shouldBe true
@@ -73,8 +74,9 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
 
       s"$BAD_REQUEST (Bad request) is returned from the parser because of invalid json" should {
         "return a Left with status 400" in new Setup {
-          when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
-            .thenReturn(Future.successful(Left(GetPenaltyDetailsMalformed)))
+          (mockPenaltiesConnector.getPenaltyDetails(_: String, _:Option[String])(_:HeaderCarrier))
+            .expects(*, *, *)
+            .returning(Future.successful(Left(GetPenaltyDetailsMalformed)))
 
           val result = await(service.getPenaltyDataForUser())
 
@@ -85,8 +87,9 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
 
       s"$BAD_REQUEST (Bad request) is returned from the parser" should {
         "return a Left with status 400" in new Setup {
-          when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
-            .thenReturn(Future.successful(Left(GetPenaltyDetailsBadRequest)))
+          (mockPenaltiesConnector.getPenaltyDetails(_: String, _:Option[String])(_:HeaderCarrier))
+            .expects(*, *, *)
+            .returning(Future.successful(Left(GetPenaltyDetailsBadRequest)))
 
           val result = await(service.getPenaltyDataForUser())
           result.isLeft shouldBe true
@@ -96,8 +99,9 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
 
       s"an unexpected error is returned from the parser" should {
         "return a Left with the status and message" in new Setup {
-          when(mockPenaltiesConnector.getPenaltyDetails(any(), any())(any()))
-            .thenReturn(Future.successful(Left(GetPenaltyDetailsUnexpectedFailure(INTERNAL_SERVER_ERROR))))
+          (mockPenaltiesConnector.getPenaltyDetails(_: String, _:Option[String])(_:HeaderCarrier))
+            .expects(*, *, *)
+            .returning(Future.successful(Left(GetPenaltyDetailsUnexpectedFailure(INTERNAL_SERVER_ERROR))))
 
           val result = await(service.getPenaltyDataForUser())
           result.isLeft shouldBe true

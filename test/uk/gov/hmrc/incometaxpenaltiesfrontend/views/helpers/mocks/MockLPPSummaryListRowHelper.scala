@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.mockito.Mockito.when
-import org.mockito.stubbing.OngoingStubbing
-import org.scalatestplus.mockito.MockitoSugar
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LPPSummaryListRowHelper
 
-trait MockLPPSummaryListRowHelper extends MockitoSugar {
+trait MockLPPSummaryListRowHelper extends MockFactory {
+  _: TestSuite =>
 
   val testPenaltyType: SummaryListRow = SummaryListRow(Key(Text("penaltyType")), Value(Text("LPP1")))
   val testAddedOnRow: SummaryListRow = SummaryListRow(Key(Text("addedOn")), Value(Text("date")))
@@ -39,30 +38,36 @@ trait MockLPPSummaryListRowHelper extends MockitoSugar {
 
   lazy val mockLPPSummaryListRowHelper: LPPSummaryListRowHelper = mock[LPPSummaryListRowHelper]
 
-  def mockAddedOnRow(penalty: LPPDetails)(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLPPSummaryListRowHelper.addedOnRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockAddedOnRow(penalty: LPPDetails)(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLPPSummaryListRowHelper.addedOnRow(_:LPPDetails)(_:Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockIncomeTaxPeriodRow(penalty: LPPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLPPSummaryListRowHelper.incomeTaxPeriodRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockIncomeTaxPeriodRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLPPSummaryListRowHelper.incomeTaxPeriodRow(_:LPPDetails)(_:Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockIncomeTaxDueRow(penalty: LPPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLPPSummaryListRowHelper.incomeTaxDueRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockIncomeTaxDueRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLPPSummaryListRowHelper.incomeTaxDueRow(_:LPPDetails)(_:Messages))
+      .expects(penalty, *)
+      .returning(value)
 
-  def mockIncomeTaxPaymentDateRow(penalty: LPPDetails)(value: SummaryListRow): OngoingStubbing[SummaryListRow] =
-    when(mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(eqTo(penalty))(any()))
-      .thenReturn(value)
+  def mockIncomeTaxPaymentDateRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails)(_:Messages))
+      .expects(penalty, *)
+      .returning(value)
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
-                                 appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLPPSummaryListRowHelper.appealStatusRow(eqTo(appealStatus), eqTo(appealLevel))(any()))
-      .thenReturn(value)
+                                 appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLPPSummaryListRowHelper.appealStatusRow(_:Option[AppealStatusEnum.Value], _:Option[AppealLevelEnum.Value])(_:Messages))
+      .expects(appealStatus, appealLevel, *)
+      .returning(value)
 
   def mockPayPenaltyByRow(penalty: LPPDetails)(value: Option[SummaryListRow])
-  : OngoingStubbing[Option[SummaryListRow]] =
-    when(mockLPPSummaryListRowHelper.payPenaltyByRow(eqTo(penalty))(any[Messages]))
-      .thenReturn(value)
+  : CallHandler[Option[SummaryListRow]] =
+    (mockLPPSummaryListRowHelper.payPenaltyByRow(_:LPPDetails)(_:Messages))
+      .expects(penalty, *)
+      .returning(value)
 
 }

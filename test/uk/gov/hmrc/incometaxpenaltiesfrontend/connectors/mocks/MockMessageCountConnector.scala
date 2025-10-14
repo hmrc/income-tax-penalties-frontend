@@ -16,19 +16,21 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks
 
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.MessageCountConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.MessageCountHttpParser.GetMessageCountResponse
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait MockMessageCountConnector extends MockitoSugar {
+trait MockMessageCountConnector extends MockFactory { _: TestSuite =>
 
   val mockMessageCountConnector: MessageCountConnector = mock[MessageCountConnector]
 
   def mockGetMessageCount()(response: Future[GetMessageCountResponse]): Unit =
-    when(mockMessageCountConnector.getMessageCount()(any(), any())).thenReturn(response)
+    (mockMessageCountConnector.getMessageCount()(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
+      .returning(response)
 
 }

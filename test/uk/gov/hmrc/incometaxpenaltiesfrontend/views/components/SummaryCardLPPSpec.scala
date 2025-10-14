@@ -19,10 +19,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.components
 import fixtures.LPPDetailsTestData
 import fixtures.messages.{LPPCardMessages, PenaltyTagStatusMessages}
 import org.jsoup.Jsoup
-import org.mockito.Mockito.when
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
@@ -35,7 +35,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.SummaryCardL
 import java.time.LocalDate
 
 class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
-  with LPPDetailsTestData with TagHelper with DateFormatter with MockitoSugar {
+  with LPPDetailsTestData with TagHelper with DateFormatter with MockFactory { _:TestSuite =>
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val timeMachine: TimeMachine = mock[TimeMachine]
@@ -61,8 +61,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
             "penalty category is 'MANUAL'" should {
 
               "generate a Summary Card with a cannot appeal message" in {
-                when(timeMachine.getCurrentDate).thenReturn(LocalDate.of(2021, 6, 1))
-
                 val penalty = sampleManualLPP
                 val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
@@ -99,7 +97,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 "a penalty appeal is in progress" should {
 
                   "generate a Summary Card with only calculation link" in {
-                    when(timeMachine.getCurrentDate).thenReturn(LocalDate.of(2021, 6, 1))
+                    (timeMachine.getCurrentDate _).expects().returning(LocalDate.of(2021, 6, 1)).atLeastOnce()
 
                     val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
                     val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
@@ -141,8 +139,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     val penalty = sampleUnpaidLPP1
                     val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
-                    when(timeMachine.getCurrentDate).thenReturn(LocalDate.of(2021, 6, 1))
-
                     val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                       index = 1,
                       cardTitle = messagesForLanguage.cardTitlePenalty(amount),
@@ -180,7 +176,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     val penalty = sampleLPP1AppealPaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
                     val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
-                    when(timeMachine.getCurrentDate).thenReturn(LocalDate.of(2021, 6, 1))
                     val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                       index = 1,
                       cardTitle = messagesForLanguage.cardTitlePenalty(amount),

@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks
 
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.IncomeTaxSessionDataConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.{BadRequest, UnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.SessionData
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait IncomeTaxSessionMocks extends MockitoSugar {
+trait IncomeTaxSessionMocks extends MockFactory {
+  _: TestSuite =>
 
   lazy val mockSessionDataConnector: IncomeTaxSessionDataConnector = mock[IncomeTaxSessionDataConnector]
 
@@ -40,27 +41,23 @@ trait IncomeTaxSessionMocks extends MockitoSugar {
   )
 
   def mockIncomeTaxSessionDataFound(): Unit =
-    when(mockSessionDataConnector.getSessionData()(any(), any()))
-      .thenReturn(
-      Future.successful(Right(Some(sessionData)))
-    )
+    (mockSessionDataConnector.getSessionData()(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
+      .returning(Future.successful(Right(Some(sessionData))))
 
   def mockIncomeTaxSessionDataNotFound(): Unit =
-    when(mockSessionDataConnector.getSessionData()(any(), any()))
-      .thenReturn(
-        Future.successful(Right(None))
-      )
+    (mockSessionDataConnector.getSessionData()(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
+      .returning(Future.successful(Right(None)))
 
   def mockIncomeTaxSessionDataBadRequest(): Unit =
-    when(mockSessionDataConnector.getSessionData()(any(), any()))
-      .thenReturn(
-        Future.successful(Left(BadRequest))
-      )
+    (mockSessionDataConnector.getSessionData()(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
+      .returning(Future.successful(Left(BadRequest)))
 
   def mockIncomeTaxSessionDataInternalErrorRequest(): Unit =
-    when(mockSessionDataConnector.getSessionData()(any(), any()))
-      .thenReturn(
-        Future.successful(Left(UnexpectedFailure(500, "error")))
-      )
+    (mockSessionDataConnector.getSessionData()(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
+      .returning(Future.successful(Left(UnexpectedFailure(500, "error"))))
 
 }

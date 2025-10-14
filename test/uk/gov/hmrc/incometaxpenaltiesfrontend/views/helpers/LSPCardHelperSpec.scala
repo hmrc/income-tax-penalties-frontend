@@ -18,11 +18,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import fixtures.LSPDetailsTestData
 import fixtures.messages.LSPCardMessages
-import org.mockito.Mockito.when
-import org.scalatest.BeforeAndAfterEach
+import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar
+import org.scalatest.{BeforeAndAfterEach, TestSuite}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.twirl.api.Html
@@ -36,17 +35,13 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLSPSummary
 import java.time.LocalDate
 
 class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with DateFormatter
-  with LSPDetailsTestData with MockLSPSummaryListRowHelper with TagHelper with SummaryListRowHelper with MockitoSugar
-  with BeforeAndAfterEach {
+  with LSPDetailsTestData with MockLSPSummaryListRowHelper with TagHelper with SummaryListRowHelper
+  with BeforeAndAfterEach with MockFactory {
+  _: TestSuite =>
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit val tm: TimeMachine = mock[TimeMachine]
   lazy val lspSummaryListRowHelper: LSPCardHelper = new LSPCardHelper(mockLSPSummaryListRowHelper)
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    when(tm.getCurrentDate).thenReturn(LocalDate.of(2021, 3, 6))
-  }
 
   "LSPCardHelper" when {
 
@@ -111,7 +106,6 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
-
 
                 lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
@@ -249,6 +243,8 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
               mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
               mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
+              (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).twice()
+
 
               lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPenaltyCharge), 1, 1) shouldBe
                 Seq(LateSubmissionPenaltySummaryCard(
@@ -279,7 +275,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               val penalty2 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("2"))
               val penalty3 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("3"))
 
-              Seq(penalty1, penalty2, penalty3).foreach {  penalty =>
+              Seq(penalty1, penalty2, penalty3).foreach { penalty =>
                 mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
                 mockPayPenaltyByRow(penalty, 2)(Some(testPayPenaltyByRow))
                 mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
@@ -287,13 +283,13 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
-
+                (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).twice()
               }
 
               lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
-                penalties     = Seq(penalty3, penalty2, penalty1),
-                threshold     = 2,
-                activePoints  = 3
+                penalties = Seq(penalty3, penalty2, penalty1),
+                threshold = 2,
+                activePoints = 3
               ) shouldBe
                 Seq(
                   LateSubmissionPenaltySummaryCard(
@@ -374,15 +370,15 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testPointExpiredOnRow,
                       testAppealStatusRow
                     ),
-                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
-                    status             = getTagStatus(penalty1),
-                    penaltyPoint       = "",
-                    penaltyId          = penalty1.penaltyNumber,
-                    isReturnSubmitted  = true,
+                    cardTitle = messagesForLanguage.cardTitleRemovedPoint,
+                    status = getTagStatus(penalty1),
+                    penaltyPoint = "",
+                    penaltyId = penalty1.penaltyNumber,
+                    isReturnSubmitted = true,
                     isAddedOrRemovedPoint = true,
-                    penaltyCategory    = penalty1.penaltyCategory,
+                    penaltyCategory = penalty1.penaltyCategory,
                     isManuallyRemovedPoint = true,
-                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                    dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }
             }
@@ -404,15 +400,15 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testDueDateRow,
                       testReceivedDateRow
                     ),
-                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
-                    status             = getTagStatus(penalty1, pointsRemovedAfterPoc = Some(true)),
-                    penaltyPoint       = "",
-                    penaltyId          = penalty1.penaltyNumber,
-                    isReturnSubmitted  = true,
+                    cardTitle = messagesForLanguage.cardTitleRemovedPoint,
+                    status = getTagStatus(penalty1, pointsRemovedAfterPoc = Some(true)),
+                    penaltyPoint = "",
+                    penaltyId = penalty1.penaltyNumber,
+                    isReturnSubmitted = true,
                     isAddedOrRemovedPoint = true,
-                    penaltyCategory    = penalty1.penaltyCategory,
+                    penaltyCategory = penalty1.penaltyCategory,
                     isManuallyRemovedPoint = true,
-                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                    dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }
             }
@@ -437,14 +433,14 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testDueDateRow,
                       testReceivedDateRow
                     ),
-                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
-                    status             = getTagStatus(penalty1),
-                    penaltyPoint       = "",
-                    penaltyId          = penalty1.penaltyNumber,
-                    isReturnSubmitted  = true,
+                    cardTitle = messagesForLanguage.cardTitleRemovedPoint,
+                    status = getTagStatus(penalty1),
+                    penaltyPoint = "",
+                    penaltyId = penalty1.penaltyNumber,
+                    isReturnSubmitted = true,
                     isAddedOrRemovedPoint = true,
-                    penaltyCategory    = penalty1.penaltyCategory,
-                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                    penaltyCategory = penalty1.penaltyCategory,
+                    dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }
             }
@@ -469,14 +465,14 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testDueDateRow,
                       testReceivedDateRow
                     ),
-                    cardTitle          = messagesForLanguage.cardTitleRemovedPoint,
-                    status             = getTagStatus(penalty1),
-                    penaltyPoint       = "",
-                    penaltyId          = penalty1.penaltyNumber,
-                    isReturnSubmitted  = true,
+                    cardTitle = messagesForLanguage.cardTitleRemovedPoint,
+                    status = getTagStatus(penalty1),
+                    penaltyPoint = "",
+                    penaltyId = penalty1.penaltyNumber,
+                    isReturnSubmitted = true,
                     isAddedOrRemovedPoint = true,
-                    penaltyCategory    = penalty1.penaltyCategory,
-                    dueDate            = penalty1.dueDate.map(dateToString(_))
+                    penaltyCategory = penalty1.penaltyCategory,
+                    dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }
             }
@@ -485,7 +481,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
           "Status Tag" should {
             "become 'Overdue' when chargeDueDate is before today" in {
               implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
-              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+              (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 8, 11))
 
               val penalty = sampleLateSubmissionPenaltyCharge.copy(
                 penaltyOrder = Some("1"),
@@ -510,7 +506,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
             }
             "become 'due' when chargeDueDate is after today" in {
               implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
-              when(tm.getCurrentDate).thenReturn(LocalDate.of(2025, 8, 11))
+              (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 8, 11))
 
               val penalty = sampleLateSubmissionPenaltyCharge.copy(
                 penaltyOrder = Some("1"),

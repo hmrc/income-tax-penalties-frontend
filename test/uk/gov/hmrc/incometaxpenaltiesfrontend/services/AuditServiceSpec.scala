@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.mockito.Mockito.{times, verify}
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.AuditModel
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import scala.concurrent.ExecutionContext
 
-class AuditServiceSpec extends AnyWordSpec with Matchers with MockitoSugar {
+class AuditServiceSpec extends AnyWordSpec with Matchers with MockFactory { _: TestSuite =>
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val ec: ExecutionContext = ExecutionContext.global
@@ -45,12 +44,11 @@ class AuditServiceSpec extends AnyWordSpec with Matchers with MockitoSugar {
 
     "audit an explicit event" in {
 
-      service.audit(testAuditModel)
+      (auditConnector.sendExplicitAudit(_: String, _: JsValue)(_: HeaderCarrier, _: ExecutionContext, _: Writes[JsValue]))
+        .expects(testAuditModel.auditType, testAuditModel.detail, *, *, *)
+        .returning(*)
 
-      verify(auditConnector, times(1)).sendExplicitAudit(
-        auditType = eqTo(testAuditModel.auditType),
-        detail = eqTo(testAuditModel.detail)
-      )(any(), any(), any())
+      service.audit(testAuditModel)
     }
   }
 }
