@@ -23,8 +23,7 @@
 
 @this(
         govukSummaryList: GovukSummaryList,
-        govukTag: GovukTag,
-        link: Link
+        govukTag: GovukTag
 )
 
 @(summaryCard: LateSubmissionPenaltySummaryCard, isAgent: Boolean)(implicit messages: Messages)
@@ -44,14 +43,13 @@
     )
     </div>
     <div class="govuk-summary-card__title-wrapper">
-    @{
-        if(summaryCard.isAddedPoint && !summaryCard.isAppealedPoint) {
-                <span id={s"penalty-id-${summaryCard.penaltyId}-cannotAppeal"}>
+        @if(summaryCard.isAddedPoint && !summaryCard.isAppealedPoint) {
+                @{<span id={s"penalty-id-${summaryCard.penaltyId}-cannotAppeal"}>
                 {messages("cardLinks.cannotAppeal")}
-                </span>
+                </span>}
         } else {
-            if(!summaryCard.isAddedOrRemovedPoint && !summaryCard.status.content.asHtml.body.contains("Expired")) {
-                summaryCard.appealStatus match {
+            @if(!summaryCard.isAddedOrRemovedPoint && !summaryCard.status.content.asHtml.body.contains("Expired")) {
+                @{summaryCard.appealStatus match {
                     case Some(AppealStatusEnum.Rejected) if summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal) =>
                         <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent, is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
                         {messages("cardLinks.reviewAppeal", summaryCard.penaltyPoint)}

@@ -21,13 +21,13 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenal
 
 object LPPCardMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
 
     //Card Title Messages
     val cardTitlePenalty: String => String = amount => s"£$amount penalty"
     val cardTitleFirstPenalty: String => String = amount => s"First late payment penalty: £$amount"
     val cardTitleSecondPenalty: String => String = amount => s"Second late payment penalty: £$amount"
-    val cardTitlePenaltyDetailsLetter: String => String = amount => "Penalty for late payment - details are in the letter we sent you"
+    val cardTitlePenaltyDetailsLetter: String = "Penalty for late payment - details are in the letter we sent you"
 
     //Summary Row Messages
     val penaltyTypeKey = "Penalty type"
@@ -58,7 +58,7 @@ object LPPCardMessages {
     override val cardTitlePenalty: String => String = amount => s"Cosb o £$amount"
     override val cardTitleFirstPenalty: String => String = amount => s"Cosb gyntaf am dalu’n hwyr: £$amount"
     override val cardTitleSecondPenalty: String => String = amount => s"Ail gosb am dalu’n hwyr: £$amount"
-    override val cardTitlePenaltyDetailsLetter: String => String = amount => "Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch"
+    override val cardTitlePenaltyDetailsLetter: String = "Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch"
 
     //Summary Row Messages
     override val penaltyTypeKey = "Math o gosb"

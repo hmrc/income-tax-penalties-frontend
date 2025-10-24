@@ -24,6 +24,6 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class TimeMachine @Inject()(appConfig: AppConfig) {
 
-  def getCurrentDate: LocalDate = appConfig.optCurrentDate.getOrElse(LocalDate.now())
+  def getCurrentDate(): LocalDate = appConfig.optCurrentDate.getOrElse(LocalDate.now())
 
 }

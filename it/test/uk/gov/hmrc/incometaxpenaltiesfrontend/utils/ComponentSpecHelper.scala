@@ -32,7 +32,7 @@ import uk.gov.hmrc.http.SessionKeys
 import uk.gov.hmrc.play.bootstrap.frontend.filters.crypto.SessionCookieCrypto
 
 import java.time.LocalDate
-
+import play.api.libs.ws.DefaultBodyWritables.writeableOf_String
 trait ComponentSpecHelper
   extends AnyWordSpec
     with Matchers
@@ -53,9 +53,9 @@ trait ComponentSpecHelper
   val mockPort: String = WiremockHelper.wiremockPort.toString
   val mockUrl: String = s"http://$mockHost:$mockPort"
 
-  implicit lazy val messagesAPI = app.injector.instanceOf[MessagesApi]
+  implicit lazy val messagesAPI: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit lazy val lang: Lang = Lang("en")
-  implicit lazy val messagesProvider = MessagesImpl(Lang("en"), messagesAPI)
+  implicit lazy val messagesProvider: MessagesImpl = MessagesImpl(Lang("en"), messagesAPI)
   def config: Map[String, String] = Map(
     "microservice.services.penalties.host" -> mockHost,
     "microservice.services.penalties.port" -> mockPort,

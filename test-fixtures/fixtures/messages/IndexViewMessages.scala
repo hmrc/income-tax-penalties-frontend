@@ -18,7 +18,7 @@ package fixtures.messages
 
 object IndexViewMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
     val noLSP = "You don’t have any active late submission penalties"
     val noLSPAgent = "Your client has no active late submission penalties."
     val noLPPIndividual = "You have no late payment penalties that are currently due"

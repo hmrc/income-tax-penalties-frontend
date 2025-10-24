@@ -18,7 +18,7 @@ package fixtures.messages
 
 object PenaltyTagStatusMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
     val active: String = "Active"
     val expired: String = "Expired"
     val removed: String = "Removed"

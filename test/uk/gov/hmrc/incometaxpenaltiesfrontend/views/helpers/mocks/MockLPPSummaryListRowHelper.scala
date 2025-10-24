@@ -27,7 +27,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetai
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LPPSummaryListRowHelper
 
 trait MockLPPSummaryListRowHelper extends MockFactory {
-  _: TestSuite =>
+  this: TestSuite =>
 
   val testPenaltyType: SummaryListRow = SummaryListRow(Key(Text("penaltyType")), Value(Text("LPP1")))
   val testAddedOnRow: SummaryListRow = SummaryListRow(Key(Text("addedOn")), Value(Text("date")))

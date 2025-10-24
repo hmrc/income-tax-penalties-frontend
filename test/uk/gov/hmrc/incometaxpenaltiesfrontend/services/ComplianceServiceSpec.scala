@@ -30,7 +30,7 @@ import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with MockFactory { _: TestSuite =>
+class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with MockFactory { this: TestSuite =>
 
   val mockPenaltiesConnector: PenaltiesConnector = mock[PenaltiesConnector]
   val nino = "AA123456A"

@@ -27,7 +27,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetai
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LSPSummaryListRowHelper
 
 trait MockLSPSummaryListRowHelper extends MockFactory {
-  _: TestSuite =>
+  this: TestSuite =>
 
   val testTaxPeriodRow: SummaryListRow = SummaryListRow(Key(Text("taxPeriod")), Value(Text("dateA to dateB")))
   val testTaxYearRow: SummaryListRow = SummaryListRow(Key(Text("taxYear")), Value(Text("dateA to dateB")))

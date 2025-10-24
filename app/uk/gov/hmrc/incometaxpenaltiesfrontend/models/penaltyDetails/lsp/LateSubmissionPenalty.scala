@@ -28,6 +28,12 @@ case class LateSubmissionPenalty(summary: LSPSummary,
 }
 
 object LateSubmissionPenalty {
+
+  def unapply(lateSubmissionPenalty: LateSubmissionPenalty): Option[(LSPSummary, Seq[LSPDetails])] = Some(
+    (lateSubmissionPenalty.summary,
+      lateSubmissionPenalty.details)
+  )
+  
   implicit val reads: Reads[LateSubmissionPenalty] = (
     (JsPath \ "lspSummary").read[LSPSummary] and
       (JsPath \ "lspDetails").read[Seq[LSPDetails]]

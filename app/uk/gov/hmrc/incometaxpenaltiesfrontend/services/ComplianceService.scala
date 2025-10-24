@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: ExecutionContext) {
 
-  def calculateComplianceWindow()(implicit request: Request[_]): Option[(LocalDate, LocalDate)] =
+  def calculateComplianceWindow()(implicit request: Request[_]): Option[(LocalDate, LocalDate)] = {
     request.session.get(IncomeTaxSessionKeys.pocAchievementDate).map(LocalDate.parse) match {
       case Some(pocDate) if pocDate.getYear == 9999 =>
         logger.info("[ComplianceService][calculateComplianceWindow] - User does not have a compliance window, PoC year was 9999")
@@ -40,6 +40,7 @@ class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: Ex
         logger.info("[ComplianceService][calculateComplianceWindow] - User does not have a PoC Achievement Date in session")
         None
     }
+  }
 
   def getDESComplianceData(nino: String,
                            startDate: LocalDate,

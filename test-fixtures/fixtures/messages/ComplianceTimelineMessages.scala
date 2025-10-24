@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 object ComplianceTimelineMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages {
     def taxReturn(fromDate: LocalDate, toDate: LocalDate)(implicit messages: i18n.Messages): String =
       s"Tax return: ${dateToString(fromDate)} to ${dateToString(toDate)}"
 

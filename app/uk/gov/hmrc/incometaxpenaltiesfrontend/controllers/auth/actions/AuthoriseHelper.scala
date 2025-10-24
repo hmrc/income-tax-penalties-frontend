@@ -30,15 +30,14 @@ trait AuthoriseHelper {
   val appConfig: AppConfig
   val errorHandler: ErrorHandler
 
-  val logger: Logger
-
   private val noAssignment = "NO_ASSIGNMENT"
   private val noRelationship = "NO_RELATIONSHIP"
 
   def handleAuthFailure(authorisationException: AuthorisationException,
                         isAgent: Boolean)
                        (implicit rh: Request[_],
-                        ec: ExecutionContext): Future[Result] = {
+                        ec: ExecutionContext,
+                        logger: Logger): Future[Result] = {
     authorisationException match {
       case _: BearerTokenExpired =>
         logger.warn("Bearer Token Timed Out.")

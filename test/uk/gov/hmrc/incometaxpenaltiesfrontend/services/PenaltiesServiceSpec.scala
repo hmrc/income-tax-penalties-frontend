@@ -35,7 +35,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetai
 
 import scala.concurrent.Future
 
-class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetailsTestData with GuiceOneAppPerSuite with MockFactory { _: TestSuite =>
+class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetailsTestData with GuiceOneAppPerSuite with MockFactory { this: TestSuite =>
 
   class Setup {
 

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions
 
 import com.google.inject.Singleton
-import play.api.Logger
+import play.api.Logging
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
@@ -40,9 +40,11 @@ class AuthoriseAndRetrieveAgent @Inject()(override val authConnector: AuthConnec
                                           val appConfig: AppConfig,
                                           val errorHandler: ErrorHandler,
                                           mcc: MessagesControllerComponents)
-  extends AuthoriseHelper with ActionRefiner[Request, AuthorisedUserRequest] with AuthorisedFunctions with ActionBuilder[AuthorisedUserRequest, AnyContent] {
-
-  lazy val logger: Logger = Logger(getClass)
+  extends AuthoriseHelper
+    with ActionRefiner[Request, AuthorisedUserRequest]
+    with AuthorisedFunctions
+    with ActionBuilder[AuthorisedUserRequest, AnyContent]
+    with Logging {
 
     implicit val executionContext: ExecutionContext = mcc.executionContext
 
@@ -67,7 +69,8 @@ class AuthoriseAndRetrieveAgent @Inject()(override val authConnector: AuthConnec
             Future.successful(
               Left(Redirect(routes.IndexController.homePage(isAgent = false))))
         }.recoverWith {
-          case authorisationException: AuthorisationException => handleAuthFailure(authorisationException, isAgent = false).map(Left(_))
+          case authorisationException: AuthorisationException => handleAuthFailure(authorisationException, isAgent = false)
+            (implicitly, implicitly, logger).map(Left(_))
         }
     }
 }

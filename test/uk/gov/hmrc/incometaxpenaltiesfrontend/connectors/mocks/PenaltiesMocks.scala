@@ -26,7 +26,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
 
 import scala.concurrent.Future
 
-trait PenaltiesMocks extends MockFactory with PenaltiesDetailsTestData { _: TestSuite =>
+trait PenaltiesMocks extends MockFactory with PenaltiesDetailsTestData { this: TestSuite =>
 
   lazy val mockPenaltiesService: PenaltiesService = mock[PenaltiesService]
 

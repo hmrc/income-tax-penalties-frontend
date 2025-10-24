@@ -27,7 +27,7 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import scala.concurrent.ExecutionContext
 
-class AuditServiceSpec extends AnyWordSpec with Matchers with MockFactory { _: TestSuite =>
+class AuditServiceSpec extends AnyWordSpec with Matchers with MockFactory { this: TestSuite =>
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val ec: ExecutionContext = ExecutionContext.global

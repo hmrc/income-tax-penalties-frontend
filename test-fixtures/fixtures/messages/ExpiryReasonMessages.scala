@@ -18,7 +18,7 @@ package fixtures.messages
 
 object ExpiryReasonMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
     val appeal = "Appeal"
     val adjustment = "Adjustment"
     val reversal = "Reversal"

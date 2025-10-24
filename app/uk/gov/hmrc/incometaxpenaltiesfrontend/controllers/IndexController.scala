@@ -44,7 +44,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
     val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
     val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
-    val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(timeMachine.getCurrentDate))
+    val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(timeMachine.getCurrentDate()))
 
     val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(
       penalties = sortPointsInDescendingOrder(lsp),

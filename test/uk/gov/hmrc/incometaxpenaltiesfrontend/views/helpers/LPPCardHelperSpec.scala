@@ -32,7 +32,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLPPSummary
 import java.time.LocalDate
 
 class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with DateFormatter
-  with LPPDetailsTestData with MockLPPSummaryListRowHelper with TagHelper with SummaryListRowHelper with MockFactory { _: TestSuite =>
+  with LPPDetailsTestData with MockLPPSummaryListRowHelper with TagHelper with SummaryListRowHelper with MockFactory { this: TestSuite =>
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val lppSummaryListRowHelper: LPPCardHelper = new LPPCardHelper(mockLPPSummaryListRowHelper)
@@ -144,7 +144,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
                 Seq(LatePaymentPenaltySummaryCard(
                   index = 1,
-                  cardTitle = messagesForLanguage.cardTitlePenaltyDetailsLetter(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
+                  cardTitle = messagesForLanguage.cardTitlePenaltyDetailsLetter,
                   cardRows = Seq(
                     testAddedOnRow
                   ),

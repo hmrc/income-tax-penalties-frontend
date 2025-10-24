@@ -44,6 +44,8 @@ class BtaNavBarSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
       linksToRender.zipWithIndex.foreach { case (link, index) =>
         val linkElement = allLinks.get(index)
+        println(linkElement)
+        println()
         linkElement.text() shouldBe link.message + link.alert.fold("")(n => if(n != "0") s" $n" else "")
         linkElement.attr("href") shouldBe link.url
         linkElement.id() shouldBe s"nav-bar-link-${link.message.replace(" ", "-")}"

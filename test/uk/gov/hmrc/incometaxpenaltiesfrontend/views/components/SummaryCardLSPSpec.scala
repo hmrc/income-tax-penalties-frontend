@@ -136,7 +136,6 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       ), isAgent)
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
-
                       document.select("h4").text() shouldBe messagesForLanguage.cardTitleAdjustmentPoint(1)
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-status").text() shouldBe penaltyStatusMessages.active
                       document.select(s"#penalty-id-${sampleRemovedPenaltyPoint.penaltyNumber}-cannotAppeal").text() shouldBe messagesForLanguage.cardLinksAdjustedPointCannotAppeal
