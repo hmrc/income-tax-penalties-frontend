@@ -32,7 +32,7 @@ class BtaNavBarService @Inject()(btaNavLinksConnector: BtaNavLinksConnector,
                                  btaNavBar: BtaNavBar)
                                 (implicit val appConfig: AppConfig) {
 
-  def retrieveBtaLinksAndRenderNavBar()(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext, messages: Messages): Future[Option[Html]] =
+  def retrieveBtaLinksAndRenderNavBar()(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext, messages: Messages): Future[Option[Html]] = {
     btaNavLinksConnector.getBtaNavLinks().map(_.map { content =>
       btaNavBar(
         Seq(
@@ -44,6 +44,7 @@ class BtaNavBarService @Inject()(btaNavLinksConnector: BtaNavLinksConnector,
         ).flatten
       )
     })
+  }
 
   private[services] def formsNav(form: NavLink)(implicit messages: Messages): Option[ListLink] =
     form.alerts.collect { case alert if alert > 0 =>

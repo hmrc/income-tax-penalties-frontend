@@ -37,7 +37,7 @@ import java.time.LocalDate
 class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with DateFormatter
   with LSPDetailsTestData with MockLSPSummaryListRowHelper with TagHelper with SummaryListRowHelper
   with BeforeAndAfterEach with MockFactory {
-  _: TestSuite =>
+  this: TestSuite =>
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit val tm: TimeMachine = mock[TimeMachine]

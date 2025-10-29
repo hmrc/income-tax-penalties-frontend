@@ -16,7 +16,9 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models
 
-import play.api.libs.json.{Reads, Writes}
+import play.api.libs.json._
+
+import scala.util.Try
 
 object ITSAStatus extends Enumeration {
   type ITSAStatus = Value
@@ -28,6 +30,17 @@ object ITSAStatus extends Enumeration {
   val Dormant = Value("Dormant")
   val Exempt = Value("MTD Exempt")
 
-  implicit val itsaStatusReads: Reads[ITSAStatus] = Reads.enumNameReads(ITSAStatus)
-  implicit val itsaStatusWrite: Writes[ITSAStatus] = Writes.enumNameWrites
+
+
+  implicit val itsaStatusReads: Reads[ITSAStatus] = new Reads[ITSAStatus] {
+    override def reads(json: JsValue): JsResult[ITSAStatus] =
+      Try(ITSAStatus.withName(json.as[String])).toOption match {
+        case Some(value) => JsSuccess(value)
+        case error => JsError(s"Invalid value '$error' for ITSAStatus")
+      }
+  }
+
+  implicit val itsaStatusWrite: Writes[ITSAStatus] = new Writes[ITSAStatus] {
+    override def writes(o: ITSAStatus): JsValue = JsString(o.toString)
+  }
 }

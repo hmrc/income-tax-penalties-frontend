@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models
 
-import play.api.libs.json.Writes
+import play.api.libs.json.{JsString, JsValue, Writes}
 
 object PenaltyType extends Enumeration {
   type PenaltyType = Value
@@ -24,5 +24,7 @@ object PenaltyType extends Enumeration {
   val LPP1 = Value("Late Payment Penalty 1")
   val LPP2 = Value("Late Payment Penalty 2")
 
-  implicit val writes: Writes[PenaltyType] = Writes.enumNameWrites
+  implicit val writes: Writes[PenaltyType] = new Writes[PenaltyType] {
+    override def writes(o: PenaltyType): JsValue = JsString(o.toString)
+  }
 }

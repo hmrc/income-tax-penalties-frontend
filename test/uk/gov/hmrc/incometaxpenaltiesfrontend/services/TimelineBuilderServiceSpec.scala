@@ -32,7 +32,7 @@ class TimelineBuilderServiceSpec extends AnyWordSpec with Matchers with Complian
 
   class Setup(runDate: LocalDate = LocalDate.of(2023,4,13)) {
     object FakeTimeMachine extends TimeMachine(appConfig = app.injector.instanceOf[AppConfig]) {
-      override def getCurrentDate: LocalDate = runDate
+      override def getCurrentDate(): LocalDate = runDate
     }
     val service: TimelineBuilderService = new TimelineBuilderService(FakeTimeMachine)
   }

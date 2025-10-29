@@ -26,7 +26,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.ExpiryReasonEnum.{Appeal, NaturalExpiration}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
-
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
   with PenaltiesStub with PenaltiesDetailsTestData {
 

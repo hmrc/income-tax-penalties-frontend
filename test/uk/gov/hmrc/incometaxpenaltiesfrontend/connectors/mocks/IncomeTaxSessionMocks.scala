@@ -26,7 +26,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.SessionDat
 import scala.concurrent.{ExecutionContext, Future}
 
 trait IncomeTaxSessionMocks extends MockFactory {
-  _: TestSuite =>
+  this: TestSuite =>
 
   lazy val mockSessionDataConnector: IncomeTaxSessionDataConnector = mock[IncomeTaxSessionDataConnector]
 

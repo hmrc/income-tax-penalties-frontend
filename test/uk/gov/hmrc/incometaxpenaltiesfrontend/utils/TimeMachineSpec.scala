@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.Configuration
@@ -28,7 +27,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
 
-class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: TestSuite =>
+class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { this: TestSuite =>
 
 
   "TimeMachine -getCurrentDate" should {
@@ -42,7 +41,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
       val timeMachine = app.injector.instanceOf[TimeMachine]
       sys.props -= "TIME_MACHINE_NOW"
       sys.props += ("TIME_MACHINE_NOW" -> "02-05-2024")
-      timeMachine.getCurrentDate shouldEqual LocalDate.of(2024, 5, 2)
+      timeMachine.getCurrentDate() shouldEqual LocalDate.of(2024, 5, 2)
     }
 
     "Return the current date if timemachine is disabled" in {
@@ -51,7 +50,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
       ).build()
 
       val timeMachine = app.injector.instanceOf[TimeMachine]
-      timeMachine.getCurrentDate shouldEqual LocalDate.now()
+      timeMachine.getCurrentDate() shouldEqual LocalDate.now()
     }
 
     "Return the current date if timemachine date set to now" in {
@@ -63,7 +62,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
 
       val timeMachine = app.injector.instanceOf[TimeMachine]
       sys.props -= "TIME_MACHINE_NOW"
-      timeMachine.getCurrentDate shouldEqual LocalDate.now()
+      timeMachine.getCurrentDate() shouldEqual LocalDate.now()
 
     }
 
@@ -72,7 +71,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
         val config = Configuration("timemachine.enabled" -> false)
         val servicesConfig = mock[ServicesConfig]
         val appConfig = new AppConfig(config, servicesConfig)
-        appConfig.optCurrentDate mustBe None
+        appConfig.optCurrentDate shouldBe None
       }
 
       "return Some(LocalDate) from system property when timeMachineEnabled is true and property is set" in {
@@ -85,7 +84,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
         val dateStr = "31-12-2023"
         System.setProperty("TIME_MACHINE_NOW", dateStr)
         try {
-          appConfig.optCurrentDate mustBe Some(LocalDate.parse(dateStr, appConfig.timeMachineDateFormatter))
+          appConfig.optCurrentDate shouldBe Some(LocalDate.parse(dateStr, appConfig.timeMachineDateFormatter))
         } finally {
           System.clearProperty("TIME_MACHINE_NOW")
         }
@@ -98,7 +97,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
         )
         val servicesConfig = mock[ServicesConfig]
         val appConfig = new AppConfig(config, servicesConfig)
-        appConfig.optCurrentDate mustBe Some(LocalDate.parse("01-01-2024", appConfig.timeMachineDateFormatter))
+        appConfig.optCurrentDate shouldBe Some(LocalDate.parse("01-01-2024", appConfig.timeMachineDateFormatter))
       }
 
       "return None if date string is invalid" in {
@@ -108,7 +107,7 @@ class TimeMachineSpec extends AnyWordSpec with Matchers with MockFactory { _: Te
         )
         val servicesConfig = mock[ServicesConfig]
         val appConfig = new AppConfig(config, servicesConfig)
-        appConfig.optCurrentDate mustBe None
+        appConfig.optCurrentDate shouldBe None
       }
     }
 

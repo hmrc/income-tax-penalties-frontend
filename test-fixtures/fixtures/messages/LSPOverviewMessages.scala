@@ -18,7 +18,7 @@ package fixtures.messages
 
 object LSPOverviewMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
     val pointsTotal: Int => String = n => s"Penalty points total: $n"
 
     //Messages when points are accruing < threshold

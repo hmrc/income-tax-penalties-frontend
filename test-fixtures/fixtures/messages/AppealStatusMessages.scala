@@ -18,7 +18,7 @@ package fixtures.messages
 
 object AppealStatusMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
     val appealStatusKey = "Appeal status"
     val appealInProgress = "Appeal in progress"
     val appealRejected = "Appeal rejected"

@@ -18,7 +18,7 @@ package fixtures.messages
 
 object LSPCardMessages {
 
-  sealed trait Messages { _: i18n =>
+  sealed trait Messages { this: i18n =>
     //Card Title Messages
     val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: Adjustment point"
     val cardTitleRemovedPoint = "Penalty point"

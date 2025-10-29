@@ -35,7 +35,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.SummaryCardL
 import java.time.LocalDate
 
 class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
-  with LPPDetailsTestData with TagHelper with DateFormatter with MockFactory { _:TestSuite =>
+  with LPPDetailsTestData with TagHelper with DateFormatter with MockFactory { this: TestSuite =>
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val timeMachine: TimeMachine = mock[TimeMachine]

@@ -32,8 +32,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKey
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
-class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with
-  PenaltiesFixture with ComplianceDataTestData with ComplianceStub with FeatureSwitching {
+class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods
+  with PenaltiesFixture with ComplianceDataTestData with ComplianceStub with FeatureSwitching {
 
   val connector: PenaltiesConnector = app.injector.instanceOf[PenaltiesConnector]
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
@@ -128,53 +128,53 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
               )
             )
           ),
-        "latePaymentPenalty" -> Json.obj(
-          "details" -> Json.arr(
-            Json.obj(
-              "principalChargeReference" -> "XJ002616061027",
-              "penaltyCategory" -> "LPP1",
-              "penaltyStatus" -> "A",
-              "penaltyAmountAccruing" -> 400.00,
-              "penaltyAmountPosted" -> 0,
-              "penaltyAmountPaid" -> 0,
-              "penaltyAmountOutstanding" -> 0,
-              "LPP1LRCalculationAmount" -> 20000.00,
-              "LPP1LRDays" -> "15",
-              "LPP1LRPercentage" -> 2,
-              "LPP1HRDays" -> "30",
-              "LPP1HRPercentage" -> 2,
-              "penaltyChargeReference" -> "XJ002616061027",
-              "principalChargeMainTransaction" -> "4720",
-              "principalChargeBillingFrom" -> "2027-04-06",
-              "principalChargeBillingTo" -> "2028-04-05",
-              "principalChargeDueDate" -> "2029-01-31",
-              "principalChargeDocNumber" -> "DOC1",
-              "principalChargeSubTransaction" -> "SUB1"
-            ),
-            Json.obj(
-              "principalChargeReference" -> "XJ002616061028",
-              "penaltyCategory" -> "LPP1",
-              "penaltyStatus" -> "P",
-              "penaltyAmountAccruing" -> 0,
-              "penaltyAmountPosted" -> 400.00,
-              "penaltyAmountPaid" -> 400.00,
-              "penaltyAmountOutstanding" -> 0,
-              "LPP1LRCalculationAmount" -> 20000.00,
-              "LPP1LRDays" -> "15",
-              "LPP1LRPercentage" -> 2,
-              "LPP1HRDays" -> "30",
-              "LPP1HRPercentage" -> 2,
-              "penaltyChargeReference" -> "XJ002616061028",
-              "principalChargeMainTransaction" -> "4720",
-              "principalChargeBillingFrom" -> "2026-04-06",
-              "principalChargeBillingTo" -> "2027-04-05",
-              "principalChargeDueDate" -> "2028-01-31",
-              "principalChargeLatestClearing" -> "2028-02-19",
-              "principalChargeDocNumber" -> "DOC1",
-              "principalChargeSubTransaction" -> "SUB1"
+          "latePaymentPenalty" -> Json.obj(
+            "details" -> Json.arr(
+              Json.obj(
+                "principalChargeReference" -> "XJ002616061027",
+                "penaltyCategory" -> "LPP1",
+                "penaltyStatus" -> "A",
+                "penaltyAmountAccruing" -> 400.00,
+                "penaltyAmountPosted" -> 0,
+                "penaltyAmountPaid" -> 0,
+                "penaltyAmountOutstanding" -> 0,
+                "LPP1LRCalculationAmount" -> 20000.00,
+                "LPP1LRDays" -> "15",
+                "LPP1LRPercentage" -> 2,
+                "LPP1HRDays" -> "30",
+                "LPP1HRPercentage" -> 2,
+                "penaltyChargeReference" -> "XJ002616061027",
+                "principalChargeMainTransaction" -> "4720",
+                "principalChargeBillingFrom" -> "2027-04-06",
+                "principalChargeBillingTo" -> "2028-04-05",
+                "principalChargeDueDate" -> "2029-01-31",
+                "principalChargeDocNumber" -> "DOC1",
+                "principalChargeSubTransaction" -> "SUB1"
+              ),
+              Json.obj(
+                "principalChargeReference" -> "XJ002616061028",
+                "penaltyCategory" -> "LPP1",
+                "penaltyStatus" -> "P",
+                "penaltyAmountAccruing" -> 0,
+                "penaltyAmountPosted" -> 400.00,
+                "penaltyAmountPaid" -> 400.00,
+                "penaltyAmountOutstanding" -> 0,
+                "LPP1LRCalculationAmount" -> 20000.00,
+                "LPP1LRDays" -> "15",
+                "LPP1LRPercentage" -> 2,
+                "LPP1HRDays" -> "30",
+                "LPP1HRPercentage" -> 2,
+                "penaltyChargeReference" -> "XJ002616061028",
+                "principalChargeMainTransaction" -> "4720",
+                "principalChargeBillingFrom" -> "2026-04-06",
+                "principalChargeBillingTo" -> "2027-04-05",
+                "principalChargeDueDate" -> "2028-01-31",
+                "principalChargeLatestClearing" -> "2028-02-19",
+                "principalChargeDocNumber" -> "DOC1",
+                "principalChargeSubTransaction" -> "SUB1"
+              )
             )
-          )
-        ))
+          ))
 
         when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = ifPenaltiesResponse)
 

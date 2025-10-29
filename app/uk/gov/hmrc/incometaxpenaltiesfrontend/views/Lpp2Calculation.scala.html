@@ -26,10 +26,7 @@
 
 @this(
         main: MainTemplate,
-        p: P,
         link: Link,
-        govukTable : GovukTable,
-        govukSummaryList: GovukSummaryList,
         calculationHelper: SecondLatePaymentCalculationHelper,
 )
 
@@ -105,7 +102,7 @@
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">£@calculationData.formattedAmountPenaltyAppliedTo</td>
-                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.principalChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate.minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))</td>
+                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.principalChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate().minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))</td>
                 <td class="govuk-table__cell">@{calculationData.penaltyPercentage}%</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
             </tr>

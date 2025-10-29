@@ -2,7 +2,7 @@ import sbt.Test
 import uk.gov.hmrc.DefaultBuildSettings
 
 ThisBuild / majorVersion := 1
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "3.3.6"
 
 lazy val microservice = Project("income-tax-penalties-frontend", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
@@ -10,8 +10,16 @@ lazy val microservice = Project("income-tax-penalties-frontend", file("."))
       libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
       // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
       // suppress warnings in generated routes files
-      scalacOptions += "-Wconf:src=routes/.*:s",
-      scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
+    scalacOptions ++= Seq(
+      "-Werror",
+      "-Wconf:msg=unused import&src=html/.*:s",
+      "-Wconf:msg=unused import&src=xml/.*:s",
+      "-Wconf:msg=unused&src=.*RoutesPrefix\\.scala:s",
+      "-Wconf:msg=unused&src=.*Routes\\.scala:s",
+      "-Wconf:msg=unused&src=.*ReverseRoutes\\.scala:s",
+      "-Wconf:msg=Flag.*repeatedly:s",
+      "-Wconf:msg=Setting -Wunused set to all redundantly:s"
+    ),
       pipelineStages := Seq(gzip),
       PlayKeys.playDefaultPort := 9185
   )
@@ -35,7 +43,7 @@ lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
   .settings(DefaultBuildSettings.itSettings() ++ Seq(
-    unmanagedSourceDirectories := Seq(baseDirectory.value / "test-fixtures"),
+    unmanagedSourceDirectories.withRank(KeyRanks.Invisible) := Seq(baseDirectory.value / "test-fixtures"),
     Test / javaOptions += "-Dlogger.resource=logback-test.xml"
   ))
   .settings(Test/logBuffered := false)

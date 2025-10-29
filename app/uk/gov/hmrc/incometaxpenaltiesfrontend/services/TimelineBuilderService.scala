@@ -30,7 +30,7 @@ class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFor
   def buildTimeline(complianceData: Option[ComplianceData])(implicit messages: Messages): Seq[TimelineEvent] =
     complianceData.fold(Seq.empty[TimelineEvent])(_.obligationDetails.filter(_.status == ComplianceStatusEnum.Open).map {
       data =>
-        val isReturnLate = data.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate)
+        val isReturnLate = data.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate())
         val isTaxYear = data.periodKey.contains("P0")
         // 17P0 signifies the tax return for 2017
         // 17P1 or 17G1 signifies the first quarter for 2017
