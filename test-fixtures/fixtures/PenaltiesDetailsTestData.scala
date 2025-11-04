@@ -159,7 +159,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
   def getPenaltyDetailsForSecondCalculationPage(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
     val lppDetails = LPPDetails(
       principalChargeReference = principleChargeRef,
-      penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
+      penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
       penaltyStatus = if(secondLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
       penaltyAmountPaid = if(secondLPPCalData.isPenaltyPaid) Some(secondLPPCalData.penaltyAmount) else None,
       penaltyAmountPosted = if(secondLPPCalData.isEstimate) 0 else secondLPPCalData.penaltyAmount,

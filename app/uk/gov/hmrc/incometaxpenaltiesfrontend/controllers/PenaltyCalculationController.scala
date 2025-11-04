@@ -21,10 +21,11 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserCalculationInfoAuditModel
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels._
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html._
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.*
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.{Inject, Singleton}
@@ -37,6 +38,14 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
                                              auditService: AuditService)
                                             (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
 
+  def isCorrectLPP(lpp: LPPDetails, isLPP2: Boolean): Boolean = {
+    if (isLPP2) {
+      lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2
+    } else {
+      lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1
+    }
+  }
+
   def penaltyCalculationPage(penaltyId: String,
                              isAgent: Boolean,
                              isLPP2: Boolean): Action[AnyContent] =
@@ -46,7 +55,7 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && isCorrectLPP(lpp, isLPP2) => lpp }
           }
 
         penaltyDetailsForId match {
