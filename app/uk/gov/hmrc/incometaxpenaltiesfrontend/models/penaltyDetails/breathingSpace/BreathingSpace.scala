@@ -16,12 +16,45 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, JsResult, JsValue, Json, OFormat}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetails.jsonObjNoNulls
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 
 import java.time.LocalDate
 
 case class BreathingSpace(bsStartDate: LocalDate, bsEndDate: LocalDate)
 
-object BreathingSpace {
-  implicit val format: Format[BreathingSpace] = Json.format[BreathingSpace]
+object BreathingSpace extends JsonUtils {
+  implicit val format: Format[BreathingSpace] = new Format[BreathingSpace] {
+    override def reads(json: JsValue): JsResult[BreathingSpace] = {
+      for {
+        bsStartDate <- (json \ "bsStartDate").validate[LocalDate]
+        bsEndDate <- (json \ "bsEndDate").validate[LocalDate]
+        metadata <- Json.fromJson(json)(BreathingSpaceMetadata.format)
+      } yield {
+        BreathingSpace(
+          bsStartDate = bsStartDate,
+          bsEndDate = bsEndDate
+        )
+      }
+    }
+
+    override def writes(o: BreathingSpace): JsValue = {
+      jsonObjNoNulls(
+        "bsStartDate" -> o.bsStartDate,
+        "bsEndDate" -> o.bsEndDate
+      )
+    }
+    
+  }
+}
+
+
+
+case class BreathingSpaceMetadata(
+                                 bsStartDare: Option[LocalDate] = None
+                                 )
+
+object BreathingSpaceMetadata {
+  implicit val format: OFormat[BreathingSpaceMetadata] = Json.format[BreathingSpaceMetadata]
 }

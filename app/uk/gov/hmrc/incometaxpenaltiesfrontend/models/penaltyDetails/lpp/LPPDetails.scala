@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 
 import java.time.LocalDate
 
-case class LPPDetails(principalChargeReference: String,
+case class  LPPDetails(principalChargeReference: String,
                       penaltyCategory: LPPPenaltyCategoryEnum.Value,
                       penaltyStatus: LPPPenaltyStatusEnum.Value,
                       penaltyAmountAccruing: BigDecimal,
