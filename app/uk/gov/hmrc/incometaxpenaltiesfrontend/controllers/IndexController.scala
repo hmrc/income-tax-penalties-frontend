@@ -54,8 +54,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     )
 
     val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
-    val breathingSpace = penaltyData.breathingSpace.map(_.sorted).getOrElse(Seq.empty)
-    val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex)
+    val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex, penaltyData.isInBreathingSpace)
 
     Future(
       updateSessionCookie(penaltyData) {

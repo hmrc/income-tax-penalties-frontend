@@ -22,8 +22,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.tag.Tag
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.{LSPDetails, LSPPenaltyStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
 
 import java.time.LocalDate
@@ -48,8 +46,9 @@ trait TagHelper {
         Tag(Text(messages("status.active")))
     }
 
-  def getTagStatus(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
-    (penalty.appealStatus, penalty.penaltyStatus, BreathingSpace) match {
+  def getTagStatus(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+    (penalty.appealStatus, penalty.penaltyStatus) match {
+      case _ if isBreathingSpace => Tag(Text(messages("status.breathingSpace")), "govuk-tag--yellow")
       case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
       case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
