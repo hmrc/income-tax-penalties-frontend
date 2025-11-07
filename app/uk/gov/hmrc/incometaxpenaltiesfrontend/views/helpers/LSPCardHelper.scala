@@ -128,7 +128,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
-      ).flatten,
+      ).flatten ++
+        (if (isBreathingSpace) Some(summaryRow.breathingSpaceStatusRow()) else None),
       penalty = penalty,
       isBreathingSpace = isBreathingSpace
     )
