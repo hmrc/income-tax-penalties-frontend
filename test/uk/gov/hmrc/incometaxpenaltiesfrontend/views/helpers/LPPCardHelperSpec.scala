@@ -62,7 +62,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
-                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
+                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), false) shouldBe// TODO § check if having raw boolean is ok
                   Seq(LatePaymentPenaltySummaryCard(
                     index = 1,
                     cardTitle = messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
@@ -71,7 +71,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testDueDateRow,
                       testPaymentDateRow
                     ),
-                    status = getTagStatus(penalty1),
+                    status = getTagStatus(penalty1, false),// TODO § check if having raw boolean is ok
                     penaltyChargeReference = penalty1.penaltyChargeReference,
                     principalChargeReference = penalty1.principalChargeReference,
                     isPenaltyPaid = penalty1.isPaid,
@@ -103,7 +103,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
                 (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 1, 1)).twice()
 
-                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
+                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), false) shouldBe// TODO § check if having raw boolean is ok
                   Seq(LatePaymentPenaltySummaryCard(
                     index = 1,
                     cardTitle = messagesForLanguage.penaltyTypeValue(penalty1.penaltyCategory),
@@ -113,7 +113,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testPaymentDateRow,
                       testAppealStatusRow
                     ),
-                    status = getTagStatus(penalty1),
+                    status = getTagStatus(penalty1, false),// TODO § check if having raw boolean is ok
                     penaltyChargeReference = penalty1.penaltyChargeReference,
                     principalChargeReference = penalty1.principalChargeReference,
                     isPenaltyPaid = penalty1.isPaid,
@@ -141,14 +141,14 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
               mockAddedOnRow(penalty1)(Some(testAddedOnRow))
 
-              lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
+              lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), false) shouldBe// TODO § check if having raw boolean is ok
                 Seq(LatePaymentPenaltySummaryCard(
                   index = 1,
                   cardTitle = messagesForLanguage.cardTitlePenaltyDetailsLetter,
                   cardRows = Seq(
                     testAddedOnRow
                   ),
-                  status = getTagStatus(penalty1),
+                  status = getTagStatus(penalty1, false),// TODO § check if having raw boolean is ok
                   penaltyChargeReference = penalty1.penaltyChargeReference,
                   principalChargeReference = penalty1.principalChargeReference,
                   isPenaltyPaid = penalty1.isPaid,

@@ -44,6 +44,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
   "SummaryCardLPP" when {
 
+    for (isBreathingSpace <- Seq(true, false)) {
+
     Seq(
       LPPCardMessages.English -> PenaltyTagStatusMessages.English,
       LPPCardMessages.Welsh -> PenaltyTagStatusMessages.Welsh
@@ -52,7 +54,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
       implicit val tm: TimeMachine = timeMachine
 
-      s"rendering in language '${messagesForLanguage.lang.name}'" when {
+      s"rendering in language '${messagesForLanguage.lang.name}' and breathingSpace = $isBreathingSpace" when {
 
         "calling .apply()" when {
 
@@ -68,7 +70,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                   index = 1,
                   cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                   cardRows = Seq.empty,
-                  status = getTagStatus(penalty),
+                  status = getTagStatus(penalty, isBreathingSpace),
                   penaltyChargeReference = penalty.penaltyChargeReference,
                   principalChargeReference = penalty.principalChargeReference,
                   isPenaltyPaid = penalty.isPaid,
@@ -80,12 +82,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                   taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                   incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                   isEstimatedLPP1 = false
-                ),isAgent)
+                ), isAgent)
 
                 val document = Jsoup.parse(summaryCardHtml.toString)
 
                 document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.due
+                document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.due)
                 document.select("#lpp-actions-1").text() shouldBe messagesForLanguage.cannotAppeal
               }
             }
@@ -107,7 +109,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       index = 1,
                       cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                       cardRows = Seq.empty,
-                      status = getTagStatus(penalty),
+                      status = getTagStatus(penalty, isBreathingSpace),
                       penaltyChargeReference = penalty.penaltyChargeReference,
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
@@ -121,12 +123,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
                       appealStatus = Some(AppealStatusEnum.Under_Appeal),
                       isEstimatedLPP1 = false
-                    ),isAgent)
+                    ), isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
                     document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                    document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.amountDue(amountOutstanding)
+                    document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.amountDue(amountOutstanding))
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                     document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                   }
@@ -143,7 +145,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       index = 1,
                       cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                       cardRows = Seq.empty,
-                      status = getTagStatus(penalty),
+                      status = getTagStatus(penalty, isBreathingSpace),
                       penaltyChargeReference = penalty.penaltyChargeReference,
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
@@ -155,12 +157,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                       incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                       isEstimatedLPP1 = true
-                    ),isAgent)
+                    ), isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
                     document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                    document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.estimate
+                    document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.estimate)
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                     document.select("#lpp-appeal-link-1").size() shouldBe 0
                   }
@@ -180,7 +182,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       index = 1,
                       cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                       cardRows = Seq.empty,
-                      status = getTagStatus(penalty),
+                      status = getTagStatus(penalty, isBreathingSpace),
                       penaltyChargeReference = penalty.penaltyChargeReference,
                       principalChargeReference = penalty.principalChargeReference,
                       isPenaltyPaid = penalty.isPaid,
@@ -194,12 +196,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
                       appealStatus = Some(AppealStatusEnum.Under_Appeal),
                       isEstimatedLPP1 = false
-                    ),isAgent)
+                    ), isAgent)
 
                     val document = Jsoup.parse(summaryCardHtml.toString)
 
                     document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                    document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
+                    document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
                     document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                     document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                   }
@@ -218,7 +220,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         index = 1,
                         cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                         cardRows = Seq.empty,
-                        status = getTagStatus(penalty),
+                        status = getTagStatus(penalty, isBreathingSpace),
                         penaltyChargeReference = penalty.penaltyChargeReference,
                         principalChargeReference = penalty.principalChargeReference,
                         isPenaltyPaid = penalty.isPaid,
@@ -232,12 +234,12 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         appealStatus = Some(AppealStatusEnum.Rejected),
                         appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
                         isEstimatedLPP1 = false
-                      ),isAgent)
+                      ), isAgent)
 
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
                       document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                      document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
+                      document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
                       document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
 
                       val appealLink = document.select("#lpp-appeal-link-1")
@@ -264,7 +266,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           index = 1,
                           cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                           cardRows = Seq.empty,
-                          status = getTagStatus(penalty),
+                          status = getTagStatus(penalty, false), // TODO § check if having raw boolean is ok
                           penaltyChargeReference = penalty.penaltyChargeReference,
                           principalChargeReference = penalty.principalChargeReference,
                           isPenaltyPaid = penalty.isPaid,
@@ -278,7 +280,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           appealStatus = Some(AppealStatusEnum.Rejected),
                           appealLevel = Some(AppealLevelEnum.SecondStageAppeal),
                           isEstimatedLPP1 = false
-                        ),isAgent)
+                        ), isAgent)
 
                         val document = Jsoup.parse(summaryCardHtml.toString)
 
@@ -299,7 +301,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             index = 1,
                             cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                             cardRows = Seq.empty,
-                            status = getTagStatus(penalty),
+                            status = getTagStatus(penalty, false), // TODO § check if having raw boolean is ok
                             penaltyChargeReference = penalty.penaltyChargeReference,
                             principalChargeReference = penalty.principalChargeReference,
                             isPenaltyPaid = penalty.isPaid,
@@ -311,7 +313,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                             incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                             isEstimatedLPP1 = false
-                          ),isAgent)
+                          ), isAgent)
 
                           val document = Jsoup.parse(summaryCardHtml.toString)
 
@@ -327,14 +329,14 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                           val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
 
-//                          val penalty = customLPP
+                          //                          val penalty = customLPP
                           val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
                           val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                             index = 1,
                             cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                             cardRows = Seq.empty,
-                            status = getTagStatus(penalty),
+                            status = getTagStatus(penalty, false), // TODO § check if having raw boolean is ok
                             penaltyChargeReference = penalty.penaltyChargeReference,
                             principalChargeReference = penalty.principalChargeReference,
                             isPenaltyPaid = penalty.isPaid,
@@ -347,7 +349,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                             incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                             isEstimatedLPP1 = false
-                          ),isAgent)
+                          ), isAgent)
 
                           val document = Jsoup.parse(summaryCardHtml.toString)
                           document.select("#lpp-view-calculation-link-1") shouldBe empty
@@ -361,6 +363,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
           }
         }
       }
+    }
     }
   }
 }

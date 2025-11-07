@@ -34,8 +34,9 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,
                                        activePoints: Int,
+                                       isBreathingSpace: Boolean,
                                        pointsRemovedAfterPeriodOfCompliance: Boolean = false,
-                                       isBreathingSpace: Boolean)
+                                       )
                                       (implicit messages: Messages): Seq[LateSubmissionPenaltySummaryCard] = {
 
     val activePenalties: Seq[(LSPDetails, Int)] =

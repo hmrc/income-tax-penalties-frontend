@@ -29,6 +29,7 @@ object PenaltyTagStatusMessages {
     val paid = "Paid"
     val estimate = "Estimate"
     val cancelled = "Cancelled"
+    val breathingSpace = "Breathing Space"
   }
 
   object English extends Messages with En
@@ -45,5 +46,6 @@ object PenaltyTagStatusMessages {
     override val paid = "Wedi’i dalu"
     override val estimate = "Amcangyfrif"
     override val cancelled = "Wedi canslo"
+    override val breathingSpace = "Amser i gael eich gwynt atoch"
   }
 }
