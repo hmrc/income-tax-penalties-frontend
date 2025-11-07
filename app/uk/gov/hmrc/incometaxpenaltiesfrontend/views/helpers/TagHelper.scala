@@ -28,7 +28,7 @@ import java.time.LocalDate
 
 trait TagHelper {
 
-  def getTagStatus(penalty: LSPDetails, pointsRemovedAfterPoc: Option[Boolean] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+  def getTagStatus(penalty: LSPDetails, isBreathingSpace: Boolean, pointsRemovedAfterPoc: Option[Boolean] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     penalty.penaltyStatus match {
       case LSPPenaltyStatusEnum.Inactive =>
         val isAppealStatusUpheld: Boolean = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
