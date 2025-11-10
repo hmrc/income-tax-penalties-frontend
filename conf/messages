@@ -86,16 +86,16 @@ calculation.agent.payment.15.30.missed.reason = Because your client missed this 
 calculation.individual.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
 calculation.agent.payment.missed.reason.additional = Because your client missed this deadline by more than 30 days, they have been charged a late payment penalty. This penalty is made up of two parts.
 
-calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15-30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.missed.reason.bullet.1 = They missed the deadline by 15-30 days, so they have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15-30 days, so you have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.missed.reason.bullet.1 = They missed the deadline by 15-30 days, so they have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
 
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15-30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = They missed the deadline by 15-30 days, so they will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15-30 days, so you will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = They missed the deadline by 15-30 days, so they will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
 
-calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 3% of £{0} (the tax that was outstanding 15 days after the payment deadline)
-calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional 3% of £{0} (the tax that was outstanding 30 days after the payment deadline)
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = If they miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline
+calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% of £{0} (the tax that was outstanding 15 days after the payment deadline)
+calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional 2% of £{0} (the tax that was outstanding 30 days after the payment deadline)
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the tax that is outstanding 30 days after the payment deadline
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = If they miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the tax that is outstanding 30 days after the payment deadline
 
 calculation.table.caption.amountApplied = Amount penalty is applied to
 calculation.table.caption.days.payment = Days after payment deadline
