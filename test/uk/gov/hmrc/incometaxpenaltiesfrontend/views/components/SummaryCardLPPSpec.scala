@@ -46,174 +46,99 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
     for (isBreathingSpace <- Seq(true, false)) {
 
-    Seq(
-      LPPCardMessages.English -> PenaltyTagStatusMessages.English,
-      LPPCardMessages.Welsh -> PenaltyTagStatusMessages.Welsh
-    ).foreach { case (messagesForLanguage, penaltyStatusMessages) =>
+      Seq(
+        LPPCardMessages.English -> PenaltyTagStatusMessages.English,
+        LPPCardMessages.Welsh -> PenaltyTagStatusMessages.Welsh
+      ).foreach { case (messagesForLanguage, penaltyStatusMessages) =>
 
-      implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
-      implicit val tm: TimeMachine = timeMachine
+        implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
+        implicit val tm: TimeMachine = timeMachine
 
-      s"rendering in language '${messagesForLanguage.lang.name}' and breathingSpace = $isBreathingSpace" when {
+        s"rendering in language '${messagesForLanguage.lang.name}' and breathingSpace = $isBreathingSpace" when {
 
-        "calling .apply()" when {
+          "calling .apply()" when {
 
-          "provided with a Late Payment Penalty model" when {
+            "provided with a Late Payment Penalty model" when {
 
-            "penalty category is 'MANUAL'" should {
+              "penalty category is 'MANUAL'" should {
 
-              "generate a Summary Card with a cannot appeal message" in {
-                val penalty = sampleManualLPP
-                val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                "generate a Summary Card with a cannot appeal message" in {
+                  val penalty = sampleManualLPP
+                  val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
-                val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
-                  index = 1,
-                  cardTitle = messagesForLanguage.cardTitlePenalty(amount),
-                  cardRows = Seq.empty,
-                  status = getTagStatus(penalty, isBreathingSpace),
-                  penaltyChargeReference = penalty.penaltyChargeReference,
-                  principalChargeReference = penalty.principalChargeReference,
-                  isPenaltyPaid = penalty.isPaid,
-                  amountDue = penalty.penaltyAmountPosted,
-                  incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
-                  penaltyCategory = penalty.penaltyCategory,
-                  dueDate = dateToString(penalty.principalChargeDueDate),
-                  taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
-                  taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                  incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
-                  isEstimatedLPP1 = false
-                ), isAgent)
+                  val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                    index = 1,
+                    cardTitle = messagesForLanguage.cardTitlePenalty(amount),
+                    cardRows = Seq.empty,
+                    status = getTagStatus(penalty, isBreathingSpace),
+                    penaltyChargeReference = penalty.penaltyChargeReference,
+                    principalChargeReference = penalty.principalChargeReference,
+                    isPenaltyPaid = penalty.isPaid,
+                    amountDue = penalty.penaltyAmountPosted,
+                    incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                    penaltyCategory = penalty.penaltyCategory,
+                    dueDate = dateToString(penalty.principalChargeDueDate),
+                    taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                    taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                    incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                    isEstimatedLPP1 = false
+                  ), isAgent)
 
-                val document = Jsoup.parse(summaryCardHtml.toString)
+                  val document = Jsoup.parse(summaryCardHtml.toString)
 
-                document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.due)
-                document.select("#lpp-actions-1").text() shouldBe messagesForLanguage.cannotAppeal
-              }
-            }
-
-            "penalty category is NOT 'MANUAL'" when {
-
-              "Income Tax amount has NOT been paid AND NO Time to Pay arrangement exists" when {
-
-                "a penalty appeal is in progress" should {
-
-                  "generate a Summary Card with only calculation link" in {
-                    (timeMachine.getCurrentDate _).expects().returning(LocalDate.of(2021, 6, 1)).atLeastOnce()
-
-                    val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
-                    val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
-                    val amountOutstanding = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountOutstanding.get)
-
-                    val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
-                      index = 1,
-                      cardTitle = messagesForLanguage.cardTitlePenalty(amount),
-                      cardRows = Seq.empty,
-                      status = getTagStatus(penalty, isBreathingSpace),
-                      penaltyChargeReference = penalty.penaltyChargeReference,
-                      principalChargeReference = penalty.principalChargeReference,
-                      isPenaltyPaid = penalty.isPaid,
-                      amountDue = penalty.penaltyAmountPosted,
-                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
-                      penaltyCategory = penalty.penaltyCategory,
-                      dueDate = dateToString(penalty.principalChargeDueDate),
-                      taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
-                      taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
-                      appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
-                      appealStatus = Some(AppealStatusEnum.Under_Appeal),
-                      isEstimatedLPP1 = false
-                    ), isAgent)
-
-                    val document = Jsoup.parse(summaryCardHtml.toString)
-
-                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                    document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.amountDue(amountOutstanding))
-                    document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                    document.select("#lpp-appeal-link-1").isEmpty shouldBe true
-                  }
-                }
-
-                "a penalty appeal is NOT in progress" should {
-
-                  "generate a Summary Card with a Calculation and Check if you can appeal this penalty" in {
-
-                    val penalty = sampleUnpaidLPP1
-                    val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
-
-                    val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
-                      index = 1,
-                      cardTitle = messagesForLanguage.cardTitlePenalty(amount),
-                      cardRows = Seq.empty,
-                      status = getTagStatus(penalty, isBreathingSpace),
-                      penaltyChargeReference = penalty.penaltyChargeReference,
-                      principalChargeReference = penalty.principalChargeReference,
-                      isPenaltyPaid = penalty.isPaid,
-                      amountDue = penalty.penaltyAmountPosted,
-                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
-                      penaltyCategory = penalty.penaltyCategory,
-                      dueDate = dateToString(penalty.principalChargeDueDate),
-                      taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
-                      taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
-                      isEstimatedLPP1 = true
-                    ), isAgent)
-
-                    val document = Jsoup.parse(summaryCardHtml.toString)
-
-                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                    document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.estimate)
-                    document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                    document.select("#lpp-appeal-link-1").size() shouldBe 0
-                  }
+                  document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                  document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.due)
+                  document.select("#lpp-actions-1").text() shouldBe messagesForLanguage.cannotAppeal
                 }
               }
 
-              "Income Tax amount has been paid" when {
+              "penalty category is NOT 'MANUAL'" when {
 
-                "a penalty appeal is in progress" should {
+                "Income Tax amount has NOT been paid AND NO Time to Pay arrangement exists" when {
 
-                  "generate a Summary Card with only the calculation link" in {
+                  "a penalty appeal is in progress" should {
 
-                    val penalty = sampleLPP1AppealPaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
-                    val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                    "generate a Summary Card with only calculation link" in {
+                      if (!isBreathingSpace) (timeMachine.getCurrentDate _).expects().returning(LocalDate.of(2021, 6, 1)).atLeastOnce()
 
-                    val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
-                      index = 1,
-                      cardTitle = messagesForLanguage.cardTitlePenalty(amount),
-                      cardRows = Seq.empty,
-                      status = getTagStatus(penalty, isBreathingSpace),
-                      penaltyChargeReference = penalty.penaltyChargeReference,
-                      principalChargeReference = penalty.principalChargeReference,
-                      isPenaltyPaid = penalty.isPaid,
-                      amountDue = penalty.penaltyAmountPosted,
-                      incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
-                      penaltyCategory = penalty.penaltyCategory,
-                      dueDate = dateToString(penalty.principalChargeDueDate),
-                      taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
-                      taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                      incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
-                      appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
-                      appealStatus = Some(AppealStatusEnum.Under_Appeal),
-                      isEstimatedLPP1 = false
-                    ), isAgent)
+                      val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
+                      val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                      val amountOutstanding = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountOutstanding.get)
 
-                    val document = Jsoup.parse(summaryCardHtml.toString)
+                      val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                        index = 1,
+                        cardTitle = messagesForLanguage.cardTitlePenalty(amount),
+                        cardRows = Seq.empty,
+                        status = getTagStatus(penalty, isBreathingSpace),
+                        penaltyChargeReference = penalty.penaltyChargeReference,
+                        principalChargeReference = penalty.principalChargeReference,
+                        isPenaltyPaid = penalty.isPaid,
+                        amountDue = penalty.penaltyAmountPosted,
+                        incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                        penaltyCategory = penalty.penaltyCategory,
+                        dueDate = dateToString(penalty.principalChargeDueDate),
+                        taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                        taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                        incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                        appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
+                        appealStatus = Some(AppealStatusEnum.Under_Appeal),
+                        isEstimatedLPP1 = false
+                      ), isAgent)
 
-                    document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                    document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
-                    document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                    document.select("#lpp-appeal-link-1").isEmpty shouldBe true
+                      val document = Jsoup.parse(summaryCardHtml.toString)
+
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                      document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.amountDue(amountOutstanding))
+                      document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
+                      document.select("#lpp-appeal-link-1").isEmpty shouldBe true
+                    }
                   }
-                }
 
-                "a penalty appeal is NOT in progress" when {
+                  "a penalty appeal is NOT in progress" should {
 
-                  "the penalty Appeal has been rejected at 1st Stage" should {
+                    "generate a Summary Card with a Calculation and Check if you can appeal this penalty" in {
 
-                    "generate a Summary Card with a Calculation and a 2nd Stage Review Appeal link" in {
-
-                      val penalty = samplePaidLPP1
+                      val penalty = sampleUnpaidLPP1
                       val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
                       val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
@@ -231,8 +156,45 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                         taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                         incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
-                        appealStatus = Some(AppealStatusEnum.Rejected),
+                        isEstimatedLPP1 = true
+                      ), isAgent)
+
+                      val document = Jsoup.parse(summaryCardHtml.toString)
+
+                      document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                      document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.estimate)
+                      document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
+                      document.select("#lpp-appeal-link-1").size() shouldBe 0
+                    }
+                  }
+                }
+
+                "Income Tax amount has been paid" when {
+
+                  "a penalty appeal is in progress" should {
+
+                    "generate a Summary Card with only the calculation link" in {
+
+                      val penalty = sampleLPP1AppealPaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
+                      val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+
+                      val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                        index = 1,
+                        cardTitle = messagesForLanguage.cardTitlePenalty(amount),
+                        cardRows = Seq.empty,
+                        status = getTagStatus(penalty, isBreathingSpace),
+                        penaltyChargeReference = penalty.penaltyChargeReference,
+                        principalChargeReference = penalty.principalChargeReference,
+                        isPenaltyPaid = penalty.isPaid,
+                        amountDue = penalty.penaltyAmountPosted,
+                        incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                        penaltyCategory = penalty.penaltyCategory,
+                        dueDate = dateToString(penalty.principalChargeDueDate),
+                        taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                        taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                        incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                         appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
+                        appealStatus = Some(AppealStatusEnum.Under_Appeal),
                         isEstimatedLPP1 = false
                       ), isAgent)
 
@@ -241,23 +203,15 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
                       document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
                       document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-
-                      val appealLink = document.select("#lpp-appeal-link-1")
-                      appealLink.text() shouldBe messagesForLanguage.cardLinksReviewAppeal
-                      appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
-                        penalty.penaltyChargeReference.get,
-                        isAgent,
-                        isLPP = true,
-                        is2ndStageAppeal = true
-                      ).url
+                      document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                     }
                   }
 
-                  "the penalty Appeal has NOT been rejected at 1st Stage" should {
+                  "a penalty appeal is NOT in progress" when {
 
-                    "the penalty Appeal has been rejected at 2nd Stage" should {
+                    "the penalty Appeal has been rejected at 1st Stage" should {
 
-                      "generate a Summary Card with a Calculation WITHOUT a review link" in {
+                      "generate a Summary Card with a Calculation and a 2nd Stage Review Appeal link" in {
 
                         val penalty = samplePaidLPP1
                         val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
@@ -266,7 +220,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           index = 1,
                           cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                           cardRows = Seq.empty,
-                          status = getTagStatus(penalty, false), // TODO § check if having raw boolean is ok
+                          status = getTagStatus(penalty, isBreathingSpace),
                           penaltyChargeReference = penalty.penaltyChargeReference,
                           principalChargeReference = penalty.principalChargeReference,
                           isPenaltyPaid = penalty.isPaid,
@@ -278,21 +232,32 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                           incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
                           appealStatus = Some(AppealStatusEnum.Rejected),
-                          appealLevel = Some(AppealLevelEnum.SecondStageAppeal),
+                          appealLevel = Some(AppealLevelEnum.FirstStageAppeal),
                           isEstimatedLPP1 = false
                         ), isAgent)
 
                         val document = Jsoup.parse(summaryCardHtml.toString)
 
                         document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                        document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
+                        document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
                         document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                        document.select("#lpp-appeal-link-1").isEmpty shouldBe true
+
+                        val appealLink = document.select("#lpp-appeal-link-1")
+                        appealLink.text() shouldBe messagesForLanguage.cardLinksReviewAppeal
+                        appealLink.attr("href") shouldBe controllers.routes.AppealsController.redirectToAppeals(
+                          penalty.penaltyChargeReference.get,
+                          isAgent,
+                          isLPP = true,
+                          is2ndStageAppeal = true
+                        ).url
                       }
+                    }
 
-                      "the penalty Appeal has NOT been rejected at 2nd Stage" should {
+                    "the penalty Appeal has NOT been rejected at 1st Stage" should {
 
-                        "generate a Summary Card with a Calculation with an appeal link" in {
+                      "the penalty Appeal has been rejected at 2nd Stage" should {
+
+                        "generate a Summary Card with a Calculation WITHOUT a review link" in {
 
                           val penalty = samplePaidLPP1
                           val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
@@ -301,7 +266,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             index = 1,
                             cardTitle = messagesForLanguage.cardTitlePenalty(amount),
                             cardRows = Seq.empty,
-                            status = getTagStatus(penalty, false), // TODO § check if having raw boolean is ok
+                            status = getTagStatus(penalty, isBreathingSpace),
                             penaltyChargeReference = penalty.penaltyChargeReference,
                             principalChargeReference = penalty.principalChargeReference,
                             isPenaltyPaid = penalty.isPaid,
@@ -312,47 +277,83 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
                             taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
                             incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                            appealStatus = Some(AppealStatusEnum.Rejected),
+                            appealLevel = Some(AppealLevelEnum.SecondStageAppeal),
                             isEstimatedLPP1 = false
                           ), isAgent)
 
                           val document = Jsoup.parse(summaryCardHtml.toString)
 
                           document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                          document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
+                          document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
                           document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
-                          document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
+                          document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                         }
-                      }
-                      "penalty cancelled after successful appeal " should {
 
-                        "not display view calculation link when appeal status under appeal" in {
+                        "the penalty Appeal has NOT been rejected at 2nd Stage" should {
 
-                          val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
+                          "generate a Summary Card with a Calculation with an appeal link" in {
 
-                          //                          val penalty = customLPP
-                          val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                            val penalty = samplePaidLPP1
+                            val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
 
-                          val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
-                            index = 1,
-                            cardTitle = messagesForLanguage.cardTitlePenalty(amount),
-                            cardRows = Seq.empty,
-                            status = getTagStatus(penalty, false), // TODO § check if having raw boolean is ok
-                            penaltyChargeReference = penalty.penaltyChargeReference,
-                            principalChargeReference = penalty.principalChargeReference,
-                            isPenaltyPaid = penalty.isPaid,
-                            amountDue = penalty.penaltyAmountPosted,
-                            appealStatus = penalty.appealStatus,
-                            incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
-                            penaltyCategory = penalty.penaltyCategory,
-                            dueDate = dateToString(penalty.principalChargeDueDate),
-                            taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
-                            taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
-                            incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
-                            isEstimatedLPP1 = false
-                          ), isAgent)
+                            val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                              index = 1,
+                              cardTitle = messagesForLanguage.cardTitlePenalty(amount),
+                              cardRows = Seq.empty,
+                              status = getTagStatus(penalty, isBreathingSpace),
+                              penaltyChargeReference = penalty.penaltyChargeReference,
+                              principalChargeReference = penalty.principalChargeReference,
+                              isPenaltyPaid = penalty.isPaid,
+                              amountDue = penalty.penaltyAmountPosted,
+                              incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                              penaltyCategory = penalty.penaltyCategory,
+                              dueDate = dateToString(penalty.principalChargeDueDate),
+                              taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                              taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                              incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                              isEstimatedLPP1 = false
+                            ), isAgent)
 
-                          val document = Jsoup.parse(summaryCardHtml.toString)
-                          document.select("#lpp-view-calculation-link-1") shouldBe empty
+                            val document = Jsoup.parse(summaryCardHtml.toString)
+
+                            document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
+                            document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
+                            document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
+                            document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
+                          }
+                        }
+                        "penalty cancelled after successful appeal " should {
+
+                          "not display view calculation link when appeal status under appeal" in {
+
+                            val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
+
+                            //val penalty = customLPP
+                            val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+
+                            val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                              index = 1,
+                              cardTitle = messagesForLanguage.cardTitlePenalty(amount),
+                              cardRows = Seq.empty,
+                              status = getTagStatus(penalty, isBreathingSpace),
+                              penaltyChargeReference = penalty.penaltyChargeReference,
+                              principalChargeReference = penalty.principalChargeReference,
+                              isPenaltyPaid = penalty.isPaid,
+                              amountDue = penalty.penaltyAmountPosted,
+                              appealStatus = penalty.appealStatus,
+                              incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                              penaltyCategory = penalty.penaltyCategory,
+                              dueDate = dateToString(penalty.principalChargeDueDate),
+                              taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                              taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                              incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                              isEstimatedLPP1 = false
+                            ), isAgent)
+
+                            val document = Jsoup.parse(summaryCardHtml.toString)
+                            document.select("#lpp-view-calculation-link-1") shouldBe empty
+                          }
                         }
                       }
                     }
@@ -363,7 +364,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
           }
         }
       }
-    }
     }
   }
 }
