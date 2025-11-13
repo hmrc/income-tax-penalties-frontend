@@ -45,11 +45,13 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
   "LSPCardHelper" when {
 
+    for (isBreathingSpace <- Seq(true, false)) {
+
     Seq(LSPCardMessages.English, LSPCardMessages.Welsh).foreach { messagesForLanguage =>
 
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
 
-      s"when language is set to '${messagesForLanguage.lang.name}'" when {
+      s"when language is set to '${messagesForLanguage.lang.name}' and breathingSpace = $isBreathingSpace" when {
 
         "calling .createLateSubmissionPenaltyCards()" when {
 
@@ -68,6 +70,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockPointExpiryDate(penalty1)(testPointExpiryRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                if (isBreathingSpace) mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
 
                 lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPoint), 2, 1, false) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
