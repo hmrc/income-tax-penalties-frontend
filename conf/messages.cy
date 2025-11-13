@@ -113,6 +113,13 @@ calculation.agent.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylai’ch cle
 
 calculation.individual.penalty.isOverdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
+calculation.individual.penalty.payment.plan.proposed.inset = TODO-TBG
+calculation.individual.penalty.payment.plan.agreed.inset = TODO-TBG
+calculation.individual.penalty.payment.plan.agreed.p1 =  TODO-TBG
+calculation.agent.penalty.payment.plan.proposed.inset = TODO-TBG
+calculation.agent.penalty.payment.plan.agreed.inset = TODO-TBG
+calculation.agent.penalty.payment.plan.agreed.p1 = TODO-TBG
+
 calculation.individual.calc2.missed.deadline.tax.unpaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.individual.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
 
@@ -129,6 +136,15 @@ calculation.agent.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylai’ch
 calculation.agent.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
+
+calculation.individual.calc2.penalty.payment.plan.proposed.inset = TODO-TBG
+calculation.individual.calc2.penalty.payment.plan.agreed.p1 = TODO-TBG
+calculation.individual.calc2.penalty.payment.plan.agreed.p2 = TODO-TBG
+calculation.individual.calc2.penalty.payment.plan.agreed.p3 = TODO-TBG
+calculation.agent.calc2.penalty.payment.plan.proposed.inset = TODO-TBG
+calculation.agent.calc2.penalty.payment.plan.agreed.p1 = TODO-TBG
+calculation.agent.calc2.penalty.payment.plan.agreed.p2 = TODO-TBG
+
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
@@ -216,6 +232,8 @@ lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
+lpp.paymentPlanProposed = TODO-TBG
+lpp.paymentPlanAgreed = TODO-TBG
 lpp.payPenaltyBy.key = Talu cosb erbyn
 
 # Appeal Status

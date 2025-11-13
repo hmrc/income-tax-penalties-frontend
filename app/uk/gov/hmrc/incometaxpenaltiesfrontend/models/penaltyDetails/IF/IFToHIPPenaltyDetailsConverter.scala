@@ -27,20 +27,20 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 
 import java.time.LocalDate
 
-object IFToHIPPenaltyDetailsConverter extends JsonUtils{
+object IFToHIPPenaltyDetailsConverter extends JsonUtils {
 
   lazy val totalisationReads: Reads[Totalisations] = (json: JsValue) =>
     for {
-        lspTotalValue <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-        penalisedPrincipalTotal <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-        lppPostedTotal <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-        lppEstimatedTotal <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-        totalAccountOverdue <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-        totalAccountPostedInterest <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-        totalAccountAccruingInterest <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
-      } yield Totalisations(lspTotalValue, penalisedPrincipalTotal, lppPostedTotal,
-        lppEstimatedTotal, totalAccountOverdue, totalAccountPostedInterest, totalAccountAccruingInterest
-      )
+      lspTotalValue <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+      penalisedPrincipalTotal <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+      lppPostedTotal <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+      lppEstimatedTotal <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+      totalAccountOverdue <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+      totalAccountPostedInterest <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+      totalAccountAccruingInterest <- (json \ "LSPTotalValue").validateOpt[BigDecimal]
+    } yield Totalisations(lspTotalValue, penalisedPrincipalTotal, lppPostedTotal,
+      lppEstimatedTotal, totalAccountOverdue, totalAccountPostedInterest, totalAccountAccruingInterest
+    )
 
   lazy val lspSummaryReads: Reads[LSPSummary] = (json: JsValue) => for {
     activePenaltyPoints <- (json \ "activePenaltyPoints").validate[Int]
@@ -113,13 +113,16 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils{
 
   lazy val timeToPayReads: Reads[TimeToPay] = (
     (JsPath \ "TTPStartDate").readNullable[LocalDate] and
-      (JsPath \ "TTPEndDate").readNullable[LocalDate]
+      (JsPath \ "TTPEndDate").readNullable[LocalDate] and
+      // TODO - Check api response fields for proposalDate and agreementDate
+      (JsPath \ "proposalDate").readNullable[LocalDate] and
+      (JsPath \ "agreementDate").readNullable[LocalDate]
     )(TimeToPay.apply _)
 
   lazy val lppMetadataReads: Reads[LPPDetailsMetadata] = (json: JsValue) =>
     for {
       principalChargeMainTr <- (json \ "mainTransaction").validateOpt[String]
-      timeToPay <-  (json \ "timeToPay").validateOpt[Seq[TimeToPay]](Reads.seq[TimeToPay] (timeToPayReads))
+      timeToPay <- (json \ "timeToPay").validateOpt[Seq[TimeToPay]](Reads.seq[TimeToPay](timeToPayReads))
     } yield {
       LPPDetailsMetadata(
         principalChargeMainTr = principalChargeMainTr.getOrElse("4700"),

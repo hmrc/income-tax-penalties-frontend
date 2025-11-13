@@ -25,5 +25,10 @@ import javax.inject.{Inject, Singleton}
 class TimeMachine @Inject()(appConfig: AppConfig) {
 
   def getCurrentDate(): LocalDate = appConfig.optCurrentDate.getOrElse(LocalDate.now())
+  
+  def isCurrentDateAfterOrEqual(thatDate: LocalDate): Boolean = getCurrentDate().isAfter(thatDate) || getCurrentDate().isEqual(thatDate)
+  
+  def isCurrentDateBeforeOrEqual(thatDate: LocalDate): Boolean = getCurrentDate().isBefore(thatDate) || getCurrentDate().isEqual(thatDate)
+    
 
 }

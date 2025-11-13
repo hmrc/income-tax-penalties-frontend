@@ -26,26 +26,48 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
 
-      if (calculationData.isPenaltyPaid) {
-        messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
-      } else {
-        messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
-      }
+    if (calculationData.isPenaltyPaid) {
+      messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
+    } else {
+      messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+    }
   }
 
 
   def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData,
                         isAgent: Boolean)(implicit messages: Messages): String = {
-    val isAgentTag = if(isAgent) "agent" else "individual"
-    if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
+    val isAgentTag = if (isAgent) "agent" else "individual"
+    if (!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
       messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
-    } else if(calculationData.isPenaltyOverdue) {
+    } else if (calculationData.isPenaltyOverdue) {
       messages("calculation.individual.calc2.penalty.overdue")
     } else {
       messages(s"calculation.$isAgentTag.calc2.penalty.due", dateToString(calculationData.principalChargeDueDate))
     }
   }
 
+  def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+    calculationData.paymentPlanProposed.map { proposedDate =>
+      messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.inset", proposedDate)
+    }
+  }
+
+  def getPaymentPlanContent(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): List[String] = {
+    calculationData.paymentPlanAgreed.map { agreedDate =>
+      if (individualOrAgent == "agent") {
+        List(
+          messages("calculation.agent.calc2.penalty.payment.plan.agreed.p1", agreedDate),
+          messages("calculation.agent.calc2.penalty.payment.plan.agreed.p2")
+        )
+      } else {
+        List(
+          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p1", agreedDate),
+          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p2"),
+          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p3")
+        )
+      }
+    }.getOrElse(List.empty)
+  }
 }

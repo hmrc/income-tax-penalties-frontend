@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum.Posted
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{JsonUtils, TimeMachine}
 
 import java.time.LocalDate
 
@@ -61,6 +61,26 @@ case class LPPDetails(principalChargeReference: String,
 
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
+
+
+  // TODO-TBG
+   private def optActiveTTP(implicit timeMachine: TimeMachine): Option[TimeToPay] = {
+    metadata.timeToPay.flatMap(_.find(penalty =>
+      (penalty.ttpStartDate, penalty.ttpEndDate) match {
+        case (Some(startDate), Some(endDate)) => timeMachine.isCurrentDateAfterOrEqual(startDate) && timeMachine.isCurrentDateBeforeOrEqual(endDate)
+        case (Some(startDate), None) => timeMachine.isCurrentDateAfterOrEqual(startDate)
+        case _ => false
+      }
+    ))
+  }
+
+  def ttpStartDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpStartDate)
+  def ttpEndDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpEndDate)
+
+
+  def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.proposalDate)
+  def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.agreementDate)
+
 
   override def compare(that: LPPDetails): Int = {
     (this.principalChargeBillingFrom, that.principalChargeBillingFrom,
@@ -202,7 +222,9 @@ object LPPDetailsMetadata {
 
 case class TimeToPay(
                       ttpStartDate: Option[LocalDate],
-                      ttpEndDate: Option[LocalDate]
+                      ttpEndDate: Option[LocalDate],
+                      proposalDate: Option[LocalDate],
+                      agreementDate: Option[LocalDate]
                     )
 
 object TimeToPay {
