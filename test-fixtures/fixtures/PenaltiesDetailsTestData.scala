@@ -70,6 +70,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       isPenaltyOverdue = isOverdue,
       payPenaltyBy = penaltyChargeDueDate,
       penaltyChargeReference = if(is15to30Days && !isIncomeTaxPaid) None else Some("PEN1234567"),
+      principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
       llpLRCharge = LLPCharge(
         99.99, "15", 2.00
       ),
@@ -99,7 +100,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       penaltyChargeReference = if(!isIncomeTaxPaid) None else Some("PEN1234567"),
       penaltyPercentage = 2.00,
       daysOverdue = "4",
-      amountPenaltyAppliedTo =  20.00,
+      amountPenaltyAppliedTo = 20.00,
       chargeStartDate = LocalDate.now(),
       chargeEndDate = LocalDate.now(),
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),

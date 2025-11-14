@@ -39,7 +39,7 @@
 
 
     <span class="govuk-caption-l" id="captionSpan">
-        @messages("caption.date", dateToString(calculationData.taxPeriodStartDate), dateToString(calculationData.taxPeriodEndDate))
+        @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.second.h1")</h1>
@@ -49,7 +49,7 @@
 
 
     @if(calculationData.incomeTaxIsPaid){
-        <p class="govuk-body" id="payPenaltyBy">@calculationHelper.getPaymentDetails(calculationData)</p>
+        <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@calculationHelper.getPaymentDetails(calculationData)</p>
     }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>

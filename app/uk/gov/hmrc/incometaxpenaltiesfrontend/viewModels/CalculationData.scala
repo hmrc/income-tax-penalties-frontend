@@ -41,6 +41,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   isPenaltyOverdue: Boolean,
                                                   payPenaltyBy: LocalDate,
                                                   penaltyChargeReference: Option[String],
+                                                  principalChargeDueDate: LocalDate,
                                                   llpLRCharge: LLPCharge,
                                                   llpHRCharge: Option[LLPCharge]
                                                  ) extends CalculationData {
@@ -54,6 +55,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     payPenaltyBy = lppDetails.penaltyChargeDueDate.getOrElse(timeMachine.getCurrentDate()),
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.exists(_.isBefore(timeMachine.getCurrentDate().plusDays(1))),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
+    principalChargeDueDate = lppDetails.principalChargeDueDate,
     llpLRCharge = LLPCharge(
       chargeAmount = lppDetails.lpp1LRCalculationAmt.getOrElse(0),
       daysOverdue = lppDetails.lpp1LRDays.getOrElse("15"),
