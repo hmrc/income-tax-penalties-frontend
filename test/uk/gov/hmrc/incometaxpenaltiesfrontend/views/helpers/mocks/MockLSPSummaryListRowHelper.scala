@@ -85,10 +85,10 @@ trait MockLSPSummaryListRowHelper extends MockFactory {
 
 
 
-      def mockBreathingSpaceStatusRow()(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
-        (mockLSPSummaryListRowHelper.breathingSpaceStatusRow()(_: Messages))
-          .expects(*)
-          .returning(value)
+  def mockBreathingSpaceStatusRow()(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLSPSummaryListRowHelper.breathingSpaceStatusRow()(_: Messages))
+      .expects(*)
+      .returning(value)
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
                                  appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =

@@ -80,9 +80,9 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testDueDateRow,
                       testReceivedDateRow,
                       testPointExpiryRow
-                    ),
+                    ) ++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
                     cardTitle = s"${messagesForLanguage.cardTitlePoint(1)}: ${messagesForLanguage.lateUpdate}",
-                    status = getTagStatus(penalty1, false, 2),
+                    status = getTagStatus(penalty1, isBreathingSpace, 2),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
