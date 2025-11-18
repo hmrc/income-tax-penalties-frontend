@@ -58,12 +58,11 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         taxPeriodStartDate = lpp.principalChargeBillingFrom.toString,
         taxPeriodEndDate = lpp.principalChargeBillingTo.toString,
         incomeTaxOutstandingAmountInPence = lpp.incomeTaxOutstandingAmountInPence,
-        isTTPActive = false, //TODO: Need to add Time To Pay logic in future???
         isEstimatedLPP1 = lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing
       )
     }
 
-  private def lppCardBody(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
+  private def lppCardBody(lpp: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Seq[SummaryListRow] =
     Seq(
       lppSummaryRow.payPenaltyByRow(lpp),
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),

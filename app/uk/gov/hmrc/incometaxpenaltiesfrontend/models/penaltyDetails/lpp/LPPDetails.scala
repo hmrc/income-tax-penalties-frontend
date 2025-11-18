@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum.Posted
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
-
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{JsonUtils, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.LocalDateHelper._
 import java.time.LocalDate
 
 case class LPPDetails(principalChargeReference: String,
@@ -61,6 +61,29 @@ case class LPPDetails(principalChargeReference: String,
 
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
+
+
+  private def optActiveTTP(implicit timeMachine: TimeMachine): Option[TimeToPay] = {
+    def currentDate = timeMachine.getCurrentDate()
+    metadata.timeToPay.flatMap(_.find(penalty =>
+      (penalty.ttpStartDate, penalty.ttpEndDate) match {
+        case (Some(startDate), Some(endDate)) => startDate.isBeforeOrEqual(currentDate) && endDate.isAfterOrEqual(currentDate)
+        case (Some(startDate), None) => startDate.isBeforeOrEqual(currentDate)
+        case _ => false
+      }
+    ))
+  }
+
+  // TODO-TBG - needed?
+  def ttpStartDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpStartDate)
+
+  def ttpEndDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpEndDate)
+
+
+  def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.proposalDate)
+
+  def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.agreementDate)
+
 
   override def compare(that: LPPDetails): Int = {
     (this.principalChargeBillingFrom, that.principalChargeBillingFrom,
@@ -202,7 +225,9 @@ object LPPDetailsMetadata {
 
 case class TimeToPay(
                       ttpStartDate: Option[LocalDate],
-                      ttpEndDate: Option[LocalDate]
+                      ttpEndDate: Option[LocalDate],
+                      proposalDate: Option[LocalDate],
+                      agreementDate: Option[LocalDate]
                     )
 
 object TimeToPay {

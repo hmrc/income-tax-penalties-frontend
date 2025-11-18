@@ -43,7 +43,9 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   penaltyChargeReference: Option[String],
                                                   principalChargeDueDate: LocalDate,
                                                   llpLRCharge: LLPCharge,
-                                                  llpHRCharge: Option[LLPCharge]
+                                                  llpHRCharge: Option[LLPCharge],
+                                                  paymentPlanAgreed: Option[LocalDate],
+                                                  paymentPlanProposed: Option[LocalDate]
                                                  ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
@@ -66,7 +68,9 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
         chargeAmount = calcAmount,
         daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
         penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.03)
-      ))
+      )),
+    paymentPlanAgreed = lppDetails.ttpAgreementDate,
+    paymentPlanProposed = lppDetails.ttpProposalDate
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
@@ -87,7 +91,9 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                    amountPenaltyAppliedTo: BigDecimal,
                                                    chargeStartDate: LocalDate,
                                                    chargeEndDate: LocalDate,
-                                                   principalChargeDueDate: LocalDate
+                                                   principalChargeDueDate: LocalDate,
+                                                   paymentPlanAgreed: Option[LocalDate],
+                                                   paymentPlanProposed: Option[LocalDate]
                                                   ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
@@ -104,7 +110,9 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     amountPenaltyAppliedTo = lppDetails.lpp1HRCalculationAmt.get,
     chargeStartDate = lppDetails.penaltyChargeDueDate.get,
     chargeEndDate = lppDetails.communicationsDate.getOrElse(timeMachine.getCurrentDate()),
-    principalChargeDueDate = lppDetails.principalChargeDueDate
+    principalChargeDueDate = lppDetails.principalChargeDueDate,
+    paymentPlanAgreed = lppDetails.ttpAgreementDate,
+    paymentPlanProposed = lppDetails.ttpProposalDate
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)

@@ -42,6 +42,8 @@ object LPPCardMessages {
     val incomeTaxDueKey = "Income Tax due"
     val incomeTaxPaidKey = "Income Tax paid"
     val paymentNotReceived = "Payment not yet received"
+    val paymentPlanProposed = "Payment plan proposed"
+    val paymentPlanAgreed = "Payment plan agreed"
 
     //Card Footer Links
     val cardLinksViewCalculation = "View calculation"

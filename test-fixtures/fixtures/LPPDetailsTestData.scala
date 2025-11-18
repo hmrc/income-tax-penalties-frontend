@@ -30,9 +30,27 @@ trait LPPDetailsTestData {
   val penaltyDueDate: LocalDate = penaltyChargeCreationDate.plusDays(31) //2021-07-08
   val lpp1PrincipleChargePaidDate: LocalDate = penaltyDueDate.plusDays(30) //2021-08-07
   val lpp2PrincipleChargePaidDate: LocalDate = penaltyDueDate.plusDays(45) //2021-08-22
-  val timeToPayPeriodStart: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-06-01
-  val timeToPayPeriodEnd: LocalDate = timeToPayPeriodStart.plusMonths(1) //2021-07-01
+  val timeToPayPeriodStart: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-07-01
+  val timeToPayPeriodEnd: LocalDate = timeToPayPeriodStart.plusMonths(1) //2021-08-01
+  val timeToPayProposedOrAgreed: LocalDate = timeToPayPeriodStart
   val principleChargeRef = "12345678901234"
+
+  val activeTimeToPay: TimeToPay = TimeToPay(
+    ttpStartDate = Some(timeToPayPeriodStart),
+    ttpEndDate = Some(timeToPayPeriodEnd),
+    proposalDate = None,
+    agreementDate = None
+  )
+  val inactiveTimeToPay: TimeToPay = TimeToPay(
+    ttpStartDate = Some(principleChargeBillingStartDate.minusMonths(2)),
+    ttpEndDate = Some(principleChargeBillingStartDate.minusMonths(1)),
+    proposalDate = None,
+    agreementDate = None,
+  )
+  val activeTimeToPayAgreed: TimeToPay = activeTimeToPay.copy(agreementDate = Some(timeToPayProposedOrAgreed))
+  val activeTimeToPayProposed: TimeToPay = activeTimeToPay.copy(proposalDate = Some(timeToPayProposedOrAgreed))
+
+
 
   val sampleUnpaidLPP1Day15to30: LPPDetails = LPPDetails(
     principalChargeReference = principleChargeRef,
@@ -65,6 +83,21 @@ trait LPPDetailsTestData {
       timeToPay = None
     )
   )
+
+  val sampleUnpaidLPP1ProposedPaymentPlan: LPPDetails =
+    sampleUnpaidLPP1Day15to30.copy(
+      metadata = LPPDetailsMetadata(
+        principalChargeMainTr = "4700",
+        timeToPay = Some(Seq(activeTimeToPayProposed))
+      )
+    )
+  val sampleUnpaidLPP1AgreedPaymentPlan: LPPDetails =
+    sampleUnpaidLPP1Day15to30.copy(
+      metadata = LPPDetailsMetadata(
+        principalChargeMainTr = "4700",
+        timeToPay = Some(Seq(activeTimeToPayAgreed))
+      )
+    )
 
   val sampleTaxPaidLPP1Day15to30: LPPDetails = sampleUnpaidLPP1Day15to30.copy(penaltyStatus = LPPPenaltyStatusEnum.Posted,
     penaltyAmountAccruing = 0,
@@ -99,7 +132,7 @@ trait LPPDetailsTestData {
     penaltyChargeReference = Some("PEN1234567"),
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-      metadata = LPPDetailsMetadata(
+    metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4700",
       principalChargeSubTr = None,
       principalChargeDocNumber = None,
@@ -184,7 +217,7 @@ trait LPPDetailsTestData {
     penaltyChargeReference = None,
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-      metadata = LPPDetailsMetadata(
+    metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4787",
       None,
       None,
