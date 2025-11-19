@@ -23,11 +23,10 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 
-
 @this(
         main: MainTemplate,
         link: Link,
-        calculationHelper: SecondLatePaymentCalculationHelper,
+        calculationHelper: SecondLatePaymentCalculationHelper
 )
 
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -82,6 +81,20 @@
         <p class="govuk-body" id="penaltyIncrease">
             @messages("calculation.individual.calc2.penalty.increase.tax.paid")
         </p>
+    }
+
+    @if(calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined){
+        calculationHelper.getPaymentPlanInset(calculationData, isAgent).map{insetMsg =>
+            <div class="govuk-inset-text">
+                {insetMsg}
+            </div>
+        }
+        calculationHelper.getPaymentPlanContent(calculationDetails, isAgent).map{msg =>
+            <p class="govuk-body">
+                {msg}
+            </p>
+
+        }
     }
 
     @if(!calculationData.isPenaltyPaid) {

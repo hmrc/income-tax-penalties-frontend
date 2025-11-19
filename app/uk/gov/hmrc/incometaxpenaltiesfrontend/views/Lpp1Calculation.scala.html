@@ -72,11 +72,28 @@
         }
     </ul>
 
+
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
             @calculationHelper.getFinalUnpaidMsg(calculationData, individualOrAgent.toString)
         </p>
     }
+
+
+    @calculationHelper.getPaymentPlanInset(calculationData, individualOrAgent.toString).map{insetMsg =>
+        <div class="govuk-inset-text">
+            @insetMsg
+        </div>
+    }
+
+    <div id="paymentPlanContent">
+        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+            <p class="govuk-body">
+                @msg
+            </p>
+        }
+    </div>
+
 
 
     <table class="govuk-table">

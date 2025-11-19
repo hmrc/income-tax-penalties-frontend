@@ -72,7 +72,10 @@ class FirstLatePaymentCalculationHelper {
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
       messages(s"calculation.$individualOrAgent.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
-        dateToYearString(calculationData.taxPeriodEndDate))
+        dateToYearString(calculationData.taxPeriodEndDate)) + " " +
+      (if(calculationData.paymentPlanAgreed.isEmpty && calculationData.paymentPlanProposed.isEmpty){
+        messages(s"calculation.$individualOrAgent.penalty.stopEstimateIncreasing")
+      } else "")
     } else if (calculationData.isPenaltyOverdue) {
       messages("calculation.individual.penalty.isOverdue")
     } else {
@@ -83,9 +86,9 @@ class FirstLatePaymentCalculationHelper {
   def getPaymentPlanInset(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
-        Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.inset", agreedDate))
+        Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.inset", dateToString(agreedDate)))
       case (_, Some(proposedDate)) =>
-        Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.proposed.inset", proposedDate))
+        Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
   }

@@ -50,7 +50,7 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
     calculationData.paymentPlanProposed.map { proposedDate =>
-      messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.inset", proposedDate)
+      messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.inset", dateToString(proposedDate))
     }
   }
 
@@ -58,12 +58,12 @@ class SecondLatePaymentCalculationHelper {
     calculationData.paymentPlanAgreed.map { agreedDate =>
       if (individualOrAgent == "agent") {
         List(
-          messages("calculation.agent.calc2.penalty.payment.plan.agreed.p1", agreedDate),
+          messages("calculation.agent.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
           messages("calculation.agent.calc2.penalty.payment.plan.agreed.p2")
         )
       } else {
         List(
-          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p1", agreedDate),
+          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
           messages("calculation.individual.calc2.penalty.payment.plan.agreed.p2"),
           messages("calculation.individual.calc2.penalty.payment.plan.agreed.p3")
         )
