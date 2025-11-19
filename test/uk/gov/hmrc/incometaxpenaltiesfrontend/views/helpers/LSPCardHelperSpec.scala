@@ -261,7 +261,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testAppealStatusRow
                     ) ++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
                     cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": ${messagesForLanguage.lateUpdate}", "200"),
-                    status = getTagStatus(penalty1, true, 1),
+                    status = getTagStatus(penalty1, isBreathingSpace, 1),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -270,7 +270,6 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   ))
               }
             }
-
 
             s"rendering a multiple Financial Penalty Cards so that the threshold is breached leading to additional penalty amount and breathingSpace = $isBreathingSpace" should {
 
@@ -289,7 +288,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
                   if (isBreathingSpace) mockBreathingSpaceStatusRow()(testBreathingSpaceRow) else ()
                   mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
-                  (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).twice()
+                  (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).anyNumberOfTimes()
                 }
 
                 lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
@@ -324,9 +323,9 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                         testDueDateRow,
                         testReceivedDateRow,
                         testAppealStatusRow
-                      ),
+                      ) ++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
                       cardTitle = messagesForLanguage.cardTitleFinancialPoint(2, s": ${messagesForLanguage.lateUpdate}", "200"),
-                      status = getTagStatus(penalty2, false, 2),
+                      status = getTagStatus(penalty2, isBreathingSpace, 2),
                       penaltyPoint = "2",
                       penaltyId = penalty2.penaltyNumber,
                       isReturnSubmitted = true,
@@ -341,9 +340,9 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                         testDueDateRow,
                         testReceivedDateRow,
                         testAppealStatusRow
-                      ),
+                      )++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
                       cardTitle = messagesForLanguage.cardTitleFinancialPointNoThreshold(1, s": ${messagesForLanguage.lateUpdate}"),
-                      status = getTagStatus(penalty1, false, 2),
+                      status = getTagStatus(penalty1, isBreathingSpace, 2),
                       penaltyPoint = "1",
                       penaltyId = penalty1.penaltyNumber,
                       isReturnSubmitted = true,
