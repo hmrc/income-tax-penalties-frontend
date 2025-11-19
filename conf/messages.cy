@@ -138,10 +138,11 @@ calculation.agent.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r g
 calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
 calculation.individual.calc2.penalty.payment.plan.proposed.inset = TODO-TBG
+calculation.individual.calc2.penalty.payment.plan.agreed.inset = TODO-TBG
 calculation.individual.calc2.penalty.payment.plan.agreed.p1 = TODO-TBG
 calculation.individual.calc2.penalty.payment.plan.agreed.p2 = TODO-TBG
-calculation.individual.calc2.penalty.payment.plan.agreed.p3 = TODO-TBG
 calculation.agent.calc2.penalty.payment.plan.proposed.inset = TODO-TBG
+calculation.agent.calc2.penalty.payment.plan.agreed.inset = TODO-TBG
 calculation.agent.calc2.penalty.payment.plan.agreed.p1 = TODO-TBG
 calculation.agent.calc2.penalty.payment.plan.agreed.p2 = TODO-TBG
 

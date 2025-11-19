@@ -83,25 +83,26 @@
         </p>
     }
 
-    @if(calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined){
-        calculationHelper.getPaymentPlanInset(calculationData, isAgent).map{insetMsg =>
-            <div class="govuk-inset-text">
-                {insetMsg}
-            </div>
-        }
-        calculationHelper.getPaymentPlanContent(calculationDetails, isAgent).map{msg =>
-            <p class="govuk-body">
-                {msg}
-            </p>
-
-        }
-    }
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
             @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
         </p>
     }
+
+    @calculationHelper.getPaymentPlanInset(calculationData, individualOrAgent.toString).map{ insetMsg =>
+        <div class="govuk-inset-text">
+            @insetMsg
+        </div>
+    }
+
+    <div id="paymentPlanContent">
+        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+            <p class="govuk-body">
+                @msg
+            </p>
+        }
+    </div>
 
     <table class="govuk-table">
         <thead class="govuk-table__head">
