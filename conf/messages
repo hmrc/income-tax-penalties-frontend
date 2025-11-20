@@ -161,6 +161,7 @@ status.amountDue = £{0} due
 status.amountOverdue = £{0} overdue
 status.late = Late
 status.cancelled = Cancelled
+status.breathing.space = Breathing Space
 
 # Card Title Content
 # ==================
@@ -277,3 +278,7 @@ agentErrorView.h1 = Your organisation has not given you access to this client
 agentErrorView.p1 = This client has authorised your organisation. Your team has not given you access to the client’s tax.
 agentErrorView.p2 = Ask your team who manages access groups. It will be someone with administrative access to your agent services account.
 agentErrorView.link = Go to agent services account
+
+# Breathing Space
+breathingSpace.status = Status
+breathingSpace.paused = Paused due to Breathing Space

@@ -28,7 +28,7 @@ import java.time.LocalDate
 
 trait TagHelper {
 
-  def getTagStatus(penalty: LSPDetails, pointsRemovedAfterPoc: Option[Boolean] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+  def getTagStatus(penalty: LSPDetails, isBreathingSpace: Boolean, threshold: Int, pointsRemovedAfterPoc: Option[Boolean] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     penalty.penaltyStatus match {
       case LSPPenaltyStatusEnum.Inactive =>
         val isAppealStatusUpheld: Boolean = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
@@ -40,14 +40,29 @@ trait TagHelper {
             case _ => messages("status.expired")
           }
         Tag(Text(messages(tagStatusMessage)))
+      case _ if isBreathingSpace && isLsp4OrAdditional(penalty, threshold) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid, penalty.chargeDueDate)
       case _ =>
         Tag(Text(messages("status.active")))
     }
 
-  def getTagStatus(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+  def isLsp4OrAdditional(penalty: LSPDetails, threshold: Int): Boolean = {
+    if (penalty.penaltyOrder.exists(_.toInt >= threshold)) {
+      if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
+        if (!penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
+          return true
+        }
+      } else if (penalty.penaltyOrder.exists(_.toInt == threshold)) {
+          return true
+      }
+    }
+    false
+  }
+
+  def getTagStatus(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     (penalty.appealStatus, penalty.penaltyStatus) match {
+      case _ if isBreathingSpace => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
       case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
       case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")

@@ -110,4 +110,10 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       messages("lsp.expiry.key"),
       Html(dateToString(penalty.penaltyExpiryDate))
     )
+    
+  def breathingSpaceStatusRow()(implicit messages: Messages): SummaryListRow =
+    summaryListRow(
+      messages("breathingSpace.status"),
+      Html(messages("breathingSpace.paused"))
+    )
 }

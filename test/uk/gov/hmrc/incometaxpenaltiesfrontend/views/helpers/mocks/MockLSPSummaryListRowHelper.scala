@@ -37,6 +37,7 @@ trait MockLSPSummaryListRowHelper extends MockFactory {
   val testPointExpiredOnRow: SummaryListRow = SummaryListRow(Key(Text("pointExpiredOn")), Value(Text("date")))
   val testAppealStatusRow: SummaryListRow = SummaryListRow(Key(Text("appealStatus")), Value(Text("status")))
   val testPayPenaltyByRow: SummaryListRow = SummaryListRow(Key(Text("payPenaltyBy")), Value(Text("1/4/2028")))
+  val testBreathingSpaceRow: SummaryListRow = SummaryListRow(Key(Text("breathingSpace")), Value(Text("status")))
 
   lazy val mockLSPSummaryListRowHelper: LSPSummaryListRowHelper = mock[LSPSummaryListRowHelper]
 
@@ -81,6 +82,13 @@ trait MockLSPSummaryListRowHelper extends MockFactory {
     (mockLSPSummaryListRowHelper.pointExpiredOnRow(_: LSPDetails)(_: Messages))
       .expects(penalty, *)
       .returning(Some(value))
+
+
+
+  def mockBreathingSpaceStatusRow()(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLSPSummaryListRowHelper.breathingSpaceStatusRow()(_: Messages))
+      .expects(*)
+      .returning(value)
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
                                  appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =

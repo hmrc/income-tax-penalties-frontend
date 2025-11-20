@@ -39,81 +39,122 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
   "LPPCardHelper" when {
 
-    Seq(LPPCardMessages.English, LPPCardMessages.Welsh).foreach { messagesForLanguage =>
+    for (isBreathingSpace <- Seq(true, false)) {
 
-      implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
-      implicit val tm: TimeMachine = mock[TimeMachine]
+      Seq(LPPCardMessages.English, LPPCardMessages.Welsh).foreach { messagesForLanguage =>
 
-      s"when language is set to '${messagesForLanguage.lang.name}'" when {
+        implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
+        implicit val tm: TimeMachine = mock[TimeMachine]
 
-        "calling .createLateSubmissionPenaltyCards()" when {
+        s"when language is set to '${messagesForLanguage.lang.name}' and breathingSpace = $isBreathingSpace" when {
 
-          "rendering a LPP1 or LPP2" when {
+          "calling .createLateSubmissionPenaltyCards()" when {
 
-            "is NOT being appealed" should {
+            "rendering a LPP1 or LPP2" when {
 
-              "construct a card with correct messages and summary rows" in {
+              "is NOT being appealed" should {
 
-                val penalty1 = sampleUnpaidLPP1
+                "construct a card with correct messages and summary rows" in {
 
-                mockPayPenaltyByRow(penalty1)(None)
-                mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
-                mockIncomeTaxDueRow(penalty1)(testDueDateRow)
-                mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
-                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                  val penalty1 = sampleUnpaidLPP1
 
-                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
-                  Seq(LatePaymentPenaltySummaryCard(
-                    index = 1,
-                    cardTitle = messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
-                    cardRows = Seq(
-                      testTaxPeriodRow,
-                      testDueDateRow,
-                      testPaymentDateRow
-                    ),
-                    status = getTagStatus(penalty1),
-                    penaltyChargeReference = penalty1.penaltyChargeReference,
-                    principalChargeReference = penalty1.principalChargeReference,
-                    isPenaltyPaid = penalty1.isPaid,
-                    amountDue = penalty1.amountDue,
-                    appealStatus = penalty1.appealStatus,
-                    appealLevel = penalty1.appealLevel,
-                    incomeTaxIsPaid = penalty1.incomeTaxIsPaid,
-                    penaltyCategory = penalty1.penaltyCategory,
-                    dueDate = dateToString(penalty1.principalChargeDueDate),
-                    taxPeriodStartDate = penalty1.principalChargeBillingFrom.toString,
-                    taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
-                    incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
-                    isTTPActive = false,
-                    isEstimatedLPP1 = true
-                  ))
+                  mockPayPenaltyByRow(penalty1)(None)
+                  mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
+                  mockIncomeTaxDueRow(penalty1)(testDueDateRow)
+                  mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
+                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                  mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+
+                  lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
+                    Seq(LatePaymentPenaltySummaryCard(
+                      index = 1,
+                      cardTitle = messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
+                      cardRows = Seq(
+                          testTaxPeriodRow,
+                          testDueDateRow,
+                          testPaymentDateRow,
+                          testBreathingSpaceRow
+                        ),
+                      status = getTagStatus(penalty1, isBreathingSpace),
+                      penaltyChargeReference = penalty1.penaltyChargeReference,
+                      principalChargeReference = penalty1.principalChargeReference,
+                      isPenaltyPaid = penalty1.isPaid,
+                      amountDue = penalty1.amountDue,
+                      appealStatus = penalty1.appealStatus,
+                      appealLevel = penalty1.appealLevel,
+                      incomeTaxIsPaid = penalty1.incomeTaxIsPaid,
+                      penaltyCategory = penalty1.penaltyCategory,
+                      dueDate = dateToString(penalty1.principalChargeDueDate),
+                      taxPeriodStartDate = penalty1.principalChargeBillingFrom.toString,
+                      taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
+                      incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
+                      isTTPActive = false,
+                      isEstimatedLPP1 = true
+                    ))
+                }
+              }
+
+              "is being appealed" should {
+
+                "construct a card with correct messages and summary rows including an Appeal Status" in {
+
+                  val penalty1 = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
+
+                  mockPayPenaltyByRow(penalty1)(None)
+                  mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
+                  mockIncomeTaxDueRow(penalty1)(testDueDateRow)
+                  mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
+                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
+                  mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+                  if (!isBreathingSpace) (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 1, 1)).twice()
+
+                  lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
+                    Seq(LatePaymentPenaltySummaryCard(
+                      index = 1,
+                      cardTitle = messagesForLanguage.penaltyTypeValue(penalty1.penaltyCategory),
+                      cardRows = Seq(
+                        testTaxPeriodRow,
+                        testDueDateRow,
+                        testPaymentDateRow,
+                        testAppealStatusRow,
+                        testBreathingSpaceRow
+                      ),
+                      status = getTagStatus(penalty1, isBreathingSpace),
+                      penaltyChargeReference = penalty1.penaltyChargeReference,
+                      principalChargeReference = penalty1.principalChargeReference,
+                      isPenaltyPaid = penalty1.isPaid,
+                      amountDue = penalty1.amountDue,
+                      appealStatus = penalty1.appealStatus,
+                      appealLevel = penalty1.appealLevel,
+                      incomeTaxIsPaid = penalty1.incomeTaxIsPaid,
+                      penaltyCategory = penalty1.penaltyCategory,
+                      dueDate = dateToString(penalty1.principalChargeDueDate),
+                      taxPeriodStartDate = penalty1.principalChargeBillingFrom.toString,
+                      taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
+                      incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
+                      isTTPActive = false,
+                      isEstimatedLPP1 = false
+                    ))
+                }
               }
             }
 
-            "is being appealed" should {
+            "rendering a MANUAL penalty" should {
 
               "construct a card with correct messages and summary rows including an Appeal Status" in {
 
-                val penalty1 = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
+                val penalty1 = sampleManualLPP
 
-                mockPayPenaltyByRow(penalty1)(None)
-                mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
-                mockIncomeTaxDueRow(penalty1)(testDueDateRow)
-                mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
-                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
-                (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 1, 1)).twice()
+                mockAddedOnRow(penalty1)(Some(testAddedOnRow))
 
-                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
+                lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                   Seq(LatePaymentPenaltySummaryCard(
                     index = 1,
-                    cardTitle = messagesForLanguage.penaltyTypeValue(penalty1.penaltyCategory),
+                    cardTitle = messagesForLanguage.cardTitlePenaltyDetailsLetter,
                     cardRows = Seq(
-                      testTaxPeriodRow,
-                      testDueDateRow,
-                      testPaymentDateRow,
-                      testAppealStatusRow
+                      testAddedOnRow
                     ),
-                    status = getTagStatus(penalty1),
+                    status = getTagStatus(penalty1, isBreathingSpace),
                     penaltyChargeReference = penalty1.penaltyChargeReference,
                     principalChargeReference = penalty1.principalChargeReference,
                     isPenaltyPaid = penalty1.isPaid,
@@ -130,40 +171,6 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     isEstimatedLPP1 = false
                   ))
               }
-            }
-          }
-
-          "rendering a MANUAL penalty" should {
-
-            "construct a card with correct messages and summary rows including an Appeal Status" in {
-
-              val penalty1 = sampleManualLPP
-
-              mockAddedOnRow(penalty1)(Some(testAddedOnRow))
-
-              lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1)) shouldBe
-                Seq(LatePaymentPenaltySummaryCard(
-                  index = 1,
-                  cardTitle = messagesForLanguage.cardTitlePenaltyDetailsLetter,
-                  cardRows = Seq(
-                    testAddedOnRow
-                  ),
-                  status = getTagStatus(penalty1),
-                  penaltyChargeReference = penalty1.penaltyChargeReference,
-                  principalChargeReference = penalty1.principalChargeReference,
-                  isPenaltyPaid = penalty1.isPaid,
-                  amountDue = penalty1.amountDue,
-                  appealStatus = penalty1.appealStatus,
-                  appealLevel = penalty1.appealLevel,
-                  incomeTaxIsPaid = penalty1.incomeTaxIsPaid,
-                  penaltyCategory = penalty1.penaltyCategory,
-                  dueDate = dateToString(penalty1.principalChargeDueDate),
-                  taxPeriodStartDate = penalty1.principalChargeBillingFrom.toString,
-                  taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
-                  incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
-                  isTTPActive = false,
-                  isEstimatedLPP1 = false
-                ))
             }
           }
         }

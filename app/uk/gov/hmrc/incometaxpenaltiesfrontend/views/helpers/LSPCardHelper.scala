@@ -34,7 +34,9 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
   def createLateSubmissionPenaltyCards(penalties: Seq[LSPDetails],
                                        threshold: Int,
                                        activePoints: Int,
-                                       pointsRemovedAfterPeriodOfCompliance: Boolean = false)
+                                       isBreathingSpace: Boolean,
+                                       pointsRemovedAfterPeriodOfCompliance: Boolean = false,
+                                       )
                                       (implicit messages: Messages): Seq[LateSubmissionPenaltySummaryCard] = {
 
     val activePenalties: Seq[(LSPDetails, Int)] =
@@ -45,13 +47,13 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
       val reason = s": ${penaltyReason(penaltyWithPoints.dueDate)}"
       penaltyWithPoints.lspTypeEnum match {
         case LSPTypeEnum.AddedFAP =>
-          addedPointCard(penaltyWithPoints, activePoints >= threshold, reason)
+          addedPointCard(penaltyWithPoints, activePoints >= threshold, reason, isBreathingSpace, threshold)
         case LSPTypeEnum.RemovedFAP | LSPTypeEnum.RemovedPoint =>
-          removedPointCard(penaltyWithPoints, pointsRemovedAfterPeriodOfCompliance)
+          removedPointCard(penaltyWithPoints, pointsRemovedAfterPeriodOfCompliance, isBreathingSpace, threshold)
         case LSPTypeEnum.AppealedPoint | LSPTypeEnum.Point =>
-          pointSummaryCard(penaltyWithPoints, threshold, activePoints >= threshold, reason)
+          pointSummaryCard(penaltyWithPoints, threshold, activePoints >= threshold, reason, isBreathingSpace)
         case _ =>
-          financialSummaryCard(penaltyWithPoints, threshold, reason)
+          financialSummaryCard(penaltyWithPoints, threshold, reason, isBreathingSpace)
       }
     }
   }
@@ -63,7 +65,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
       messages("lsp.cardTitle.lateUpdate")
   }
 
-  private def addedPointCard(p: LSPDetails, thresholdMet: Boolean, reason: String)
+  private def addedPointCard(p: LSPDetails, thresholdMet: Boolean, reason: String, isBreathingSpace: Boolean, threshold: Int)
                             (implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     val order = p.penaltyOrder.getOrElse("")
@@ -86,13 +88,15 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
       cardTitle            = cardTitle,
       rows                 = rows,
       penalty              = p,
+      isBreathingSpace     = isBreathingSpace,
+      threshold            = threshold,
       isAnAddedPoint       = true,
       isAnAddedOrRemovedPoint = true
     )
   }
 
 
-  def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def financialSummaryCard(penalty: LSPDetails, threshold: Int, reason: String, isBreathingSpace: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
 
     val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
     val penaltyOrder     = penalty.penaltyOrder.getOrElse("")
@@ -126,12 +130,15 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
-      ).flatten,
-      penalty = penalty
+      ).flatten ++
+        (if (isBreathingSpace) Some(summaryRow.breathingSpaceStatusRow()) else None),
+      penalty = penalty,
+      isBreathingSpace = isBreathingSpace,
+      threshold = threshold
     )
   }
 
-  def pointSummaryCard(penalty: LSPDetails, threshold: Int, thresholdMet: Boolean, reason: String)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def pointSummaryCard(penalty: LSPDetails, threshold: Int, thresholdMet: Boolean, reason: String, isBreathingSpace: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val expiredPointStatusTags: Set[Tag] = Set(
       Tag(Text(messages("status.expired"))),
       Tag(Text(messages("status.removed"))),
@@ -139,7 +146,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     )
 
     val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)
-    val pointStatusExpired = expiredPointStatusTags.contains(getTagStatus(penalty))
+    val pointStatusExpired = expiredPointStatusTags.contains(getTagStatus(penalty, isBreathingSpace, threshold))
     val thresholdMetPenalty = thresholdMet && penalty.originalAmount > 0
 
     val cardTitle =
@@ -162,17 +169,19 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
-        if(getTagStatus(penalty).content == Text(messages("status.expired"))) summaryRow.pointExpiredOnRow(penalty)
+        if(getTagStatus(penalty, isBreathingSpace, threshold).content == Text(messages("status.expired"))) summaryRow.pointExpiredOnRow(penalty)
         else Option.when(!thresholdMet && !penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
           summaryRow.pointExpiryDate(penalty)
         },
           summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
       ).flatten,
-      penalty = penalty
+      penalty = penalty,
+      isBreathingSpace = isBreathingSpace,
+      threshold = threshold
     )
   }
 
-  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
+  def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean, isBreathingSpace: Boolean, threshold: Int)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val pointExpiredAndAppealRow = if(penalty.lspTypeEnum == LSPTypeEnum.RemovedPoint && !pointsRemovedAfterPeriodOfCompliance) {
       Seq(summaryRow.pointExpiredOnRow(penalty),
         summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
@@ -190,6 +199,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         Some(summaryRow.receivedDateSummaryRow(penalty))
       ).flatten ++ pointExpiredAndAppealRow,
       penalty = penalty,
+      isBreathingSpace = isBreathingSpace,
+      threshold = threshold,
       isAnAddedOrRemovedPoint = true,
       isManuallyRemovedPoint = !penalty.isFAP,
       pointsRemovedAfterPoc = Some(pointsRemovedAfterPeriodOfCompliance)
@@ -199,6 +210,8 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
   private def buildLSPSummaryCard(cardTitle: String,
                                   rows: Seq[SummaryListRow],
                                   penalty: LSPDetails,
+                                  isBreathingSpace: Boolean,
+                                  threshold: Int,
                                   isAnAddedPoint: Boolean = false,
                                   isAnAddedOrRemovedPoint: Boolean = false,
                                   isManuallyRemovedPoint: Boolean = false,
@@ -208,7 +221,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     LateSubmissionPenaltySummaryCard(
       cardRows = rows,
       cardTitle = cardTitle,
-      status = getTagStatus(penalty, pointsRemovedAfterPoc),
+      status = getTagStatus(penalty, isBreathingSpace, threshold, pointsRemovedAfterPoc),
       penaltyPoint = penalty.penaltyOrder.getOrElse(""),
       penaltyId = penalty.penaltyNumber,
       isReturnSubmitted = penalty.isReturnSubmitted,

@@ -161,6 +161,7 @@ status.amountDue = £{0} yn ddyledus
 status.amountOverdue = £{0} yn hwyr
 status.late = Hwyr
 status.cancelled = Wedi canslo
+status.breathing.space = Amser i gael eich gwynt atoch
 
 # Card Title Content
 # ==================
@@ -277,3 +278,7 @@ agentErrorView.h1 = Nid yw’ch sefydliad wedi rhoi’r caniatâd i chi gael myn
 agentErrorView.p1 = Mae’r cleient hwn wedi awdurdodi’ch sefydliad. Nid yw’ch tîm  wedi rhoi’r caniatâd i chi gael mynediad at y cleient hwn.
 agentErrorView.p2 = Gofynnwch i’ch tîm pwy sy’n rheoli grwpiau mynediad. Fe fydd  yn rhywun sydd â mynediad gweinyddol i’ch cyfrif gwasanaethau asiant.
 agentErrorView.link = Ewch i gyfrif gwasanaethau asiant
+
+# Breathing Space
+breathingSpace.status = Statws
+breathingSpace.paused = Wedi’i oedi oherwydd cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space)
