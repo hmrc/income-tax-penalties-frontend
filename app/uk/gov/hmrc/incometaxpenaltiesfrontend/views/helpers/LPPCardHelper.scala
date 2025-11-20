@@ -32,7 +32,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
       val cardRows: Seq[SummaryListRow] =
         lpp.penaltyCategory match {
           case LPPPenaltyCategoryEnum.MANUAL => lppManual(lpp)
-          case _ => lppCardBody(lpp, isBreathingSpace)
+          case _ => lppCardBody(lpp)
         }
 
       val cardTitle = if(lpp.penaltyAmountOutstanding.getOrElse(0) != 0 && lpp.penaltyAmountPaid.getOrElse(0) != 0){
@@ -63,15 +63,15 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
       )
     }
 
-  private def lppCardBody(lpp: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages): Seq[SummaryListRow] =
+  private def lppCardBody(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       lppSummaryRow.payPenaltyByRow(lpp),
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),
       Some(lppSummaryRow.incomeTaxDueRow(lpp)),
       Some(lppSummaryRow.incomeTaxPaymentDateRow(lpp)),
-      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel)
-    ).flatten ++
-      (if (isBreathingSpace) Some(lppSummaryRow.breathingSpaceStatusRow()) else None)
+      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel),
+      Some(lppSummaryRow.breathingSpaceStatusRow())
+    ).flatten
 
 
   private def lppManual(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =

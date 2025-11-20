@@ -30,7 +30,6 @@ trait TagHelper {
 
   def getTagStatus(penalty: LSPDetails, isBreathingSpace: Boolean, threshold: Int, pointsRemovedAfterPoc: Option[Boolean] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     penalty.penaltyStatus match {
-      case _ if isBreathingSpace && isLsp4OrAdditional(penalty, threshold) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
       case LSPPenaltyStatusEnum.Inactive =>
         val isAppealStatusUpheld: Boolean = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
         val isRemovedAfterPoc: Boolean = pointsRemovedAfterPoc.contains(true)
@@ -41,6 +40,7 @@ trait TagHelper {
             case _ => messages("status.expired")
           }
         Tag(Text(messages(tagStatusMessage)))
+      case _ if isBreathingSpace && isLsp4OrAdditional(penalty, threshold) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid, penalty.chargeDueDate)
       case _ =>

@@ -80,10 +80,10 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
     }.flatten
   }
 
-  def breathingSpaceStatusRow()(implicit messages: Messages): SummaryListRow =
-    summaryListRow(
-      label = messages("breathingSpace.status"),
-      value = Html(messages("breathingSpace.paused"))
-    )
-
+  def breathingSpaceStatusRow()(implicit messages: Messages): SummaryListRow = {
+      summaryListRow(
+        label = messages("breathingSpace.status"),
+        value = Html(messages("breathingSpace.paused"))
+      )
+  }
 }
