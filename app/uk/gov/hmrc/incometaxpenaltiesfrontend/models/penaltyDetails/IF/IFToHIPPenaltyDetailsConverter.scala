@@ -112,9 +112,6 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils {
     )(LateSubmissionPenalty.apply _)
 
   lazy val timeToPayReads: Reads[TimeToPay] = (
-    (JsPath \ "TTPStartDate").readNullable[LocalDate] and
-      (JsPath \ "TTPEndDate").readNullable[LocalDate] and
-      // TODO - Check api response fields for proposalDate and agreementDate
       (JsPath \ "proposalDate").readNullable[LocalDate] and
       (JsPath \ "agreementDate").readNullable[LocalDate]
     )(TimeToPay.apply _)
@@ -122,7 +119,7 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils {
   lazy val lppMetadataReads: Reads[LPPDetailsMetadata] = (json: JsValue) =>
     for {
       principalChargeMainTr <- (json \ "mainTransaction").validateOpt[String]
-      timeToPay <- (json \ "timeToPay").validateOpt[Seq[TimeToPay]](Reads.seq[TimeToPay](timeToPayReads))
+      timeToPay <- (json \ "timeToPay").validateOpt[TimeToPay]
     } yield {
       LPPDetailsMetadata(
         principalChargeMainTr = principalChargeMainTr.getOrElse("4700"),

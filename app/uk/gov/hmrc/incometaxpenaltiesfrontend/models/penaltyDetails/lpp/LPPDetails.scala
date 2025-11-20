@@ -63,26 +63,26 @@ case class LPPDetails(principalChargeReference: String,
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
 
 
-  private def optActiveTTP(implicit timeMachine: TimeMachine): Option[TimeToPay] = {
-    def currentDate = timeMachine.getCurrentDate()
-    metadata.timeToPay.flatMap(_.find(penalty =>
-      (penalty.ttpStartDate, penalty.ttpEndDate) match {
-        case (Some(startDate), Some(endDate)) => startDate.isBeforeOrEqual(currentDate) && endDate.isAfterOrEqual(currentDate)
-        case (Some(startDate), None) => startDate.isBeforeOrEqual(currentDate)
-        case _ => false
-      }
-    ))
-  }
+//  private def optActiveTTP(implicit timeMachine: TimeMachine): Option[TimeToPay] = {
+//    def currentDate = timeMachine.getCurrentDate()
+//    metadata.timeToPay.flatMap(_.find(penalty =>
+//      (penalty.ttpStartDate, penalty.ttpEndDate) match {
+//        case (Some(startDate), Some(endDate)) => startDate.isBeforeOrEqual(currentDate) && endDate.isAfterOrEqual(currentDate)
+//        case (Some(startDate), None) => startDate.isBeforeOrEqual(currentDate)
+//        case _ => false
+//      }
+//    ))
+//  }
 
   // TODO-TBG - needed?
-  def ttpStartDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpStartDate)
+//  def ttpStartDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpStartDate)
+//
+//  def ttpEndDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpEndDate)
 
-  def ttpEndDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpEndDate)
 
+  def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
 
-  def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.proposalDate)
-
-  def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.agreementDate)
+  def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
 
 
   override def compare(that: LPPDetails): Int = {
@@ -214,7 +214,7 @@ object LPPDetails extends JsonUtils {
 
 case class LPPDetailsMetadata(
                                principalChargeMainTr: String,
-                               timeToPay: Option[Seq[TimeToPay]],
+                               timeToPay: Option[TimeToPay],
                                principalChargeDocNumber: Option[String] = None,
                                principalChargeSubTr: Option[String] = None
                              )
@@ -224,8 +224,9 @@ object LPPDetailsMetadata {
 }
 
 case class TimeToPay(
-                      ttpStartDate: Option[LocalDate],
-                      ttpEndDate: Option[LocalDate],
+//                      TODO-TBG
+//                      ttpStartDate: Option[LocalDate],
+//                      ttpEndDate: Option[LocalDate],
                       proposalDate: Option[LocalDate],
                       agreementDate: Option[LocalDate]
                     )
