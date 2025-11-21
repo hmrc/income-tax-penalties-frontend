@@ -30,8 +30,7 @@ trait LPPDetailsTestData {
   val penaltyDueDate: LocalDate = penaltyChargeCreationDate.plusDays(31) //2021-07-08
   val lpp1PrincipleChargePaidDate: LocalDate = penaltyDueDate.plusDays(30) //2021-08-07
   val lpp2PrincipleChargePaidDate: LocalDate = penaltyDueDate.plusDays(45) //2021-08-22
-  val timeToPayPeriodStart: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-06-01
-  val timeToPayPeriodEnd: LocalDate = timeToPayPeriodStart.plusMonths(1) //2021-07-01
+  val timeToPayProposedOrAgreed: LocalDate = principleChargeBillingStartDate.plusMonths(1) //2021-07-01
   val principleChargeRef = "12345678901234"
 
   val sampleUnpaidLPP1Day15to30: LPPDetails = LPPDetails(
@@ -66,6 +65,22 @@ trait LPPDetailsTestData {
     )
   )
 
+  val sampleUnpaidLPP1ProposedPaymentPlan: LPPDetails =
+    sampleUnpaidLPP1Day15to30.copy(
+      metadata = LPPDetailsMetadata(
+        principalChargeMainTr = "4700",
+        timeToPay = Some(TimeToPay(proposalDate = Some(timeToPayProposedOrAgreed), None))
+      )
+    )
+
+  val sampleUnpaidLPP1AgreedPaymentPlan: LPPDetails =
+    sampleUnpaidLPP1Day15to30.copy(
+      metadata = LPPDetailsMetadata(
+        principalChargeMainTr = "4700",
+        timeToPay = Some(TimeToPay(None, agreementDate = Some(timeToPayProposedOrAgreed)))
+      )
+    )
+
   val sampleTaxPaidLPP1Day15to30: LPPDetails = sampleUnpaidLPP1Day15to30.copy(penaltyStatus = LPPPenaltyStatusEnum.Posted,
     penaltyAmountAccruing = 0,
     penaltyAmountPosted = 1001.45,
@@ -99,7 +114,7 @@ trait LPPDetailsTestData {
     penaltyChargeReference = Some("PEN1234567"),
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-      metadata = LPPDetailsMetadata(
+    metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4700",
       principalChargeSubTr = None,
       principalChargeDocNumber = None,
@@ -184,7 +199,7 @@ trait LPPDetailsTestData {
     penaltyChargeReference = None,
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
-      metadata = LPPDetailsMetadata(
+    metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4787",
       None,
       None,

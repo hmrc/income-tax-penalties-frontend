@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum.Posted
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
-
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{JsonUtils, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.LocalDateHelper._
 import java.time.LocalDate
 
 case class LPPDetails(principalChargeReference: String,
@@ -61,6 +61,11 @@ case class LPPDetails(principalChargeReference: String,
 
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
+
+  def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
+
+  def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
+
 
   override def compare(that: LPPDetails): Int = {
     (this.principalChargeBillingFrom, that.principalChargeBillingFrom,
@@ -191,7 +196,7 @@ object LPPDetails extends JsonUtils {
 
 case class LPPDetailsMetadata(
                                principalChargeMainTr: String,
-                               timeToPay: Option[Seq[TimeToPay]],
+                               timeToPay: Option[TimeToPay],
                                principalChargeDocNumber: Option[String] = None,
                                principalChargeSubTr: Option[String] = None
                              )
@@ -201,8 +206,8 @@ object LPPDetailsMetadata {
 }
 
 case class TimeToPay(
-                      ttpStartDate: Option[LocalDate],
-                      ttpEndDate: Option[LocalDate]
+                      proposalDate: Option[LocalDate],
+                      agreementDate: Option[LocalDate]
                     )
 
 object TimeToPay {

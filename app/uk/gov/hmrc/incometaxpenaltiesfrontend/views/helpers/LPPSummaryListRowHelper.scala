@@ -50,14 +50,18 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       value = Html(dateToString(penalty.principalChargeDueDate))
     )
 
-  def incomeTaxPaymentDateRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
+  def incomeTaxPaymentDateRow(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): SummaryListRow =
     summaryListRow(
       messages("lpp.incomeTaxPaymentDate.key"),
       Html(
         if (penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Posted) && penalty.principalChargeLatestClearing.isDefined) {
           dateToString(penalty.principalChargeLatestClearing.get)
         } else {
-          messages("lpp.paymentNotReceived")
+          (penalty.ttpAgreementDate, penalty.ttpProposalDate) match {
+            case (Some(agreedDate), _) => messages("lpp.paymentPlanAgreed")
+            case (_, Some(proposedDate)) => messages("lpp.paymentPlanProposed")
+            case _ => messages("lpp.paymentNotReceived")
+          }
         }
       )
     )

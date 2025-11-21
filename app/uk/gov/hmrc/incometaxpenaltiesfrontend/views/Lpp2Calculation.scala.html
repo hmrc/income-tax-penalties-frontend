@@ -23,11 +23,10 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 
-
 @this(
         main: MainTemplate,
         link: Link,
-        calculationHelper: SecondLatePaymentCalculationHelper,
+        calculationHelper: SecondLatePaymentCalculationHelper
 )
 
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -84,11 +83,26 @@
         </p>
     }
 
+
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
             @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
         </p>
     }
+
+    @calculationHelper.getPaymentPlanInset(calculationData, individualOrAgent.toString).map{ insetMsg =>
+        <div class="govuk-inset-text">
+            @insetMsg
+        </div>
+    }
+
+    <div id="paymentPlanContent">
+        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+            <p class="govuk-body">
+                @msg
+            </p>
+        }
+    </div>
 
     <table class="govuk-table">
         <thead class="govuk-table__head">
