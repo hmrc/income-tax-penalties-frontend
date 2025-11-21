@@ -38,9 +38,15 @@ class SecondLatePaymentCalculationHelper {
                         isAgent: Boolean)(implicit messages: Messages): String = {
     val isAgentTag = if (isAgent) "agent" else "individual"
     if (!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
-      messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
+      val isEstimateMsg = messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
+      val toStopEstimateIncMsg = messages(s"calculation.$isAgentTag.calc2.penalty.stopEstimateIncreasing")
+      if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
+        isEstimateMsg
+      } else {
+        isEstimateMsg + " " + toStopEstimateIncMsg
+      }
     } else if (calculationData.isPenaltyOverdue) {
       messages("calculation.individual.calc2.penalty.overdue")
     } else {

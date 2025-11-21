@@ -133,10 +133,12 @@ calculation.individual.calc2.penalty.increase.tax.unpaid = This penalty will inc
 calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.
 
 calculation.individual.calc2.penalty.due = To avoid interest charges, you should pay this penalty by {0}.
-calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.individual.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 
 calculation.agent.calc2.penalty.due = To avoid interest charges, they should pay this penalty by {0}.
-calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
+calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.agent.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
 
 calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
 
