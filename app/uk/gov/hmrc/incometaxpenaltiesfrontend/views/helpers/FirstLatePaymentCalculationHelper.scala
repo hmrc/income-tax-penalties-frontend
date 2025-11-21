@@ -70,12 +70,13 @@ class FirstLatePaymentCalculationHelper {
   def getFinalUnpaidMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
                         individualOrAgent: String)(implicit messages: Messages): String = {
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
-      messages(s"calculation.$individualOrAgent.penalty.isEstimate",
-        dateToYearString(calculationData.taxPeriodStartDate),
-        dateToYearString(calculationData.taxPeriodEndDate)) + " " +
-      (if(calculationData.paymentPlanAgreed.isEmpty && calculationData.paymentPlanProposed.isEmpty){
-        messages(s"calculation.$individualOrAgent.penalty.stopEstimateIncreasing")
-      } else "")
+      val isEstimateMsg = messages(s"calculation.$individualOrAgent.penalty.isEstimate", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+      val toStopEstimateIncMsg = messages(s"calculation.$individualOrAgent.penalty.stopEstimateIncreasing")
+      if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
+        isEstimateMsg
+      } else {
+        isEstimateMsg + " " + toStopEstimateIncMsg
+      }
     } else if (calculationData.isPenaltyOverdue) {
       messages("calculation.individual.penalty.isOverdue")
     } else {

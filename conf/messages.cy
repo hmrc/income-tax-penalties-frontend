@@ -105,20 +105,21 @@ calculation.table.caption.rate = Cyfradd
 calculation.table.caption.amount = Swm
 calculation.table.charge.period = {0} i {1}
 calculation.table.caption.total.penalty = Cyfanswm y gosb
-calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
-
-calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu.
+calculation.individual.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu.
+calculation.agent.penalty.stopEstimateIncreasing = Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.individual.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.agent.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
 
 calculation.individual.penalty.isOverdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
-calculation.individual.penalty.payment.plan.proposed.inset = TODO-TBG
-calculation.individual.penalty.payment.plan.agreed.inset = TODO-TBG
-calculation.individual.penalty.payment.plan.agreed.p1 =  TODO-TBG
-calculation.agent.penalty.payment.plan.proposed.inset = TODO-TBG
-calculation.agent.penalty.payment.plan.agreed.inset = TODO-TBG
-calculation.agent.penalty.payment.plan.agreed.p1 = TODO-TBG
+calculation.individual.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig gynllun talu ar dd mis bbbb. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
+calculation.individual.penalty.payment.plan.agreed.inset = Cytunoch chi ar gynllun talu ar {0}. Ni fydd y gosb hon yn cynyddu.
+calculation.individual.penalty.payment.plan.agreed.p1 =  Mae’n rhaid i chi sicrhau eich bod yn gwneud taliadau mewn pryd. Os na wnewch hynny, bydd eich cynllun talu yn methu a bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo o adeg eu dyddiad gwreiddiol.
+calculation.agent.penalty.payment.plan.proposed.inset = Cynigiodd eich cleient gynllun talu ar {0}. Os cytunir ar ei gynllun talu, ni fydd y gosb hon yn cynyddu.
+calculation.agent.penalty.payment.plan.agreed.inset = Cytunodd eich cleient ar gynllun talu ar {0}. Ni fydd y gosb hon yn cynyddu.
+calculation.agent.penalty.payment.plan.agreed.p1 = Mae’n rhaid i’ch cleient sicrhau ei fod yn gwneud taliadau mewn pryd. Os na wnaiff hynny, bydd ei gynllun talu’n methu a bydd unrhyw gosbau sydd ar eich cleient yn cael eu cyfrifo o adeg eu dyddiad gwreiddiol.
 
 calculation.individual.calc2.missed.deadline.tax.unpaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.individual.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
@@ -137,14 +138,14 @@ calculation.agent.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r g
 
 calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
-calculation.individual.calc2.penalty.payment.plan.proposed.inset = TODO-TBG
-calculation.individual.calc2.penalty.payment.plan.agreed.inset = TODO-TBG
-calculation.individual.calc2.penalty.payment.plan.agreed.p1 = TODO-TBG
-calculation.individual.calc2.penalty.payment.plan.agreed.p2 = TODO-TBG
-calculation.agent.calc2.penalty.payment.plan.proposed.inset = TODO-TBG
-calculation.agent.calc2.penalty.payment.plan.agreed.inset = TODO-TBG
-calculation.agent.calc2.penalty.payment.plan.agreed.p1 = TODO-TBG
-calculation.agent.calc2.penalty.payment.plan.agreed.p2 = TODO-TBG
+calculation.individual.calc2.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig gynllun talu ar {0}. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
+calculation.individual.calc2.penalty.payment.plan.agreed.inset = Cytunoch i gynllun talu ar {0}.
+calculation.individual.calc2.penalty.payment.plan.agreed.p1 = Amcangyfrif yw’r cyfrifiad hwn hyd at yr adeg y cytunwyd ar eich cynllun talu. Bydd yn parhau i fod yn amcangyfrif nes bod eich cynllun talu yn talu’r dyledion treth.
+calculation.individual.calc2.penalty.payment.plan.agreed.p2 = Mae’n rhaid i chi sicrhau eich bod yn gwneud taliadau mewn pryd. Os na wnewch hynny, bydd eich cynllun talu yn methu a bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo o adeg eu dyddiad gwreiddiol.
+calculation.agent.calc2.penalty.payment.plan.proposed.inset = Cytunodd eich cleient i gynllun talu ar {0}.
+calculation.agent.calc2.penalty.payment.plan.agreed.inset = Cytunodd eich cleient i gynllun talu ar {0}.
+calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Amcangyfrif yw’r cyfrifiad hwn hyd at yr adeg y cytunodd eich cleient ar ei gynllun talu. Bydd yn parhau i fod yn amcangyfrif nes bod y cynllun talu yn talu’r dyledion treth.
+calculation.agent.calc2.penalty.payment.plan.agreed.p2 = Mae’n rhaid i’ch cleient sicrhau ei fod yn gwneud taliadau mewn pryd. Os na wnaiff hynny, bydd ei gynllun talu’n methu a bydd unrhyw gosbau sydd ar eich cleient yn cael eu cyfrifo o adeg eu dyddiad gwreiddiol.
 
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
@@ -233,8 +234,8 @@ lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
-lpp.paymentPlanProposed = TODO-TBG
-lpp.paymentPlanAgreed = TODO-TBG
+lpp.paymentPlanProposed = Cynllun talu arfaethedig
+lpp.paymentPlanAgreed = Cynllun talu wedi’i gytuno
 lpp.payPenaltyBy.key = Talu cosb erbyn
 
 # Appeal Status

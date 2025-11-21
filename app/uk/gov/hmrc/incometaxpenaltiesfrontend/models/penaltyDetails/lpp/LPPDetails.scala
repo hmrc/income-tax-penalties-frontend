@@ -62,24 +62,6 @@ case class LPPDetails(principalChargeReference: String,
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
 
-
-//  private def optActiveTTP(implicit timeMachine: TimeMachine): Option[TimeToPay] = {
-//    def currentDate = timeMachine.getCurrentDate()
-//    metadata.timeToPay.flatMap(_.find(penalty =>
-//      (penalty.ttpStartDate, penalty.ttpEndDate) match {
-//        case (Some(startDate), Some(endDate)) => startDate.isBeforeOrEqual(currentDate) && endDate.isAfterOrEqual(currentDate)
-//        case (Some(startDate), None) => startDate.isBeforeOrEqual(currentDate)
-//        case _ => false
-//      }
-//    ))
-//  }
-
-  // TODO-TBG - needed?
-//  def ttpStartDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpStartDate)
-//
-//  def ttpEndDate(implicit timeMachine: TimeMachine): Option[LocalDate] = optActiveTTP.flatMap(_.ttpEndDate)
-
-
   def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
 
   def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
@@ -224,9 +206,6 @@ object LPPDetailsMetadata {
 }
 
 case class TimeToPay(
-//                      TODO-TBG
-//                      ttpStartDate: Option[LocalDate],
-//                      ttpEndDate: Option[LocalDate],
                       proposalDate: Option[LocalDate],
                       agreementDate: Option[LocalDate]
                     )
