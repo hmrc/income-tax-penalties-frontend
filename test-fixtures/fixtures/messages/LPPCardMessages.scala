@@ -75,6 +75,8 @@ object LPPCardMessages {
     override val incomeTaxDueKey = "Treth Incwm sy’n ddyledus"
     override val incomeTaxPaidKey = "Treth Incwm wedi’i thalu"
     override val paymentNotReceived = "Nid yw’r taliad wedi dod i law hyd yn hyn"
+    override val paymentPlanProposed = "Cynllun talu arfaethedig"
+    override val paymentPlanAgreed = "Cynllun talu wedi’i gytuno"
 
     //Card Footer Links
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"
