@@ -73,6 +73,7 @@ trait ComponentSpecHelper
     "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck"
   )
 
+
   implicit val ws: WSClient = app.injector.instanceOf[WSClient]
 
   override def beforeAll(): Unit = {

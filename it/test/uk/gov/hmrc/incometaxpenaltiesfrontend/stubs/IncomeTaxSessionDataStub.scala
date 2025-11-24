@@ -25,19 +25,16 @@ trait IncomeTaxSessionDataStub extends WiremockMethods {
   val incomeTaxSessionDataUrl = "/income-tax-session-data"
 
   val testAgentMtditId = "1234567890"
-  val testAgentNino = "AA123456A"
   val testAgentUtr = "9999912345"
 
-  val sessionData: SessionData = SessionData(
+  val sessionData: String => SessionData = nino => SessionData(
     mtditid = testAgentMtditId,
-    nino = testAgentNino,
+    nino = nino,
     utr = testAgentUtr
   )
 
-  def stubGetIncomeTaxSessionDataSuccessResponse[T](): Unit =
+  def stubGetIncomeTaxSessionDataSuccessResponse[T](nino: String): Unit =
     when(method = GET, uri = incomeTaxSessionDataUrl)
-      .thenReturn(status = OK, body = sessionData)(SessionData.fmt)
-
-
+      .thenReturn(status = OK, body = sessionData(nino))(SessionData.fmt)
 
 }

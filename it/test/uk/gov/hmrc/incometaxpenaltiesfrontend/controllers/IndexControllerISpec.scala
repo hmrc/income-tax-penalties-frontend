@@ -27,6 +27,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.ExpiryRe
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
   with PenaltiesStub with PenaltiesDetailsTestData {
 
@@ -42,7 +43,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
       "have the correct page has correct elements" when {
         "the user is an authorised individual" in {
           stubAuthRequests(false)
-          stubGetPenalties(testAgentNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
+          stubGetPenalties(defaultNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
           val result = get("/")
 
@@ -61,7 +62,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
 
         "the user is an authorised agent" in {
           stubAuthRequests(true)
-          stubGetPenalties(testAgentNino, Some("123456789"))(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
+          stubGetPenalties(defaultNino, Some("123456789"))(OK, convertPenaltyDetailsToSuccessJsonResponse(samplePenaltyDetailsModel))
 
           val result = get("/agent", isAgent = true)
 
@@ -110,7 +111,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
       "render the page with penalties in the correct order" when {
         "the user is an authorised individual" in {
           stubAuthRequests(false)
-          stubGetPenalties(testAgentNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(penaltyDetailsWithCancelledPenalties))
+          stubGetPenalties(defaultNino, None)(OK, convertPenaltyDetailsToSuccessJsonResponse(penaltyDetailsWithCancelledPenalties))
 
           val result = get("/")
 
@@ -130,7 +131,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
     "when call to penalties backend fails" should {
       "render an ISE" in {
         stubAuthRequests(false)
-        stubGetPenalties(testAgentNino, None)(INTERNAL_SERVER_ERROR, Json.obj())
+        stubGetPenalties(defaultNino, None)(INTERNAL_SERVER_ERROR, Json.obj())
 
         val result = get("/")
 
