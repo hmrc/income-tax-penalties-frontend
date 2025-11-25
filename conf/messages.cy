@@ -86,16 +86,16 @@ calculation.agent.payment.15.30.missed.reason = Oherwydd bod eich cleient wedi m
 calculation.individual.payment.missed.reason.additional = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae cosb am dalu’n hwyr wedi’i chodi arnoch. Mae’r gosb hon yn cynnwys dwy ran.
 calculation.agent.payment.missed.reason.additional = Oherwydd bod eich cleient wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae cosb am dalu’n hwyr wedi’i chodi arno. Mae’r gosb hon yn cynnwys dwy ran.
 
-calculation.individual.payment.15.30.missed.reason.bullet.1 = Gwnaethoch fethu’r dyddiad cau gan 15-30 diwrnod, felly mae 3% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} wedi’i chodi arnoch fel cosb
-calculation.agent.payment.15.30.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15-30 diwrnod, felly mae 3% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu {0} wedi’i chodi arno fel cosb
+calculation.individual.payment.15.30.missed.reason.bullet.1 = Gwnaethoch fethu’r dyddiad cau gan 15-30 diwrnod, felly mae 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} wedi’i chodi arnoch fel cosb
+calculation.agent.payment.15.30.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15-30 diwrnod, felly mae 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu {0} wedi’i chodi arno fel cosb
 
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = Rydych wedi methu’r dyddiad cau gan 15-30 diwrnod, felly bydd 3% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arnoch fel cosb
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15-30 diwrnod, felly bydd 3% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arno fel cosb
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = Rydych wedi methu’r dyddiad cau gan 15-30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arnoch fel cosb
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15-30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arno fel cosb
 
-calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 3% o £{0} (sef y dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
-calculation.individual.payment.30.plus.missed.reason.bullet.2 = 3% ychwanegol o £{0} (sef y dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 3% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = Os bydd eich cleient yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 3% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
+calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% o £{0} (sef y dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
+calculation.individual.payment.30.plus.missed.reason.bullet.2 = 2% ychwanegol o £{0} (sef y dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = Os bydd eich cleient yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
 
 calculation.table.caption.amountApplied = Swm y mae’r gosb yn berthnasol iddo
 calculation.table.caption.days.payment = Diwrnodau ar ôl y dyddiad cau ar gyfer talu
