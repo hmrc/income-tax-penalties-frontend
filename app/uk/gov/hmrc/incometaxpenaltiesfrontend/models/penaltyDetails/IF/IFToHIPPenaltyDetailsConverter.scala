@@ -74,7 +74,7 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils{
       penaltyCreationDate <- (json \ "penaltyCreationDate").validate[LocalDate]
       penaltyExpiryDate <- (json \ "penaltyExpiryDate").validate[LocalDate]
       communicationsDate <- (json \ "communicationsDate").validateOpt[LocalDate]
-      fapIndicator <- (json \ "fapIndicator").validateOpt[String]
+      fapIndicator <- (json \ "FAPIndicator").validateOpt[String]
       lateSubmissions <- (json \ "lateSubmissions")
         .validateOpt[Seq[LateSubmission]](Reads.seq[LateSubmission](lateSubmissionReads))
       expiryReason <- (json \ "expiryReason")
