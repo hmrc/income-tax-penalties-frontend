@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import play.api.http.Status.{NO_CONTENT, SEE_OTHER}
 import play.api.test.Helpers.LOCATION
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 
 import java.net.URLEncoder
 

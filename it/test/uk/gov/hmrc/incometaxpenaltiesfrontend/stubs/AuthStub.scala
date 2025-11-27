@@ -34,7 +34,7 @@ trait AuthStub extends WiremockMethods {
     when(method = POST, uri = authUrl)
       .thenReturn(status = UNAUTHORIZED, headers = Map(HeaderNames.WWW_AUTHENTICATE -> s"""MDTP detail="MissingBearerToken""""))
 
-  val successfulIndividualAuthResponse: JsObject =
+  val successfulIndividualAuthResponse: String => JsObject = nino =>
     Json.obj(
       "affinityGroup" -> "Individual",
       "allEnrolments" -> Json.arr(
@@ -56,7 +56,7 @@ trait AuthStub extends WiremockMethods {
         "providerId" -> "12345",
         "providerType" -> "credType"
       ),
-      "nino" -> "AA123456A"
+      "nino" -> nino
     )
 
   val successfulAgentAuthResponse: JsObject =

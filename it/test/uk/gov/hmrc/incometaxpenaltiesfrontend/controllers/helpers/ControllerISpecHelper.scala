@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
+package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers
 
+import org.jsoup.nodes.Document
 import play.api.http.Status.OK
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
@@ -25,6 +26,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, NavBar
 trait ControllerISpecHelper extends ComponentSpecHelper with ViewSpecHelper with NavBarTesterHelper
   with AuthStub with IncomeTaxSessionDataStub {
 
+  val defaultNino: String = "AA123456A"
+
   def convertPenaltyDetailsToSuccessJsonResponse(pd: PenaltyDetails): JsValue = Json.toJson(
     PenaltySuccessResponse(
       "22/03/2024",
@@ -32,13 +35,28 @@ trait ControllerISpecHelper extends ComponentSpecHelper with ViewSpecHelper with
     )
   )
 
-  def stubAuthRequests(isAgent: Boolean) = {
+  def stubAuthRequests(isAgent: Boolean, nino: String = defaultNino) = {
     if(isAgent) {
       stubAuth(OK, successfulAgentAuthResponse)
-      stubGetIncomeTaxSessionDataSuccessResponse()
+      stubGetIncomeTaxSessionDataSuccessResponse(nino)
     } else {
-      stubAuth(OK, successfulIndividualAuthResponse)
+      stubAuth(OK, successfulIndividualAuthResponse(nino))
     }
+  }
+
+  def validatePenaltyTabs(document: Document) = {
+    val tabs = document.getElementsByClass("govuk-tabs__tab")
+    tabs.size() shouldBe 2
+    tabs.get(0).text() shouldBe "Late submission penalties"
+    tabs.get(1).text() shouldBe "Late payment penalties"
+  }
+
+  def getLSPTabContent(document: Document) = {
+    document.getElementById("lspTab")
+  }
+
+  def getLPPTabContent(document: Document) = {
+    document.getElementById("lppTab")
   }
 
 }

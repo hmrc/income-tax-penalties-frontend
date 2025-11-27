@@ -24,12 +24,12 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, BtaNavLinksStub, IncomeTaxSessionDataStub, MessagesStub}
 
 trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesStub with BtaNavContentFixture { this: ComponentSpecHelper with AuthStub with IncomeTaxSessionDataStub =>
-
+  val nino = "AA123456A"
   def testNavBar(url: String, queryParams: Map[String, String] = Map.empty)(runStubs: => Unit = ()): Unit = {
     "Checking the Navigation Bar" when {
       "the origin is PTA" should {
         "render the PTA content" in {
-          stubAuth(OK, successfulIndividualAuthResponse)
+          stubAuth(OK, successfulIndividualAuthResponse(nino))
           stubMessagesCount()(OK, Json.obj("count" -> 0))
           runStubs
           val result = get(url, origin = Some("PTA"), queryParams = queryParams)
@@ -43,7 +43,7 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
 
       "the origin is BTA" should {
         "render the BTA content" in {
-          stubAuth(OK, successfulIndividualAuthResponse)
+          stubAuth(OK, successfulIndividualAuthResponse(nino))
           runStubs
           stubBtaNavLinks()(OK, Json.toJson(btaNavContent))
           val result = get(url, origin = Some("BTA"), queryParams = queryParams)
@@ -57,7 +57,7 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
 
       "the origin is unknown" should {
         "render without a Nav" in {
-          stubAuth(OK, successfulIndividualAuthResponse)
+          stubAuth(OK, successfulIndividualAuthResponse(nino))
           runStubs
           val result = get(url, origin = None, queryParams = queryParams)
 
@@ -75,7 +75,7 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
     "the user is an Agent" should {
       "render without a Nav" in {
         stubAuth(OK, successfulAgentAuthResponse)
-        stubGetIncomeTaxSessionDataSuccessResponse()
+        stubGetIncomeTaxSessionDataSuccessResponse(nino)
         runStubs
         val result = get(url, origin = Some("BTA"), isAgent = true, queryParams = queryParams)
 

@@ -21,6 +21,7 @@ import org.jsoup.Jsoup
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.libs.json.Json
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.CalculationData
@@ -65,7 +66,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is between 15 and 30 days and the tax is unpaid" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData()
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -86,7 +87,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is between 15 and 30 days and the tax is paid but not penalty" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -111,7 +112,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true,
               isOverdue = true)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -136,7 +137,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is over 30 days, tax has not been paid" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -161,7 +162,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is over 30 days, the tax is paid but not penalty and is overdue" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isOverdue = true)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -187,7 +188,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is between 15 and 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -211,7 +212,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "is over 30 days and the tax and penalty is paid" in {
             stubAuthRequests(isAgent)
             val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -236,7 +237,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
       "a penalty does not exist for the penaltyId" should {
         "redirect to penalties home" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
 
           val result = get(firstLPPPath, isAgent)
           result.status shouldBe SEE_OTHER
@@ -254,7 +255,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "the tax is unpaid" in {
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData()
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
             val result = get(secondLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -274,7 +275,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "tax is paid" in {
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
             val result = get(secondLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -298,7 +299,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true,
               isOverdue = true)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
             val result = get(secondLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -321,7 +322,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           "penalty paid" in {
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true, isPenaltyPaid = true, isEstimate = false)
-            stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
             val result = get(secondLPPPath, isAgent)
             result.status shouldBe OK
 
@@ -344,7 +345,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
       "a penalty does not exist for the penaltyId" should {
         "redirect to penalties home" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(testAgentNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(emptyPenaltyDetailsModel))
 
           val result = get(secondLPPPath, isAgent)
           result.status shouldBe SEE_OTHER
