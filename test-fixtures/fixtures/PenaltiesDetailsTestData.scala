@@ -49,16 +49,20 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     sampleUnpaidLPP1.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = "4703", timeToPay = None))
   )))
 
-//  val latePaymentPenalty2: LatePaymentPenalty = LatePaymentPenalty(Some(Seq(
-//    sampleLPP2.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = MainTransactionEnum.ITSAReturnSecondLPP, timeToPay = None))
-//  )))
+  //  val latePaymentPenalty2: LatePaymentPenalty = LatePaymentPenalty(Some(Seq(
+  //    sampleLPP2.copy(metadata = LPPDetailsMetadata(principalChargeMainTr = MainTransactionEnum.ITSAReturnSecondLPP, timeToPay = None))
+  //  )))
 
   def sampleFirstLPPCalcData(is15to30Days: Boolean = true,
                              isPenaltyPaid: Boolean = false,
                              isIncomeTaxPaid: Boolean = false,
                              isEstimate: Boolean = true,
-                             isOverdue: Boolean = false) = {
-    val penaltyChargeDueDate = if(isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
+                             isOverdue: Boolean = false,
+                             isPaymentPlanAgreed: Boolean = false,
+                             isPaymentPlanProposed: Boolean = false) = {
+    val penaltyChargeDueDate = if (isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
+
+    def ttpDate(activePaymentPlan: Boolean) = if (activePaymentPlan) Some(LocalDate.now().plusDays(10)) else None
 
     FirstLatePaymentPenaltyCalculationData(
       penaltyAmount = 1001.45,
@@ -69,24 +73,31 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       isEstimate = isEstimate,
       isPenaltyOverdue = isOverdue,
       payPenaltyBy = penaltyChargeDueDate,
-      penaltyChargeReference = if(is15to30Days && !isIncomeTaxPaid) None else Some("PEN1234567"),
+      penaltyChargeReference = if (is15to30Days && !isIncomeTaxPaid) None else Some("PEN1234567"),
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
       llpLRCharge = LLPCharge(
         99.99, "15", 2.00
       ),
-      llpHRCharge = if(!is15to30Days) {Some(
-        LLPCharge(
-          99.99, "31", 2.00
+      llpHRCharge = if (!is15to30Days) {
+        Some(
+          LLPCharge(
+            99.99, "31", 2.00
+          )
         )
-      )} else None
+      } else None,
+      paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
+      paymentPlanProposed = ttpDate(isPaymentPlanProposed)
     )
   }
 
   def sampleSecondLPPCalcData(isPenaltyPaid: Boolean = false,
                               isIncomeTaxPaid: Boolean = false,
                               isEstimate: Boolean = true,
-                              isOverdue: Boolean = false) = {
-    val penaltyChargeDueDate = if(isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
+                              isOverdue: Boolean = false,
+                              isPaymentPlanAgreed: Boolean = false,
+                              isPaymentPlanProposed: Boolean = false) = {
+    val penaltyChargeDueDate = if (isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
+    def ttpDate(activePaymentPlan: Boolean) = if (activePaymentPlan) Some(LocalDate.now().plusDays(10)) else None
 
     SecondLatePaymentPenaltyCalculationData(
       penaltyAmount = 1001.45,
@@ -97,13 +108,15 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       isEstimate = isEstimate,
       isPenaltyOverdue = isOverdue,
       payPenaltyBy = penaltyChargeDueDate,
-      penaltyChargeReference = if(!isIncomeTaxPaid) None else Some("PEN1234567"),
+      penaltyChargeReference = if (!isIncomeTaxPaid) None else Some("PEN1234567"),
       penaltyPercentage = 2.00,
       daysOverdue = "4",
       amountPenaltyAppliedTo = 20.00,
       chargeStartDate = LocalDate.now(),
       chargeEndDate = LocalDate.now(),
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
+      paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
+      paymentPlanProposed = ttpDate(isPaymentPlanProposed)
     )
   }
 
@@ -111,19 +124,19 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     val lppDetails = LPPDetails(
       principalChargeReference = principleChargeRef,
       penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
-      penaltyStatus = if(firstLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
-      penaltyAmountPaid = if(firstLPPCalData.isPenaltyPaid) Some(firstLPPCalData.penaltyAmount) else None,
-      penaltyAmountPosted = if(firstLPPCalData.isEstimate) 0 else firstLPPCalData.penaltyAmount,
-      penaltyAmountAccruing = if(firstLPPCalData.isEstimate) firstLPPCalData.penaltyAmount else 0,
-      penaltyAmountOutstanding = if(firstLPPCalData.isPenaltyPaid) Some(0) else Some(firstLPPCalData.penaltyAmount),
+      penaltyStatus = if (firstLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
+      penaltyAmountPaid = if (firstLPPCalData.isPenaltyPaid) Some(firstLPPCalData.penaltyAmount) else None,
+      penaltyAmountPosted = if (firstLPPCalData.isEstimate) 0 else firstLPPCalData.penaltyAmount,
+      penaltyAmountAccruing = if (firstLPPCalData.isEstimate) firstLPPCalData.penaltyAmount else 0,
+      penaltyAmountOutstanding = if (firstLPPCalData.isPenaltyPaid) Some(0) else Some(firstLPPCalData.penaltyAmount),
       lpp1LRDays = Some("15"),
       lpp1HRDays = Some("31"),
       lpp2Days = Some("31"),
       lpp1LRCalculationAmt = Some(99.99),
-      lpp1HRCalculationAmt = if(firstLPPCalData.llpHRCharge.isDefined) Some(99.99) else None,
+      lpp1HRCalculationAmt = if (firstLPPCalData.llpHRCharge.isDefined) Some(99.99) else None,
       lpp2Percentage = None,
       lpp1LRPercentage = Some(2.00),
-      lpp1HRPercentage = if(firstLPPCalData.llpHRCharge.isDefined) Some(BigDecimal(2.00).setScale(2)) else None,
+      lpp1HRPercentage = if (firstLPPCalData.llpHRCharge.isDefined) Some(BigDecimal(2.00).setScale(2)) else None,
       penaltyChargeCreationDate = Some(firstLPPCalData.payPenaltyBy.minusDays(30)),
       communicationsDate = Some(firstLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(firstLPPCalData.payPenaltyBy),
@@ -132,7 +145,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeBillingTo = firstLPPCalData.taxPeriodEndDate,
       principalChargeDueDate = firstLPPCalData.payPenaltyBy,
       penaltyChargeReference = Some("PEN1234567"),
-      principalChargeLatestClearing = if(firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
+      principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
@@ -161,11 +174,11 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     val lppDetails = LPPDetails(
       principalChargeReference = principleChargeRef,
       penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
-      penaltyStatus = if(secondLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
-      penaltyAmountPaid = if(secondLPPCalData.isPenaltyPaid) Some(secondLPPCalData.penaltyAmount) else None,
-      penaltyAmountPosted = if(secondLPPCalData.isEstimate) 0 else secondLPPCalData.penaltyAmount,
-      penaltyAmountAccruing = if(secondLPPCalData.isEstimate) secondLPPCalData.penaltyAmount else 0,
-      penaltyAmountOutstanding = if(secondLPPCalData.isPenaltyPaid) Some(0) else Some(secondLPPCalData.penaltyAmount),
+      penaltyStatus = if (secondLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
+      penaltyAmountPaid = if (secondLPPCalData.isPenaltyPaid) Some(secondLPPCalData.penaltyAmount) else None,
+      penaltyAmountPosted = if (secondLPPCalData.isEstimate) 0 else secondLPPCalData.penaltyAmount,
+      penaltyAmountAccruing = if (secondLPPCalData.isEstimate) secondLPPCalData.penaltyAmount else 0,
+      penaltyAmountOutstanding = if (secondLPPCalData.isPenaltyPaid) Some(0) else Some(secondLPPCalData.penaltyAmount),
       lpp1LRDays = Some("15"),
       lpp1HRDays = Some("31"),
       lpp2Days = Some("31"),
@@ -182,7 +195,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
       principalChargeDueDate = secondLPPCalData.payPenaltyBy,
       penaltyChargeReference = Some("PEN1234567"),
-      principalChargeLatestClearing = if(secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
+      principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
