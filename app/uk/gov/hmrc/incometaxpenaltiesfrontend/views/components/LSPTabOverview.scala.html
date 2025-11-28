@@ -33,51 +33,59 @@
 
     <div class="govuk-form-group" id="lspTabOverview">
 
-        <p class="govuk-body-l">
-            @messages("index.lsp.tab.overview.penalty.warningPointTotal")
-        <strong class="govuk-!-font-weight-bold">@lsp.pointsTotal</strong>
-        </p>
-
-        @if(lsp.activePoints < lsp.threshold) {
-            @if(lsp.activePoints == lsp.threshold - 1) {
-                @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.warning", elmId = "penaltyNextTime")
+        @if(lsp.activePoints == 0) {
+            @if(isAgent){
+                @p("lsp.noPenalties.agent")
+            } else {
+                @p("lsp.noPenalties")
             }
-            @p(individualOrAgent + pluralOrSingular(".index.lsp.tab.overview.pointsAccruing.p1", lsp.activePoints), Seq(lsp.activePoints))
-            @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p2")
-            @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
+        } else {
+            <p class="govuk-body-l">
+                @messages("index.lsp.tab.overview.penalty.warningPointTotal")
+            <strong class="govuk-!-font-weight-bold">@lsp.pointsTotal</strong>
+            </p>
 
-            @link(
-                link = "#", //TODO: Update link as part of future story
-                messageKey = messages("index.lsp.tab.overview.pointsGuidanceLink") + " " + messages("common.opensInNewTab"),
-                attrTarget = true,
-                id = Some("pointsGuidanceLink")
-            )
+            @if(lsp.activePoints < lsp.threshold) {
+                @if(lsp.activePoints == lsp.threshold - 1) {
+                    @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.warning", elmId = "penaltyNextTime")
+                }
+                @p(individualOrAgent + pluralOrSingular(".index.lsp.tab.overview.pointsAccruing.p1", lsp.activePoints), Seq(lsp.activePoints))
+                @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p2")
+                @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
 
-            @if(lsp.addedPoint){
                 @link(
                     link = "#", //TODO: Update link as part of future story
-                    messageKey = messages("index.lsp.tab.overview.addedPointsGuidanceLink") + " " + messages("common.opensInNewTab"),
+                    messageKey = messages("index.lsp.tab.overview.pointsGuidanceLink") + " " + messages("common.opensInNewTab"),
                     attrTarget = true,
-                    id = Some("addedPointsGuidanceLink")
+                    id = Some("pointsGuidanceLink")
                 )
-            }
 
-        } else {
-            @if(lsp.numberOfFinancialPenalties == 1) {
-                @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")
-                @p(s"$individualOrAgent.index.lsp.tab.overview.penalty.p1")
+                @if(lsp.addedPoint){
+                    @link(
+                        link = "#", //TODO: Update link as part of future story
+                        messageKey = messages("index.lsp.tab.overview.addedPointsGuidanceLink") + " " + messages("common.opensInNewTab"),
+                        attrTarget = true,
+                        id = Some("addedPointsGuidanceLink")
+                    )
+                }
+
             } else {
-                @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.warning", elmId = "additionalPenalty")
-                @p(s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.p1")
+                @if(lsp.numberOfFinancialPenalties == 1) {
+                    @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")
+                    @p(s"$individualOrAgent.index.lsp.tab.overview.penalty.p1")
+                } else {
+                    @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.warning", elmId = "additionalPenalty")
+                    @p(s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.p1")
+                }
+
+                @actionsToRemoveLinkDate.map(removeLinkDate => {link(
+                    link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
+                    messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(removeLinkDate)),
+                    attrTarget = false,
+                    id = Some("actionsToRemoveLink")
+                )})
+
             }
-
-            @actionsToRemoveLinkDate.map(removeLinkDate => {link(
-                link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
-                messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(removeLinkDate)),
-                attrTarget = false,
-                id = Some("actionsToRemoveLink")
-            )})
-
         }
     </div>
 }
