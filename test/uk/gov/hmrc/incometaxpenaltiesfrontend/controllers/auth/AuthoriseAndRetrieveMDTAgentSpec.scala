@@ -94,7 +94,8 @@ class AuthoriseAndRetrieveMDTAgentSpec extends AnyWordSpec with should.Matchers 
         mockAuthenticatedBearerTokenExpired()
 
         val result = testAction.invokeBlock(authorisedAndEnrolledAgent, block)
-        status(result) shouldBe INTERNAL_SERVER_ERROR
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result).get should include("/agent-timed-out")
       }
     }
 

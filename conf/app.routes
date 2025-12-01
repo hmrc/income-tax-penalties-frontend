@@ -3,6 +3,8 @@
 ->         /hmrc-frontend                             hmrcfrontend.Routes
 
 GET        /assets/*file                              controllers.Assets.versioned(path = "/public", file: Asset)
+GET        /timed-out                                   uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SessionExpiredController.onPageLoad(isAgent: Boolean = false)
+GET        /agent-timed-out                             uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SessionExpiredController.onPageLoad(isAgent: Boolean = true)
 
 
 GET        /                                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage(isAgent:Boolean = false)
