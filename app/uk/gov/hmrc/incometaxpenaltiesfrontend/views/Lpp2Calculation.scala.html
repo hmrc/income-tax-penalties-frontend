@@ -59,10 +59,19 @@
     }
 
 
-    <p class="govuk-body" id="paymentDeadline">
-        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
-    </p>
+    @if(calculationData.isPFA) {
+        <p class="govuk-body" id="taxYearAmended">
+            @messages(s"calculation.$individualOrAgent.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+        </p>
 
+        <p class="govuk-body" id="paymentDeadline">
+            @messages(s"calculation.payment.deadline.pfa", dateToString(calculationData.principalChargeDueDate))
+        </p>
+    } else {
+        <p class="govuk-body" id="paymentDeadline">
+           @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
+        </p>
+    }
 
     @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
         <p class="govuk-body" id="missedDeadline">
@@ -86,7 +95,7 @@
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent, if(calculationData.isPFA) ".pfa" else "")
         </p>
     }
 
