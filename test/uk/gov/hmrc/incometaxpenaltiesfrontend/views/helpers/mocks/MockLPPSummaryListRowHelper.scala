@@ -35,6 +35,7 @@ trait MockLPPSummaryListRowHelper extends MockFactory {
   val testTaxPeriodRow: SummaryListRow = SummaryListRow(Key(Text("taxPeriod")), Value(Text("dateA to dateB")))
   val testDueDateRow: SummaryListRow = SummaryListRow(Key(Text("dueDate")), Value(Text("date")))
   val testPaymentDateRow: SummaryListRow = SummaryListRow(Key(Text("paymentDate")), Value(Text("date")))
+  val testBreathingSpaceRow: SummaryListRow = SummaryListRow(Key(Text("breathingSpace")), Value(Text("status")))
   val testAppealStatusRow: SummaryListRow = SummaryListRow(Key(Text("appealStatus")), Value(Text("status")))
 
   lazy val mockLPPSummaryListRowHelper: LPPSummaryListRowHelper = mock[LPPSummaryListRowHelper]
@@ -57,6 +58,11 @@ trait MockLPPSummaryListRowHelper extends MockFactory {
   def mockIncomeTaxPaymentDateRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
     (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails)(_:Messages, _:TimeMachine))
       .expects(penalty, *, *)
+      .returning(value)
+
+  def mockBreathingSpaceStatusRow()(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLPPSummaryListRowHelper.breathingSpaceStatusRow()(_:Messages))
+      .expects(*)
       .returning(value)
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],

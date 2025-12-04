@@ -57,7 +57,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                 "generate an Active tag model with correct message and class" in {
 
-                  val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint)
+                  val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint, false, 2)
 
                   tag.classes shouldBe ""
                   tag.content shouldBe Text(messagesForLanguage.active)
@@ -78,7 +78,10 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                           appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
                         )
                       ))
-                    ))
+                    ),
+                      false,
+                      2
+                    )
 
                     tag.classes shouldBe ""
                     tag.content shouldBe Text(messagesForLanguage.cancelled)
@@ -91,7 +94,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                     "generate an Inactive tag model with correct message and class" in {
 
-                      val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive))
+                      val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive), false, 2)
 
                       tag.classes shouldBe ""
                       tag.content shouldBe Text(messagesForLanguage.expired)
@@ -102,7 +105,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                     "generate an Inactive tag model with correct message and class" in {
 
-                      val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive), pointsRemovedAfterPoc = Some(true))
+                      val tag = tagHelper.getTagStatus(sampleLateSubmissionPoint.copy(penaltyStatus = Inactive), false, 2, pointsRemovedAfterPoc = Some(true))
 
                       tag.classes shouldBe ""
                       tag.content shouldBe Text(messagesForLanguage.removed)
@@ -122,7 +125,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(
                       chargeOutstandingAmount = Some(BigDecimal(0))
-                    ))
+                    ), false, 2)
 
                     tag.classes shouldBe "govuk-tag--green"
                     tag.content shouldBe Text(messagesForLanguage.paid)
@@ -133,7 +136,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                   "generate a Due tag model with correct message and class with outstanding amount" in {
                     (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7))
-                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge)
+                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge, false, 2)
 
                     tag.classes shouldBe "govuk-tag--red"
                     tag.content shouldBe Text(messagesForLanguage.due)
@@ -142,7 +145,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                   "generate an Overdue tag model with correct message and class with outstanding amount which is not paid in time" in {
                     (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 8, 11))
 
-                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge)
+                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge, false, 2)
 
                     tag.classes shouldBe "govuk-tag--red"
                     tag.content shouldBe Text(messagesForLanguage.overdue)
@@ -156,7 +159,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(
                       chargeAmount = Some(BigDecimal(100)),
                       chargeOutstandingAmount = Some(BigDecimal(25.69))
-                    ))
+                    ), false, 2)
 
                     tag.classes shouldBe "govuk-tag--red"
                     tag.content shouldBe Text(messagesForLanguage.amountDue("25.69"))
@@ -167,7 +170,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(
                       chargeAmount = Some(BigDecimal(100)),
                       chargeOutstandingAmount = Some(BigDecimal(25))
-                    ))
+                    ), false, 2)
 
                     tag.classes shouldBe "govuk-tag--red"
                     tag.content shouldBe Text(messagesForLanguage.amountDue("25"))
@@ -189,7 +192,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                           appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
                         )
                       ))
-                    ))
+                    ), false, 2)
 
                     tag.classes shouldBe ""
                     tag.content shouldBe Text(messagesForLanguage.cancelled)
@@ -200,7 +203,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                   "generate an Inactive tag model with correct message and class" in {
 
-                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(penaltyStatus = Inactive))
+                    val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge.copy(penaltyStatus = Inactive), false, 2)
 
                     tag.classes shouldBe ""
                     tag.content shouldBe Text(messagesForLanguage.expired)
@@ -219,7 +222,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
               "generate a Cancelled tag model with correct message and class" in {
 
-                val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal))
+                val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal), false)// TODO § check if having raw boolean is ok
 
                 tag.classes shouldBe ""
                 tag.content shouldBe Text(messagesForLanguage.cancelled)
@@ -230,7 +233,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
               "generate an Estimate tag model with correct message and class" in {
 
-                val tag = tagHelper.getTagStatus(sampleUnpaidLPP1)
+                val tag = tagHelper.getTagStatus(sampleUnpaidLPP1, false)// TODO § check if having raw boolean is ok
 
                 tag.classes shouldBe ""
                 tag.content shouldBe Text(messagesForLanguage.estimate)
@@ -242,8 +245,9 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
               "generate an Estimate tag model with correct message and class" in {
                 (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7))
                 val tag = tagHelper.getTagStatus(sampleUnpaidLPP1.copy(
-                  penaltyStatus = LPPPenaltyStatusEnum.Posted
-                ))
+                  penaltyStatus = LPPPenaltyStatusEnum.Posted),
+                  false// TODO § check if having raw boolean is ok
+                )
 
                 tag.classes shouldBe "govuk-tag--red"
                 tag.content shouldBe Text(messagesForLanguage.due)
@@ -254,7 +258,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
               "generate a Paid tag model with correct message and class" in {
 
-                val tag = tagHelper.getTagStatus(samplePaidLPP1)
+                val tag = tagHelper.getTagStatus(samplePaidLPP1, false)// TODO § check if having raw boolean is ok
 
                 tag.classes shouldBe "govuk-tag--green"
                 tag.content shouldBe Text(messagesForLanguage.paid)
@@ -268,7 +272,9 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                 val tag = tagHelper.getTagStatus(samplePaidLPP1.copy(
                   penaltyAmountPaid = Some(500),
                   penaltyAmountOutstanding = Some(501.45)
-                ))
+                ),
+                  false
+                )// TODO § check if having raw boolean is ok
 
                 tag.classes shouldBe "govuk-tag--red"
                 tag.content shouldBe Text(messagesForLanguage.amountDue("501.45"))

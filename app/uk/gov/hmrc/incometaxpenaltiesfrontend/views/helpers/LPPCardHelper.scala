@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends DateFormatter with TagHelper {
 
-  def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)])(implicit messages: Messages, timeMachine: TimeMachine): Seq[LatePaymentPenaltySummaryCard] =
+  def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)], isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Seq[LatePaymentPenaltySummaryCard] =
     lpps.map { case (lpp, index) =>
 
       val cardRows: Seq[SummaryListRow] =
@@ -45,7 +45,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         index,
         cardTitle = cardTitle,
         cardRows = cardRows,
-        status = getTagStatus(lpp),
+        status = getTagStatus(lpp, isBreathingSpace),
         penaltyChargeReference = lpp.penaltyChargeReference,
         principalChargeReference = lpp.principalChargeReference,
         isPenaltyPaid = lpp.isPaid,
@@ -68,8 +68,10 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),
       Some(lppSummaryRow.incomeTaxDueRow(lpp)),
       Some(lppSummaryRow.incomeTaxPaymentDateRow(lpp)),
-      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel)
+      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel),
+      Some(lppSummaryRow.breathingSpaceStatusRow())
     ).flatten
+
 
   private def lppManual(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
