@@ -26,7 +26,10 @@ case class UserComplianceInfoAuditModel(isMTDMandated: Boolean,
   override val auditType: String = "UserComplianceInfo"
   override val detail: JsValue = user.auditJson ++ Json.obj(
     "isMTDMandated" -> isMTDMandated,
-    "complianceWindow" -> "2 years",
-    "complianceData" -> Json.toJson(complianceData)(Writes.seq(ObligationDetail.auditWrites))
-  )
+    "complianceWindow" -> "2 years"
+  ) ++ {
+    if(complianceData.nonEmpty) Json.obj(
+      "complianceData" -> Json.toJson(complianceData)(Writes.seq(ObligationDetail.auditWrites))
+    ) else Json.obj()
+  }
 }
