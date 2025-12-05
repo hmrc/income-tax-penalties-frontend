@@ -63,7 +63,9 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                   mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
                   mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
-                  mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+                  if(isBreathingSpace) {
+                    mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+                  }
 
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
@@ -72,9 +74,8 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       cardRows = Seq(
                           testTaxPeriodRow,
                           testDueDateRow,
-                          testPaymentDateRow,
-                          testBreathingSpaceRow
-                        ),
+                          testPaymentDateRow
+                        ) ++ {if(isBreathingSpace) Seq(testBreathingSpaceRow) else Seq()},
                       status = getTagStatus(penalty1, isBreathingSpace),
                       penaltyChargeReference = penalty1.penaltyChargeReference,
                       principalChargeReference = penalty1.principalChargeReference,
@@ -105,7 +106,9 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                   mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
                   mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
-                  mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+                  if(isBreathingSpace) {
+                    mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+                  }
                   if (!isBreathingSpace) (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 1, 1)).twice()
 
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
@@ -116,9 +119,9 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                         testTaxPeriodRow,
                         testDueDateRow,
                         testPaymentDateRow,
-                        testAppealStatusRow,
-                        testBreathingSpaceRow
-                      ),
+                        testAppealStatusRow) ++ {
+                          if(isBreathingSpace) Seq(testBreathingSpaceRow) else Seq()
+                      },
                       status = getTagStatus(penalty1, isBreathingSpace),
                       penaltyChargeReference = penalty1.penaltyChargeReference,
                       principalChargeReference = penalty1.principalChargeReference,
