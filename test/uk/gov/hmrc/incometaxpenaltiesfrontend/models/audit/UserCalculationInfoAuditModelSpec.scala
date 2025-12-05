@@ -34,7 +34,7 @@ class UserCalculationInfoAuditModelSpec extends AnyWordSpec with Matchers with I
       implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledAgent(sessionData, Some(arn))(FakeRequest())
 
       val model = UserCalculationInfoAuditModel(
-        penaltyNumber = "123456",
+        penaltyNumber = Some("123456"),
         penaltyType = PenaltyType.LSP,
         penaltyTotalCost = 100.01,
         penaltyTotalPaid = 50.99
@@ -63,7 +63,7 @@ class UserCalculationInfoAuditModelSpec extends AnyWordSpec with Matchers with I
       implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledIndividual(mtditid, "AA123456A", None)(FakeRequest())
 
       val model = UserCalculationInfoAuditModel(
-        penaltyNumber = "123456",
+        penaltyNumber = Some("123456"),
         penaltyType = PenaltyType.LPP1,
         penaltyTotalCost = 100.01,
         penaltyTotalPaid = 100.01
