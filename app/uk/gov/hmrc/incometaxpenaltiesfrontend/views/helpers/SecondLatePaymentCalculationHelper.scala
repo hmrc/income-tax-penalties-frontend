@@ -26,26 +26,57 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
 
-      if (calculationData.isPenaltyPaid) {
-        messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
-      } else {
-        messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
-      }
+    if (calculationData.isPenaltyPaid) {
+      messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
+    } else {
+      messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+    }
   }
 
 
   def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData,
                         isAgent: Boolean)(implicit messages: Messages): String = {
-    val isAgentTag = if(isAgent) "agent" else "individual"
-    if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
-      messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
+    val isAgentTag = if (isAgent) "agent" else "individual"
+    if (!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
+      val isEstimateMsg = messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
-    } else if(calculationData.isPenaltyOverdue) {
+      val toStopEstimateIncMsg = messages(s"calculation.$isAgentTag.calc2.penalty.stopEstimateIncreasing")
+      if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
+        isEstimateMsg
+      } else {
+        isEstimateMsg + " " + toStopEstimateIncMsg
+      }
+    } else if (calculationData.isPenaltyOverdue) {
       messages("calculation.individual.calc2.penalty.overdue")
     } else {
       messages(s"calculation.$isAgentTag.calc2.penalty.due", dateToString(calculationData.principalChargeDueDate))
     }
   }
 
+  def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+    (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
+      case (Some(agreedDate), _) =>
+        Some(messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.agreed.inset", dateToString(agreedDate)))
+      case (_, Some(proposedDate)) =>
+        Some(messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
+      case _ => None
+    }
+  }
+
+  def getPaymentPlanContent(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): List[String] = {
+    calculationData.paymentPlanAgreed.map { agreedDate =>
+      if (individualOrAgent == "agent") {
+        List(
+          messages("calculation.agent.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
+          messages("calculation.agent.calc2.penalty.payment.plan.agreed.p2")
+        )
+      } else {
+        List(
+          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
+          messages("calculation.individual.calc2.penalty.payment.plan.agreed.p2")
+        )
+      }
+    }.getOrElse(List.empty)
+  }
 }

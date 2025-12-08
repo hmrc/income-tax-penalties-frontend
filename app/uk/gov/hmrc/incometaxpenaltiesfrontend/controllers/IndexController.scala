@@ -50,11 +50,12 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
       penalties = sortPointsInDescendingOrder(lsp),
       threshold = lspThreshold,
       activePoints = lspActivePoints,
-      pointsRemovedAfterPeriodOfCompliance = pocAchieved
+      pointsRemovedAfterPeriodOfCompliance = pocAchieved,
+      isBreathingSpace = penaltyData.isInBreathingSpace
     )
 
     val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
-    val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex)
+    val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex, penaltyData.isInBreathingSpace)
 
     Future(
       updateSessionCookie(penaltyData) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace
-
-import play.api.libs.json.{Format, JsResult, JsValue, Json, OFormat}
+package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
 import java.time.LocalDate
 
-case class BreathingSpace(bsStartDate: LocalDate, bsEndDate: LocalDate)
+object LocalDateHelper {
+  extension (thisDate: LocalDate)
+    def isAfterOrEqual(thatDate: LocalDate): Boolean = thisDate.isAfter(thatDate) || thisDate.isEqual(thatDate)
+    def isBeforeOrEqual(thatDate: LocalDate): Boolean = thisDate.isBefore(thatDate) || thisDate.isEqual(thatDate)
 
-object BreathingSpace {
-  implicit val format: Format[BreathingSpace] = Json.format[BreathingSpace]
 }

@@ -1,0 +1,71 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.indexPage.lsp
+
+import org.jsoup.nodes.Document
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
+import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.*
+import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp.*
+
+trait LSPControllerHelper extends ControllerISpecHelper {
+  
+  val lspUsers: Map[String, UserDetailsData] = Map(
+    "AA500000A" -> AA500000A
+  )
+
+  def validatePenaltyOverview(document: Document, expectedOverview: String, isAgent: Boolean = false) = {
+    val overview = document.getElementById("penaltiesOverview")
+    overview.getElementById("overviewHeading").text() shouldBe "Overview"
+    overview.text() shouldBe expectedOverview
+    document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
+    document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
+  }
+
+  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false) = {
+    val lppTabContent = getLPPTabContent(document)
+    lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
+    val expectedLSPContent = if(isAgent){
+      "Your client has no late payment penalties that are currently due."
+    } else{
+      "You have no late payment penalties that are currently due."
+    }
+    lppTabContent.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPContent
+  }
+
+  def expectedLSPTabBody(userDetailsData: UserDetailsData, isAgent: Boolean = false): String = {
+    if(userDetailsData.hasFinanicalLSP) {
+      if(isAgent) {
+        "They will get another £200 penalty every time they send a late submission in the future, until their points are removed." +
+          " They should send any missing submissions as soon as possible if they haven’t already."
+      } else {
+        "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
+          " You should send any missing submissions as soon as possible if you haven’t already."
+      }
+    } else {
+      val numPenPoints = userDetailsData.numberOfLSPPenalties.toString
+      if(isAgent) {
+        s"Your client has ${numPenPoints} penalty points for sending late submissions." +
+          s" They should send any missing submissions as soon as possible if they haven’t already."
+      } else {
+        s"You have ${numPenPoints} penalty points for sending late submissions." +
+          s" You should send any missing submissions as soon as possible if you haven’t already."
+      }
+    }
+  }
+
+}

@@ -44,8 +44,8 @@ class IncomeTaxSessionDataConnectorISpec extends ComponentSpecHelper with LogCap
     "return a successful Right response when the call succeeds and the body can be parsed" when {
 
       "a Session Data model is returned" in {
-        when(GET, uri = "/income-tax-session-data").thenReturn(status = OK, body = sessionData)
-        await(connector.getSessionData()) shouldBe Right(Some(sessionData))
+        when(GET, uri = "/income-tax-session-data").thenReturn(status = OK, body = sessionData("AA123456A"))
+        await(connector.getSessionData()) shouldBe Right(Some(sessionData("AA123456A")))
       }
 
       "a NOT_FOUND was returned, so return Right(None)" in {

@@ -17,8 +17,9 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.http.HeaderNames
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 
 class AppealsControllerISpec extends ControllerISpecHelper {
 

@@ -26,13 +26,13 @@ import javax.inject.Inject
 
 class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends DateFormatter with TagHelper {
 
-  def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)])(implicit messages: Messages, timeMachine: TimeMachine): Seq[LatePaymentPenaltySummaryCard] =
+  def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)], isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Seq[LatePaymentPenaltySummaryCard] =
     lpps.map { case (lpp, index) =>
 
       val cardRows: Seq[SummaryListRow] =
         lpp.penaltyCategory match {
           case LPPPenaltyCategoryEnum.MANUAL => lppManual(lpp)
-          case _ => lppCardBody(lpp)
+          case _ => lppCardBody(lpp, isBreathingSpace)
         }
 
       val cardTitle = if(lpp.penaltyAmountOutstanding.getOrElse(0) != 0 && lpp.penaltyAmountPaid.getOrElse(0) != 0){
@@ -45,7 +45,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         index,
         cardTitle = cardTitle,
         cardRows = cardRows,
-        status = getTagStatus(lpp),
+        status = getTagStatus(lpp, isBreathingSpace),
         penaltyChargeReference = lpp.penaltyChargeReference,
         principalChargeReference = lpp.principalChargeReference,
         isPenaltyPaid = lpp.isPaid,
@@ -58,19 +58,20 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         taxPeriodStartDate = lpp.principalChargeBillingFrom.toString,
         taxPeriodEndDate = lpp.principalChargeBillingTo.toString,
         incomeTaxOutstandingAmountInPence = lpp.incomeTaxOutstandingAmountInPence,
-        isTTPActive = false, //TODO: Need to add Time To Pay logic in future???
         isEstimatedLPP1 = lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing
       )
     }
 
-  private def lppCardBody(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
+  private def lppCardBody(lpp: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Seq[SummaryListRow] =
     Seq(
       lppSummaryRow.payPenaltyByRow(lpp),
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),
       Some(lppSummaryRow.incomeTaxDueRow(lpp)),
       Some(lppSummaryRow.incomeTaxPaymentDateRow(lpp)),
-      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel)
+      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel),
+      if(isBreathingSpace) Some(lppSummaryRow.breathingSpaceStatusRow()) else None
     ).flatten
+
 
   private def lppManual(lpp: LPPDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(

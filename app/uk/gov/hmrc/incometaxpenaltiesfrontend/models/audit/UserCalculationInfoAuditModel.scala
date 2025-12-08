@@ -22,13 +22,13 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyType
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.PenaltyType.PenaltyType
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
 
-case class UserCalculationInfoAuditModel(penaltyNumber: String,
+case class UserCalculationInfoAuditModel(penaltyNumber: Option[String],
                                          penaltyType: PenaltyType,
                                          penaltyTotalCost: BigDecimal,
                                          penaltyTotalPaid: BigDecimal)(implicit user: CurrentUserRequest[_]) extends AuditModel {
 
   def this(lppDetails: LPPDetails)(implicit user: CurrentUserRequest[_]) = this(
-    penaltyNumber = lppDetails.penaltyChargeReference.getOrElse("-"),
+    penaltyNumber = lppDetails.penaltyChargeReference,
     penaltyType = if(lppDetails.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {
       PenaltyType.LPP2
     } else {
@@ -39,7 +39,17 @@ case class UserCalculationInfoAuditModel(penaltyNumber: String,
   )
 
   override val auditType: String = "UserCalculationInfo"
-  override val detail: JsValue = user.auditJson ++ Json.obj(
+  override val detail: JsValue = {
+    val penaltyDetails = Json.obj(
+      "penaltyType" -> Json.toJson(penaltyType),
+      "penaltyTotalCost" -> penaltyTotalCost,
+      "penaltyTotalPaid" -> penaltyTotalPaid,
+      "penaltyLeftToPay" -> (penaltyTotalCost - penaltyTotalPaid)
+    )
+    user.auditJson ++ penaltyNumber.fold(Json.obj())(pn => Json.obj("penaltyNumber" -> pn)) ++ penaltyDetails
+  }
+    
+  Json.obj(
     "penaltyNumber" -> penaltyNumber,
     "penaltyType" -> Json.toJson(penaltyType),
     "penaltyTotalCost" -> penaltyTotalCost,

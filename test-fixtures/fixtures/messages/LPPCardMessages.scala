@@ -42,6 +42,8 @@ object LPPCardMessages {
     val incomeTaxDueKey = "Income Tax due"
     val incomeTaxPaidKey = "Income Tax paid"
     val paymentNotReceived = "Payment not yet received"
+    val paymentPlanProposed = "Payment plan proposed"
+    val paymentPlanAgreed = "Payment plan agreed"
 
     //Card Footer Links
     val cardLinksViewCalculation = "View calculation"
@@ -73,6 +75,8 @@ object LPPCardMessages {
     override val incomeTaxDueKey = "Treth Incwm sy’n ddyledus"
     override val incomeTaxPaidKey = "Treth Incwm wedi’i thalu"
     override val paymentNotReceived = "Nid yw’r taliad wedi dod i law hyd yn hyn"
+    override val paymentPlanProposed = "Cynllun talu arfaethedig"
+    override val paymentPlanAgreed = "Cynllun talu wedi’i gytuno"
 
     //Card Footer Links
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"

@@ -66,7 +66,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                         cardRows = Seq.empty,
                         cardTitle = messagesForLanguage.cardTitlePoint(1),
-                        status = getTagStatus(sampleLateSubmissionPoint),
+                        status = getTagStatus(sampleLateSubmissionPoint, false, 2),
                         penaltyPoint = "1",
                         penaltyId = sampleLateSubmissionPoint.penaltyNumber,
                         isReturnSubmitted = true,
@@ -94,7 +94,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                         cardRows = Seq.empty,
                         cardTitle = messagesForLanguage.cardTitlePoint(1),
-                        status = getTagStatus(sampleLateSubmissionPoint),
+                        status = getTagStatus(sampleLateSubmissionPoint, false, 2),
                         penaltyPoint = "1",
                         penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
                         isReturnSubmitted = false,
@@ -125,7 +125,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                         cardRows = Seq.empty,
                         cardTitle = messagesForLanguage.cardTitleAdjustmentPoint(1),
-                        status = getTagStatus(sampleLateSubmissionPoint),
+                        status = getTagStatus(sampleLateSubmissionPoint, false, 2),
                         penaltyPoint = "1",
                         penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
                         isReturnSubmitted = true,
@@ -149,7 +149,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                         cardRows = Seq.empty,
                         cardTitle = messagesForLanguage.cardTitleRemovedPoint,
-                        status = getTagStatus(sampleLateSubmissionPoint),
+                        status = getTagStatus(sampleLateSubmissionPoint, false, 2),
                         penaltyPoint = "",
                         penaltyId = sampleRemovedPenaltyPoint.penaltyNumber,
                         isReturnSubmitted = true,
@@ -180,7 +180,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq.empty,
                       cardTitle = messagesForLanguage.cardTitlePoint(1),
-                      status = getTagStatus(appealedPenalty),
+                      status = getTagStatus(appealedPenalty, false, 2),
                       penaltyPoint = "",
                       penaltyId = appealedPenalty.penaltyNumber,
                       isReturnSubmitted = true,
@@ -216,7 +216,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq.empty,
                       cardTitle = messagesForLanguage.cardTitlePoint(1),
-                      status = getTagStatus(appealedPenalty),
+                      status = getTagStatus(appealedPenalty, false, 2),
                       penaltyPoint = "",
                       penaltyId = appealedPenalty.penaltyNumber,
                       isReturnSubmitted = true,
@@ -245,7 +245,7 @@ class SummaryCardLSPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     val summaryCardHtml = summaryCard(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq.empty,
                       cardTitle = messagesForLanguage.cardTitlePoint(1),
-                      status = getTagStatus(appealedPenalty),
+                      status = getTagStatus(appealedPenalty, false, 2),
                       penaltyPoint = "",
                       penaltyId = appealedPenalty.penaltyNumber,
                       isReturnSubmitted = true,

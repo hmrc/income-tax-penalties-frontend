@@ -24,6 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.{Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LPPSummaryListRowHelper
 
 trait MockLPPSummaryListRowHelper extends MockFactory {
@@ -34,6 +35,7 @@ trait MockLPPSummaryListRowHelper extends MockFactory {
   val testTaxPeriodRow: SummaryListRow = SummaryListRow(Key(Text("taxPeriod")), Value(Text("dateA to dateB")))
   val testDueDateRow: SummaryListRow = SummaryListRow(Key(Text("dueDate")), Value(Text("date")))
   val testPaymentDateRow: SummaryListRow = SummaryListRow(Key(Text("paymentDate")), Value(Text("date")))
+  val testBreathingSpaceRow: SummaryListRow = SummaryListRow(Key(Text("breathingSpace")), Value(Text("status")))
   val testAppealStatusRow: SummaryListRow = SummaryListRow(Key(Text("appealStatus")), Value(Text("status")))
 
   lazy val mockLPPSummaryListRowHelper: LPPSummaryListRowHelper = mock[LPPSummaryListRowHelper]
@@ -54,8 +56,13 @@ trait MockLPPSummaryListRowHelper extends MockFactory {
       .returning(value)
 
   def mockIncomeTaxPaymentDateRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
-    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails)(_:Messages))
-      .expects(penalty, *)
+    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails)(_:Messages, _:TimeMachine))
+      .expects(penalty, *, *)
+      .returning(value)
+
+  def mockBreathingSpaceStatusRow()(value: SummaryListRow): CallHandler[SummaryListRow] =
+    (mockLPPSummaryListRowHelper.breathingSpaceStatusRow()(_:Messages))
+      .expects(*)
       .returning(value)
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
