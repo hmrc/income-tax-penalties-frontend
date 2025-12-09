@@ -76,7 +76,7 @@
 
 
     <ul class="govuk-list govuk-list--bullet" id="reasonList">
-        @calculationHelper.getBulletListContent(calculationData, individualOrAgent.toString).map { bulletContent =>
+        @calculationHelper.getBulletListContent(calculationData, individualOrAgent.toString, if(calculationData.isPFA) ".pfa" else "").map { bulletContent =>
             <li>@bulletContent</li>
         }
     </ul>
