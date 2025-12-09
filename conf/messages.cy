@@ -76,7 +76,7 @@ caption.date = Blwyddyn dreth {0} i {1}
 calculation.charge.reference = Cyfeirnod y gosb: {0}
 calculation.individual.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
 calculation.individual.paid.penalty.on = Cosb wedi’i thalu ar {0}
-calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {0} oedd {2}.
+calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {1} oedd {2}.
 calculation.individual.payment.15.30.missed.reason.taxUnpaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.agent.payment.15.30.missed.reason.taxUnpaid = Oherwydd bod eich cleient wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arno.
 
@@ -105,9 +105,9 @@ calculation.table.caption.rate = Cyfradd
 calculation.table.caption.amount = Swm
 calculation.table.charge.period = {0} i {1}
 calculation.table.caption.total.penalty = Cyfanswm y gosb
-calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu.
+calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
-calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu.
+calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.agent.penalty.stopEstimateIncreasing = Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.individual.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.agent.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
@@ -131,7 +131,7 @@ calculation.individual.calc2.penalty.increase.tax.unpaid = Bydd swm y gosb yn cy
 calculation.individual.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
 
 calculation.individual.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
-calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu.
+calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.calc2.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 
@@ -235,7 +235,7 @@ lpp.penaltyType.MANUAL = Cosb am dalu’n hwyr – mae’r manylion yn y llythyr
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
 lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
-lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
+lpp.incomeTaxDue.key = Treth Incwm yn ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
 lpp.paymentPlanProposed = Cynllun talu arfaethedig
@@ -248,11 +248,11 @@ lpp.payPenaltyBy.key = Talu cosb erbyn
 appealStatus.key = Statws yr apêl
 appealStatus.A.01 = Apêl ar y gweill
 appealStatus.A.02 = Dan adolygiad
-appealStatus.A.03 = Apêl wedi’i wrthod
+appealStatus.A.03 = Apêl wedi’i gwrthod
 appealStatus.B.01 = Apêl lwyddiannus
 appealStatus.B.02 = Apêl lwyddiannus
 appealStatus.B.03 = Apêl lwyddiannus
-appealStatus.C.01 = Apêl wedi’i wrthod
+appealStatus.C.01 = Apêl wedi’i gwrthod
 appealStatus.C.02 = Penderfyniad wedi’i gadarnhau
 appealStatus.C.03 = Penderfyniad wedi’i gadarnhau
 
