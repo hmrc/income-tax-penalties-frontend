@@ -63,9 +63,9 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             if (isLPP2) {
-              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
+              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, currentUserRequest.penaltyDetails.isInBreathingSpace))
             } else {
-              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent))
+              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, currentUserRequest.penaltyDetails.isInBreathingSpace))
             }
           }
           case None =>
