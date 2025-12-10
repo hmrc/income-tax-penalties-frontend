@@ -169,6 +169,8 @@ calculation.agent.calc2.penalty.payment.plan.agreed.inset = Cytunodd eich cleien
 calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Amcangyfrif yw’r cyfrifiad hwn hyd at yr adeg y cytunodd eich cleient ar ei gynllun talu. Bydd yn parhau i fod yn amcangyfrif nes bod y cynllun talu yn talu’r dyledion treth.
 calculation.agent.calc2.penalty.payment.plan.agreed.p2 = Mae’n rhaid i’ch cleient sicrhau ei fod yn gwneud taliadau mewn pryd. Os na wnaiff hynny, bydd ei gynllun talu’n methu a bydd unrhyw gosbau sydd ar eich cleient yn cael eu cyfrifo o adeg eu dyddiad gwreiddiol.
 
+calculation.individual.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
+calculation.agent.calc.breathing.space = Mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser y mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at ei gyfrifiad.
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
@@ -248,8 +250,6 @@ lsp.compliance.submitted.agent = mae’ch cleient wedi cyflwyno mewn pryd am y {
 lpp.penaltyType.key = Math o gosb
 lpp.penaltyType.LPP1 = Cosb gyntaf am dalu’n hwyr: £{0}
 lpp.penaltyType.LPP2 = Ail gosb am dalu’n hwyr: £{0}
-lpp.penaltyType.LPP1.due = Cosb gyntaf am dalu’n hwyr
-lpp.penaltyType.LPP2.due = Ail gosb am dalu’n hwyr
 lpp.penaltyType.MANUAL = Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr

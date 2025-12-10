@@ -114,7 +114,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
                       index = 1,
-                      cardTitle = messagesForLanguage.penaltyTypeValue(penalty1.penaltyCategory),
+                      cardTitle = messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty1.amountDue)),
                       cardRows = Seq(
                         testTaxPeriodRow,
                         testDueDateRow,

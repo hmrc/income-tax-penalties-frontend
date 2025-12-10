@@ -26,10 +26,11 @@
 @this(
         main: MainTemplate,
         link: Link,
+        govukInsetText : GovukInsetText,
         calculationHelper: FirstLatePaymentCalculationHelper,
 )
 
-@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, inBreathingSpace: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @individualOrAgent = {@if(isAgent){agent}else{individual}}
 
@@ -44,6 +45,12 @@
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.penaltyAmount</p>
 
+    @if(inBreathingSpace){
+        @govukInsetText(InsetText(
+            content = Text(messages(s"calculation.$individualOrAgent.calc.breathing.space")),
+            id = Some("breathingSpaceMessage")
+        ))
+    }
 
     @calculationHelper.getPaymentDetails(calculationData, isAgent).map{msg =>
         <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@msg</p>

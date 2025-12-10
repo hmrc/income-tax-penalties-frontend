@@ -35,15 +35,9 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
           case _ => lppCardBody(lpp, isBreathingSpace)
         }
 
-      val cardTitle = if(lpp.penaltyAmountOutstanding.getOrElse(0) != 0 && lpp.penaltyAmountPaid.getOrElse(0) != 0){
-        messages(s"lpp.penaltyType.${lpp.penaltyCategory}.due")
-      } else {
-        messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(lpp.amountDue))
-      }
-
       LatePaymentPenaltySummaryCard(
         index,
-        cardTitle = cardTitle,
+        cardTitle = messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(lpp.amountDue)),
         cardRows = cardRows,
         status = getTagStatus(lpp, isBreathingSpace),
         penaltyChargeReference = lpp.penaltyChargeReference,

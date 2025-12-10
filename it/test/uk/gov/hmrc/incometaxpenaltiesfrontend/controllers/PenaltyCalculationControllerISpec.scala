@@ -56,6 +56,9 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     val youOrTheyCaps = if(isAgent){"They"}else{"You"}
     val youHaveOrThey = if(isAgent){"They"}else{"You have"}
     val youOrYourClientShould = if(isAgent){"your client should"}else{"please"}
+    val youAreOrYourClientIs = if(isAgent){"Your client is"}else{"You are"}
+    val yourOrTheir = if(isAgent){"their"}else{"your"}
+    val youAreOrYourClientIsSmall = if(isAgent){"your client is"}else{"you are"}
 
     s"GET $firstLPPPath" should {
 
@@ -231,7 +234,29 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
 
           }
+          
+          //scenario 8
+          "is between 15 and 30 days and the tax is unpaid with breathing space" in {
+            stubAuthRequests(isAgent)
+            val firstLPPCalcData = sampleFirstLPPCalcData()
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPageWithBreathingSpace(firstLPPCalcData)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
 
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "First late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("breathingSpaceMessage").text() shouldBe s"$youAreOrYourClientIs in Breathing Space. This penalty is paused and will not increase. The time $youAreOrYourClientIsSmall in Breathing Space will not be added to $yourOrTheir calculation."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline, $youOrThey will be charged a late payment penalty."
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"$youHaveOrThey missed the deadline by 15-30 days, so $youOrThey will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"If $youOrThey miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the tax that is outstanding 30 days after the payment deadline"
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, $youOrYourClientShould pay the outstanding tax immediately or set up a payment plan."
+          }
+>>>>>>> main
         }
       }
 
@@ -339,6 +364,26 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
 
+          }
+
+          //scenario 5
+          "the tax is unpaid and breathing space is true" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData()
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithBreathingSpace(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1001.45"
+            document.getElementById("breathingSpaceMessage").text() shouldBe s"$youAreOrYourClientIs in Breathing Space. This penalty is paused and will not increase. The time $youAreOrYourClientIsSmall in Breathing Space will not be added to $yourOrTheir calculation."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey will be charged a second late payment penalty."
+            document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
+            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, $youOrYourClientShould pay the outstanding tax immediately or set up a payment plan."
           }
         }
       }
