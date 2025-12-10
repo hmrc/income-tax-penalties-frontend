@@ -117,13 +117,13 @@ calculation.table.caption.amount = Amount
 calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
 
-calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
-calculation.individual.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
+calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.individual.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.individual.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 calculation.individual.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
 
-calculation.agent.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
-calculation.agent.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding amount immediately or set up a payment plan.
+calculation.agent.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.agent.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.agent.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
 calculation.agent.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, your client should pay the outstanding amount immediately or set up a payment plan.
 
@@ -152,13 +152,13 @@ calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased 
 calculation.individual.calc2.penalty.due = To avoid interest charges, you should pay this penalty by {0}.
 
 
-calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
-calculation.individual.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding amount immediately or set up a payment plan.
+calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.individual.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.individual.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 
 calculation.agent.calc2.penalty.due = To avoid interest charges, they should pay this penalty by {0}.
-calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
-calculation.agent.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid. To stop this estimated penalty increasing further, your client should pay the outstanding amount immediately or set up a payment plan.
+calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.agent.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.agent.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
 
 

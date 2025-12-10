@@ -59,6 +59,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
                              isEstimate: Boolean = true,
                              isOverdue: Boolean = false,
                              isPaymentPlanAgreed: Boolean = false,
+                             isPFA: Boolean = false,
                              isPaymentPlanProposed: Boolean = false) = {
     val penaltyChargeDueDate = if (isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
 
@@ -85,6 +86,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
           )
         )
       } else None,
+      isPFA = false,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
       paymentPlanProposed = ttpDate(isPaymentPlanProposed)
     )
@@ -115,6 +117,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       chargeStartDate = LocalDate.now(),
       chargeEndDate = LocalDate.now(),
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
+      isPFA = false,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
       paymentPlanProposed = ttpDate(isPaymentPlanProposed)
     )
