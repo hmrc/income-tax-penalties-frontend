@@ -151,6 +151,8 @@ calculation.agent.calc2.penalty.payment.plan.agreed.inset = Your client agreed t
 calculation.agent.calc2.penalty.payment.plan.agreed.p1 = This calculation is an estimate up to when they agreed their payment plan. It will remain an estimate until the payment plan pays off the outstanding tax.
 calculation.agent.calc2.penalty.payment.plan.agreed.p2 = Your client must keep up with payments. If they do not, their payment plan will fail and any penalties owed will be calculated from their original date.
 
+calculation.individual.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
+calculation.agent.calc.breathing.space = Your client is in Breathing Space. This penalty is paused and will not increase. The time your client is in Breathing Space will not be added to their calculation.
 
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
