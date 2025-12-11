@@ -62,7 +62,7 @@ class FirstLatePaymentCalculationHelper {
         messages(s"calculation.$individualOrAgent.payment.15.30.unpaid.missed.reason.bullet.2$isPfa")
       )
       case None => List(
-        messages(s"calculation.$individualOrAgent.payment.15.30.missed.reason.bullet.1", calculationData.llpLRCharge.formattedChargeAmount)
+        messages(s"calculation.$individualOrAgent.payment.15.30.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount)
       )
     }
   }
