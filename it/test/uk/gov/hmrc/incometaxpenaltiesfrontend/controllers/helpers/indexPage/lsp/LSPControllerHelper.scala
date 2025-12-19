@@ -23,21 +23,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp.*
 
 trait LSPControllerHelper extends ControllerISpecHelper {
-
-  val lsp0UserData: Seq[UserDetailsData] = List(
-    AA000000B,
-    AA000000C,
-    AA000040A,
-    AA000041A,
-    AA000042A,
-    AA000050A,
-    AB000000B,
-    AB000000C,
-    AB000040A,
-    AB000041A,
-    AB000042A,
-    AB000050A
-  )
+  
   val lspUsers: Map[String, UserDetailsData] = { 
     Map(
       "AA000000A" -> AA000000A,
