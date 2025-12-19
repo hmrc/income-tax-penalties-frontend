@@ -11,18 +11,38 @@ index.h2 = Manylion y gosb a’r apêl
 # --- Overview Content
 index.overview.h2 = Trosolwg
 individual.index.overview.p1 = Mae gan eich cyfrif y canlynol:
-individual.index.overview.p1.noBullets = Mae gan eich cyfrif y canlynol {0}
 agent.index.overview.p1 = Mae gan gyfrif eich cleient y canlynol:
-agent.index.overview.p1.noBullets = Mae gan gyfrif eich cleient y canlynol {0}
+
 index.overview.unpaidReturnCharges.bullet = taliadau Treth Incwm gorddyledus
 index.overview.unpaidInterest.bullet = llog sydd heb ei dalu
-index.overview.lpp.bullet.penalties.singular = cosb am dalu’n hwyr
-index.overview.lpp.bullet.penalties.plural = cosbau am dalu’n hwyr
-index.overview.lsp.bullet.penalties.singular = cosb am gyflwyno’n hwyr
-index.overview.lsp.bullet.penalties.plural = cosbau am gyflwyno’n hwyr
-index.overview.lsp.bullet.points.singular = 1 pwynt cosb am gyflwyno’n hwyr
-index.overview.lsp.bullet.points.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
-index.overview.lsp.bullet.points.max = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
+index.overview.lpp.penalties.bullet.singular = cosb am dalu’n hwyr
+index.overview.lpp.penalties.bullet.plural = cosbau am dalu’n hwyr
+index.overview.lsp.penalties.bullet.singular = cosb am gyflwyno’n hwyr
+index.overview.lsp.penalties.bullet.plural = cosbau am gyflwyno’n hwyr
+index.overview.lsp.points.bullet.singular = 1 pwynt cosb am gyflwyno’n hwyr
+index.overview.lsp.points.bullet.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
+index.overview.lsp.points.max.bullet = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
+
+individual.index.overview.unpaidReturnCharges = Your account has overdue Income Tax charges(Welsh)
+individual.index.overview.unpaidInterest = Your account has unpaid interest(Welsh)
+individual.index.overview.lpp.penalties.singular = Mae cosb am dalu’n hwyr ar eich cyfrif
+individual.index.overview.lpp.penalties.plural = Mae cosbau am dalu’n hwyr ar eich cyfrif
+individual.index.overview.lsp.penalties.singular= Your account has a late submission penalty(Welsh)
+individual.index.overview.lsp.penalties.plural = Your account has late submission penalties(Welsh)
+individual.index.overview.lsp.points.singular = Mae 1 pwynt cosb am gyflwyno’n hwyr ar eich cyfrif
+individual.index.overview.lsp.points.plural =  Mae {0} o bwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif
+individual.index.overview.lsp.points.max = Mae uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif
+
+agent.index.overview.unpaidReturnCharges = Your client’s account has overdue Income Tax charges(Welsh)
+agent.index.overview.unpaidInterest = Your client’s account has unpaid interest(Welsh)
+agent.index.overview.lpp.penalties.singular = Mae cosb am dalu’n hwyr ar gyfrif eich cleient
+agent.index.overview.lpp.penalties.plural = Your client’s account has late payment penalties(Welsh)
+agent.index.overview.lsp.penalties.singular = Your client’s account has a late submission penalty(Welsh)
+agent.index.overview.lsp.penalties.plural = Your client’s account has late submission penalties(Welsh)
+agent.index.overview.lsp.points.singular = Mae 1 pwynt cosb am gyflwyno’n hwyr ar gyfrif eich cleient
+agent.index.overview.lsp.points.plural = Mae {0} o bwyntiau cosb am gyflwyno’n hwyr ar gyfrif eich cleient
+agent.index.overview.lsp.points.max = Mae uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr ar gyfrif eich cleient
+
 individual.index.overview.checkAmount.button = Gwirio’r symiau a thalu
 agent.index.overview.checkAmount.button = Gwirio’r symiau
 
