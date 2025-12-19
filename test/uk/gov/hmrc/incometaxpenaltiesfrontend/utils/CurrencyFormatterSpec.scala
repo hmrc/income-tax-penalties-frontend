@@ -26,25 +26,35 @@ class CurrencyFormatterSpec extends AnyWordSpec with Matchers {
     "format 0.00 as 0" in {
       CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(0.00) shouldBe "0"
     }
+    "format 0.00 as 0.00" in {
+      CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(0.00) shouldBe "0.00"
+    }
 
     "format 100.00 as 100" in {
       CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(100.00) shouldBe "100"
     }
+    "format 100.00 as 100.00" in {
+      CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(100.00) shouldBe "100.00"
+    }
 
     "format 99.99 as 99.99" in {
       CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(99.99) shouldBe "99.99"
+      CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(99.99) shouldBe "99.99"
     }
 
     "format 9999.99 as 9,999.99" in {
       CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(9999.99) shouldBe "9,999.99"
+      CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(9999.99) shouldBe "9,999.99"
     }
 
     "format 9999.1 as 9,999.10" in {
       CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(9999.1) shouldBe "9,999.10"
+      CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(9999.1) shouldBe "9,999.10"
     }
 
     "format 123456789.1 as 123,456,789.10" in {
       CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(123456789.1) shouldBe "123,456,789.10"
+      CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(123456789.1) shouldBe "123,456,789.10"
     }
   }
 }

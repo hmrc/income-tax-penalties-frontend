@@ -17,7 +17,6 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 
 import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
 object AL300003A extends UserDetailsData {
@@ -27,7 +26,7 @@ object AL300003A extends UserDetailsData {
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Paid")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
@@ -39,7 +38,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Paid")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
@@ -51,7 +50,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
@@ -64,7 +63,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard3ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
@@ -78,7 +77,7 @@ object AL300003A extends UserDetailsData {
 
 
   def penaltyCard4ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
@@ -91,7 +90,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard5ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5

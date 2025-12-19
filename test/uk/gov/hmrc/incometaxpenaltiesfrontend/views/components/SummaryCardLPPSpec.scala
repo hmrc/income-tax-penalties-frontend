@@ -64,7 +64,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                 "generate a Summary Card with a cannot appeal message" in {
                   val penalty = sampleManualLPP
-                  val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                  val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                   val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                     index = 1,
@@ -102,8 +102,8 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       if (!isBreathingSpace) (timeMachine.getCurrentDate _).expects().returning(LocalDate.of(2021, 6, 1)).atLeastOnce()
 
                       val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
-                      val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
-                      val amountOutstanding = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountOutstanding.get)
+                      val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
+                      val amountOutstanding = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountOutstanding.get)
 
                       val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                         index = 1,
@@ -139,7 +139,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     "generate a Summary Card with a Calculation and Check if you can appeal this penalty" in {
 
                       val penalty = sampleUnpaidLPP1
-                      val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                      val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                       val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                         index = 1,
@@ -176,7 +176,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                     "generate a Summary Card with only the calculation link" in {
 
                       val penalty = sampleLPP1AppealPaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
-                      val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                      val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                       val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                         index = 1,
@@ -214,7 +214,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       "generate a Summary Card with a Calculation and a 2nd Stage Review Appeal link" in {
 
                         val penalty = samplePaidLPP1
-                        val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                        val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                         val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                           index = 1,
@@ -260,7 +260,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         "generate a Summary Card with a Calculation WITHOUT a review link" in {
 
                           val penalty = samplePaidLPP1
-                          val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                          val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                           val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                             index = 1,
@@ -295,7 +295,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           "generate a Summary Card with a Calculation with an appeal link" in {
 
                             val penalty = samplePaidLPP1
-                            val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                            val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                             val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                               index = 1,
@@ -330,7 +330,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
 
                             //val penalty = customLPP
-                            val amount = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.penaltyAmountPosted)
+                            val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
 
                             val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                               index = 1,

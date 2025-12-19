@@ -20,6 +20,9 @@ trait CurrencyFormatter {
 
   def parseBigDecimalNoPaddedZeroToFriendlyValue(amount: BigDecimal): String =
     "%,.2f".format(amount).replace(".00", "")
+    
+  def parseBigDecimalTo2DecimalPlaces(amount: BigDecimal): String =
+    "%,.2f".format(amount)
 }
 
 object CurrencyFormatter extends CurrencyFormatter

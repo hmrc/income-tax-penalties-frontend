@@ -173,7 +173,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     ), false, 2)
 
                     tag.classes shouldBe "govuk-tag--red"
-                    tag.content shouldBe Text(messagesForLanguage.amountDue("25"))
+                    tag.content shouldBe Text(messagesForLanguage.amountDue("25.00"))
                   }
                 }
               }
