@@ -30,6 +30,7 @@ object AL300003A extends UserDetailsData {
     validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40")
     validateCardTag(card, expectedTag = "Paid")
     val cardRows = getCardsRows(card)
+    println(cardRows)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")

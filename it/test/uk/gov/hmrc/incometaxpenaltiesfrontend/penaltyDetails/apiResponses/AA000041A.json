@@ -1,0 +1,55 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AA000041A",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lsp" : {
+          "lspSummary" : {
+            "activePenaltyPoints" : 0,
+            "inactivePenaltyPoints" : 0,
+            "regimeThreshold" : 4,
+            "penaltyChargeAmount" : 0
+          },
+          "lspDetails" : [ {
+            "penaltyNumber" : "005000001002",
+            "penaltyCreationDate" : "2027-08-07",
+            "penaltyExpiryDate" : "2029-07-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Inactive",
+            "expiryReason" : "APP",
+            "communicationsDate" : "2027-08-07",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2027-04-06",
+              "taxPeriodEndDate" : "2027-07-05",
+              "taxPeriodDueDate" : "2027-08-07",
+              "returnReceiptDate" : "2027-09-01"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2027-04-06",
+              "taxPeriodEndDate" : "2027-07-05",
+              "taxPeriodDueDate" : "2027-08-07",
+              "returnReceiptDate" : "2027-09-01"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "B",
+              "appealLevel" : "02",
+              "appealDescription" : "some description"
+            }, {
+              "appealStatus" : "C",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ]
+          } ]
+        }
+      }
+    }
+  }
+}
