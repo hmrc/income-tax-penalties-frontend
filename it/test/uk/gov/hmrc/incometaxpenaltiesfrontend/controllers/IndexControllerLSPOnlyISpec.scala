@@ -34,12 +34,11 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
     super.beforeEach()
     disable(UseStubForBackend)
   }
-
-  lspUsers.foreach { case (nino, userdetails) =>
-
-    "GET /view-penalty/self-assessment" when {
-      "the call to penalties backend returns data" should {
-        "render the expected penalty cards" when {
+  
+  "GET /view-penalty/self-assessment" when {
+    "the call to penalties backend returns data" should {
+      "render the expected penalty cards" when {
+        lspUsers.foreach { case (nino, userdetails) =>
           s"the user with nino $nino is an authorised individual" in {
             stubAuthRequests(false, nino)
             stubGetPenalties(nino, None)(OK, userdetails.getApiResponseJson(nino))

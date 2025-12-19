@@ -24,9 +24,24 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp.*
 
 trait LSPControllerHelper extends ControllerISpecHelper {
   
-  val lspUsers: Map[String, UserDetailsData] = Map(
-    "AA500000A" -> AA500000A
-  )
+  val lspUsers: Map[String, UserDetailsData] = { 
+    Map(
+      "AA000000A" -> AA000000A,
+      "AA000000B" -> AA000000B,
+      "AA000000C" -> AA000000C,
+      "AA000040A" -> AA000040A,
+      "AA000041A" -> AA000041A,
+      "AA000042A" -> AA000042A,
+      "AA000050A" -> AA000050A,
+      "AB000000B" -> AB000000B,
+      "AB000000C" -> AB000000C,
+      "AB000040A" -> AB000040A,
+      "AB000041A" -> AB000041A,
+      "AB000042A" -> AB000042A,
+      "AB000050A" -> AB000050A,
+      "AA500000A" -> AA500000A
+    )
+  }
 
   def validatePenaltyOverview(document: Document, expectedOverview: String, isAgent: Boolean = false) = {
     val overview = document.getElementById("penaltiesOverview")
@@ -48,7 +63,13 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   }
 
   def expectedLSPTabBody(userDetailsData: UserDetailsData, isAgent: Boolean = false): String = {
-    if(userDetailsData.hasFinanicalLSP) {
+    if (userDetailsData.numberOfLSPPenalties == 0) {
+      if (isAgent) {
+        "Your client has no active late submission penalties."
+      } else {
+        "You don’t have any active late submission penalties."
+      }
+    } else if(userDetailsData.hasFinanicalLSP) {
       if(isAgent) {
         "They will get another £200 penalty every time they send a late submission in the future, until their points are removed." +
           " They should send any missing submissions as soon as possible if they haven’t already."
