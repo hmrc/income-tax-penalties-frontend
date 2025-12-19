@@ -277,7 +277,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"$yourOrThe tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was 6 December 2025."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline, $youOrThey have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"$youOrTheyCaps missed the deadline by 15-30 days, so $youOrThey have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£99.99)"
@@ -303,7 +303,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"$yourOrThe tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was 16 December 2025."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "2% of £99.99 (the amount that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 2% of £99.99 (the amount that was outstanding 30 days after the payment deadline)"
