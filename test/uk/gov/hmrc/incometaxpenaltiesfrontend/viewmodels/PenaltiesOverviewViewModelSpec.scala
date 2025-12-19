@@ -46,7 +46,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
             "return a PenaltiesOverviewViewModel with no content" in {
               PenaltiesOverviewViewModel(emptyPenaltyDetailsModel) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq.empty,
+                  overviewItems = Seq.empty,
                   hasFinancialCharge = false
                 )
             }
@@ -69,7 +69,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 latePaymentPenalty = None
               )) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(
+                  overviewItems = Seq(
                     messagesForLanguage.overviewOverdueTaxCharge,
                     messagesForLanguage.overviewInterest
                   ),
@@ -83,7 +83,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
             "return a PenaltiesOverviewViewModel with 1 penalty point content" in {
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(latePaymentPenalty = None)) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLSPPoints(1)),
+                  overviewItems = Seq(messagesForLanguage.overviewLSPPoints(1)),
                   hasFinancialCharge = false
                 )
             }
@@ -109,7 +109,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               PenaltiesOverviewViewModel(penaltyDetails) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLSPPoints(2)),
+                  overviewItems = Seq(messagesForLanguage.overviewLSPPoints(2)),
                   hasFinancialCharge = false
                 )
             }
@@ -138,7 +138,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               PenaltiesOverviewViewModel(penaltyDetails) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLSPPoints(2)),
+                  overviewItems = Seq(messagesForLanguage.overviewLSPPoints(2)),
                   hasFinancialCharge = false
                 )
             }
@@ -167,7 +167,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               PenaltiesOverviewViewModel(penaltyDetails) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLSPPoints(2)),
+                  overviewItems = Seq(messagesForLanguage.overviewLSPPoints(2)),
                   hasFinancialCharge = false
                 )
             }
@@ -196,7 +196,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               PenaltiesOverviewViewModel(penaltyDetails) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(
+                  overviewItems = Seq(
                     messagesForLanguage.overviewLSPFinancial(1),
                     messagesForLanguage.overviewLSPPointsMax
                   ),
@@ -229,7 +229,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               PenaltiesOverviewViewModel(penaltyDetails) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(
+                  overviewItems = Seq(
                     messagesForLanguage.overviewLSPFinancial(2),
                     messagesForLanguage.overviewLSPPointsMax
                   ),
@@ -243,7 +243,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
             "return a PenaltiesOverviewViewModel with 1 LPP content AND hasFinancialCharge=true" in {
               PenaltiesOverviewViewModel(samplePenaltyDetailsModel.copy(lateSubmissionPenalty = None)) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLPP(1)),
+                  overviewItems = Seq(messagesForLanguage.overviewLPP(1)),
                   hasFinancialCharge = true
                 )
             }
@@ -262,7 +262,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLPP(2)),
+                  overviewItems = Seq(messagesForLanguage.overviewLPP(2)),
                   hasFinancialCharge = true
                 )
             }
@@ -281,7 +281,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 ))
               )) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLPP(1)),
+                  overviewItems = Seq(messagesForLanguage.overviewLPP(1)),
                   hasFinancialCharge = true
                 )
             }
@@ -300,7 +300,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(messagesForLanguage.overviewLPP(1)),
+                  overviewItems = Seq(messagesForLanguage.overviewLPP(1)),
                   hasFinancialCharge = true
                 )
             }
@@ -319,7 +319,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(),
+                  overviewItems = Seq(),
                   hasFinancialCharge = false
                 )
             }
@@ -359,7 +359,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 )))
               )) shouldBe
                 PenaltiesOverviewViewModel(
-                  content = Seq(
+                  overviewItems = Seq(
                     messagesForLanguage.overviewOverdueTaxCharge,
                     messagesForLanguage.overviewInterest,
                     messagesForLanguage.overviewLPP(2),
