@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.Configuration
-import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend, UseStubForMessageFrontend}
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -53,7 +53,7 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
     else s"${servicesConfig.baseUrl("penalties")}/penalties"
 
   def messagesFrontendBaseUrl: String =
-    if (isEnabled(UseStubForBackend)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
+    if (isEnabled(UseStubForMessageFrontend)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
     else servicesConfig.baseUrl("message-frontend")
 
   def btaBaseUrl: String = servicesConfig.baseUrl("business-tax-account")
