@@ -38,14 +38,27 @@ object IndexViewMessages {
       case 1 => "1 late submission penalty point"
       case n => s"$n late submission penalty points"
     }
+
+    val overviewLSPPointsNoBullets: Int => String = {
+      case 1 => "Your account has 1 late submission penalty point"
+      case n => s"Your account has $n late submission penalty points"
+    }
+
     val overviewLSPFinancial: Int => String = {
       case 1 => "a late submission penalty"
       case _ => "late submission penalties"
     }
+
     val overviewLPP: Int => String = {
       case 1 => "a late payment penalty"
       case _ => s"late payment penalties"
     }
+
+    val overviewLPPNoBullets: Int => String = {
+      case 1 => "Your account has a late payment penalty"
+      case _ => s"Your account has late payment penalties"
+    }
+
     val overviewLSPPointsMax: String = "the maximum number of late submission penalty points"
     val overviewOverdueTaxCharge: String = "overdue Income Tax charges"
     val overviewInterest: String = "unpaid interest"
@@ -77,14 +90,27 @@ object IndexViewMessages {
       case 1 => "1 pwynt cosb am gyflwyno’n hwyr"
       case n => s"$n o bwyntiau cosb am gyflwyno’n hwyr"
     }
+
+    override val overviewLSPPointsNoBullets: Int => String = {
+      case 1 => "Mae 1 pwynt cosb am gyflwyno’n hwyr ar eich cyfrif"
+      case n => s"Mae $n o bwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif"
+    }
+
     override val overviewLSPFinancial: Int => String = {
       case 1 => "cosb am gyflwyno’n hwyr"
       case _ => "cosbau am gyflwyno’n hwyr"
     }
+
     override val overviewLPP: Int => String = {
       case 1 => "cosb am dalu’n hwyr"
       case _ => "cosbau am dalu’n hwyr"
     }
+
+    override val overviewLPPNoBullets: Int => String = {
+      case 1 => "Mae cosb am dalu’n hwyr ar eich cyfrif"
+      case _ => "Mae cosbau am dalu’n hwyr ar eich cyfrif"
+    }
+
     override val overviewLSPPointsMax: String = "uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr"
     override val overviewOverdueTaxCharge: String = "taliadau Treth Incwm gorddyledus"
     override val overviewInterest: String = "llog sydd heb ei dalu"
