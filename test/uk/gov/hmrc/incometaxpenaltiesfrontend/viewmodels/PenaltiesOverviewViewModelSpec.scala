@@ -78,10 +78,49 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               result.hasFinancialCharge shouldBe true
             }
+
+            "there is one ACTIVE LSP Point" should {
+
+              "return a PenaltiesOverviewViewModel with 1 penalty point content" in {
+                val penaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = None)
+                val result = PenaltiesOverviewViewModel(penaltyDetails)
+
+                result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 1), 1)) shouldBe Seq(
+                  messagesForLanguage.overviewLSPPointsNoBullets(1)
+                )
+                result.hasFinancialCharge shouldBe false
+              }
+            }
+
+            "there are two ACTIVE LSP Points" should {
+
+              "return a PenaltiesOverviewViewModel with 2 penalty point content" in {
+
+                val penaltyDetails = samplePenaltyDetailsModel
+                  .copy(
+                    latePaymentPenalty = None,
+                    lateSubmissionPenalty = samplePenaltyDetailsModel.lateSubmissionPenalty.map(_.copy(
+                      summary = samplePenaltyDetailsModel.lateSubmissionPenalty.get.summary.copy(
+                        activePenaltyPoints = 2
+                      ),
+                      details = Seq(
+                        sampleLateSubmissionPoint,
+                        sampleLateSubmissionPoint
+                      )
+                    ))
+                  )
+                val result = PenaltiesOverviewViewModel(penaltyDetails)
+                result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 2), 2)) shouldBe Seq(
+                  messagesForLanguage.overviewLSPPointsNoBullets(2)
+                )
+                result.hasFinancialCharge shouldBe false
+                
+              }
+            }
           }
 
-          "there are two ACTIVE LSP Points, one INACTIVE and one appealed" should {
-
+          "there are two ACTIVE LSPs, one INACTIVE and one appealed" should {
+            
             "return a PenaltiesOverviewViewModel with 2 penalty point content" in {
 
               val penaltyDetails = samplePenaltyDetailsModel
@@ -109,6 +148,38 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               result.hasFinancialCharge shouldBe false
 
+            }
+          }
+
+          "there are two ACTIVE LSP Points, one INACTIVE and one appealed" should {
+
+            "return a PenaltiesOverviewViewModel with 2 penalty point content" in {
+
+              val penaltyDetails = samplePenaltyDetailsModel
+                .copy(
+                  latePaymentPenalty = None,
+                  lateSubmissionPenalty = samplePenaltyDetailsModel.lateSubmissionPenalty.map(_.copy(
+                    summary = samplePenaltyDetailsModel.lateSubmissionPenalty.get.summary.copy(
+                      activePenaltyPoints = 2,
+                      inactivePenaltyPoints = 2
+                    ),
+                    details = Seq(
+                      sampleLateSubmissionPoint,
+                      sampleLateSubmissionPoint.copy(penaltyStatus = LSPPenaltyStatusEnum.Inactive),
+                      sampleLateSubmissionPoint,
+                      samplePenaltyPointAppeal(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
+                    )
+                  ))
+                )
+              
+              val result = PenaltiesOverviewViewModel(penaltyDetails)
+
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 2), 2)) shouldBe Seq(
+                messagesForLanguage.overviewLSPPointsNoBullets(2)
+              )
+
+              result.hasFinancialCharge shouldBe false
+              
             }
           }
 
