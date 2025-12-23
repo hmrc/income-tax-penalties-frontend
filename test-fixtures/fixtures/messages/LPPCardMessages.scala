@@ -72,7 +72,7 @@ object LPPCardMessages {
     override val incomeTaxPeriodKey = "Taliad sy’n hwyr"
     override def overdueChargeValue(fromYear: String, toYear: String) = s"Treth Incwm ar gyfer blwyddyn dreth $fromYear i $toYear"
     override val addedOnKey = "Ychwanegwyd ar"
-    override val incomeTaxDueKey = "Treth Incwm sy’n ddyledus"
+    override val incomeTaxDueKey = "Treth Incwm yn ddyledus"
     override val incomeTaxPaidKey = "Treth Incwm wedi’i thalu"
     override val paymentNotReceived = "Nid yw’r taliad wedi dod i law hyd yn hyn"
     override val paymentPlanProposed = "Cynllun talu arfaethedig"
