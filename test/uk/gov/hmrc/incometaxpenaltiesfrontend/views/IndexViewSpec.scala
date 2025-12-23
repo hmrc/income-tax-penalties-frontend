@@ -95,7 +95,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
               )
-              
+
               implicit lazy val document: Document = asDocument(html)
 
               "render the correct content for the Overview section (no check and pay button)" which {
