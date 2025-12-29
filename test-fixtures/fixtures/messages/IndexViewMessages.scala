@@ -39,9 +39,11 @@ object IndexViewMessages {
       case n => s"$n late submission penalty points"
     }
 
-    val overviewLSPPointsNoBullets: Int => String = {
-      case 1 => "Your account has 1 late submission penalty point"
-      case n => s"Your account has $n late submission penalty points"
+    def overviewLSPPointsNoBullets(num: Int, isAgent: Boolean = false): String = {
+      num match {
+        case 1 => if (isAgent) "Your client’s account has 1 late submission penalty point" else "Your account has 1 late submission penalty point"
+        case n => if (isAgent) s"Your client’s account has $n late submission penalty points" else s"Your account has $n late submission penalty points"
+      }
     }
 
     val overviewLSPFinancial: Int => String = {
@@ -91,9 +93,11 @@ object IndexViewMessages {
       case n => s"$n o bwyntiau cosb am gyflwyno’n hwyr"
     }
 
-    override val overviewLSPPointsNoBullets: Int => String = {
-      case 1 => "Mae 1 pwynt cosb am gyflwyno’n hwyr ar eich cyfrif"
-      case n => s"Mae $n o bwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif"
+    override def overviewLSPPointsNoBullets(num: Int, isAgent: Boolean = false): String = {
+      num match {
+        case 1 => if (isAgent) "Mae 1 pwynt cosb am gyflwyno’n hwyr ar gyfrif eich cleient" else "Mae 1 pwynt cosb am gyflwyno’n hwyr ar eich cyfrif"
+        case n => if (isAgent) s"Mae $n o bwyntiau cosb am gyflwyno’n hwyr ar gyfrif eich cleient" else s"Mae $n o bwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif"
+      }
     }
 
     override val overviewLSPFinancial: Int => String = {
