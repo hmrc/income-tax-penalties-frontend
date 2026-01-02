@@ -28,16 +28,16 @@
 
 @(penaltiesOverviewViewModel: PenaltiesOverviewViewModel, isAgent: Boolean)(implicit messages: Messages)
 
-@if(penaltiesOverviewViewModel.content.nonEmpty) {
-    @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
-        <div id="penaltiesOverview">
+@if(penaltiesOverviewViewModel.overviewItems.nonEmpty) {
+        @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
+            <div id="penaltiesOverview">
             @h2(msg = "index.overview.h2", elmId = "overviewHeading")
 
-            @if(penaltiesOverviewViewModel.content.size > 1) {
+            @if(penaltiesOverviewViewModel.overviewItems.size > 1) {
                 @p(s"$individualOrAgent.index.overview.p1")
-                @list(penaltiesOverviewViewModel.content)
+                @list(penaltiesOverviewViewModel.content(isAgent))
             } else {
-                @p(messages(s"$individualOrAgent.index.overview.p1.noBullets", penaltiesOverviewViewModel.content.head))
+                @p(messages(penaltiesOverviewViewModel.content(isAgent)))
             }
 
             @if(penaltiesOverviewViewModel.hasFinancialCharge) {

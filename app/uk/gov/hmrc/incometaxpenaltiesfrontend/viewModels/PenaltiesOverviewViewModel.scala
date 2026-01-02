@@ -20,34 +20,111 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
 
-case class PenaltiesOverviewViewModel(content: Seq[String], hasFinancialCharge: Boolean)
+
+sealed trait PenaltiesOverviewItem {
+  val name: String
+
+  def messageKey(hasBullets: Boolean, isAgent: Boolean): String = {
+
+    val key = s"index.overview.$name"
+
+    if (hasBullets) s"$key.bullet"
+    else if (isAgent) s"agent.$key"
+
+    else s"individual.$key"
+  }
+
+  def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String
+}
+
+object UnpaidReturnCharges0verviewItem extends PenaltiesOverviewItem {
+  override val name: String = "unpaidReturnCharges"
+
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+    messages(messageKey(hasMultipleBullets, isAgent))
+  }
+}
+
+object UnpaidInterestItem extends PenaltiesOverviewItem {
+  override val name: String = "unpaidInterest"
+
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+    messages(messageKey(hasMultipleBullets, isAgent))
+  }
+}
+
+case class LPPNotPaidOrAppealed(count: Int) extends PenaltiesOverviewItem {
+  override val name: String = "lpp.penalties"
+
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+    messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
+  }
+}
+
+case class LSPNotPaidOrAppealed(count: Int) extends PenaltiesOverviewItem {
+  override val name: String = "lsp.penalties"
+
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+    messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
+  }
+}
+
+case class LSPPointsActive(count: Int) extends PenaltiesOverviewItem {
+  override val name: String = "lsp.points"
+
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+    messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
+  }
+}
+
+object LSPMaxItem extends PenaltiesOverviewItem {
+  override val name: String = "lsp.points.max"
+
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+    messages(messageKey(hasMultipleBullets, isAgent))
+  }
+}
+
+case class PenaltiesOverviewViewModel(overviewItems: Seq[PenaltiesOverviewItem], hasFinancialCharge: Boolean) {
+
+  def content(isAgent: Boolean)(implicit messages: Messages): Seq[String] = {
+    if (overviewItems.size > 1) {
+      overviewItems.map(_.content(hasMultipleBullets = true, isAgent))
+    } else {
+      overviewItems.map(_.content(hasMultipleBullets = false, isAgent))
+    }
+  }
+}
 
 object PenaltiesOverviewViewModel {
 
   def apply(penaltyDetails: PenaltyDetails)(implicit messages: Messages): PenaltiesOverviewViewModel = {
     import penaltyDetails._
+
+    val whatOverviewDetails = Seq(
+
+      Option.when(unpaidIncomeTax > 0)(
+        UnpaidReturnCharges0verviewItem
+      ),
+      Option.when(totalInterest > 0)(
+        UnpaidInterestItem
+      ),
+      Option.when(countLPPNotPaidOrAppealed > 0)(
+        LPPNotPaidOrAppealed(countLPPNotPaidOrAppealed)
+      ),
+      Option.when(countLSPNotPaidOrAppealed > 0)(
+        LSPNotPaidOrAppealed(countLSPNotPaidOrAppealed)
+      ),
+      Option.when(lspPointsActive > 0)(
+        if (lspPointsActive < lspThreshold) {
+          LSPPointsActive(lspPointsActive)
+        } else {
+          LSPMaxItem
+        }
+      )
+    ).flatten
     PenaltiesOverviewViewModel(
-      content = Seq(
-        Option.when(unpaidIncomeTax > 0)(
-          messages("index.overview.unpaidReturnCharges.bullet")
-        ),
-        Option.when(totalInterest > 0)(
-          messages("index.overview.unpaidInterest.bullet")
-        ),
-        Option.when(countLPPNotPaidOrAppealed > 0)(
-          messages(pluralOrSingular("index.overview.lpp.bullet.penalties", countLPPNotPaidOrAppealed), countLPPNotPaidOrAppealed)
-        ),
-        Option.when(countLSPNotPaidOrAppealed > 0)(
-          messages(pluralOrSingular("index.overview.lsp.bullet.penalties", countLSPNotPaidOrAppealed), countLSPNotPaidOrAppealed)
-        ),
-        Option.when(lspPointsActive > 0)(
-          if(lspPointsActive < lspThreshold) {
-            messages(pluralOrSingular("index.overview.lsp.bullet.points", lspPointsActive), lspPointsActive)
-          } else {
-            messages("index.overview.lsp.bullet.points.max")
-          }
-        )
-      ).flatten,
+      overviewItems = whatOverviewDetails,
       hasFinancialCharge = hasFinancialChargeToPay
     )
   }

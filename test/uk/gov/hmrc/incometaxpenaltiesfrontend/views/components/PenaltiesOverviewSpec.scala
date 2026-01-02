@@ -24,7 +24,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewBehaviours
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.PenaltiesOverview
 
@@ -46,7 +46,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
 
     Seq(true, false).foreach { isAgent =>
 
-      s"the user type is an ${if(isAgent) "agent" else "individual"}" when {
+      s"the user type is an ${if (isAgent) "agent" else "individual"}" when {
 
         Seq(IndexViewMessages.English, IndexViewMessages.Welsh).foreach { messagesForLanguage =>
 
@@ -59,7 +59,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
               "output a paragraph without bullet points AND no check and pay button" which {
 
                 val penaltiesOverviewHtml = penaltiesOverview(
-                  PenaltiesOverviewViewModel(Seq(messagesForLanguage.overviewLSPPoints(1)), hasFinancialCharge = false),
+                  PenaltiesOverviewViewModel(Seq(LSPPointsActive(1)), hasFinancialCharge = false),
                   isAgent
                 )
 
@@ -67,7 +67,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewP1NoBullets(isAgent)(messagesForLanguage.overviewLSPPoints(1))
+                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1, isAgent)
                 )
 
                 behave like pageWithoutElementsRendered(
@@ -83,8 +83,8 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
                 val penaltiesOverviewHtml = penaltiesOverview(
                   PenaltiesOverviewViewModel(
                     Seq(
-                      messagesForLanguage.overviewLSPPoints(1),
-                      messagesForLanguage.overviewLPP(1)
+                      LSPPointsActive(1),
+                      LPPNotPaidOrAppealed(1)
                     ),
                     hasFinancialCharge = true
                   ),
