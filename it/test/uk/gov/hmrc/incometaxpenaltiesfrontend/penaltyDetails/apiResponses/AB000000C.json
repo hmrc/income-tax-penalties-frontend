@@ -1,0 +1,38 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AB000000C",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lsp" : {
+          "lspSummary" : {
+            "activePenaltyPoints" : 0,
+            "inactivePenaltyPoints" : 0,
+            "regimeThreshold" : 4,
+            "penaltyChargeAmount" : 0
+          },
+          "lspDetails" : [ {
+            "penaltyNumber" : "005000001093",
+            "penaltyCreationDate" : "2026-01-31",
+            "penaltyExpiryDate" : "2027-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Inactive",
+            "expiryReason" : "NAT",
+            "communicationsDate" : "2026-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2024-04-06",
+              "taxPeriodEndDate" : "2025-04-05",
+              "taxPeriodDueDate" : "2026-01-31",
+              "returnReceiptDate" : "2026-02-22"
+            } ]
+          } ]
+        }
+      }
+    }
+  }
+}
