@@ -73,7 +73,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     paymentPlanProposed = lppDetails.ttpProposalDate
   )
 
-  val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
+  val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
 
 }
 
@@ -115,7 +115,7 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     paymentPlanProposed = lppDetails.ttpProposalDate
   )
 
-  val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penaltyAmount)
-  val formattedAmountPenaltyAppliedTo: String = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(amountPenaltyAppliedTo)
+  val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
+  val formattedAmountPenaltyAppliedTo: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(amountPenaltyAppliedTo)
 
 }

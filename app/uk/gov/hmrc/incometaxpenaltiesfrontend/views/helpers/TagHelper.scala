@@ -74,11 +74,11 @@ trait TagHelper {
       case (outstanding, _, _) if outstanding == 0 =>
         Tag(Text(messages("status.paid")), "govuk-tag--green")
       case (outstanding, paid, dueDate) if outstanding != 0 && paid > 0 && dueDate.exists(payBy => timeMachine.getCurrentDate().isAfter(payBy)) =>
-        Tag(Text(messages("status.amountOverdue", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(outstanding))), "govuk-tag--red")
+        Tag(Text(messages("status.amountOverdue", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(outstanding))), "govuk-tag--red")
       case (outstanding, _, dueDate) if outstanding != 0 && dueDate.exists(payBy => timeMachine.getCurrentDate().isAfter(payBy)) =>
         Tag(Text(messages("status.overdue")), "govuk-tag--red")
       case (outstanding, paid, dueDate) if paid > 0 && dueDate.forall(payBy => !timeMachine.getCurrentDate().isAfter(payBy)) =>
-        Tag(Text(messages("status.amountDue", CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(outstanding))), "govuk-tag--red")
+        Tag(Text(messages("status.amountDue", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(outstanding))), "govuk-tag--red")
       case _ =>
         Tag(Text(messages("status.due")), "govuk-tag--red")
     }
