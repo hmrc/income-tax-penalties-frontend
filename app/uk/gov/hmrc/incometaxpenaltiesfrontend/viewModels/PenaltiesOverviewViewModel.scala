@@ -44,6 +44,7 @@ final case class SimpleOverviewItem(override val name: String) extends Penalties
 
 val UnpaidReturnChargesOverviewItem: PenaltiesOverviewItem = SimpleOverviewItem("unpaidReturnCharges")
 val UnpaidInterestItem: PenaltiesOverviewItem = SimpleOverviewItem("unpaidInterest")
+val LSPMaxItem: PenaltiesOverviewItem = SimpleOverviewItem("lsp.points.max")
 
 
 abstract class CountOverviewItem(override val name: String, count: Int) extends PenaltiesOverviewItem {
@@ -56,14 +57,6 @@ case class LPPNotPaidOrAppealed(count: Int) extends CountOverviewItem("lpp.penal
 case class LSPNotPaidOrAppealed(count: Int) extends CountOverviewItem("lsp.penalties", count)
 
 case class LSPPointsActive(count: Int) extends CountOverviewItem("lsp.points", count)
-
-object LSPMaxItem extends PenaltiesOverviewItem {
-  override val name: String = "lsp.points.max"
-
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
-    messages(messageKey(hasMultipleBullets, isAgent))
-  }
-}
 
 case class PenaltiesOverviewViewModel(overviewItems: Seq[PenaltiesOverviewItem], hasFinancialCharge: Boolean) {
 
