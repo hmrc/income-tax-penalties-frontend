@@ -24,11 +24,11 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.{Lang, MessagesApi}
+import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 
 import java.time.LocalDate
@@ -55,10 +55,10 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
     Seq(
       IndexViewMessages.English -> LSPOverviewMessages.English,
-      IndexViewMessages.Welsh  -> LSPOverviewMessages.Welsh
+      IndexViewMessages.Welsh -> LSPOverviewMessages.Welsh
     ).foreach { case (messagesForLanguage, lspMessages) =>
 
-      implicit val msgs = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
+      implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
 
       s"rendering in the language '${messagesForLanguage.lang.name}'" when {
 
@@ -81,7 +81,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.lspTab -> (if (isAgent) messagesForLanguage.noLSPAgent else messagesForLanguage.noLSP),
                 Selectors.lppTab -> (if
-                (isAgent)messagesForLanguage.noLPPAgent else messagesForLanguage.noLPPIndividual)
+                (isAgent) messagesForLanguage.noLPPAgent else messagesForLanguage.noLPPIndividual)
               )
             }
 
@@ -91,17 +91,18 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = Some(LSPOverviewViewModel(lateSubmissionPenalty)),
                 lspCardData = Seq(),
                 lppCardData = Seq(),
-                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(messagesForLanguage.overviewLSPPoints(1)), hasFinancialCharge = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LSPPointsActive(1)), hasFinancialCharge = false),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
               )
+
               implicit lazy val document: Document = asDocument(html)
 
               "render the correct content for the Overview section (no check and pay button)" which {
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewP1NoBullets(isAgent)(messagesForLanguage.overviewLSPPoints(1)),
+                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1, isAgent),
                   concat(Selectors.lspTab, Selectors.p(1)) -> lspMessages.pointsTotal(1),
                   concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.pointsAccruingP1(isAgent)(1),
                   concat(Selectors.lspTab, Selectors.p(3)) -> lspMessages.pointsAccruingP2(isAgent),
@@ -127,8 +128,8 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspCardData = Seq(),
                 lppCardData = Seq(),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(
-                  messagesForLanguage.overviewLSPFinancial(1),
-                  messagesForLanguage.overviewLSPPointsMax
+                  LSPNotPaidOrAppealed(1),
+                  LSPMaxItem
                 ), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
