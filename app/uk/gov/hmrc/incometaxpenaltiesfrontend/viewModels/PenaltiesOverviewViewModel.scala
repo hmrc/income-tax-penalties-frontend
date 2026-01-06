@@ -37,45 +37,25 @@ sealed trait PenaltiesOverviewItem {
   def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String
 }
 
-object UnpaidReturnCharges0verviewItem extends PenaltiesOverviewItem {
-  override val name: String = "unpaidReturnCharges"
-
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+final case class SimpleOverviewItem(override val name: String) extends PenaltiesOverviewItem {
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String =
     messages(messageKey(hasMultipleBullets, isAgent))
-  }
 }
 
-object UnpaidInterestItem extends PenaltiesOverviewItem {
-  override val name: String = "unpaidInterest"
+val UnpaidReturnChargesOverviewItem: PenaltiesOverviewItem = SimpleOverviewItem("unpaidReturnCharges")
+val UnpaidInterestItem: PenaltiesOverviewItem = SimpleOverviewItem("unpaidInterest")
 
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
-    messages(messageKey(hasMultipleBullets, isAgent))
-  }
-}
 
-case class LPPNotPaidOrAppealed(count: Int) extends PenaltiesOverviewItem {
-  override val name: String = "lpp.penalties"
-
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
+abstract class CountOverviewItem(override val name: String, count: Int) extends PenaltiesOverviewItem {
+  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String =
     messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
-  }
 }
 
-case class LSPNotPaidOrAppealed(count: Int) extends PenaltiesOverviewItem {
-  override val name: String = "lsp.penalties"
+case class LPPNotPaidOrAppealed(count: Int) extends CountOverviewItem("lpp.penalties", count)
 
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
-    messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
-  }
-}
+case class LSPNotPaidOrAppealed(count: Int) extends CountOverviewItem("lsp.penalties", count)
 
-case class LSPPointsActive(count: Int) extends PenaltiesOverviewItem {
-  override val name: String = "lsp.points"
-
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String = {
-    messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
-  }
-}
+case class LSPPointsActive(count: Int) extends CountOverviewItem("lsp.points", count)
 
 object LSPMaxItem extends PenaltiesOverviewItem {
   override val name: String = "lsp.points.max"
@@ -99,12 +79,12 @@ case class PenaltiesOverviewViewModel(overviewItems: Seq[PenaltiesOverviewItem],
 object PenaltiesOverviewViewModel {
 
   def apply(penaltyDetails: PenaltyDetails)(implicit messages: Messages): PenaltiesOverviewViewModel = {
-    import penaltyDetails._
+    import penaltyDetails.*
 
     val whatOverviewDetails = Seq(
 
       Option.when(unpaidIncomeTax > 0)(
-        UnpaidReturnCharges0verviewItem
+        UnpaidReturnChargesOverviewItem
       ),
       Option.when(totalInterest > 0)(
         UnpaidInterestItem
