@@ -1,0 +1,99 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AB000050A",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lsp" : {
+          "lspSummary" : {
+            "activePenaltyPoints" : 0,
+            "inactivePenaltyPoints" : 3,
+            "regimeThreshold" : 2,
+            "penaltyChargeAmount" : 0,
+            "pocAchievementDate" : "2029-01-31"
+          },
+          "lspDetails" : [ {
+            "penaltyNumber" : "005000001013",
+            "penaltyCreationDate" : "2028-01-31",
+            "penaltyExpiryDate" : "2029-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Inactive",
+            "expiryReason" : "NAT",
+            "communicationsDate" : "2028-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2026-04-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2028-01-31",
+              "returnReceiptDate" : "2028-02-23"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2026-04-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2028-01-31",
+              "returnReceiptDate" : "2028-02-23"
+            } ]
+          }, {
+            "penaltyNumber" : "005000001014",
+            "penaltyCreationDate" : "2027-01-31",
+            "penaltyExpiryDate" : "2028-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Inactive",
+            "expiryReason" : "NAT",
+            "communicationsDate" : "2027-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2025-04-06",
+              "taxPeriodEndDate" : "2026-04-05",
+              "taxPeriodDueDate" : "2027-01-31",
+              "returnReceiptDate" : "2027-02-22"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2025-04-06",
+              "taxPeriodEndDate" : "2026-04-05",
+              "taxPeriodDueDate" : "2027-01-31",
+              "returnReceiptDate" : "2027-02-22"
+            } ]
+          }, {
+            "penaltyNumber" : "005000001064",
+            "penaltyCreationDate" : "2026-01-31",
+            "penaltyExpiryDate" : "2027-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Inactive",
+            "expiryReason" : "NAT",
+            "communicationsDate" : "2026-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2024-04-06",
+              "taxPeriodEndDate" : "2025-04-05",
+              "taxPeriodDueDate" : "2026-01-31",
+              "returnReceiptDate" : "2026-02-22"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2024-04-06",
+              "taxPeriodEndDate" : "2025-04-05",
+              "taxPeriodDueDate" : "2026-01-31",
+              "returnReceiptDate" : "2026-02-22"
+            } ]
+          } ]
+        }
+      }
+    }
+  }
+}

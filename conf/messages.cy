@@ -11,18 +11,38 @@ index.h2 = Manylion y gosb a’r apêl
 # --- Overview Content
 index.overview.h2 = Trosolwg
 individual.index.overview.p1 = Mae gan eich cyfrif y canlynol:
-individual.index.overview.p1.noBullets = Mae gan eich cyfrif y canlynol {0}
 agent.index.overview.p1 = Mae gan gyfrif eich cleient y canlynol:
-agent.index.overview.p1.noBullets = Mae gan gyfrif eich cleient y canlynol {0}
+
 index.overview.unpaidReturnCharges.bullet = taliadau Treth Incwm gorddyledus
 index.overview.unpaidInterest.bullet = llog sydd heb ei dalu
-index.overview.lpp.bullet.penalties.singular = cosb am dalu’n hwyr
-index.overview.lpp.bullet.penalties.plural = cosbau am dalu’n hwyr
-index.overview.lsp.bullet.penalties.singular = cosb am gyflwyno’n hwyr
-index.overview.lsp.bullet.penalties.plural = cosbau am gyflwyno’n hwyr
-index.overview.lsp.bullet.points.singular = 1 pwynt cosb am gyflwyno’n hwyr
-index.overview.lsp.bullet.points.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
-index.overview.lsp.bullet.points.max = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
+index.overview.lpp.penalties.bullet.singular = cosb am dalu’n hwyr
+index.overview.lpp.penalties.bullet.plural = cosbau am dalu’n hwyr
+index.overview.lsp.penalties.bullet.singular = cosb am gyflwyno’n hwyr
+index.overview.lsp.penalties.bullet.plural = cosbau am gyflwyno’n hwyr
+index.overview.lsp.points.bullet.singular = 1 pwynt cosb am gyflwyno’n hwyr
+index.overview.lsp.points.bullet.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
+index.overview.lsp.points.max.bullet = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
+
+individual.index.overview.unpaidReturnCharges = Your account has overdue Income Tax charges(Welsh)
+individual.index.overview.unpaidInterest = Your account has unpaid interest(Welsh)
+individual.index.overview.lpp.penalties.singular = Mae cosb am dalu’n hwyr ar eich cyfrif
+individual.index.overview.lpp.penalties.plural = Mae cosbau am dalu’n hwyr ar eich cyfrif
+individual.index.overview.lsp.penalties.singular= Your account has a late submission penalty(Welsh)
+individual.index.overview.lsp.penalties.plural = Your account has late submission penalties(Welsh)
+individual.index.overview.lsp.points.singular = Mae 1 pwynt cosb am gyflwyno’n hwyr ar eich cyfrif
+individual.index.overview.lsp.points.plural =  Mae {0} o bwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif
+individual.index.overview.lsp.points.max = Mae uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif
+
+agent.index.overview.unpaidReturnCharges = Your client’s account has overdue Income Tax charges(Welsh)
+agent.index.overview.unpaidInterest = Your client’s account has unpaid interest(Welsh)
+agent.index.overview.lpp.penalties.singular = Mae cosb am dalu’n hwyr ar gyfrif eich cleient
+agent.index.overview.lpp.penalties.plural = Your client’s account has late payment penalties(Welsh)
+agent.index.overview.lsp.penalties.singular = Your client’s account has a late submission penalty(Welsh)
+agent.index.overview.lsp.penalties.plural = Your client’s account has late submission penalties(Welsh)
+agent.index.overview.lsp.points.singular = Mae 1 pwynt cosb am gyflwyno’n hwyr ar gyfrif eich cleient
+agent.index.overview.lsp.points.plural = Mae {0} o bwyntiau cosb am gyflwyno’n hwyr ar gyfrif eich cleient
+agent.index.overview.lsp.points.max = Mae uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr ar gyfrif eich cleient
+
 individual.index.overview.checkAmount.button = Gwirio’r symiau a thalu
 agent.index.overview.checkAmount.button = Gwirio’r symiau
 
@@ -76,12 +96,12 @@ caption.date = Blwyddyn dreth {0} i {1}
 calculation.charge.reference = Cyfeirnod y gosb: {0}
 calculation.individual.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
 calculation.individual.paid.penalty.on = Cosb wedi’i thalu ar {0}
-calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {0} oedd {2}.
+calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {1} oedd {2}.
 calculation.individual.payment.15.30.missed.reason.taxUnpaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.agent.payment.15.30.missed.reason.taxUnpaid = Oherwydd bod eich cleient wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arno.
 calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanegol oedd {0}.
-calculation.individual.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {0} wedi’i diwygio.
-calculation.agent.payment.deadline.pfa.tax.year = Mae’r Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {0} wedi’i diwygio.
+calculation.individual.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
+calculation.agent.payment.deadline.pfa.tax.year = Mae’r Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
 
 calculation.individual.payment.15.30.missed.reason = Oherwydd eich bod wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
 calculation.agent.payment.15.30.missed.reason = Oherwydd bod eich cleient wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arno.
@@ -117,13 +137,15 @@ calculation.table.caption.amount = Swm
 calculation.table.charge.period = {0} i {1}
 calculation.table.caption.total.penalty = Cyfanswm y gosb
 
-calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu.
+
+calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.individual.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
-calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.agent.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+
 calculation.agent.penalty.stopEstimateIncreasing = Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.agent.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
@@ -150,8 +172,9 @@ calculation.individual.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gyny
 
 calculation.individual.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 
-calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {0} wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
-calculation.individual.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+calculation.individual.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+
 calculation.individual.calc2.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.agent.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
@@ -255,7 +278,7 @@ lpp.penaltyType.MANUAL = Cosb am dalu’n hwyr – mae’r manylion yn y llythyr
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
 lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
-lpp.incomeTaxDue.key = Treth Incwm sy’n ddyledus
+lpp.incomeTaxDue.key = Treth Incwm yn ddyledus
 lpp.incomeTaxPaymentDate.key = Treth Incwm wedi’i thalu
 lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
 lpp.paymentPlanProposed = Cynllun talu arfaethedig
@@ -271,11 +294,11 @@ lpp.incomeTaxPaymentDate.key.pfa = Swm ychwanegol a dalwyd
 appealStatus.key = Statws yr apêl
 appealStatus.A.01 = Apêl ar y gweill
 appealStatus.A.02 = Dan adolygiad
-appealStatus.A.03 = Apêl wedi’i wrthod
+appealStatus.A.03 = Apêl wedi’i gwrthod
 appealStatus.B.01 = Apêl lwyddiannus
 appealStatus.B.02 = Apêl lwyddiannus
 appealStatus.B.03 = Apêl lwyddiannus
-appealStatus.C.01 = Apêl wedi’i wrthod
+appealStatus.C.01 = Apêl wedi’i gwrthod
 appealStatus.C.02 = Penderfyniad wedi’i gadarnhau
 appealStatus.C.03 = Penderfyniad wedi’i gadarnhau
 

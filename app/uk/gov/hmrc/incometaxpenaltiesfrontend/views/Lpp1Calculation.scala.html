@@ -43,7 +43,7 @@
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.first.h1")</h1>
 
 
-    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.penaltyAmount</p>
+    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
     @if(inBreathingSpace){
         @govukInsetText(InsetText(

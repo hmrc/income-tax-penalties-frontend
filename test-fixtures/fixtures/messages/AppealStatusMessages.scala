@@ -32,7 +32,7 @@ object AppealStatusMessages {
   object Welsh extends Messages with Cy {
     override val appealStatusKey = "Statws yr apêl"
     override val appealInProgress = "Apêl ar y gweill"
-    override val appealRejected = "Apêl wedi’i wrthod"
+    override val appealRejected = "Apêl wedi’i gwrthod"
     override val appealSuccessful = "Apêl lwyddiannus"
     override val decisionUpheld = "Penderfyniad wedi’i gadarnhau"
     override val underReview = "Dan adolygiad"
