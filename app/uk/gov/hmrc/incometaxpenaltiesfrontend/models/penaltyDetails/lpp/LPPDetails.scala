@@ -56,7 +56,8 @@ case class  LPPDetails(principalChargeReference: String,
 
   val amountDue: BigDecimal = if (penaltyStatus == Posted) penaltyAmountPosted else penaltyAmountAccruing
 
-  val isPFA: Boolean = metadata.principalChargeMainTr == "4915" || metadata.principalChargeMainTr == "4911" || metadata.principalChargeMainTr == "4913"
+private val pfaPrincipleChargeMainTrs: Set[String] = Set("4915", "4911", "4913")
+  val isPFA: Boolean = pfaPrincipleChargeMainTrs.contains(metadata.principalChargeMainTr)
   val pfaPrefix: String = if (isPFA) ".pfa" else ""
   //TODO: Expect an API change to return a different name other than `vat` prefixed for the outstandingAmount
   val incomeTaxOutstandingAmountInPence: Int = vatOutstandingAmount.map(amount => (amount * 100).toInt).getOrElse(0)
