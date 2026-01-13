@@ -139,7 +139,7 @@
     <div class="govuk-!-margin-bottom-8">
         @link(
             link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.return.link"),
+            messageKey = messages(s"calculation.${individualOrAgent.toString}.return.link"),
             id = Some("returnToIndex")
         )
     </div>
