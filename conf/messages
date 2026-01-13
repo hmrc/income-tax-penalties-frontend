@@ -135,13 +135,16 @@ calculation.agent.penalty.isDue = To avoid interest charges, your client should 
 
 calculation.individual.penalty.isOverdue = This penalty is now overdue and interest is being charged.
 
-calculation.individual.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty won’t increase.
-calculation.individual.penalty.payment.plan.agreed.inset = You agreed to a payment plan on {0}. This penalty won’t increase.
-calculation.individual.penalty.payment.plan.agreed.p1 = You must keep up with payments. If you do not, your payment plan will fail and any penalties you owe will be calculated from their original date
-calculation.agent.penalty.payment.plan.proposed.inset = Your client proposed a payment plan on {0}. If their payment plan is agreed this penalty won’t increase.
-calculation.agent.penalty.payment.plan.agreed.inset = Your client agreed to a payment plan on {0}. This penalty won’t increase.
-calculation.agent.penalty.payment.plan.agreed.p1 = Your client must keep up with payments. If they do not, their payment plan will fail and any penalties they owe will be calculated from their original date.
-
+calculation.individual.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
+calculation.individual.penalty.payment.plan.agreed.h1 = Your payment plan
+calculation.individual.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
+calculation.individual.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments.
+calculation.individual.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
+calculation.agent.penalty.payment.plan.proposed.inset = Your client proposed a payment plan on {0}. If their payment plan is agreed this penalty will not increase.
+calculation.agent.penalty.payment.plan.agreed.h1 = Your client'''s payment plan
+calculation.agent.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}.
+calculation.agent.penalty.payment.plan.agreed.p2 = This penalty will not increase if they keep up with payments.
+calculation.agent.penalty.payment.plan.agreed.p3 = If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date.
 
 calculation.individual.calc2.missed.deadline.tax.unpaid = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
 calculation.individual.calc2.missed.deadline.tax.paid = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
@@ -162,14 +165,16 @@ calculation.agent.calc2.penalty.stopEstimateIncreasing = To stop this estimated 
 
 calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
 
-calculation.individual.calc2.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty won’t increase.
-calculation.individual.calc2.penalty.payment.plan.agreed.inset = You agreed to a payment plan on {0}.
-calculation.individual.calc2.penalty.payment.plan.agreed.p1 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax.
-calculation.individual.calc2.penalty.payment.plan.agreed.p2 = You must keep up with payments. If you do not, your payment plan will fail and any penalties you owe will be calculated from their original date.
-calculation.agent.calc2.penalty.payment.plan.proposed.inset = Your client proposed a payment plan on {0}. If their payment plan is agreed this penalty won’t increase.
-calculation.agent.calc2.penalty.payment.plan.agreed.inset = Your client agreed to a payment plan on {0}.
-calculation.agent.calc2.penalty.payment.plan.agreed.p1 = This calculation is an estimate up to when they agreed their payment plan. It will remain an estimate until the payment plan pays off the outstanding tax.
-calculation.agent.calc2.penalty.payment.plan.agreed.p2 = Your client must keep up with payments. If they do not, their payment plan will fail and any penalties owed will be calculated from their original date.
+calculation.individual.calc2.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
+calculation.individual.calc2.penalty.payment.plan.agreed.h1 = Your payment plan
+calculation.individual.calc2.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
+calculation.individual.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax.
+calculation.individual.calc2.penalty.payment.plan.agreed.p3 = You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
+calculation.agent.calc2.penalty.payment.plan.proposed.inset = Your client proposed a payment plan on {0}. If their payment plan is agreed this penalty will not increase.
+calculation.agent.calc2.penalty.payment.plan.agreed.h1 = Your client'''s payment plan
+calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}.
+calculation.agent.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when they agreed their payment plan. It will remain an estimate until the payment plan pays off the outstanding tax.
+calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Your client must keep up with payments. If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date.
 
 calculation.individual.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
 calculation.agent.calc.breathing.space = Your client is in Breathing Space. This penalty is paused and will not increase. The time your client is in Breathing Space will not be added to their calculation.
