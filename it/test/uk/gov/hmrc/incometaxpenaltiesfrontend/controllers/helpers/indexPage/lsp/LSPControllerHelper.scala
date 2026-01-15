@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.indexPage.lsp
 import org.jsoup.nodes.Document
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp.*
 
 trait LSPControllerHelper extends ControllerISpecHelper {
@@ -39,16 +38,24 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB000041A" -> AB000041A,
       "AB000042A" -> AB000042A,
       "AB000050A" -> AB000050A,
-      "AA500000A" -> AA500000A
+      "AA500000A" -> AA500000A,
+      "AA211110A" -> AA211110A,
+      "AA211120A" -> AA211120A,
+      "AA211130A" -> AA211130A,
+      "AB211110A" -> AB211110A,
+      "AB211120A" -> AB211120A,
+      "PE000000A" -> PE000000A
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasFinancialLSP: Boolean, isAgent: Boolean = false) = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
     document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
+    if (hasFinancialLSP) {
+      document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
+    }
   }
 
   def validateNoLPPPenalties(document: Document, isAgent: Boolean = false) = {
@@ -70,12 +77,22 @@ trait LSPControllerHelper extends ControllerISpecHelper {
         "You don’t have any active late submission penalties."
       }
     } else if(userDetailsData.hasFinanicalLSP) {
-      if(isAgent) {
-        "They will get another £200 penalty every time they send a late submission in the future, until their points are removed." +
-          " They should send any missing submissions as soon as possible if they haven’t already."
+      if (userDetailsData.numberOfFinancialPenalties == 1) {
+        if (isAgent) {
+          "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed." +
+            " They should send any missing submissions as soon as possible if they haven’t already."
+        } else {
+          "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed." +
+            " You should send any missing submissions as soon as possible if you haven’t already."
+        }
       } else {
-        "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
-          " You should send any missing submissions as soon as possible if you haven’t already."
+        if (isAgent) {
+          "They will get another £200 penalty every time they send a late submission in the future, until their points are removed." +
+            " They should send any missing submissions as soon as possible if they haven’t already."
+        } else {
+          "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
+            " You should send any missing submissions as soon as possible if you haven’t already."
+        }
       }
     } else {
       val numPenPoints = userDetailsData.numberOfLSPPenalties.toString

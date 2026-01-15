@@ -48,6 +48,9 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
+            if (userdetails.numberOfLSPPenalties > 0) {
+              validatePenaltyOverview(document, userdetails.expectedOverviewText(false), userdetails.hasFinanicalLSP)
+            }
             validatePenaltyTabs(document)
             validateNoLPPPenalties(document)
             val lspTab = getLSPTabContent(document)
@@ -67,6 +70,9 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
+            if (userdetails.numberOfLSPPenalties > 0) {
+              validatePenaltyOverview(document, userdetails.expectedOverviewText(true), userdetails.hasFinanicalLSP, true)
+            }
             validateNoLPPPenalties(document, true)
             validatePenaltyTabs(document)
             validateNoLPPPenalties(document, true)
