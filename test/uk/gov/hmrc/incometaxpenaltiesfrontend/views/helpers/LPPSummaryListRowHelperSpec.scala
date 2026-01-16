@@ -132,6 +132,23 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
                   )
               }
             }
+
+            "Post-finalisation Amendment" should {
+              "construct a SummaryListRow model for payment received date with expected messages" in new Setup() {
+
+                lspSummaryListRowHelper.incomeTaxDueRow(sampleUnpaidLPPPFA) shouldBe
+                  summaryListRow(
+                    label = messagesForLanguage.extraAmountDue,
+                    value = Html(dateToString(samplePaidLPP1.principalChargeDueDate))
+                  )
+
+                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPPPFA) shouldBe
+                  summaryListRow(
+                    label = messagesForLanguage.extraAmountPaid,
+                    value = Html(messagesForLanguage.paymentNotReceived)
+                  )
+              }
+            }
           }
         }
       }

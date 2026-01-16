@@ -103,12 +103,13 @@
         </div>
     }
 
+
     <div id="paymentPlanContent">
-    @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
-        <p class="govuk-body">
-            @msg
-        </p>
-    }
+        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+            <p class="govuk-body">
+                @msg
+            </p>
+        }
     </div>
 
     <table class="govuk-table">
@@ -136,12 +137,23 @@
         </tbody>
     </table>
 
+    <div class="govuk-!-margin-top-7" id="paymentPlanContent">
+        <p class="govuk-heading-m">
+            @calculationHelper.getPaymentPlanHeading(calculationData, individualOrAgent.toString)
+        </p>
+        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+        <p class="govuk-body">
+            @msg
+        </p>
+        }
+    </div>
+
     <div class="govuk-!-margin-bottom-8">
-    @link(
-        link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-        messageKey = messages("calculation.return.link"),
-        id = Some("returnToIndex")
-    )
+        @link(
+            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+            messageKey = messages(s"calculation.${individualOrAgent.toString}.return.link"),
+            id = Some("returnToIndex")
+        )
     </div>
 
 }

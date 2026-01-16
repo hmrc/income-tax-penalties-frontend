@@ -39,7 +39,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       label = messages("lpp.incomeTaxPeriod.key"),
       value = Html(
           messages(
-            s"lpp.incomeTaxPeriod.value${penalty.pfaPrefix}",
+            s"lpp.incomeTaxPeriod.value${penalty.pfaSuffix}",
             penalty.principalChargeBillingFrom.getYear.toString,
             penalty.principalChargeBillingTo.getYear.toString
           )
@@ -48,13 +48,13 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
 
   def incomeTaxDueRow(penalty: LPPDetails)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
-      label = messages(s"lpp.incomeTaxDue.key${penalty.pfaPrefix}"),
+      label = messages(s"lpp.incomeTaxDue.key${penalty.pfaSuffix}"),
       value = Html(dateToString(penalty.principalChargeDueDate))
     )
 
   def incomeTaxPaymentDateRow(penalty: LPPDetails)(implicit messages: Messages, timeMachine: TimeMachine): SummaryListRow =
     summaryListRow(
-      messages(s"lpp.incomeTaxPaymentDate.key${penalty.pfaPrefix}"),
+      messages(s"lpp.incomeTaxPaymentDate.key${penalty.pfaSuffix}"),
       Html(
         if (penalty.penaltyStatus.equals(LPPPenaltyStatusEnum.Posted) && penalty.principalChargeLatestClearing.isDefined) {
           dateToString(penalty.principalChargeLatestClearing.get)

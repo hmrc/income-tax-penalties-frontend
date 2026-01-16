@@ -87,17 +87,31 @@ class FirstLatePaymentCalculationHelper {
 
   def getPaymentPlanInset(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (Some(agreedDate), _) =>
-        Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.inset", dateToString(agreedDate)))
       case (_, Some(proposedDate)) =>
         Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
   }
 
-  def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
-    calculationData.paymentPlanAgreed.map { agreedDate =>
-      messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p1")
+  def getPaymentPlanHeading(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+    (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
+      case (Some(agreedDate), _) =>
+          Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.h1", agreedDate))
+      case _ => None
+    }
+  }
+
+  def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): List[String] = {
+    (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
+      case (Some(agreedDate), _) =>
+        calculationData.paymentPlanAgreed.map { agreedDate =>
+          List(
+            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p1", agreedDate),
+            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p2"),
+            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p3")
+          )
+        }.getOrElse(List.empty)
+      case _ => List.empty
     }
   }
 
