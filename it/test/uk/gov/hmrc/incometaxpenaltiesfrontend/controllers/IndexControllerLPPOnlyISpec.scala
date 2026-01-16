@@ -19,16 +19,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import fixtures.PenaltiesDetailsTestData
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
-import play.api.libs.json.Json
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
+import play.api.http.Status.OK
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.indexPage.lpp.LPPControllerHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.ExpiryReasonEnum.{Appeal, NaturalExpiration}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
 class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitching

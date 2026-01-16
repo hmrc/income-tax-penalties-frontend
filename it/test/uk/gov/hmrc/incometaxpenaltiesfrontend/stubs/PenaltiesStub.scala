@@ -20,8 +20,6 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.WiremockMethods
 
-import java.time.LocalDate
-
 trait PenaltiesStub extends WiremockMethods {
 
   def stubGetPenalties(nino: String, arn: Option[String])(status: Int, body: JsValue = Json.obj()): StubMapping = {
