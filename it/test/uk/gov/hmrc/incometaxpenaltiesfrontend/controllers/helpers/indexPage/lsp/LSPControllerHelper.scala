@@ -59,7 +59,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB111110B" -> AB111110B,
       "AB111120A" -> AB111120A,
       "AB111121A" -> AB111121A,
-//      "AB111122A" -> AB111122A,
+      "AB111122A" -> AB111122A
 //      "AB111130A" -> AB111130A,
 //      "AB111131A" -> AB111131A,
 //      "AB111132A" -> AB111132A,
