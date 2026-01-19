@@ -100,6 +100,9 @@ calculation.individual.paid.penalty.on = Cosb wedi’i thalu ar {0}
 calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {1} oedd {2}.
 calculation.individual.payment.15.30.missed.reason.taxUnpaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.agent.payment.15.30.missed.reason.taxUnpaid = Oherwydd bod eich cleient wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arno.
+calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanegol oedd {0}.
+calculation.individual.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
+calculation.agent.payment.deadline.pfa.tax.year = Mae’r Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
 
 calculation.individual.payment.15.30.missed.reason = Oherwydd eich bod wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
 calculation.agent.payment.15.30.missed.reason = Oherwydd bod eich cleient wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arno.
@@ -109,14 +112,21 @@ calculation.agent.payment.missed.reason.additional = Oherwydd bod eich cleient w
 
 calculation.individual.payment.15.30.missed.reason.bullet.1 = Gwnaethoch fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} wedi’i chodi arnoch fel cosb
 calculation.agent.payment.15.30.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu {0} wedi’i chodi arno fel cosb
+calculation.individual.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaethoch fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arnoch fel cosb
+calculation.agent.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaeth fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arno fel cosb
 
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = Rydych wedi methu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arnoch fel cosb
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arno fel cosb
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Rydych wedi methu'r dyddiad cau o 15 i 30 diwrnod, felly codir 2% o'r dreth oedd yn ddyledus arnoch 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0})
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Gwnaeth fethu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arno fel cosb
 
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% o £{0} (sef y dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
+calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = 2% o £{0} (y swm a oedd heb ei dalu 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
 calculation.individual.payment.30.plus.missed.reason.bullet.2 = 2% ychwanegol o £{0} (sef y dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2.pfa = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth sydd heb ei dalu 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = Os bydd eich cleient yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2.pfa = Os bydd yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r swm sydd heb ei dalu 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
 
 calculation.table.caption.amountApplied = Swm y mae’r gosb yn berthnasol iddo
 calculation.table.caption.days.payment = Diwrnodau ar ôl y dyddiad cau ar gyfer talu
@@ -126,10 +136,19 @@ calculation.table.caption.rate = Cyfradd
 calculation.table.caption.amount = Swm
 calculation.table.charge.period = {0} i {1}
 calculation.table.caption.total.penalty = Cyfanswm y gosb
+
+
 calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+calculation.individual.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.individual.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+
 calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+calculation.agent.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+
 calculation.agent.penalty.stopEstimateIncreasing = Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.agent.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+
 calculation.individual.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.agent.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
 
@@ -156,12 +175,15 @@ calculation.individual.calc2.penalty.increase.tax.unpaid = Bydd swm y gosb yn cy
 calculation.individual.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
 
 calculation.individual.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
+
 calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+calculation.individual.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+
 calculation.individual.calc2.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
-
 calculation.agent.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
-calculation.agent.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
+calculation.agent.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu. Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
+calculation.agent.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu. Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.agent.calc2.penalty.stopEstimateIncreasing = Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
@@ -268,6 +290,9 @@ lpp.paymentNotReceived = Nid yw’r taliad wedi dod i law hyd yn hyn
 lpp.paymentPlanProposed = Cynllun talu arfaethedig
 lpp.paymentPlanAgreed = Cynllun talu wedi’i gytuno
 lpp.payPenaltyBy.key = Talu cosb erbyn
+lpp.incomeTaxPeriod.value.pfa = Swm ychwanegol sy’n ddyledus i Ffurflen Dreth ddiwygiedig ar gyfer blwyddyn dreth {0} i {1}
+lpp.incomeTaxDue.key.pfa = Swm ychwanegol sy’n ddyledus
+lpp.incomeTaxPaymentDate.key.pfa = Swm ychwanegol a dalwyd
 
 # Appeal Status
 # =============

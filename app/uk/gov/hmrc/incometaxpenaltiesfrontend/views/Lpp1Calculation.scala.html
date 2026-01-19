@@ -62,9 +62,19 @@
         </p>
     }
 
-    <p class="govuk-body" id="paymentDeadline">
+    @if(calculationData.isPFA) {
+        <p class="govuk-body" id="taxYearAmended">
+        @messages(s"calculation.$individualOrAgent.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+        </p>
+
+        <p class="govuk-body" id="paymentDeadline">
+        @messages(s"calculation.payment.deadline.pfa", dateToString(calculationData.principalChargeDueDate))
+        </p>
+    } else {
+        <p class="govuk-body" id="paymentDeadline">
         @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
-    </p>
+        </p>
+    }
 
 
     <p class="govuk-body" id="missedDeadline">
@@ -73,14 +83,14 @@
 
 
     <ul class="govuk-list govuk-list--bullet" id="reasonList">
-        @calculationHelper.getBulletListContent(calculationData, individualOrAgent.toString).map { bulletContent =>
+        @calculationHelper.getBulletListContent(calculationData, individualOrAgent.toString, if(calculationData.isPFA) ".pfa" else "").map { bulletContent =>
             <li>@bulletContent</li>
         }
     </ul>
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-            @calculationHelper.getFinalUnpaidMsg(calculationData, individualOrAgent.toString)
+            @calculationHelper.getFinalUnpaidMsg(calculationData, individualOrAgent.toString, if(calculationData.isPFA) ".pfa" else "")
         </p>
     }
 

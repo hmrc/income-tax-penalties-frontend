@@ -100,6 +100,9 @@ calculation.individual.paid.penalty.on = Penalty paid on {0}
 calculation.payment.deadline = The payment deadline for the {0} to {1} tax year was {2}.
 calculation.individual.payment.15.30.missed.reason.taxUnpaid = Because you missed this deadline, you will be charged a late payment penalty.
 calculation.agent.payment.15.30.missed.reason.taxUnpaid = Because your client missed this deadline, they will be charged a late payment penalty.
+calculation.payment.deadline.pfa = The payment deadline for the extra amount was {0}.
+calculation.individual.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
+calculation.agent.payment.deadline.pfa.tax.year = The tax return for the {0} to {1} tax year has been amended.
 
 calculation.individual.payment.15.30.missed.reason = Because you missed this deadline, you have been charged a late payment penalty.
 calculation.agent.payment.15.30.missed.reason = Because your client missed this deadline, they have been charged a late payment penalty.
@@ -109,14 +112,21 @@ calculation.agent.payment.missed.reason.additional = Because your client missed 
 
 calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15 to 30 days, so you have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
 calculation.agent.payment.15.30.missed.reason.bullet.1 = They missed the deadline by 15 to 30 days, so they have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
-
+calculation.individual.payment.15.30.missed.reason.bullet.1.pfa = You missed the deadline by 15 to 30 days, so you have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.missed.reason.bullet.1.pfa = They missed the deadline by 15 to 30 days, so they have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15 to 30 days, so you will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = They missed the deadline by 15 to 30 days, so they will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = You have missed the deadline by 15 to 30 days, so you will be charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = They missed the deadline by 15 to 30 days, so they will be charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
 
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% of £{0} (the tax that was outstanding 15 days after the payment deadline)
+calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = 2% of £{0} (the amount that was outstanding 15 days after the payment deadline)
 calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional 2% of £{0} (the tax that was outstanding 30 days after the payment deadline)
+calculation.individual.payment.30.plus.missed.reason.bullet.2.pfa = An additional 2% of £{0} (the amount that was outstanding 30 days after the payment deadline)
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the tax that is outstanding 30 days after the payment deadline
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If you miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the amount that is outstanding 30 days after the payment deadline
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = If they miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the tax that is outstanding 30 days after the payment deadline
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If they miss the deadline by more than 30 days, this penalty will increase by an additional 2% of the amount that is outstanding 30 days after the payment deadline
 
 calculation.table.caption.amountApplied = Amount penalty is applied to
 calculation.table.caption.days.payment = Days after payment deadline
@@ -126,10 +136,16 @@ calculation.table.caption.rate = Rate
 calculation.table.caption.amount = Amount
 calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
+
 calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.individual.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.individual.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+calculation.individual.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
+
 calculation.agent.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.agent.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.agent.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
+calculation.agent.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, your client should pay the outstanding amount immediately or set up a payment plan.
 
 calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
 calculation.agent.penalty.isDue = To avoid interest charges, your client should pay this penalty by {0}.
@@ -157,12 +173,17 @@ calculation.individual.calc2.penalty.increase.tax.unpaid = This penalty will inc
 calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.
 
 calculation.individual.calc2.penalty.due = To avoid interest charges, you should pay this penalty by {0}.
+
+
 calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.individual.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.individual.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 
 calculation.agent.calc2.penalty.due = To avoid interest charges, they should pay this penalty by {0}.
 calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.agent.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.agent.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
+
 
 calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
 
@@ -268,6 +289,9 @@ lpp.paymentNotReceived = Payment not yet received
 lpp.paymentPlanProposed = Payment plan proposed
 lpp.paymentPlanAgreed = Payment plan agreed
 lpp.payPenaltyBy.key = Pay penalty by
+lpp.incomeTaxPeriod.value.pfa = Extra amount due to amended return for {0} to {1} tax year
+lpp.incomeTaxDue.key.pfa = Extra amount due
+lpp.incomeTaxPaymentDate.key.pfa = Extra amount paid
 
 # Appeal Status
 # =============

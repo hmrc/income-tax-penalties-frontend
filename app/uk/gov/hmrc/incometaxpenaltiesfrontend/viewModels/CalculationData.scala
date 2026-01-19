@@ -44,6 +44,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   principalChargeDueDate: LocalDate,
                                                   llpLRCharge: LLPCharge,
                                                   llpHRCharge: Option[LLPCharge],
+                                                  isPFA: Boolean,
                                                   paymentPlanAgreed: Option[LocalDate],
                                                   paymentPlanProposed: Option[LocalDate]
                                                  ) extends CalculationData {
@@ -58,6 +59,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.exists(_.isBefore(timeMachine.getCurrentDate().plusDays(1))),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
     principalChargeDueDate = lppDetails.principalChargeDueDate,
+    isPFA = lppDetails.isPFA,
     llpLRCharge = LLPCharge(
       chargeAmount = lppDetails.lpp1LRCalculationAmt.getOrElse(0),
       daysOverdue = lppDetails.lpp1LRDays.getOrElse("15"),
@@ -92,6 +94,7 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                    chargeStartDate: LocalDate,
                                                    chargeEndDate: LocalDate,
                                                    principalChargeDueDate: LocalDate,
+                                                   isPFA: Boolean,
                                                    paymentPlanAgreed: Option[LocalDate],
                                                    paymentPlanProposed: Option[LocalDate]
                                                   ) extends CalculationData {
@@ -111,6 +114,7 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     chargeStartDate = lppDetails.penaltyChargeDueDate.get,
     chargeEndDate = lppDetails.communicationsDate.getOrElse(timeMachine.getCurrentDate()),
     principalChargeDueDate = lppDetails.principalChargeDueDate,
+    isPFA = lppDetails.isPFA,
     paymentPlanAgreed = lppDetails.ttpAgreementDate,
     paymentPlanProposed = lppDetails.ttpProposalDate
   )

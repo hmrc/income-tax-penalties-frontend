@@ -44,6 +44,8 @@ object LPPCardMessages {
     val paymentNotReceived = "Payment not yet received"
     val paymentPlanProposed = "Payment plan proposed"
     val paymentPlanAgreed = "Payment plan agreed"
+    val extraAmountDue = "Extra amount due"
+    val extraAmountPaid = "Extra amount paid"
 
     //Card Footer Links
     val cardLinksViewCalculation = "View calculation"
@@ -77,6 +79,8 @@ object LPPCardMessages {
     override val paymentNotReceived = "Nid yw’r taliad wedi dod i law hyd yn hyn"
     override val paymentPlanProposed = "Cynllun talu arfaethedig"
     override val paymentPlanAgreed = "Cynllun talu wedi’i gytuno"
+    override val extraAmountDue = "Swm ychwanegol sy’n ddyledus"
+    override val extraAmountPaid = "Swm ychwanegol a dalwyd"
 
     //Card Footer Links
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"

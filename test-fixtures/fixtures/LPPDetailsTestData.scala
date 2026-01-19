@@ -205,4 +205,13 @@ trait LPPDetailsTestData {
       None,
     )
   )
+
+  val sampleUnpaidLPPPFA = sampleUnpaidLPP1.copy(
+    metadata = LPPDetailsMetadata(
+      principalChargeMainTr = "4915",
+      principalChargeSubTr = Some("SUB1"),
+      principalChargeDocNumber = None,
+      timeToPay = None
+    )
+  )
 }

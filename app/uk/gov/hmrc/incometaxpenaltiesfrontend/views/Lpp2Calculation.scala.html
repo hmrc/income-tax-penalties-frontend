@@ -39,7 +39,7 @@
 
 
     <span class="govuk-caption-l" id="captionSpan">
-        @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+    @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.second.h1")</h1>
@@ -66,34 +66,34 @@
 
 
     <p class="govuk-body" id="paymentDeadline">
-        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
+    @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
     </p>
 
 
     @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
         <p class="govuk-body" id="missedDeadline">
-            @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.unpaid")
+        @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.unpaid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
-            @messages(s"calculation.individual.calc2.penalty.increase.tax.unpaid")
+        @messages(s"calculation.individual.calc2.penalty.increase.tax.unpaid")
         </p>
 
     } else {
 
         <p class="govuk-body" id="missedDeadline">
-            @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.paid")
+        @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.paid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
-            @messages("calculation.individual.calc2.penalty.increase.tax.paid")
+        @messages("calculation.individual.calc2.penalty.increase.tax.paid")
         </p>
     }
 
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-            @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+        @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
         </p>
     }
 
@@ -102,6 +102,15 @@
             @insetMsg
         </div>
     }
+
+
+    <div id="paymentPlanContent">
+        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+            <p class="govuk-body">
+                @msg
+            </p>
+        }
+    </div>
 
     <table class="govuk-table">
         <thead class="govuk-table__head">
