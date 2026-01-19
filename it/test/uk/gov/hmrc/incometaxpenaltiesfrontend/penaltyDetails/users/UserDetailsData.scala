@@ -21,7 +21,6 @@ import org.jsoup.select.Elements
 import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.{JsValue, Json}
 
-import java.io.{File, FileWriter}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
@@ -32,6 +31,7 @@ trait UserDetailsData extends Matchers {
   val expectedNumberOfLSPPenaltyCards: Int
   val expectedNumberOfLPPPenaltyCards: Int
   val hasFinanicalLSP: Boolean = false
+  val numberOfFinancialPenalties: Int = 0
 
   lazy val apiResponse: JsValue = getApiResponseJson(nino)
 

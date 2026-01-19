@@ -110,15 +110,14 @@ calculation.agent.payment.15.30.missed.reason = Because your client missed this 
 calculation.individual.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
 calculation.agent.payment.missed.reason.additional = Because your client missed this deadline by more than 30 days, they have been charged a late payment penalty. This penalty is made up of two parts.
 
-calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15-30 days, so you have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.missed.reason.bullet.1 = They missed the deadline by 15-30 days, so they have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.individual.payment.15.30.missed.reason.bullet.1.pfa = You missed the deadline by 15-30 days, so you have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.missed.reason.bullet.1.pfa = They missed the deadline by 15-30 days, so they have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
-
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15-30 days, so you will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = They missed the deadline by 15-30 days, so they will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = You have missed the deadline by 15-30 days, so you will be charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = They missed the deadline by 15-30 days, so they will be charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15 to 30 days, so you have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.missed.reason.bullet.1 = They missed the deadline by 15 to 30 days, so they have been charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.missed.reason.bullet.1.pfa = You missed the deadline by 15 to 30 days, so you have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.missed.reason.bullet.1.pfa = They missed the deadline by 15 to 30 days, so they have been charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15 to 30 days, so you will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = They missed the deadline by 15 to 30 days, so they will be charged 2% of the tax that was outstanding 15 days after the payment deadline (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = You have missed the deadline by 15 to 30 days, so you will be charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
+calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = They missed the deadline by 15 to 30 days, so they will be charged 2% of the amount that was outstanding 15 days after the payment deadline (£{0})
 
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% of £{0} (the tax that was outstanding 15 days after the payment deadline)
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = 2% of £{0} (the amount that was outstanding 15 days after the payment deadline)

@@ -1,0 +1,109 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AA211130A",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lsp" : {
+          "lspSummary" : {
+            "activePenaltyPoints" : 2,
+            "inactivePenaltyPoints" : 1,
+            "regimeThreshold" : 4,
+            "penaltyChargeAmount" : 0
+          },
+          "lspDetails" : [ {
+            "penaltyNumber" : "005000001051",
+            "penaltyCreationDate" : "2027-11-07",
+            "penaltyExpiryDate" : "2029-10-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "3",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2027-11-07",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Open",
+              "taxPeriodStartDate" : "2027-07-06",
+              "taxPeriodEndDate" : "2027-10-05",
+              "taxPeriodDueDate" : "2027-11-07"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Open",
+              "taxPeriodStartDate" : "2027-07-06",
+              "taxPeriodEndDate" : "2027-10-05",
+              "taxPeriodDueDate" : "2027-11-07"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "C",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ]
+          }, {
+            "penaltyNumber" : "005000001058",
+            "penaltyCreationDate" : "2027-08-07",
+            "penaltyExpiryDate" : "2029-07-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "2",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2027-08-07",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Open",
+              "taxPeriodStartDate" : "2027-04-06",
+              "taxPeriodEndDate" : "2027-07-05",
+              "taxPeriodDueDate" : "2027-08-07"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Open",
+              "taxPeriodStartDate" : "2027-04-06",
+              "taxPeriodEndDate" : "2027-07-05",
+              "taxPeriodDueDate" : "2027-08-07"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "C",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ]
+          }, {
+            "penaltyNumber" : "005000001036",
+            "penaltyCreationDate" : "2027-05-07",
+            "penaltyExpiryDate" : "2029-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Inactive",
+            "expiryReason" : "APP",
+            "communicationsDate" : "2027-05-07",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2027-01-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2027-05-07",
+              "returnReceiptDate" : "2027-06-01"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2027-01-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2027-05-07",
+              "returnReceiptDate" : "2027-06-01"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "B",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ]
+          } ]
+        }
+      }
+    }
+  }
+}

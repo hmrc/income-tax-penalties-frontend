@@ -1,0 +1,46 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AB111110A",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lsp" : {
+          "lspSummary" : {
+            "activePenaltyPoints" : 1,
+            "inactivePenaltyPoints" : 0,
+            "regimeThreshold" : 4,
+            "penaltyChargeAmount" : 0
+          },
+          "lspDetails" : [ {
+            "penaltyNumber" : "005000001026",
+            "penaltyCreationDate" : "2028-01-31",
+            "penaltyExpiryDate" : "2029-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "1",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2028-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2026-04-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2028-01-31",
+              "returnReceiptDate" : "2028-02-23"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2026-04-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2028-01-31",
+              "returnReceiptDate" : "2028-02-23"
+            } ]
+          } ]
+        }
+      }
+    }
+  }
+}
