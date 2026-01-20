@@ -135,7 +135,8 @@
         rows = Seq(
             Seq(
                 TableRow(
-                    content = Text(messages("calculation.table.caption.charge.period"))
+                    content = Text(messages("calculation.table.caption.charge.period")),
+                    classes = "govuk-!-font-weight-bold"
                 ),
                 TableRow(
                     content = Text(messages("calculation.calc2.table.charge.period",
@@ -146,7 +147,8 @@
             ),
             Seq(
                 TableRow(
-                    content = Text(messages("calculation.agent.calc2.estimated.penalty"))
+                    content = Text(messages("calculation.agent.calc2.estimated.penalty")),
+                    classes = "govuk-!-font-weight-bold"
                 ),
                 TableRow(
                     content = Text("£" + calculationData.formattedPenaltyAmount)
