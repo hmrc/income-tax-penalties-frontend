@@ -77,7 +77,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasFinancialLSP: Boolean, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasFinancialLSP: Boolean, isAgent: Boolean = false): Unit = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
@@ -87,7 +87,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     }
   }
 
-  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false) = {
+  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false): Unit = {
     val lppTabContent = getLPPTabContent(document)
     lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
     val expectedLSPContent = if(isAgent){
@@ -134,13 +134,12 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     } else {
       val numPenPoints = userDetailsData.numberOfLSPPenalties.toString
       if(isAgent) {
-        s"Your client has ${numPenPoints} penalty points for sending late submissions." +
+        s"Your client has $numPenPoints penalty points for sending late submissions." +
           s" They should send any missing submissions as soon as possible if they haven’t already."
       } else {
-        s"You have ${numPenPoints} penalty points for sending late submissions." +
+        s"You have $numPenPoints penalty points for sending late submissions." +
           s" You should send any missing submissions as soon as possible if you haven’t already."
       }
     }
   }
-
 }
