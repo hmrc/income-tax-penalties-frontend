@@ -395,6 +395,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe s"Because $youOrClient missed this deadline by more than 30 days, $youOrThey have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("penaltyAmountDetailsP1").text() shouldBe "We use a 10% yearly rate. This means the amount increases a small amount every day."
+            document.getElementById("penaltyAmountDetailsP2").text() shouldBe "Each day, we:"
+            document.getElementById("penaltyAmountDetailsPoint1").text() shouldBe "take the unpaid income tax"
+            document.getElementById("penaltyAmountDetailsPoint2").text() shouldBe "multiply by 0.10 (the annual rate)"
+            document.getElementById("penaltyAmountDetailsPoint3").text() shouldBe "divide the amount by days in a year"
+            document.getElementById("penaltyAmountDetailsPoint4").text() shouldBe "add all the daily amounts together to get the total amount"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
 
           }
@@ -440,6 +447,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, $youOrYourClientShould pay the outstanding tax immediately or set up a payment plan."
           }
+
         }
       }
 

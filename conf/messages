@@ -201,6 +201,20 @@ calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Your client must keep u
 calculation.individual.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
 calculation.agent.calc.breathing.space = Your client is in Breathing Space. This penalty is paused and will not increase. The time your client is in Breathing Space will not be added to their calculation.
 
+calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount
+calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.
+calculation.calc2.how.we.work.penalty.amount.p2 = Each day, we:
+calculation.calc2.how.we.work.penalty.amount.point.1 = take the unpaid income tax
+calculation.calc2.how.we.work.penalty.amount.point.2 = multiply by 0.10 (the annual rate)
+calculation.calc2.how.we.work.penalty.amount.point.3 = divide the amount by days in a year
+calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts together to get the total amount
+
+calculation.individual.calc2.penalty.details.heading = Your penalty details
+calculation.agent.calc2.penalty.details.heading = Your client’s penalty details
+
+calculation.agent.calc2.estimated.penalty = Estimated penalty
+calculation.calc2.table.charge.period = {0} to {1} ({2} Days)
+
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
 compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.

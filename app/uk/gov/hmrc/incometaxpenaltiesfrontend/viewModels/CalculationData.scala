@@ -20,6 +20,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDeta
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
 
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 sealed trait CalculationData {
   val penaltyAmount: BigDecimal
@@ -121,5 +122,11 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
   val formattedAmountPenaltyAppliedTo: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(amountPenaltyAppliedTo)
+
+  def chargePeriodDays(currentDate: LocalDate) : Int = {
+    val endDate = if(isEstimate) currentDate.minusDays(1) else payPenaltyBy.minusDays(32)
+    val startDate = principalChargeDueDate.plusDays(31)
+    ChronoUnit.DAYS.between(startDate, endDate).toInt
+  }
 
 }
