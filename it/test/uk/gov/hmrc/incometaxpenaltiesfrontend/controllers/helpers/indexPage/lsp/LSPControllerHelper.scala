@@ -65,7 +65,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB111132A" -> AB111132A,
       "AB121110A" -> AB121110A,
       //LSP4
-//      "AA400000A" -> AA400000A
+      "AA400000A" -> AA400000A
 //      "AA411110A" -> AA411110A
 //      "AB400010A" -> AB400010A
 //      "AB400020A" -> AB400020A
@@ -105,7 +105,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
         "You don’t have any active late submission penalties."
       }
     } else if(userDetailsData.hasFinanicalLSP) {
-      if (userDetailsData.numberOfFinancialPenalties == 1) {
+      if (userDetailsData.numberOfFinancialPenalties == 1 || userDetailsData.numberOfFinancialPenalties == 4) {
         if (isAgent) {
           "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed." +
             " They should send any missing submissions as soon as possible if they haven’t already."
