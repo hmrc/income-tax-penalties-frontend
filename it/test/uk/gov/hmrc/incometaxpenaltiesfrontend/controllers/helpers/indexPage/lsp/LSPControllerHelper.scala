@@ -66,8 +66,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB121110A" -> AB121110A,
       //LSP4
       "AA400000A" -> AA400000A,
-      "AA411110A" -> AA411110A
-//      "AB400010A" -> AB400010A
+      "AA411110A" -> AA411110A,
+      "AB400010A" -> AB400010A
 //      "AB400020A" -> AB400020A
 //      "AB411110A" -> AB411110A
 //      "AB411145A" -> AB411145A
