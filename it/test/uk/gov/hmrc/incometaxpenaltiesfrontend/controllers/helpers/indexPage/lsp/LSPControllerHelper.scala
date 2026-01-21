@@ -76,12 +76,12 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasFinancialLSP: Boolean, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false) = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
     document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    if (hasFinancialLSP) {
+    if (hasUnpaidFinancialLSP) {
       document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
     }
   }
@@ -104,8 +104,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       } else {
         "You don’t have any active late submission penalties."
       }
-    } else if(userDetailsData.hasFinanicalLSP) {
-      if (userDetailsData.numberOfFinancialPenalties == 1 || userDetailsData.numberOfFinancialPenalties == 4) {
+    } else if(userDetailsData.hasFinancialLSP) {
+      if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1) {
         if (isAgent) {
           "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed." +
             " They should send any missing submissions as soon as possible if they haven’t already."
