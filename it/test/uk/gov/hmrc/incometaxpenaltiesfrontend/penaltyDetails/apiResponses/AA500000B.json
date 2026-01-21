@@ -1,6 +1,6 @@
 {
   "idType" : "NINO",
-  "idNumber" : "AA500000A",
+  "idNumber" : "AA500000B",
   "payload" : {
     "success" : {
       "processingDate" : "2025-04-05T10:15:10Z",
@@ -14,11 +14,38 @@
             "pocAchievementDate" : "2029-02-07"
           },
           "lspDetails" : [ {
-            "penaltyNumber" : "005000001036",
+            "penaltyNumber" : "005000001025",
+            "penaltyCreationDate" : "2027-02-07",
+            "penaltyExpiryDate" : "2029-01-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "1",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2027-02-07",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2026-10-06",
+              "taxPeriodEndDate" : "2027-01-05",
+              "taxPeriodDueDate" : "2027-02-07",
+              "returnReceiptDate" : "2027-03-01"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "A",
+              "appealLevel" : "02",
+              "appealDescription" : "some description"
+            }, {
+              "appealStatus" : "C",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ]
+          }, {
+            "penaltyNumber" : "005000001012",
             "penaltyCreationDate" : "2027-05-07",
             "penaltyExpiryDate" : "2029-04-05",
             "triggeringProcess" : "ICRU",
-            "penaltyOrder" : "1",
+            "penaltyOrder" : "2",
             "penaltyCategory" : "P",
             "penaltyStatus" : "Active",
             "communicationsDate" : "2027-05-07",
@@ -37,11 +64,11 @@
               "appealDescription" : "some description"
             } ]
           }, {
-            "penaltyNumber" : "005000001054",
+            "penaltyNumber" : "005000001012",
             "penaltyCreationDate" : "2027-08-07",
             "penaltyExpiryDate" : "2029-07-05",
             "triggeringProcess" : "ICRU",
-            "penaltyOrder" : "2",
+            "penaltyOrder" : "3",
             "penaltyCategory" : "P",
             "penaltyStatus" : "Active",
             "communicationsDate" : "2027-08-07",
@@ -64,12 +91,12 @@
               "appealDescription" : "some description"
             } ]
           }, {
-            "penaltyNumber" : "005000001054",
+            "penaltyNumber" : "005000001064",
             "penaltyCreationDate" : "2027-11-07",
             "penaltyExpiryDate" : "2029-10-05",
             "triggeringProcess" : "ICRU",
-            "penaltyOrder" : "3",
-            "penaltyCategory" : "P",
+            "penaltyOrder" : "4",
+            "penaltyCategory" : "T",
             "penaltyStatus" : "Active",
             "communicationsDate" : "2027-11-07",
             "lateSubmissions" : [ {
@@ -92,14 +119,17 @@
               "appealStatus" : "C",
               "appealLevel" : "01",
               "appealDescription" : "some description"
-            } ]
+            } ],
+            "chargeAmount" : 200,
+            "chargeOutstandingAmount" : 200,
+            "chargeDueDate" : "2027-12-22"
           }, {
-            "penaltyNumber" : "005000001018",
+            "penaltyNumber" : "005000001023",
             "penaltyCreationDate" : "2028-01-31",
             "penaltyExpiryDate" : "2029-04-05",
             "triggeringProcess" : "ICRU",
-            "penaltyOrder" : "4",
-            "penaltyCategory" : "T",
+            "penaltyOrder" : "5",
+            "penaltyCategory" : "C",
             "penaltyStatus" : "Active",
             "communicationsDate" : "2028-01-31",
             "lateSubmissions" : [ {
@@ -112,6 +142,14 @@
               "returnReceiptDate" : "2028-02-23"
             } ],
             "appealInformation" : [ {
+              "appealStatus" : "A",
+              "appealLevel" : "03",
+              "appealDescription" : "some description"
+            }, {
+              "appealStatus" : "C",
+              "appealLevel" : "02",
+              "appealDescription" : "some description"
+            }, {
               "appealStatus" : "C",
               "appealLevel" : "01",
               "appealDescription" : "some description"
@@ -119,31 +157,6 @@
             "chargeAmount" : 200,
             "chargeOutstandingAmount" : 200,
             "chargeDueDate" : "2028-03-16"
-          }, {
-            "penaltyNumber" : "005000001042",
-            "penaltyCreationDate" : "2028-02-07",
-            "penaltyExpiryDate" : "2030-01-05",
-            "triggeringProcess" : "ICRU",
-            "penaltyOrder" : "5",
-            "penaltyCategory" : "T",
-            "penaltyStatus" : "Active",
-            "communicationsDate" : "2028-02-07",
-            "lateSubmissions" : [ {
-              "lateSubmissionID" : "001",
-              "incomeSource" : "JB Painting and Decorating",
-              "taxReturnStatus" : "Open",
-              "taxPeriodStartDate" : "2027-10-06",
-              "taxPeriodEndDate" : "2028-01-05",
-              "taxPeriodDueDate" : "2028-02-07"
-            } ],
-            "appealInformation" : [ {
-              "appealStatus" : "A",
-              "appealLevel" : "01",
-              "appealDescription" : "some description"
-            } ],
-            "chargeAmount" : 200,
-            "chargeOutstandingAmount" : 200,
-            "chargeDueDate" : "2028-03-23"
           } ]
         }
       }
