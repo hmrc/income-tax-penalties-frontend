@@ -30,8 +30,9 @@ trait UserDetailsData extends Matchers {
   val numberOfLSPPenalties: Int = 0
   val expectedNumberOfLSPPenaltyCards: Int
   val expectedNumberOfLPPPenaltyCards: Int
-  val hasFinanicalLSP: Boolean = false
-  val numberOfFinancialPenalties: Int = 0
+  val hasFinancialLSP: Boolean = false
+  val numberOfUnpaidFinancialPenalties: Int = 0
+  val numberOfPaidFinancialPenalties: Int = 0
 
   lazy val apiResponse: JsValue = getApiResponseJson(nino)
 

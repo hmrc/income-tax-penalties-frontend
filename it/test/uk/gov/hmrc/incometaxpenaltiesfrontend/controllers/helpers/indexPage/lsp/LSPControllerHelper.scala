@@ -72,22 +72,31 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB311120A" -> AB311120A,
       "AB311130A" -> AB311130A,
       "AB311140A" -> AB311140A,
+      //LSP4
+      "AA400000A" -> AA400000A,
+      "AA411110A" -> AA411110A,
+      "AB400010A" -> AB400010A,
+      "AB400020A" -> AB400020A,
+      "AB411110A" -> AB411110A,
+      "AB411145A" -> AB411145A,
+      "PE000001A" -> PE000001A,
+      "PE000003A" -> PE000003A,
       //LSP5
       "AA500000A" -> AA500000A
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasFinancialLSP: Boolean, isAgent: Boolean = false): Unit = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false) = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
     document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    if (hasFinancialLSP) {
+    if (hasUnpaidFinancialLSP) {
       document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
     }
   }
 
-  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false): Unit = {
+  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false) = {
     val lppTabContent = getLPPTabContent(document)
     lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
     val expectedLSPContent = if(isAgent){
@@ -105,8 +114,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       } else {
         "You don’t have any active late submission penalties."
       }
-    } else if(userDetailsData.hasFinanicalLSP) {
-      if (userDetailsData.numberOfFinancialPenalties == 1) {
+    } else if(userDetailsData.hasFinancialLSP) {
+      if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1) {
         if (isAgent) {
           "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed." +
             " They should send any missing submissions as soon as possible if they haven’t already."
