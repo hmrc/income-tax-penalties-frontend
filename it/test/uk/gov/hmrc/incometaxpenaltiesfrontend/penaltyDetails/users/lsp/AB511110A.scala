@@ -20,9 +20,9 @@ import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateAppealLink, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
-object AB500010A extends UserDetailsData {
+object AB511110A extends UserDetailsData {
 
-  override val nino: String = "AB500010A"
+  override val nino: String = "AB511110A"
   override val hasFinanicalLSP: Boolean = true
   override val hasPaidAllFinancialLSP: Boolean = true
   override val numberOfLSPPenalties: Int = 5
@@ -40,7 +40,8 @@ object AB500010A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update period", "6 January 2027 to 5 April 2027")
     validateSummary(cardRows.get(3), "Update due", "7 May 2027")
     validateSummary(cardRows.get(4), "Update submitted", "1 June 2027")
-    validateSummary(cardRows.get(5), "Appeal status", "Under review")
+    validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), is2ndStage = true)
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -53,18 +54,18 @@ object AB500010A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update period", "6 October 2026 to 5 January 2027")
     validateSummary(cardRows.get(3), "Update due", "7 February 2027")
     validateSummary(cardRows.get(4), "Update submitted", "1 March 2027")
-    validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(5), "Appeal status", "Decision upheld")
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 3: Late tax return")
     validateCardTag(card, expectedTag = "Active")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 3
+    cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(1), "Return due", "31 January 2027")
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
   }
 
   def penaltyCard3ExpectedContent(card: Element): Unit = {
@@ -84,12 +85,12 @@ object AB500010A extends UserDetailsData {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 1: Late update")
     validateCardTag(card, expectedTag = "Active")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 5
+    cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Missing or late income sources", "JB Painting and Decorating UK property rental income")
     validateSummary(cardRows.get(1), "Update period", "6 April 2026 to 5 July 2026")
     validateSummary(cardRows.get(2), "Update due", "7 August 2026")
     validateSummary(cardRows.get(3), "Update submitted", "1 September 2026")
-    validateSummary(cardRows.get(4), "Appeal status", "Under review")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(

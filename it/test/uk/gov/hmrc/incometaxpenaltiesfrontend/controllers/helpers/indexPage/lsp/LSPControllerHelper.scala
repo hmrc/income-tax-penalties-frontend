@@ -82,7 +82,15 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "PE000001A" -> PE000001A,
       "PE000003A" -> PE000003A,
       //LSP5
-      "AA500000A" -> AA500000A
+      "AA500000A" -> AA500000A,
+      "AA500000B" -> AA500000B,
+      "AA511110A" -> AA511110A,
+      "AB500010A" -> AB500010A,
+      "AB511110A" -> AB511110A,
+      "AB511120A" -> AB511120A,
+      "AB511130A" -> AB511130A,
+      "AB511140A" -> AB511140A,
+      "AB611150A" -> AB611150A
     )
   }
 
