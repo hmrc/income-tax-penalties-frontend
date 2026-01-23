@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A
 object AA211120A extends UserDetailsData {
 
   override val nino: String = "AA211120A"
-  override val hasFinanicalLSP: Boolean = false
+  override val hasFinancialLSP: Boolean = false
   override val numberOfLSPPenalties: Int = 2
 
   override val expectedNumberOfLSPPenaltyCards: Int = 2

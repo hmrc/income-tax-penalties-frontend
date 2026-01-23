@@ -25,6 +25,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   
   val lspUsers: Map[String, UserDetailsData] = { 
     Map(
+      //LSP0
       "AA000000A" -> AA000000A,
       "AA000000B" -> AA000000B,
       "AA000000C" -> AA000000C,
@@ -38,13 +39,6 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB000041A" -> AB000041A,
       "AB000042A" -> AB000042A,
       "AB000050A" -> AB000050A,
-      "AA500000A" -> AA500000A,
-      "AA211110A" -> AA211110A,
-      "AA211120A" -> AA211120A,
-      "AA211130A" -> AA211130A,
-      "AB211110A" -> AB211110A,
-      "AB211120A" -> AB211120A,
-      "PE000000A" -> PE000000A,
       //LSP1
       "AA111110A" -> AA111110A,
       "AA111110B" -> AA111110B,
@@ -63,16 +57,49 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB111130A" -> AB111130A,
       "AB111131A" -> AB111131A,
       "AB111132A" -> AB111132A,
-      "AB121110A" -> AB121110A
+      "AB121110A" -> AB121110A,
+      //LSP2
+      "AA211110A" -> AA211110A,
+      "AA211120A" -> AA211120A,
+      "AA211130A" -> AA211130A,
+      "AB211110A" -> AB211110A,
+      "AB211120A" -> AB211120A,
+      "PE000000A" -> PE000000A,
+      //LSP3
+      "AA300000A" -> AA300000A,
+      "AA311110A" -> AA311110A,
+      "AB311110A" -> AB311110A,
+      "AB311120A" -> AB311120A,
+      "AB311130A" -> AB311130A,
+      "AB311140A" -> AB311140A,
+      //LSP4
+      "AA400000A" -> AA400000A,
+      "AA411110A" -> AA411110A,
+      "AB400010A" -> AB400010A,
+      "AB400020A" -> AB400020A,
+      "AB411110A" -> AB411110A,
+      "AB411145A" -> AB411145A,
+      "PE000001A" -> PE000001A,
+      "PE000003A" -> PE000003A,
+      //LSP5
+      "AA500000A" -> AA500000A,
+      "AA500000B" -> AA500000B,
+      "AA511110A" -> AA511110A,
+      "AB500010A" -> AB500010A,
+      "AB511110A" -> AB511110A,
+      "AB511120A" -> AB511120A,
+      "AB511130A" -> AB511130A,
+      "AB511140A" -> AB511140A,
+      "AB611150A" -> AB611150A
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasFinancialLSP: Boolean, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false) = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
     document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    if (hasFinancialLSP) {
+    if (hasUnpaidFinancialLSP) {
       document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
     }
   }
@@ -95,8 +122,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       } else {
         "You don’t have any active late submission penalties."
       }
-    } else if(userDetailsData.hasFinanicalLSP) {
-      if (userDetailsData.numberOfFinancialPenalties == 1) {
+    } else if(userDetailsData.hasFinancialLSP) {
+      if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1) {
         if (isAgent) {
           "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed." +
             " They should send any missing submissions as soon as possible if they haven’t already."
@@ -124,13 +151,12 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     } else {
       val numPenPoints = userDetailsData.numberOfLSPPenalties.toString
       if(isAgent) {
-        s"Your client has ${numPenPoints} penalty points for sending late submissions." +
+        s"Your client has $numPenPoints penalty points for sending late submissions." +
           s" They should send any missing submissions as soon as possible if they haven’t already."
       } else {
-        s"You have ${numPenPoints} penalty points for sending late submissions." +
+        s"You have $numPenPoints penalty points for sending late submissions." +
           s" You should send any missing submissions as soon as possible if you haven’t already."
       }
     }
   }
-
 }

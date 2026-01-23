@@ -30,14 +30,17 @@ trait UserDetailsData extends Matchers {
   val numberOfLSPPenalties: Int = 0
   val expectedNumberOfLSPPenaltyCards: Int
   val expectedNumberOfLPPPenaltyCards: Int
-  val hasFinanicalLSP: Boolean = false
-  val numberOfFinancialPenalties: Int = 0
+  val hasFinancialLSP: Boolean = false
+  val numberOfUnpaidFinancialPenalties: Int = 0
+  val numberOfPaidFinancialPenalties: Int = 0
 
   lazy val apiResponse: JsValue = getApiResponseJson(nino)
 
   val expectedPenaltyCardsContent: Map[Int, Element => Unit]
   
   val expectedOverviewText: Boolean => String
+  
+  val timeMachineDate: Option[String] = None
 
   def getFilePath(nino: String): String = {
     s"it/test/uk/gov/hmrc/incometaxpenaltiesfrontend/penaltyDetails/apiResponses/$nino.json"

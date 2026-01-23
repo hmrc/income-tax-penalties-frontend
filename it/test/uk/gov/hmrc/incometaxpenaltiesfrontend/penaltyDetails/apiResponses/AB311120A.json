@@ -1,0 +1,126 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AB311120A",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lsp" : {
+          "lspSummary" : {
+            "activePenaltyPoints" : 2,
+            "inactivePenaltyPoints" : 0,
+            "regimeThreshold" : 2,
+            "penaltyChargeAmount" : 0,
+            "pocAchievementDate" : "2029-02-28"
+          },
+          "lspDetails" : [ {
+            "penaltyNumber" : "005000001053",
+            "penaltyCreationDate" : "2028-01-31",
+            "penaltyExpiryDate" : "2029-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "3",
+            "penaltyCategory" : "C",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2028-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Open",
+              "taxPeriodStartDate" : "2026-04-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2028-01-31"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Open",
+              "taxPeriodStartDate" : "2026-04-06",
+              "taxPeriodEndDate" : "2027-04-05",
+              "taxPeriodDueDate" : "2028-01-31"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "A",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ],
+            "chargeAmount" : 200,
+            "chargeOutstandingAmount" : 200,
+            "chargeDueDate" : "2028-03-16"
+          }, {
+            "penaltyNumber" : "005000001039",
+            "penaltyCreationDate" : "2027-01-31",
+            "penaltyExpiryDate" : "2028-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "2",
+            "penaltyCategory" : "T",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2027-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2025-04-06",
+              "taxPeriodEndDate" : "2026-04-05",
+              "taxPeriodDueDate" : "2027-01-31",
+              "returnReceiptDate" : "2027-02-22"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2025-04-06",
+              "taxPeriodEndDate" : "2026-04-05",
+              "taxPeriodDueDate" : "2027-01-31",
+              "returnReceiptDate" : "2027-02-22"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "C",
+              "appealLevel" : "02",
+              "appealDescription" : "some description"
+            }, {
+              "appealStatus" : "C",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ],
+            "chargeAmount" : 200,
+            "chargeOutstandingAmount" : 200,
+            "chargeDueDate" : "2027-03-17"
+          }, {
+            "penaltyNumber" : "005000001074",
+            "penaltyCreationDate" : "2026-01-31",
+            "penaltyExpiryDate" : "2027-04-05",
+            "triggeringProcess" : "ICRU",
+            "penaltyOrder" : "1",
+            "penaltyCategory" : "P",
+            "penaltyStatus" : "Active",
+            "communicationsDate" : "2026-01-31",
+            "lateSubmissions" : [ {
+              "lateSubmissionID" : "001",
+              "incomeSource" : "JB Painting and Decorating",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2024-04-06",
+              "taxPeriodEndDate" : "2025-04-05",
+              "taxPeriodDueDate" : "2026-01-31",
+              "returnReceiptDate" : "2026-02-22"
+            }, {
+              "lateSubmissionID" : "002",
+              "incomeSource" : "UK property rental income",
+              "taxReturnStatus" : "Fulfilled",
+              "taxPeriodStartDate" : "2024-04-06",
+              "taxPeriodEndDate" : "2025-04-05",
+              "taxPeriodDueDate" : "2026-01-31",
+              "returnReceiptDate" : "2026-02-22"
+            } ],
+            "appealInformation" : [ {
+              "appealStatus" : "A",
+              "appealLevel" : "02",
+              "appealDescription" : "some description"
+            }, {
+              "appealStatus" : "C",
+              "appealLevel" : "01",
+              "appealDescription" : "some description"
+            } ]
+          } ]
+        }
+      }
+    }
+  }
+}
