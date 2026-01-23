@@ -31,7 +31,14 @@ sealed trait CalculationData {
   val isEstimate: Boolean
   val isPenaltyOverdue: Boolean
   val penaltyChargeReference: Option[String]
+  val principalChargeDueDate: LocalDate
+  val payPenaltyBy: LocalDate
+  val formattedPenaltyAmount: String
 }
+//sealed trait HasFormattedAmount extends CalculationData{
+//  val formattedPenaltyAmount: String
+//  def chargePeriodDays(currentDate: LocalDate): Int
+//}
 
 case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   taxPeriodStartDate: LocalDate,
