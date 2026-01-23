@@ -25,6 +25,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   
   val lspUsers: Map[String, UserDetailsData] = { 
     Map(
+      //Both
+      "PE000002A" -> PE000002A,
       //LSP0
       "AA000000A" -> AA000000A,
       "AA000000B" -> AA000000B,
@@ -100,12 +102,12 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false): Unit = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidPenalty: Boolean, isAgent: Boolean = false): Unit = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
     document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    if (hasUnpaidFinancialLSP) {
+    if (hasUnpaidPenalty) {
       document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
     }
   }
