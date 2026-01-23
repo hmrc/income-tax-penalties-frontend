@@ -65,6 +65,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB211110A" -> AB211110A,
       "AB211120A" -> AB211120A,
       "PE000000A" -> PE000000A,
+      "AB211110A-overdue" -> AB211110AOverdue,
       //LSP3
       "AA300000A" -> AA300000A,
       "AA311110A" -> AA311110A,
@@ -81,6 +82,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB411145A" -> AB411145A,
       "PE000001A" -> PE000001A,
       "PE000003A" -> PE000003A,
+      "AA400000A-overdue" -> AA400000AOverdue,
+      "AA411110A-overdue" -> AA411110AOverdue,
       //LSP5
       "AA500000A" -> AA500000A,
       "AA500000B" -> AA500000B,
@@ -90,7 +93,10 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB511120A" -> AB511120A,
       "AB511130A" -> AB511130A,
       "AB511140A" -> AB511140A,
-      "AB611150A" -> AB611150A
+      "AB611150A" -> AB611150A,
+      "AA511110A-overdue" -> AA511110AOverdue,
+      "AB511140A-overdue" -> AB511140AOverdue,
+      "AB611150A-overdue" -> AB611150AOverdue
     )
   }
 
