@@ -35,10 +35,6 @@ sealed trait CalculationData {
   val payPenaltyBy: LocalDate
   val formattedPenaltyAmount: String
 }
-//sealed trait HasFormattedAmount extends CalculationData{
-//  val formattedPenaltyAmount: String
-//  def chargePeriodDays(currentDate: LocalDate): Int
-//}
 
 case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   taxPeriodStartDate: LocalDate,
