@@ -94,7 +94,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false): Unit = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
@@ -104,7 +104,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     }
   }
 
-  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false) = {
+  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false): Unit = {
     val lppTabContent = getLPPTabContent(document)
     lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
     val expectedLSPContent = if(isAgent){

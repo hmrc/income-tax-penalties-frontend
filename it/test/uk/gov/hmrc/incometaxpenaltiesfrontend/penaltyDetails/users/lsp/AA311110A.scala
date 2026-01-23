@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AA311110A extends UserDetailsData {
 
@@ -39,6 +38,7 @@ object AA311110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 November 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 December 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "5 October 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -51,6 +51,7 @@ object AA311110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
     validateSummary(cardRows.get(4), "Point due to expire", "5 July 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
@@ -63,6 +64,7 @@ object AA311110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 May 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 June 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "5 April 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(

@@ -18,14 +18,14 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AB311130A extends UserDetailsData {
 
   override val nino: String = "AB311130A"
   override val hasFinancialLSP: Boolean = true
-  override val numberOfLSPPenalties: Int = 2
-  override val numberOfUnpaidFinancialPenalties: Int = 2
+  override val numberOfLSPPenalties: Int = 3
+  override val numberOfPaidFinancialPenalties: Int = 1
+  override val numberOfUnpaidFinancialPenalties: Int = 1
 
   override val expectedNumberOfLSPPenaltyCards: Int = 3
   override val expectedNumberOfLPPPenaltyCards: Int = 0
@@ -40,6 +40,7 @@ object AB311130A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Return due", "31 January 2028")
     validateSummary(cardRows.get(3), "Return submitted", "Not yet received")
     validateSummary(cardRows.get(4), "Appeal status", "Appeal rejected")
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), is2ndStage = true)
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -51,6 +52,7 @@ object AB311130A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(2), "Return due", "31 January 2027")
     validateSummary(cardRows.get(3), "Return submitted", "22 February 2027")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {

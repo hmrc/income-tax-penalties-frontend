@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AB311110A extends UserDetailsData {
 
@@ -39,6 +38,7 @@ object AB311110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 May 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
     validateSummary(cardRows.get(4), "Point due to expire", "5 April 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -51,6 +51,7 @@ object AB311110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 February 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 March 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "5 January 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {

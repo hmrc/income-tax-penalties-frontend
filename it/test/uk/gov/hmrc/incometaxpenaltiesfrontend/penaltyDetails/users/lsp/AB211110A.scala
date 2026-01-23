@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AB211110A extends UserDetailsData {
 
@@ -39,6 +38,7 @@ object AB211110A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Tax year", "2026 to 2027")
     validateSummary(cardRows.get(2), "Return due", "31 January 2028")
     validateSummary(cardRows.get(3), "Return submitted", "Not yet received")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -49,6 +49,7 @@ object AB211110A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(1), "Return due", "31 January 2027")
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
