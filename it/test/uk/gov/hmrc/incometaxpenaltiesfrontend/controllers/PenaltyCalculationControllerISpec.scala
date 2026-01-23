@@ -24,9 +24,10 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpecHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.CalculationData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
 
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class PenaltyCalculationControllerISpec extends ControllerISpecHelper
   with PenaltiesStub with PenaltiesDetailsTestData with FeatureSwitching {
@@ -385,6 +386,18 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             result.status shouldBe OK
 
             val document = Jsoup.parse(result.body)
+            val chargePeriod = messagesAPI("calculation.table.caption.charge.period")
+            val estimatedPenalty = messagesAPI("calculation.agent.calc2.estimated.penalty")
+            val individualOrAgent = if (isAgent) "agent" else "individual"
+            val yourPenaltyDetails = messagesAPI(s"calculation.$individualOrAgent.calc2.penalty.details.heading")
+            def getPenaltyAmount(calcData: CalculationData): String = calcData.formattedPenaltyAmount
+            val estimatedPenaltyAmount = getPenaltyAmount(secondLPPCalcData)
+            //endDateChargePeriod when it has been estimated:
+            def endDateChargePeriod = getFeatureDate(appConfig).minusDays(1)
+            val startDateChargePeriod = secondLPPCalcData.payPenaltyBy.plusDays(31)
+            def getEndDateChargePeriod = getDateString(endDateChargePeriod)
+            def getStartDateChargePeriod = getDateString(startDateChargePeriod)
+            def getChargePeriodDays = ChronoUnit.DAYS.between(startDateChargePeriod, endDateChargePeriod).toInt
 
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
@@ -403,6 +416,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyAmountDetailsPoint3").text() shouldBe "divide the amount by days in a year"
             document.getElementById("penaltyAmountDetailsPoint4").text() shouldBe "add all the daily amounts together to get the total amount"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
+            document.select("#second-lpp-penalty-details-table caption").first().text() shouldBe s"$yourPenaltyDetails"
+            document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(1)").first().text() shouldBe s"$chargePeriod"
+            document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(2)").first().text() shouldBe s"$getStartDateChargePeriod to $getEndDateChargePeriod ($getChargePeriodDays Days)"
+            document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(1)").first().text() shouldBe s"$estimatedPenalty"
+            document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(2)").first().text() shouldBe s"£$estimatedPenaltyAmount"
 
           }
 
