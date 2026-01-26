@@ -129,7 +129,7 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
   def chargePeriodDays(currentDate: LocalDate) : Int = {
     val endDate = if(isEstimate) currentDate.minusDays(1) else payPenaltyBy.minusDays(32)
     val startDate = principalChargeDueDate.plusDays(31)
-    ChronoUnit.DAYS.between(startDate, endDate).toInt
+    ChronoUnit.DAYS.between(startDate, endDate).toInt + 1
   }
 
 }

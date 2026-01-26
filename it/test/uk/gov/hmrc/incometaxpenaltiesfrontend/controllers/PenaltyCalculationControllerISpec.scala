@@ -397,7 +397,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             val startDateChargePeriod = secondLPPCalcData.payPenaltyBy.plusDays(31)
             def getEndDateChargePeriod = getDateString(endDateChargePeriod)
             def getStartDateChargePeriod = getDateString(startDateChargePeriod)
-            def getChargePeriodDays = ChronoUnit.DAYS.between(startDateChargePeriod, endDateChargePeriod).toInt
+            def getChargePeriodDays = ChronoUnit.DAYS.between(startDateChargePeriod, endDateChargePeriod).toInt + 1
 
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
