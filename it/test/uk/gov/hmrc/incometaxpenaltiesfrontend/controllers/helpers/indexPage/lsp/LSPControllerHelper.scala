@@ -25,6 +25,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   
   val lspUsers: Map[String, UserDetailsData] = { 
     Map(
+      //Both
+      "PE000002A" -> PE000002A,
       //LSP0
       "AA000000A" -> AA000000A,
       "AA000000B" -> AA000000B,
@@ -65,6 +67,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB211110A" -> AB211110A,
       "AB211120A" -> AB211120A,
       "PE000000A" -> PE000000A,
+      "AB211110A-overdue" -> AB211110AOverdue,
       //LSP3
       "AA300000A" -> AA300000A,
       "AA311110A" -> AA311110A,
@@ -81,6 +84,8 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB411145A" -> AB411145A,
       "PE000001A" -> PE000001A,
       "PE000003A" -> PE000003A,
+      "AA400000A-overdue" -> AA400000AOverdue,
+      "AA411110A-overdue" -> AA411110AOverdue,
       //LSP5
       "AA500000A" -> AA500000A,
       "AA500000B" -> AA500000B,
@@ -90,21 +95,24 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB511120A" -> AB511120A,
       "AB511130A" -> AB511130A,
       "AB511140A" -> AB511140A,
-      "AB611150A" -> AB611150A
+      "AB611150A" -> AB611150A,
+      "AA511110A-overdue" -> AA511110AOverdue,
+      "AB511140A-overdue" -> AB511140AOverdue,
+      "AB611150A-overdue" -> AB611150AOverdue
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidFinancialLSP: Boolean, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidPenalty: Boolean, isAgent: Boolean = false): Unit = {
     val overview = document.getElementById("penaltiesOverview")
     overview.getElementById("overviewHeading").text() shouldBe "Overview"
     overview.text() shouldBe expectedOverview
     document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    if (hasUnpaidFinancialLSP) {
+    if (hasUnpaidPenalty) {
       document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
     }
   }
 
-  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false) = {
+  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false): Unit = {
     val lppTabContent = getLPPTabContent(document)
     lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
     val expectedLSPContent = if(isAgent){
