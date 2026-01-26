@@ -418,7 +418,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
             document.select("#second-lpp-penalty-details-table caption").first().text() shouldBe s"$yourPenaltyDetails"
             document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(1)").first().text() shouldBe s"$chargePeriod"
-            document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(2)").first().text() shouldBe s"$getStartDateChargePeriod to $getEndDateChargePeriod ($getChargePeriodDays Days)"
+            document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(2)").first().text() shouldBe s"$getStartDateChargePeriod to $getEndDateChargePeriod ($getChargePeriodDays days)"
             document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(1)").first().text() shouldBe s"$estimatedPenalty"
             document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(2)").first().text() shouldBe s"£$estimatedPenaltyAmount"
 
