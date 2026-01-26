@@ -201,6 +201,7 @@ calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Your client must keep u
 
 calculation.individual.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
 calculation.agent.calc.breathing.space = Mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser y mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at ei gyfrifiad.
+
 calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount(Welsh)
 calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.(Welsh)
 calculation.calc2.how.we.work.penalty.amount.p2 = Each day, we:(Welsh)
@@ -214,6 +215,7 @@ calculation.agent.calc2.penalty.details.heading = Your client’s penalty detail
 
 calculation.calc2.estimated.penalty = Estimated penalty(Welsh)
 calculation.calc2.table.charge.period = {0} to {1} ({2} Days)(Welsh)
+
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
 compliance.timeline.individual.send.submission.listed = Fel bod modd i CThEF ddileu eich pwyntiau, mae angen i chi anfon unrhyw gyflwyniadau sydd wedi’u rhestru ar y llinell amser hon cyn y dyddiad cau.
