@@ -213,7 +213,7 @@ calculation.individual.calc2.penalty.details.heading = Your penalty details
 calculation.agent.calc2.penalty.details.heading = Your client’s penalty details
 
 calculation.calc2.estimated.penalty = Estimated penalty
-calculation.calc2.table.charge.period = {0} to {1} ({2} Days)
+calculation.calc2.table.charge.period = {0} to {1} ({2} days)
 
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
