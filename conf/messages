@@ -212,7 +212,7 @@ calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts
 calculation.individual.calc2.penalty.details.heading = Your penalty details
 calculation.agent.calc2.penalty.details.heading = Your client’s penalty details
 
-calculation.agent.calc2.estimated.penalty = Estimated penalty
+calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period = {0} to {1} ({2} Days)
 
 compliance.timeline.individual.title = Actions you need to take to get your points removed

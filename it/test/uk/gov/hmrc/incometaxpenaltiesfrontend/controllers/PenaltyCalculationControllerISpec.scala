@@ -387,7 +387,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
             val document = Jsoup.parse(result.body)
             val chargePeriod = messagesAPI("calculation.table.caption.charge.period")
-            val estimatedPenalty = messagesAPI("calculation.agent.calc2.estimated.penalty")
+            val estimatedPenalty = messagesAPI("calculation.calc2.estimated.penalty")
             val individualOrAgent = if (isAgent) "agent" else "individual"
             val yourPenaltyDetails = messagesAPI(s"calculation.$individualOrAgent.calc2.penalty.details.heading")
             def getPenaltyAmount(calcData: CalculationData): String = calcData.formattedPenaltyAmount

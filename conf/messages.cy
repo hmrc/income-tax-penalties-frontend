@@ -212,7 +212,7 @@ calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts
 calculation.individual.calc2.penalty.details.heading = Your penalty details(Welsh)
 calculation.agent.calc2.penalty.details.heading = Your client’s penalty details(Welsh)
 
-calculation.agent.calc2.estimated.penalty = Estimated penalty(Welsh)
+calculation.calc2.estimated.penalty = Estimated penalty(Welsh)
 calculation.calc2.table.charge.period = {0} to {1} ({2} Days)(Welsh)
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
