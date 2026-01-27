@@ -32,7 +32,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
   val serviceName = "Manage your Self Assessment"
   val moreInformationLink = "More information about how HMRC removes penalty points (opens in new tab)"
-  val returnToSALink = "Return to Self Assessment penalties and appeals (opens in new tab)"
+  val returnToSALink = "Return to Self Assessment penalties and appeals"
   val pointsToBeRemoved = s"Points to be removed: December 2024"
   val taxYear1 = "Tax return: 6 April 2021 to 5 April 2022"
   val quarter1 = "Update period: 1 July 2022 to 30 September 2022"
