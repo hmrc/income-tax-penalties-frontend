@@ -116,7 +116,7 @@ calculation.individual.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaethoch fe
 calculation.agent.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaeth fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arno fel cosb
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = Rydych wedi methu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arnoch fel cosb
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arno fel cosb
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Rydych wedi methu'r dyddiad cau o 15 i 30 diwrnod, felly codir 2% o'r dreth oedd yn ddyledus arnoch 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Rydych wedi methu’r dyddiad cau o 15 i 30 diwrnod, felly codir 2% o’r dreth oedd yn ddyledus arnoch 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0})
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Gwnaeth fethu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arno fel cosb
 
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% o £{0} (sef y dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
