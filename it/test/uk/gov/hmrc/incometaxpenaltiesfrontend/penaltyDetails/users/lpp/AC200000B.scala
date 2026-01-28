@@ -21,7 +21,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsDa
 
 object AC200000B extends UserDetailsData {
 
-  override val nino: String = "AC200000A"
+  override val nino: String = "AC200000B"
   override val expectedNumberOfLPPPenaltyCards: Int = 2
   override val expectedNumberOfLSPPenaltyCards: Int = 0
 
@@ -32,7 +32,7 @@ object AC200000B extends UserDetailsData {
     cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan agreed")
+    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan proposed")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }

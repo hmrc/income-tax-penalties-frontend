@@ -21,31 +21,31 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsDa
 
 object AL200001A extends UserDetailsData {
 
-  override val nino: String = "AC200000B"
+  override val nino: String = "AL200001A"
   override val expectedNumberOfLPPPenaltyCards: Int = 2
   override val expectedNumberOfLSPPenaltyCards: Int = 0
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £80.00")
     validateCardTag(card, expectedTag = "Estimate")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 3
-    validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan proposed")
+    validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
+    validateSummary(cardRows.get(1), "Income Tax due", "31 January 2026")
+    validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
-    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")
+    validateSummary(cardRows.get(0), "Pay penalty by", "18 April 2026")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
+    validateSummary(cardRows.get(3), "Income Tax paid", "17 March 2026")
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }

@@ -24,7 +24,20 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.*
 trait LPPControllerHelper extends ControllerISpecHelper {
 
   val lppUsers: Map[String, UserDetailsData] = Map(
-    "AL300003A" -> AL300003A
+    //"AA120000C" -> AA120000C,
+    "AA200000C" -> AA200000C,
+    "AA233330A" -> AA233330A,
+    "AA233440A" -> AA233440A,
+    "AA244440A" -> AA244440A,
+    //"AC100000A" -> AC100000A,
+    //"AC100000B" -> AC100000B,
+    "AC200000A" -> AC200000A,
+    "AC200000B" -> AC200000B,
+    "AL200001A" -> AL200001A,
+    //"AL300001A" -> AL300001A,
+    "AL300002A" -> AL300002A,
+    "AL300003A" -> AL300003A,
+    "PE000002A" -> PE000002A
   )
 
   def validatePenaltyOverview(document: Document, expectedContent: String, isAgent: Boolean = false) = {

@@ -21,7 +21,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsDa
 
 object AC100000B extends UserDetailsData {
 
-  override val nino: String = "AC100000A"
+  override val nino: String = "AC100000B"
   override val expectedNumberOfLPPPenaltyCards: Int = 1
   override val expectedNumberOfLSPPenaltyCards: Int = 0
 
