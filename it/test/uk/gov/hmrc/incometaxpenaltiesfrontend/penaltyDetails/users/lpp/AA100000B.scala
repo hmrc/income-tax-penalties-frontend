@@ -36,6 +36,7 @@ object AA100000B extends UserDetailsData {
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
     validateSummary(cardRows.get(3), "Income Tax paid", "20 February 2026")
     validateViewCalculationLink(card, 0)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(

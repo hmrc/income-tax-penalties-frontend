@@ -37,6 +37,7 @@ object AA200000B extends UserDetailsData {
     validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
     validateSummary(cardRows.get(3), "Status", "Paused due to Breathing Space")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
@@ -49,6 +50,7 @@ object AA200000B extends UserDetailsData {
     validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")
     validateSummary(cardRows.get(4), "Status", "Paused due to Breathing Space")
     validateViewCalculationLink(card, 1)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
