@@ -28,7 +28,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AA100000A" -> AA100000A,
     "AA100000B" -> AA100000B,
     "AA100000C" -> AA100000C,
-//    "AA100000D" -> AA100000D,
+    "AA100000D" -> AA100000D,
 //    "AA100002C" -> AA100002C,
 //    "AA123450A" -> AA123450A,
 //    "AA200000A" -> AA200000A,
