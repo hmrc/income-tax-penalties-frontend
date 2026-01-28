@@ -18,26 +18,24 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AA100000A.validateViewCalculationLink
 
 object AA100000B extends UserDetailsData {
 
   override val nino: String = "AA100000B"
-  override val hasFinancialLSP: Boolean = true
-  override val numberOfLSPPenalties: Int = 0
-
-  override val expectedNumberOfLSPPenaltyCards: Int = 1
-  override val expectedNumberOfLPPPenaltyCards: Int = 0
+  override val expectedNumberOfLSPPenaltyCards: Int = 0
+  override val expectedNumberOfLPPPenaltyCards: Int = 1
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 5
-    validateSummary(cardRows.get(0), "Missing or late income sources", "JB Painting and Decorating UK property rental income")
-    validateSummary(cardRows.get(1), "Update period", "6 April 2027 to 5 July 2027")
-    validateSummary(cardRows.get(2), "Update due", "7 August 2027")
-    validateSummary(cardRows.get(3), "Update submitted", "1 September 2027")
-    validateSummary(cardRows.get(4), "Appeal status", "Appeal successful")
+    cardRows.size() shouldBe 4
+    validateSummary(cardRows.get(0), "Pay penalty by", "24 March 2026")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
+    validateSummary(cardRows.get(3), "Income Tax paid", "20 February 2026")
+    validateViewCalculationLink(card, 0)
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
@@ -45,5 +43,5 @@ object AA100000B extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty"
+    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty Check amounts${if(isAgent) "" else " and pay"}"
 }

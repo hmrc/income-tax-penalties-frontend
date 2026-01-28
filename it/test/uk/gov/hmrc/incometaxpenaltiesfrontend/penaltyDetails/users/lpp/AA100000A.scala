@@ -22,19 +22,19 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsDa
 object AA100000A extends UserDetailsData {
 
   override val nino: String = "AA100000A"
-  override val expectedNumberOfLPPPenaltyCards: Int = 1
+  override val numberOfLPPPenalties: Int = 0
   override val expectedNumberOfLSPPenaltyCards: Int = 0
+  override val expectedNumberOfLPPPenaltyCards: Int = 1
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
-    validateCardTag(card, expectedTag = "Estimated")
+    validateCardTag(card, expectedTag = "Estimate")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
+    cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2026")
     validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
-    validateViewCalculationLink(card, 0, isSecondLPP = false)
+    validateViewCalculationLink(card, 0)
   }
 
 
