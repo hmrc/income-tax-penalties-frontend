@@ -25,6 +25,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.indexPage.lpp.
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
+import java.time.LocalDate
+
 class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitching
   with PenaltiesStub with PenaltiesDetailsTestData {
 
@@ -35,12 +37,22 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
     disable(UseStubForBackend)
   }
 
+  val defaultTimeMachineDate: LocalDate = getFeatureDate(appConfig)
+  println(s"LPP: §§§ $defaultTimeMachineDate")
+
   lppUsers.foreach { case (nino, userdetails) =>
 
     "GET /view-penalty/self-assessment" when {
       "the call to penalties backend returns data" should {
         "render the expected penalty cards" when {
+          val date: LocalDate = userdetails.timeMachineDate.map(date =>
+            LocalDate.parse(date.replace("/", "-"), timeMachineDateFormatter)
+          ).getOrElse {
+            defaultTimeMachineDate
+          }
+
           s"the user with nino $nino is an authorised individual" in {
+            setFeatureDate(Some(date))
             stubAuthRequests(false, nino)
             stubGetPenalties(nino, None)(OK, userdetails.getApiResponseJson(nino))
             val result = get("/")
@@ -61,6 +73,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
           }
 
           s"the user is an authorised agent for a client with nino $nino" in {
+            setFeatureDate(Some(date))
             stubAuthRequests(true, nino)
             stubGetPenalties(nino, Some("123456789"))(OK, userdetails.getApiResponseJson(nino))
             val result = get("/agent", true)
@@ -82,5 +95,6 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
         }
       }
     }
+    setFeatureDate(Some(defaultTimeMachineDate))
   }
 }
