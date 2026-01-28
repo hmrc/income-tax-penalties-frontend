@@ -1,0 +1,43 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AA100000C",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "totalisations" : {
+          "lspTotalValue" : 0,
+          "penalisedPrincipalTotal" : 0,
+          "lppPostedTotal" : 0,
+          "lppEstimatedTotal" : 40
+        },
+        "lpp" : {
+          "manualLPPIndicator" : false,
+          "lppDetails" : [ {
+            "principalChargeReference" : "XJ002616061044",
+            "penaltyStatus" : "P",
+            "penaltyAmountAccruing" : 0,
+            "penaltyAmountPosted" : 40,
+            "principalChargeBillingFrom" : "2024-04-06",
+            "principalChargeBillingTo" : "2025-04-05",
+            "principalChargeDueDate" : "2026-01-31",
+            "principalChargeDocNumber" : "DOC1",
+            "principalChargeMainTr" : "4720",
+            "principalChargeSubTr" : "SUB1",
+            "penaltyCategory" : "LPP1",
+            "penaltyAmountPaid" : 40,
+            "penaltyAmountOutstanding" : 0,
+            "lpp1LRCalculationAmt" : 2000,
+            "lpp1LRDays" : "15",
+            "lpp1LRPercentage" : 2,
+            "penaltyChargeCreationDate" : "2026-02-15",
+            "communicationsDate" : "2026-03-12",
+            "penaltyChargeReference" : "XJ002616061044",
+            "penaltyChargeDueDate" : "2026-03-24",
+            "principalChargeLatestClearing" : "2026-02-20"
+          } ]
+        }
+      }
+    }
+  }
+}
