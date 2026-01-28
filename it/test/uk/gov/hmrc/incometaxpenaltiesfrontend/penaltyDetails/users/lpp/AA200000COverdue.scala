@@ -19,15 +19,15 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
-object AA200000C extends UserDetailsData {
+object AA200000COverdue extends UserDetailsData {
 
-  override val nino: String = "AA200000C"
-  override val expectedNumberOfLPPPenaltyCards: Int = 2
-  override val expectedNumberOfLSPPenaltyCards: Int = 0
+  override val nino: String = AA200000C.nino
+  override val expectedNumberOfLPPPenaltyCards: Int = AA200000C.expectedNumberOfLPPPenaltyCards
+  override val expectedNumberOfLSPPenaltyCards: Int = AA200000C.expectedNumberOfLSPPenaltyCards
   
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
@@ -37,24 +37,13 @@ object AA200000C extends UserDetailsData {
     validateViewCalculationLink(card, 0)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
-
-  def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
-    validateCardTag(card, expectedTag = "Estimate")
-    val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 3
-    validateSummary(cardRows.get(0), "Overdue charge", "Extra amount due to amended return for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(1), "Extra amount due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Extra amount paid", "Payment not yet received")
-    validateViewCalculationLink(card, 1, isSecondLPP = true)
-    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
-  }
   
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
-    1 -> penaltyCard1ExpectedContent
+    1 -> AA200000C.penaltyCard1ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty Check amounts${if (isAgent) "" else " and pay"}"
+  override val expectedOverviewText: Boolean => String = AA200000C.expectedOverviewText
+
+  override val timeMachineDate: Option[String] = Some("20/05/2028")
 }

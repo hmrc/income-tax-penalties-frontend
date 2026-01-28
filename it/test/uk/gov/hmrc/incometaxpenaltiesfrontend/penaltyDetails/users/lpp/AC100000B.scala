@@ -32,7 +32,7 @@ object AC100000B extends UserDetailsData {
     cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2026")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan agreed")
+    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan proposed")
     validateViewCalculationLink(card, 0)
   }
   
@@ -40,6 +40,5 @@ object AC100000B extends UserDetailsData {
     0 -> penaltyCard0ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = isAgent => ""
-    //s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty Check amounts${if(isAgent) "" else " and pay"}"
+  override val expectedOverviewText: Boolean => String = _ => ""
 }

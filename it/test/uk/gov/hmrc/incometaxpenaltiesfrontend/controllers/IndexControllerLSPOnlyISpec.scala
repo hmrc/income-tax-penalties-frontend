@@ -60,10 +60,8 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            if (userdetails.numberOfLSPPenalties > 0) {
-              validatePenaltyOverview(document, userdetails.expectedOverviewText(false),
-                userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0)
-            }
+            validatePenaltyOverview(document, userdetails.expectedOverviewText(false),
+              userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0)
             validatePenaltyTabs(document)
             if (userdetails.expectedNumberOfLPPPenaltyCards == 0) {
               validateNoLPPPenalties(document)
@@ -86,10 +84,8 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            if (userdetails.numberOfLSPPenalties > 0) {
-              validatePenaltyOverview(document, userdetails.expectedOverviewText(true),
-                userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0, true)
-            }
+            validatePenaltyOverview(document, userdetails.expectedOverviewText(true),
+              userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0, true)
             validatePenaltyTabs(document)
             if (userdetails.expectedNumberOfLPPPenaltyCards == 0) {
               validateNoLPPPenalties(document, true)

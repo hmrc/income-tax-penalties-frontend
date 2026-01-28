@@ -103,12 +103,16 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   }
 
   def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidPenalty: Boolean, isAgent: Boolean = false): Unit = {
-    val overview = document.getElementById("penaltiesOverview")
-    overview.getElementById("overviewHeading").text() shouldBe "Overview"
-    overview.text() shouldBe expectedOverview
-    document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-    if (hasUnpaidPenalty) {
-      document.getSubmitButton.text() shouldBe s"Check amounts${if(isAgent) "" else " and pay"}"
+    if (expectedOverview.equals("")) {
+      document.getElementById("penaltiesOverview") shouldBe null
+    } else {
+      val overview = document.getElementById("penaltiesOverview")
+      overview.getElementById("overviewHeading").text() shouldBe "Overview"
+      overview.text() shouldBe expectedOverview
+      document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
+      if (hasUnpaidPenalty) {
+        document.getSubmitButton.text() shouldBe s"Check amounts${if (isAgent) "" else " and pay"}"
+      }
     }
   }
 

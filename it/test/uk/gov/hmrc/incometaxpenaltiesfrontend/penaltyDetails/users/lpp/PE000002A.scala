@@ -24,6 +24,7 @@ object PE000002A extends UserDetailsData {
   override val nino: String = "PE000002A"
   override val expectedNumberOfLPPPenaltyCards: Int = 2
   override val expectedNumberOfLSPPenaltyCards: Int = 1
+  override val numberOfLSPPenalties: Int = 1
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £46.02")
@@ -34,7 +35,7 @@ object PE000002A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2029")
     validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
-    validateAppealLink(card.getElementsByClass("govuk-link").get(1), is2ndStage = true)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -47,6 +48,7 @@ object PE000002A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2029")
     validateSummary(cardRows.get(3), "Income Tax paid", "17 March 2029")
     validateViewCalculationLink(card, 1)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
   
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
@@ -55,5 +57,5 @@ object PE000002A extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty 1 late submission penalty point Check amounts${if(isAgent) "" else " and pay"}"
+    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: a late payment penalty 1 late submission penalty point Check amounts${if(isAgent) "" else " and pay"}"
 }
