@@ -19,29 +19,29 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
-object AA100000B extends UserDetailsData {
+object AA100000C extends UserDetailsData {
 
-  override val nino: String = "AA100000B"
+  override val nino: String = "AA100000C"
   override val numberOfLPPPenalties: Int = 0
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   override val expectedNumberOfLPPPenaltyCards: Int = 1
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Paid")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "24 March 2026")
-    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
-    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
-    validateSummary(cardRows.get(3), "Income Tax paid", "20 February 2026")
+    cardRows.size() shouldBe 3
+    validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
+    validateSummary(cardRows.get(1), "Income Tax due", "31 January 2026")
+    validateSummary(cardRows.get(2), "Income Tax paid", "20 February 2026")
     validateViewCalculationLink(card, 0)
   }
+
+
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty Check amounts${if(isAgent) "" else " and pay"}"
+  override val expectedOverviewText: Boolean => String = _ =>  ""
 }
