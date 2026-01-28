@@ -27,12 +27,26 @@
         main: MainTemplate,
         link: Link,
         govukInsetText : GovukInsetText,
+        govukDetails : GovukDetails,
+        p: P,
+        govukTable : GovukTable,
         calculationHelper: SecondLatePaymentCalculationHelper
 )
 
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @individualOrAgent = {@if(isAgent){agent}else{individual}}
+
+@penaltyAmountDetails = {
+    @p("calculation.calc2.how.we.work.penalty.amount.p1", elmId = Some("penaltyAmountDetailsP1"))
+    @p("calculation.calc2.how.we.work.penalty.amount.p2", elmId = Some("penaltyAmountDetailsP2"))
+    <ol>
+        <li id="penaltyAmountDetailsPoint1">@messages("calculation.calc2.how.we.work.penalty.amount.point.1")</li>
+        <li id="penaltyAmountDetailsPoint2">@messages("calculation.calc2.how.we.work.penalty.amount.point.2")</li>
+        <li id="penaltyAmountDetailsPoint3">@messages("calculation.calc2.how.we.work.penalty.amount.point.3")</li>
+        <li id="penaltyAmountDetailsPoint4">@messages("calculation.calc2.how.we.work.penalty.amount.point.4")</li>
+    </ol>
+}
 
 @main(pageTitle = messages(s"calculation.individual.second.title"), backLinkEnabled = true, isAgent = isAgent) {
 
@@ -112,30 +126,40 @@
         }
     </div>
 
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amountApplied")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.charge.period")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.annual.rate")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell">£@calculationData.formattedAmountPenaltyAppliedTo</td>
-                <td class="govuk-table__cell">@messages("calculation.table.charge.period", dateToString(calculationData.principalChargeDueDate.plusDays(31)), dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate().minusDays(1) else calculationData.payPenaltyBy.minusDays(32)))</td>
-                <td class="govuk-table__cell">@{calculationData.penaltyPercentage}%</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
-            </tr>
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
-                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
-                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
-            </tr>
-        </tbody>
-    </table>
+    @govukDetails(Details(
+        summary = Text(messages("calculation.calc2.how.we.work.penalty.amount")),
+        content = HtmlContent(penaltyAmountDetails)
+    ))
+
+    @govukTable(Table(
+        rows = Seq(
+            Seq(
+                TableRow(
+                    content = Text(messages("calculation.table.caption.charge.period")),
+                    classes = "govuk-!-font-weight-bold"
+                ),
+                TableRow(
+                    content = Text(messages("calculation.calc2.table.charge.period",
+                        dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+                        dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate().minusDays(1) else calculationData.payPenaltyBy.minusDays(32)),
+                        calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+                )
+            ),
+            Seq(
+                TableRow(
+                    content = Text(messages("calculation.calc2.estimated.penalty")),
+                    classes = "govuk-!-font-weight-bold"
+                ),
+                TableRow(
+                    content = Text("£" + calculationData.formattedPenaltyAmount)
+                )
+            )
+        ),
+        caption = Some(messages(s"calculation.$individualOrAgent.calc2.penalty.details.heading")),
+        attributes = Map("id" -> "second-lpp-penalty-details-table"),
+        captionClasses = "govuk-table__caption--m",
+        firstCellIsHeader = false
+    ))
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">

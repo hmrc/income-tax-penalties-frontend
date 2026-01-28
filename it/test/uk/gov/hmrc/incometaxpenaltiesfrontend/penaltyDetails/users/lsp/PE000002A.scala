@@ -19,25 +19,26 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
-object AB111132A extends UserDetailsData {
+object PE000002A extends UserDetailsData {
 
-  override val nino: String = "AB111132A"
+  override val nino: String = "PE000002A"
   override val hasFinancialLSP: Boolean = false
   override val numberOfLSPPenalties: Int = 1
 
   override val expectedNumberOfLSPPenaltyCards: Int = 1
-  override val expectedNumberOfLPPPenaltyCards: Int = 0
+  override val expectedNumberOfLPPPenaltyCards: Int = 1
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Penalty point 1: Late tax return")
+    validatePenaltyCardTitle(card, expectedTitle = "Penalty point 1: Late update")
     validateCardTag(card, expectedTag = "Active")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
-    validateSummary(cardRows.get(0), "Tax year", "2026 to 2027")
-    validateSummary(cardRows.get(1), "Return due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Return submitted", "23 February 2028")
-    validateSummary(cardRows.get(3), "Point due to expire", "5 April 2029")
-    validateSummary(cardRows.get(4), "Appeal status", "Decision upheld")
+    validateSummary(cardRows.get(0), "Missing or late income sources", "JB Painting and Decorating")
+    validateSummary(cardRows.get(1), "Update period", "6 October 2027 to 5 January 2028")
+    validateSummary(cardRows.get(2), "Update due", "7 February 2028")
+    validateSummary(cardRows.get(3), "Update submitted", "1 March 2028")
+    validateSummary(cardRows.get(4), "Point due to expire", "5 January 2030")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
@@ -45,10 +46,5 @@ object AB111132A extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview Your${if (isAgent) " client’s" else ""} account has 1 late submission penalty point"
+    s"Overview Your${if (isAgent) " client’s" else ""} account has: a late payment penalty 1 late submission penalty point Check amounts${if (isAgent) "" else " and pay"}"
 }
-
-
-
-
-

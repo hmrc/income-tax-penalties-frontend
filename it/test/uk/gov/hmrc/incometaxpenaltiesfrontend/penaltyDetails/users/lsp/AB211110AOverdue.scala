@@ -19,44 +19,34 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
-object AB211120A extends UserDetailsData {
+object AB211110AOverdue extends UserDetailsData {
 
-  override val nino: String = "AB211120A"
-  override val hasFinancialLSP: Boolean = true
-  override val numberOfLSPPenalties: Int = 2
-  override val numberOfUnpaidFinancialPenalties: Int = 1
+  override val nino: String = AB211110A.nino
+  override val hasFinancialLSP: Boolean = AB211110A.hasFinancialLSP
+  override val numberOfLSPPenalties: Int = AB211110A.numberOfLSPPenalties
+  override val numberOfUnpaidFinancialPenalties: Int = AB211110A.numberOfUnpaidFinancialPenalties
 
-  override val expectedNumberOfLSPPenaltyCards: Int = 2
-  override val expectedNumberOfLPPPenaltyCards: Int = 0
+  override val expectedNumberOfLSPPenaltyCards: Int = AB211110A.expectedNumberOfLSPPenaltyCards
+  override val expectedNumberOfLPPPenaltyCards: Int = AB211110A.expectedNumberOfLPPPenaltyCards
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 2: Late tax return - £200 penalty")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 5
+    cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
     validateSummary(cardRows.get(1), "Tax year", "2026 to 2027")
     validateSummary(cardRows.get(2), "Return due", "31 January 2028")
     validateSummary(cardRows.get(3), "Return submitted", "Not yet received")
-    validateSummary(cardRows.get(4), "Appeal status", "Appeal rejected")
-  }
-
-  def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Penalty point 1: Late tax return")
-    validateCardTag(card, expectedTag = "Active")
-    val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Tax year", "2025 to 2026")
-    validateSummary(cardRows.get(1), "Return due", "31 January 2027")
-    validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal in progress")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
-    1 -> penaltyCard1ExpectedContent
+    1 -> AB211110A.penaltyCard1ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview Your${if (isAgent) " client’s" else ""} account has: a late submission penalty the maximum number of late submission penalty points Check amounts${if (isAgent) "" else " and pay"}"
+  override val expectedOverviewText: Boolean => String = AB211110A.expectedOverviewText
+
+  override val timeMachineDate: Option[String] = Some("30/03/2028")
 }

@@ -32,6 +32,5 @@ object AA000000A extends UserDetailsData {
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map.empty
 
-  override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview Your account has: late submission penalties the maximum number of late submission penalty points Check amounts${if(isAgent) "" else " and pay"}"
+  override val expectedOverviewText: Boolean => String = _ => ""
 }

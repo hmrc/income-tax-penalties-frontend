@@ -18,13 +18,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AA111121A extends UserDetailsData {
 
   override val nino: String = "AA111121A"
   override val hasFinancialLSP: Boolean = false
-  override val numberOfUnpaidFinancialPenalties: Int = 0
   override val numberOfLSPPenalties: Int = 1
 
   override val expectedNumberOfLSPPenaltyCards: Int = 1

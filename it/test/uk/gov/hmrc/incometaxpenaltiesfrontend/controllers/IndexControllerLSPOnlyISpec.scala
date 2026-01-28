@@ -52,8 +52,8 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
 
           s"the user with nino $nino is an authorised individual" in {
             setFeatureDate(Some(date))
-            stubAuthRequests(false, nino)
-            stubGetPenalties(nino, None)(OK, userdetails.getApiResponseJson(nino))
+            stubAuthRequests(false, userdetails.nino)
+            stubGetPenalties(userdetails.nino, None)(OK, userdetails.getApiResponseJson(userdetails.nino))
             val result = get("/")
             val document = Jsoup.parse(result.body)
 
@@ -61,10 +61,13 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
             if (userdetails.numberOfLSPPenalties > 0) {
-              validatePenaltyOverview(document, userdetails.expectedOverviewText(false), (userdetails.hasFinancialLSP && userdetails.numberOfUnpaidFinancialPenalties > 0))
+              validatePenaltyOverview(document, userdetails.expectedOverviewText(false),
+                userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0)
             }
             validatePenaltyTabs(document)
-            validateNoLPPPenalties(document)
+            if (userdetails.expectedNumberOfLPPPenaltyCards == 0) {
+              validateNoLPPPenalties(document)
+            }
             val lspTab = getLSPTabContent(document)
             lspTab.getElementById("lspHeading").text() shouldBe "Late submission penalties"
             lspTab.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPTabBody(userdetails)
@@ -75,8 +78,8 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
 
           s"the user is an authorised agent for a client with nino $nino" in {
             setFeatureDate(Some(date))
-            stubAuthRequests(true, nino)
-            stubGetPenalties(nino, Some("123456789"))(OK, userdetails.getApiResponseJson(nino))
+            stubAuthRequests(true, userdetails.nino)
+            stubGetPenalties(userdetails.nino, Some("123456789"))(OK, userdetails.getApiResponseJson(userdetails.nino))
             val result = get("/agent", true)
             val document = Jsoup.parse(result.body)
 
@@ -84,11 +87,13 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
             if (userdetails.numberOfLSPPenalties > 0) {
-              validatePenaltyOverview(document, userdetails.expectedOverviewText(true), (userdetails.hasFinancialLSP && userdetails.numberOfUnpaidFinancialPenalties > 0), true)
+              validatePenaltyOverview(document, userdetails.expectedOverviewText(true),
+                userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0, true)
             }
-            validateNoLPPPenalties(document, true)
             validatePenaltyTabs(document)
-            validateNoLPPPenalties(document, true)
+            if (userdetails.expectedNumberOfLPPPenaltyCards == 0) {
+              validateNoLPPPenalties(document, true)
+            }
             val lspTab = getLSPTabContent(document)
             lspTab.getElementById("lspHeading").text() shouldBe "Late submission penalties"
             lspTab.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPTabBody(userdetails, true)

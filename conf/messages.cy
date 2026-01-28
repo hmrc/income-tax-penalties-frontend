@@ -114,15 +114,15 @@ calculation.individual.payment.15.30.missed.reason.bullet.1 = Gwnaethoch fethu�
 calculation.agent.payment.15.30.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu {0} wedi’i chodi arno fel cosb
 calculation.individual.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaethoch fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arnoch fel cosb
 calculation.agent.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaeth fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arno fel cosb
-
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = Rydych wedi methu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arnoch fel cosb
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = Gwnaeth eich cleient fethu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu £{0} yn cael ei chodi arno fel cosb
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Rydych wedi methu'r dyddiad cau o 15 i 30 diwrnod, felly codir 2% o'r dreth oedd yn ddyledus arnoch 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0})
+calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Rydych wedi methu’r dyddiad cau o 15 i 30 diwrnod, felly codir 2% o’r dreth oedd yn ddyledus arnoch 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0})
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Gwnaeth fethu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd 2% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{0}) wedi’i chodi arno fel cosb
 
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 2% o £{0} (sef y dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = 2% o £{0} (y swm a oedd heb ei dalu 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
 calculation.individual.payment.30.plus.missed.reason.bullet.2 = 2% ychwanegol o £{0} (sef y dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
+calculation.individual.payment.30.plus.missed.reason.bullet.2.pfa = 2% ychwanegol o £{0} (y swm a oedd heb ei dalu 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2.pfa = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth sydd heb ei dalu 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
 calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = Os bydd eich cleient yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan 2% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
@@ -137,7 +137,6 @@ calculation.table.caption.amount = Swm
 calculation.table.charge.period = {0} i {1}
 calculation.table.caption.total.penalty = Cyfanswm y gosb
 
-
 calculation.individual.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
@@ -145,7 +144,6 @@ calculation.individual.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllu
 
 calculation.agent.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.agent.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
-
 calculation.agent.penalty.stopEstimateIncreasing = Dylai’ch cleient drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.agent.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
@@ -160,7 +158,7 @@ calculation.individual.penalty.payment.plan.agreed.p1 = You agreed to a payment 
 calculation.individual.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments. (Welsh)
 calculation.individual.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date. (Welsh)
 calculation.agent.penalty.payment.plan.proposed.inset = Cynigiodd eich cleient gynllun talu ar {0}. Os cytunir ar ei gynllun talu, ni fydd y gosb hon yn cynyddu.
-calculation.agent.penalty.payment.plan.agreed.h1 = Your client'''s payment plan (Welsh)
+calculation.agent.penalty.payment.plan.agreed.h1 = Your client’s payment plan (Welsh)
 calculation.agent.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}. (Welsh)
 calculation.agent.penalty.payment.plan.agreed.p2 = This penalty will not increase if they keep up with payments. (Welsh)
 calculation.agent.penalty.payment.plan.agreed.p3 = If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date. (Welsh)
@@ -178,7 +176,6 @@ calculation.individual.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylec
 
 calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
-
 calculation.individual.calc2.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.agent.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylai’ch cleient dalu’r gosb erbyn {0}.
@@ -194,13 +191,27 @@ calculation.individual.calc2.penalty.payment.plan.agreed.p1 = You agreed to a pa
 calculation.individual.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax. (Welsh)
 calculation.individual.calc2.penalty.payment.plan.agreed.p3 = You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date. (Welsh)
 calculation.agent.calc2.penalty.payment.plan.proposed.inset = Cytunodd eich cleient i gynllun talu ar {0}.
-calculation.agent.calc2.penalty.payment.plan.agreed.h1 = Your client'''s payment plan (Welsh)
+calculation.agent.calc2.penalty.payment.plan.agreed.h1 = Your client’s payment plan (Welsh)
 calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}. (Welsh)
 calculation.agent.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when they agreed their payment plan. It will remain an estimate until the payment plan pays off the outstanding tax. (Welsh)
 calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Your client must keep up with payments. If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date. (Welsh)
 
 calculation.individual.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
 calculation.agent.calc.breathing.space = Mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser y mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at ei gyfrifiad.
+
+calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount(Welsh)
+calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.(Welsh)
+calculation.calc2.how.we.work.penalty.amount.p2 = Each day, we:(Welsh)
+calculation.calc2.how.we.work.penalty.amount.point.1 = take the unpaid income tax(Welsh)
+calculation.calc2.how.we.work.penalty.amount.point.2 = multiply by 0.10 (the annual rate)(Welsh)
+calculation.calc2.how.we.work.penalty.amount.point.3 = divide the amount by days in a year(Welsh)
+calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts together to get the total amount(Welsh)
+
+calculation.individual.calc2.penalty.details.heading = Your penalty details(Welsh)
+calculation.agent.calc2.penalty.details.heading = Your client’s penalty details(Welsh)
+
+calculation.calc2.estimated.penalty = Estimated penalty(Welsh)
+calculation.calc2.table.charge.period = {0} to {1} ({2} days)(Welsh)
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.

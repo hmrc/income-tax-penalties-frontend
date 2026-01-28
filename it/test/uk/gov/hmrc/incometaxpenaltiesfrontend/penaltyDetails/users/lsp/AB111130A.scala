@@ -18,13 +18,11 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AB111130A extends UserDetailsData {
 
   override val nino: String = "AB111130A"
   override val hasFinancialLSP: Boolean = false
-  override val numberOfUnpaidFinancialPenalties: Int = 0
   override val numberOfLSPPenalties: Int = 1
 
   override val expectedNumberOfLSPPenaltyCards: Int = 1
@@ -40,6 +38,7 @@ object AB111130A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Return submitted", "23 February 2028")
     validateSummary(cardRows.get(3), "Point due to expire", "5 April 2029")
     validateSummary(cardRows.get(4), "Appeal status", "Appeal rejected")
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), is2ndStage = true)
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(

@@ -18,15 +18,12 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lsp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AL300003A.{getCardsRows, validateCardTag, validatePenaltyCardTitle, validateSummary}
 
 object AB411145A extends UserDetailsData {
 
   override val nino: String = "AB411145A"
   override val hasFinancialLSP: Boolean = false
   override val numberOfLSPPenalties: Int = 3
-  override val numberOfPaidFinancialPenalties: Int = 0
-
 
   override val expectedNumberOfLSPPenaltyCards: Int = 6
   override val expectedNumberOfLPPPenaltyCards: Int = 0
@@ -76,6 +73,7 @@ object AB411145A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 November 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 December 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "5 October 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard4ExpectedContent(card: Element): Unit = {
@@ -88,6 +86,7 @@ object AB411145A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 September 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "5 July 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   def penaltyCard5ExpectedContent(card: Element): Unit = {
@@ -100,6 +99,7 @@ object AB411145A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 May 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 June 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "5 April 2029")
+    validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
@@ -109,8 +109,6 @@ object AB411145A extends UserDetailsData {
     3 -> penaltyCard3ExpectedContent,
     4 -> penaltyCard4ExpectedContent,
     5 -> penaltyCard5ExpectedContent
-
-
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
