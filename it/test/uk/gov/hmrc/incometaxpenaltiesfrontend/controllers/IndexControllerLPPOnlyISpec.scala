@@ -25,6 +25,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.indexPage.lpp.
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 
+import java.time.LocalDate
+
 class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitching
   with PenaltiesStub with PenaltiesDetailsTestData {
 
@@ -35,14 +37,24 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
     disable(UseStubForBackend)
   }
 
+  val defaultTimeMachineDate: LocalDate = getFeatureDate(appConfig)
+  println(s"LPP: §§§ $defaultTimeMachineDate")
+
   lppUsers.foreach { case (nino, userdetails) =>
 
     "GET /view-penalty/self-assessment" when {
       "the call to penalties backend returns data" should {
         "render the expected penalty cards" when {
+          val date: LocalDate = userdetails.timeMachineDate.map(date =>
+            LocalDate.parse(date.replace("/", "-"), timeMachineDateFormatter)
+          ).getOrElse {
+            defaultTimeMachineDate
+          }
+
           s"the user with nino $nino is an authorised individual" in {
-            stubAuthRequests(false, nino)
-            stubGetPenalties(nino, None)(OK, userdetails.getApiResponseJson(nino))
+            setFeatureDate(Some(date))
+            stubAuthRequests(false, userdetails.nino)
+            stubGetPenalties(userdetails.nino, None)(OK, userdetails.getApiResponseJson(userdetails.nino))
             val result = get("/")
             val document = Jsoup.parse(result.body)
 
@@ -53,7 +65,9 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
               validatePenaltyOverview(document, userdetails.expectedOverviewText(false))
             }
             validatePenaltyTabs(document)
-            validateNoLSPPenalties(document)
+            if (userdetails.numberOfLSPPenalties == 0) {
+              validateNoLSPPenalties(document)
+            }
             val lppTab = getLPPTabContent(document)
             lppTab.getElementById("lppHeading").text() shouldBe "Late payment penalties"
             lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
@@ -63,8 +77,9 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
           }
 
           s"the user is an authorised agent for a client with nino $nino" in {
-            stubAuthRequests(true, nino)
-            stubGetPenalties(nino, Some("123456789"))(OK, userdetails.getApiResponseJson(nino))
+            setFeatureDate(Some(date))
+            stubAuthRequests(true, userdetails.nino)
+            stubGetPenalties(userdetails.nino, Some("123456789"))(OK, userdetails.getApiResponseJson(userdetails.nino))
             val result = get("/agent", true)
             val document = Jsoup.parse(result.body)
 
@@ -75,7 +90,9 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
               validatePenaltyOverview(document, userdetails.expectedOverviewText(true), true)
             }
             validatePenaltyTabs(document)
-            validateNoLSPPenalties(document, true)
+            if (userdetails.numberOfLSPPenalties == 0) {
+              validateNoLSPPenalties(document, true)
+            }
             val lppTab = getLPPTabContent(document)
             lppTab.getElementById("lppHeading").text() shouldBe "Late payment penalties"
             lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier your client pays their Income Tax, the lower their penalties and interest will be."
@@ -86,5 +103,6 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
         }
       }
     }
+    setFeatureDate(Some(defaultTimeMachineDate))
   }
 }

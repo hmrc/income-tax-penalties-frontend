@@ -64,7 +64,7 @@ trait FeatureSwitching {
       }else{
         LocalDate.parse(dateAsString)
       }
-    })(LocalDate.parse(_))
+    })(LocalDate.parse(_, timeMachineDateFormatter))
   }
 
 }
