@@ -24,8 +24,18 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.*
 trait LPPControllerHelper extends ControllerISpecHelper {
 
   val lppUsers: Map[String, UserDetailsData] = Map(
+    "AA100000A" -> AA100000A,
+    "AA100000B" -> AA100000B,
+    "AA100000C" -> AA100000C,
+    "AA100000D" -> AA100000D,
+    "AA100002C" -> AA100002C,
     "AA120000C" -> AA120000C,
+    "AA123450A" -> AA123450A,
+    "AA200000A" -> AA200000A,
+    "AA200000B" -> AA200000B,
     "AA200000C" -> AA200000C,
+    "AA200010A" -> AA200010A,
+    "AA222220A" -> AA222220A,
     "AA233330A" -> AA233330A,
     "AA233440A" -> AA233440A,
     "AA244440A" -> AA244440A,
@@ -41,7 +51,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AA200000C-overdue" -> AA200000COverdue,
     "AA233330A-overdue" -> AA233330AOverdue,
     "AA233440A-overdue" -> AA233440AOverdue,
-    "AL200001A-overdue" -> AL200001AOverdue,
+    "AL200001A-overdue" -> AL200001AOverdue
   )
 
   def validatePenaltyOverview(document: Document, expectedContent: String, isAgent: Boolean = false) = {
