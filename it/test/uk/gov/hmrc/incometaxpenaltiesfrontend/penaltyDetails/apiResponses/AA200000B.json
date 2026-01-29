@@ -1,0 +1,65 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AA200000B",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "lpp" : {
+          "manualLPPIndicator" : false,
+          "lppDetails" : [ {
+            "principalChargeReference" : "XJ002616061057",
+            "penaltyStatus" : "A",
+            "penaltyAmountAccruing" : 2.19,
+            "penaltyAmountPosted" : 0,
+            "principalChargeBillingFrom" : "2026-04-06",
+            "principalChargeBillingTo" : "2027-04-05",
+            "principalChargeDueDate" : "2028-01-31",
+            "principalChargeDocNumber" : "DOC1",
+            "principalChargeMainTr" : "4720",
+            "principalChargeSubTr" : "SUB1",
+            "penaltyCategory" : "LPP2",
+            "lpp1LRCalculationAmt" : 54.75,
+            "lpp1LRDays" : "15",
+            "lpp1LRPercentage" : 2,
+            "lpp1HRCalculationAmt" : 54.75,
+            "lpp1HRDays" : "30",
+            "lpp1HRPercentage" : 2,
+            "lpp2Days" : "31",
+            "lpp2Percentage" : 10,
+            "penaltyChargeCreationDate" : "2028-03-02",
+            "penaltyChargeReference" : "XJ002616061057",
+            "penaltyChargeDueDate" : "2028-03-16"
+          }, {
+            "principalChargeReference" : "XJ002616061057",
+            "penaltyStatus" : "P",
+            "penaltyAmountAccruing" : 0,
+            "penaltyAmountPosted" : 80,
+            "principalChargeBillingFrom" : "2026-04-06",
+            "principalChargeBillingTo" : "2027-04-05",
+            "principalChargeDueDate" : "2028-01-31",
+            "principalChargeDocNumber" : "DOC1",
+            "principalChargeMainTr" : "4720",
+            "principalChargeSubTr" : "SUB1",
+            "penaltyCategory" : "LPP1",
+            "penaltyAmountPaid" : 0,
+            "penaltyAmountOutstanding" : 80,
+            "lpp1LRCalculationAmt" : 2000,
+            "lpp1LRDays" : "15",
+            "lpp1LRPercentage" : 2,
+            "lpp1HRCalculationAmt" : 2000,
+            "lpp1HRDays" : "30",
+            "lpp1HRPercentage" : 2,
+            "penaltyChargeCreationDate" : "2028-03-02",
+            "penaltyChargeReference" : "XJ002616061057",
+            "penaltyChargeDueDate" : "2028-03-16"
+          } ]
+        },
+        "breathingSpace" : [ {
+          "bsStartDate" : "2028-05-20",
+          "bsEndDate" : "2029-05-20"
+        } ]
+      }
+    }
+  }
+}
