@@ -51,7 +51,7 @@ object AL300003A extends UserDetailsData {
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
     validateSummary(cardRows.get(0), "Pay penalty by", "18 April 2027")
@@ -64,7 +64,7 @@ object AL300003A extends UserDetailsData {
 
   def penaltyCard3ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
     validateSummary(cardRows.get(0), "Pay penalty by", "17 March 2027")
@@ -75,10 +75,9 @@ object AL300003A extends UserDetailsData {
     validateViewCalculationLink(card, 3)
   }
 
-
   def penaltyCard4ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
     validateSummary(cardRows.get(0), "Pay penalty by", "18 April 2026")
@@ -91,7 +90,7 @@ object AL300003A extends UserDetailsData {
 
   def penaltyCard5ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
     validateSummary(cardRows.get(0), "Pay penalty by", "17 March 2026")
@@ -113,4 +112,6 @@ object AL300003A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview ${if (isAgent) "Your client’s" else "Your"} account has late payment penalties Check amounts${if(isAgent) "" else " and pay"}"
+
+  override val timeMachineDate: Option[String] = Some("05/03/2028")
 }
