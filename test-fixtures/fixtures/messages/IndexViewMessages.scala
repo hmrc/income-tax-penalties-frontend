@@ -95,8 +95,8 @@ object IndexViewMessages {
 
     override def overviewLSPPointsNoBullets(num: Int, isAgent: Boolean = false): String = {
       num match {
-        case 1 => if (isAgent) "Mae 1 pwynt cosb am gyflwyno’n hwyr ar gyfrif eich cleient" else "Mae 1 pwynt cosb am gyflwyno’n hwyr ar eich cyfrif"
-        case n => if (isAgent) s"Mae $n o bwyntiau cosb am gyflwyno’n hwyr ar gyfrif eich cleient" else s"Mae $n o bwyntiau cosb am gyflwyno’n hwyr ar eich cyfrif"
+        case 1 => if (isAgent) "Mae gan gyfrif eich cleient 1 pwynt cosb am gyflwyno’n hwyr" else "Mae gan eich cyfrif 1 pwynt cosb am gyflwyno’n hwyr"
+        case n => if (isAgent) s"Mae gan gyfrif eich cleient $n bwynt cosb am gyflwyno’n hwyr" else s"Mae gan eich cyfrif $n bwynt cosb am gyflwyno’n hwyr"
       }
     }
 
@@ -111,8 +111,8 @@ object IndexViewMessages {
     }
 
     override val overviewLPPNoBullets: Int => String = {
-      case 1 => "Mae cosb am dalu’n hwyr ar eich cyfrif"
-      case _ => "Mae cosbau am dalu’n hwyr ar eich cyfrif"
+      case 1 => "Mae gan eich cyfrif gosb am dalu’n hwyr"
+      case _ => "Mae gan eich cyfrif gosbau am dalu’n hwyr"
     }
 
     override val overviewLSPPointsMax: String = "uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr"
