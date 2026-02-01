@@ -28,7 +28,6 @@ trait UserDetailsData extends Matchers {
   
   val nino: String
   val numberOfLSPPenalties: Int = 0
-  val numberOfLPPPenalties: Int = 0
   val expectedNumberOfLSPPenaltyCards: Int
   val expectedNumberOfLPPPenaltyCards: Int
   val hasFinancialLSP: Boolean = false
