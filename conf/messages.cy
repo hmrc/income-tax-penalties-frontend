@@ -68,7 +68,7 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb ychwanegol o
 agent.index.lsp.tab.overview.additionalPenalty.warning = Codwyd cosb ychwanegol o £200 ar eich cleient.
 agent.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb bellach o £200 arno bob tro y bydd yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’i bwyntiau wedi’u dileu. Dylai’ch cleient anfon unrhyw gyflwyniadau sy’n hwyr cyn gynted â phosibl os nad yw eisoes wedi gwneud hynny.
 index.lsp.tab.overview.pointsGuidanceLink = Darllenwch yr arweiniad am gosbau am dalu’n hwyr
-index.lsp.tab.overview.addedPointsGuidanceLink = Read the guidance about adjustment points (Welsh)
+index.lsp.tab.overview.addedPointsGuidanceLink = Darllenwch yr arweiniad ynghylch pwyntiau addasu
 individual.index.lsp.tab.overview.actionsToRemoveLink = Y camau i’w cymryd i gael eich pwyntiau wedi’u dileu erbyn mis {0}
 agent.index.lsp.tab.overview.actionsToRemoveLink = Y camau y mae’n rhaid i’ch cleient eu cymryd i gael ei bwyntiau wedi’u dileu erbyn mis {0}
 
@@ -152,16 +152,16 @@ calculation.agent.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylai’ch cle
 
 calculation.individual.penalty.isOverdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
-calculation.individual.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig gynllun talu ar dd mis bbbb. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
-calculation.individual.penalty.payment.plan.agreed.h1 = Your payment plan (Welsh)
-calculation.individual.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}. (Welsh)
-calculation.individual.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments. (Welsh)
-calculation.individual.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date. (Welsh)
+calculation.individual.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig cynllun talu ar {0}. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
+calculation.individual.penalty.payment.plan.agreed.h1 = Eich cynllun talu
+calculation.individual.penalty.payment.plan.agreed.p1 = Cytunoch i gynllun talu ar {0}.
+calculation.individual.penalty.payment.plan.agreed.p2 = Ni fydd y gosb yn cynyddu os byddwch yn gwneud pob taliad mewn pryd.
+calculation.individual.penalty.payment.plan.agreed.p3 = Os na wnewch hyn, bydd eich cynllun talu’n methu. Bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
 calculation.agent.penalty.payment.plan.proposed.inset = Cynigiodd eich cleient gynllun talu ar {0}. Os cytunir ar ei gynllun talu, ni fydd y gosb hon yn cynyddu.
-calculation.agent.penalty.payment.plan.agreed.h1 = Your client’s payment plan (Welsh)
-calculation.agent.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}. (Welsh)
-calculation.agent.penalty.payment.plan.agreed.p2 = This penalty will not increase if they keep up with payments. (Welsh)
-calculation.agent.penalty.payment.plan.agreed.p3 = If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date. (Welsh)
+calculation.agent.penalty.payment.plan.agreed.h1 = Cynllun talu eich cleient
+calculation.agent.penalty.payment.plan.agreed.p1 = Cytunodd eich cleient i gynllun talu ar {0}.
+calculation.agent.penalty.payment.plan.agreed.p2 = Ni fydd y gosb hon yn cynyddu os bydd eich cleient yn gwneud pob taliad mewn pryd.
+calculation.agent.penalty.payment.plan.agreed.p3 = Os nad fydd yn gwneud hynny, bydd ei gynllun talu’n methu. Bydd unrhyw gosbau sydd arno yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
 
 calculation.individual.calc2.missed.deadline.tax.unpaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.individual.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
@@ -186,15 +186,15 @@ calculation.agent.calc2.penalty.stopEstimateIncreasing = Dylai’ch cleient dref
 calculation.individual.calc2.penalty.overdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
 
 calculation.individual.calc2.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig gynllun talu ar {0}. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
-calculation.individual.calc2.penalty.payment.plan.agreed.h1 = Your payment plan (Welsh)
-calculation.individual.calc2.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}. (Welsh)
-calculation.individual.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax. (Welsh)
-calculation.individual.calc2.penalty.payment.plan.agreed.p3 = You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date. (Welsh)
-calculation.agent.calc2.penalty.payment.plan.proposed.inset = Cytunodd eich cleient i gynllun talu ar {0}.
-calculation.agent.calc2.penalty.payment.plan.agreed.h1 = Your client’s payment plan (Welsh)
-calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}. (Welsh)
-calculation.agent.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when they agreed their payment plan. It will remain an estimate until the payment plan pays off the outstanding tax. (Welsh)
-calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Your client must keep up with payments. If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date. (Welsh)
+calculation.individual.calc2.penalty.payment.plan.agreed.h1 = Eich cynllun talu
+calculation.individual.calc2.penalty.payment.plan.agreed.p1 = Cytunoch i gynllun talu ar {0}.
+calculation.individual.calc2.penalty.payment.plan.agreed.p2 = Amcangyfrif yw’r cyfrifiad hwn hyd at yr adeg y cytunwyd ar eich cynllun talu. Bydd yn parhau i fod yn amcangyfrif nes bod eich cynllun talu yn talu’r dyledion treth.
+calculation.individual.calc2.penalty.payment.plan.agreed.p3 = Mae’n rhaid i chi sicrhau eich bod yn gwneud taliadau mewn pryd. Os na wnewch hyn, bydd eich cynllun talu’n methu. Bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
+calculation.agent.calc2.penalty.payment.plan.proposed.inset = Cynigiodd eich cleient gynllun talu ar {0}. Os cytunir ar ei gynllun talu, ni fydd y gosb hon yn cynyddu.
+calculation.agent.calc2.penalty.payment.plan.agreed.h1 = Cynllun talu eich cleient
+calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Cytunodd eich cleient i gynllun talu ar {0}.
+calculation.agent.calc2.penalty.payment.plan.agreed.p2 = Amcangyfrif yw’r cyfrifiad hwn hyd at yr adeg y cytunodd eich cleient ar ei gynllun talu. Bydd yn parhau i fod yn amcangyfrif nes bod y cynllun talu yn talu’r dyledion treth.
+calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Mae’n rhaid i’ch cleient sicrhau ei fod yn gwneud taliadau mewn pryd. Os nad fydd yn gwneud hynny, bydd ei gynllun talu’n methu. Bydd unrhyw gosbau sydd arno yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
 
 calculation.individual.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
 calculation.agent.calc.breathing.space = Mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser y mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at ei gyfrifiad.

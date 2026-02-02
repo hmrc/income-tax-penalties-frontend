@@ -154,7 +154,7 @@ object LSPOverviewMessages {
     }
 
     override val pointsGuidanceLink = "Darllenwch yr arweiniad am gosbau am dalu’n hwyr"
-    override val addedPointsGuidanceLink = "Read the guidance about adjustment points (Welsh)"
+    override val addedPointsGuidanceLink = "Darllenwch yr arweiniad ynghylch pwyntiau addasu"
     override val actionsLink: Boolean => String = {
       case true =>
         "Y camau y mae’n rhaid i’ch cleient eu cymryd i gael ei bwyntiau wedi’u dileu erbyn mis Ebrill 2028"
