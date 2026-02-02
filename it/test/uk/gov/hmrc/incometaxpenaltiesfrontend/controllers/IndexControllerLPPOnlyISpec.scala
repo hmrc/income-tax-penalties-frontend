@@ -61,9 +61,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            if (userdetails.numberOfLPPPenalties > 0) {
-              validatePenaltyOverview(document, userdetails.expectedOverviewText(false))
-            }
+            validatePenaltyOverview(document, userdetails.expectedOverviewText(false))
             validatePenaltyTabs(document)
             if (userdetails.numberOfLSPPenalties == 0) {
               validateNoLSPPenalties(document)
@@ -86,9 +84,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             document.getServiceName.text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            if (userdetails.numberOfLPPPenalties > 0) {
-              validatePenaltyOverview(document, userdetails.expectedOverviewText(true), true)
-            }
+            validatePenaltyOverview(document, userdetails.expectedOverviewText(true), true)
             validatePenaltyTabs(document)
             if (userdetails.numberOfLSPPenalties == 0) {
               validateNoLSPPenalties(document, true)

@@ -18,12 +18,10 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.AA123450A.validateViewCalculationLink
 
 object AA200000B extends UserDetailsData {
 
   override val nino: String = "AA200000B"
-  override val numberOfLPPPenalties: Int = 0
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   override val expectedNumberOfLPPPenaltyCards: Int = 2
 
