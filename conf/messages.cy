@@ -199,19 +199,19 @@ calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Mae’n rhaid i’ch cl
 calculation.individual.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
 calculation.agent.calc.breathing.space = Mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser y mae’ch cleient mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at ei gyfrifiad.
 
-calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount(Welsh)
-calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.(Welsh)
-calculation.calc2.how.we.work.penalty.amount.p2 = Each day, we:(Welsh)
-calculation.calc2.how.we.work.penalty.amount.point.1 = take the unpaid income tax(Welsh)
-calculation.calc2.how.we.work.penalty.amount.point.2 = multiply by 0.10 (the annual rate)(Welsh)
-calculation.calc2.how.we.work.penalty.amount.point.3 = divide the amount by days in a year(Welsh)
-calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts together to get the total amount(Welsh)
+calculation.calc2.how.we.work.penalty.amount = Sut yr ydym yn cyfrifo swm y gosb
+calculation.calc2.how.we.work.penalty.amount.p1 = Rydym yn defnyddio cyfradd flynyddol o 10%. Mae hyn yn golygu bod y swm yn cynyddu ychydig bob dydd.
+calculation.calc2.how.we.work.penalty.amount.p2 = Bob dydd, rydym yn:
+calculation.calc2.how.we.work.penalty.amount.point.1 = cymryd y dreth incwm heb ei thalu
+calculation.calc2.how.we.work.penalty.amount.point.2 = ei lluosi â 0.10 (y gyfradd flynyddol)
+calculation.calc2.how.we.work.penalty.amount.point.3 = a’i rhannu nifer y diwrnodau mewn blwyddyn
+calculation.calc2.how.we.work.penalty.amount.point.4 = yna, bydd yr holl symiau dyddiol yn cael eu hadio at ei gilydd i gael cyfanswm
 
-calculation.individual.calc2.penalty.details.heading = Your penalty details(Welsh)
-calculation.agent.calc2.penalty.details.heading = Your client’s penalty details(Welsh)
+calculation.individual.calc2.penalty.details.heading = Manylion eich cosb
+calculation.agent.calc2.penalty.details.heading = Manylion cosb eich cleient
 
-calculation.calc2.estimated.penalty = Estimated penalty(Welsh)
-calculation.calc2.table.charge.period = {0} to {1} ({2} days)(Welsh)
+calculation.calc2.estimated.penalty = Cosb amcangyfrifedig
+calculation.calc2.table.charge.period = {0} i {1} ({2} o ddiwrnodau)
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
