@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails
 
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LatePaymentPenalty
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LateSubmissionPenalty
@@ -39,8 +39,9 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 
   val unpaidIncomeTax: BigDecimal = totalisations.flatMap(_.totalAccountOverdue).getOrElse(BigDecimal(0))
 
-  val countLPPNotPaidOrAppealed: Int =
-    latePaymentPenalty.map(_.withoutAppealedPenalties.count(_.penaltyAmountOutstanding.exists(_ > BigDecimal(0)))).getOrElse(0)
+  val countLPPNotPaidOrAppealed: Int = latePaymentPenalty.map(_.withoutAppealedPenalties.count(
+      details => details.penaltyAmountOutstanding.exists(_ > BigDecimal(0)) || details.penaltyAmountAccruing > BigDecimal(0)
+    )).getOrElse(0)
 
   val countLSPNotPaidOrAppealed: Int =
     lateSubmissionPenalty.map(_.withoutAppealedPenalties.count(_.chargeOutstandingAmount.exists(_ > BigDecimal(0)))).getOrElse(0)
