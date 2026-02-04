@@ -9,7 +9,10 @@
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
           "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 92.04
+          "lppEstimatedTotal" : 0,
+          "totalAccountOverdue" : 92.04,
+          "totalAccountPostedInterest" : 0,
+          "totalAccountAccruingInterest" : 0
         },
         "lsp" : {
           "lspSummary" : {
@@ -19,7 +22,7 @@
             "penaltyChargeAmount" : 0
           },
           "lspDetails" : [ {
-            "penaltyNumber" : "005000001095",
+            "penaltyNumber" : "005000001067",
             "penaltyCreationDate" : "2028-02-07",
             "penaltyExpiryDate" : "2030-01-05",
             "triggeringProcess" : "ICRU",

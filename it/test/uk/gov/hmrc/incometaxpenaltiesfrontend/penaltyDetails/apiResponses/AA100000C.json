@@ -5,16 +5,10 @@
     "success" : {
       "processingDate" : "2025-04-05T10:15:10Z",
       "penaltyData" : {
-        "totalisations" : {
-          "lspTotalValue" : 0,
-          "penalisedPrincipalTotal" : 0,
-          "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 40
-        },
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
-            "principalChargeReference" : "XJ002616061044",
+            "principalChargeReference" : "XJ002616061012",
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 40,
@@ -32,7 +26,7 @@
             "lpp1LRPercentage" : 2,
             "penaltyChargeCreationDate" : "2026-02-15",
             "communicationsDate" : "2026-03-12",
-            "penaltyChargeReference" : "XJ002616061044",
+            "penaltyChargeReference" : "XJ002616061012",
             "penaltyChargeDueDate" : "2026-03-24",
             "principalChargeLatestClearing" : "2026-02-20"
           } ]

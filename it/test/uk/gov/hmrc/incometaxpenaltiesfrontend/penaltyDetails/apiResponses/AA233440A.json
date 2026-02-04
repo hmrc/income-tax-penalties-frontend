@@ -5,6 +5,15 @@
     "success" : {
       "processingDate" : "2025-04-05T10:15:10Z",
       "penaltyData" : {
+        "totalisations" : {
+          "lspTotalValue" : 0,
+          "penalisedPrincipalTotal" : 0,
+          "lppPostedTotal" : 0,
+          "lppEstimatedTotal" : 0,
+          "totalAccountOverdue" : 92.04,
+          "totalAccountPostedInterest" : 0,
+          "totalAccountAccruingInterest" : 0
+        },
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
