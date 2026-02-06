@@ -61,7 +61,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         val document = Jsoup.parse(result.body)
 
-        document.getServiceName.text() shouldBe serviceName
+        document.getServiceName.get(0).text() shouldBe serviceName
         document.title() shouldBe "Actions you need to take to get your points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions you need to take to get your points removed"
         document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
@@ -84,7 +84,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         val document = Jsoup.parse(result.body)
 
-        document.getServiceName.text() shouldBe serviceName
+        document.getServiceName.get(0).text() shouldBe serviceName
         document.title() shouldBe "Actions you need to take to get your points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions you need to take to get your points removed"
         document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
@@ -129,7 +129,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         val document = Jsoup.parse(result.body)
 
-        document.getServiceName.text() shouldBe serviceName
+        document.getServiceName.get(0).text() shouldBe serviceName
         document.title() shouldBe "Actions your client needs to take to get their points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions your client needs to take to get their points removed"
         document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
@@ -153,7 +153,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
 
         val document = Jsoup.parse(result.body)
 
-        document.getServiceName.text() shouldBe serviceName
+        document.getServiceName.get(0).text() shouldBe serviceName
         document.title() shouldBe "Actions your client needs to take to get their points removed - Manage your Self Assessment - GOV.UK"
         document.getH1Elements.text() shouldBe "Actions your client needs to take to get their points removed"
         document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
