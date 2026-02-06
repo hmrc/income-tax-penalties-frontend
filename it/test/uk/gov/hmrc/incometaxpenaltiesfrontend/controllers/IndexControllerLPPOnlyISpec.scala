@@ -58,7 +58,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             val result = get("/")
             val document = Jsoup.parse(result.body)
 
-            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
             validatePenaltyOverview(document, userdetails.expectedOverviewText(false))
@@ -81,7 +81,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             val result = get("/agent", true)
             val document = Jsoup.parse(result.body)
 
-            document.getServiceName.text() shouldBe "Manage your Self Assessment"
+            document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
             validatePenaltyOverview(document, userdetails.expectedOverviewText(true), true)

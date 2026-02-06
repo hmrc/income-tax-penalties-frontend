@@ -49,7 +49,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
 
           val document = Jsoup.parse(result.body)
 
-          document.getServiceName.text() shouldBe "Manage your Self Assessment"
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
           document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
           document.getH2Elements.get(0).text() shouldBe "Overview"
@@ -68,7 +68,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
 
           val document = Jsoup.parse(result.body)
 
-          document.getServiceName.text() shouldBe "Manage your Self Assessment"
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
           document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
           document.getH2Elements.get(0).text() shouldBe "Overview"
