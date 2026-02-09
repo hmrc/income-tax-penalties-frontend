@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import play.api.i18n.Messages
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
@@ -113,6 +114,13 @@ class FirstLatePaymentCalculationHelper {
         }.getOrElse(List.empty)
       case _ => List.empty
     }
+  }
+  
+  def isExpiredBreathingSpace(calculationData: FirstLatePaymentPenaltyCalculationData, isInBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]]): Boolean = {
+    if (!isInBreathingSpace && !calculationData.isPenaltyPaid && breathingSpaceData.isDefined) {
+      //TODO: date stuff
+    }
+    false
   }
 
 }

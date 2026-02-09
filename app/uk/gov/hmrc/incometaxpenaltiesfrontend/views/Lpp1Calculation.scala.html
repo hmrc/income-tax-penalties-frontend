@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
@@ -30,7 +31,7 @@
         calculationHelper: FirstLatePaymentCalculationHelper,
 )
 
-@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, inBreathingSpace: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @individualOrAgent = {@if(isAgent){agent}else{individual}}
 
@@ -91,6 +92,12 @@
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
             @calculationHelper.getFinalUnpaidMsg(calculationData, individualOrAgent.toString, if(calculationData.isPFA) ".pfa" else "")
+        </p>
+    }
+
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, inBreathingSpace, breathingSpaceData)) {
+        <p class="govuk-body" id="breathingSpace">
+            @messages(s"calculation.$individualOrAgent.breathingSpace.expired")
         </p>
     }
 

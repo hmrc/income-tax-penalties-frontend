@@ -1,6 +1,6 @@
 {
   "idType" : "NINO",
-  "idNumber" : "AA200000B",
+  "idNumber" : "AA200001B",
   "payload" : {
     "success" : {
       "processingDate" : "2025-04-05T10:15:10Z",
@@ -17,7 +17,7 @@
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
-            "principalChargeReference" : "XJ002616061086",
+            "principalChargeReference" : "XJ002616061002",
             "penaltyStatus" : "A",
             "penaltyAmountAccruing" : 2.19,
             "penaltyAmountPosted" : 0,
@@ -37,10 +37,10 @@
             "lpp2Days" : "31",
             "lpp2Percentage" : 10,
             "penaltyChargeCreationDate" : "2028-03-02",
-            "penaltyChargeReference" : "XJ002616061086",
+            "penaltyChargeReference" : "XJ002616061002",
             "penaltyChargeDueDate" : "2028-03-16"
           }, {
-            "principalChargeReference" : "XJ002616061086",
+            "principalChargeReference" : "XJ002616061002",
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 80,
@@ -60,13 +60,13 @@
             "lpp1HRDays" : "30",
             "lpp1HRPercentage" : 2,
             "penaltyChargeCreationDate" : "2028-03-02",
-            "penaltyChargeReference" : "XJ002616061086",
+            "penaltyChargeReference" : "XJ002616061002",
             "penaltyChargeDueDate" : "2028-03-16"
           } ]
         },
         "breathingSpace" : [ {
-          "bsStartDate" : "2028-02-20",
-          "bsEndDate" : "2029-02-20"
+          "bsStartDate" : "2027-04-02",
+          "bsEndDate" : "2028-04-02"
         } ]
       }
     }

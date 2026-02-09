@@ -38,7 +38,6 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
   }
 
   val defaultTimeMachineDate: LocalDate = getFeatureDate(appConfig)
-  println(s"LPP: §§§ $defaultTimeMachineDate")
 
   lppUsers.foreach { case (nino, userdetails) =>
 
