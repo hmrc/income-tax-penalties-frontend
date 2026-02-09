@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDeta
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
-import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.*
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.{Lpp1Calculation, Lpp2Calculation}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.{Inject, Singleton}
@@ -68,9 +68,9 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             if (isLPP2) {
-              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace))
+              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
             } else {
-              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, isInBreathingSpace))
+              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
             }
           }
           case None =>

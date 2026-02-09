@@ -117,10 +117,11 @@ class FirstLatePaymentCalculationHelper {
   }
   
   def isExpiredBreathingSpace(calculationData: FirstLatePaymentPenaltyCalculationData, isInBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]]): Boolean = {
-    if (!isInBreathingSpace && !calculationData.isPenaltyPaid && breathingSpaceData.isDefined) {
-      //TODO: date stuff
+    if (!isInBreathingSpace && !calculationData.isPenaltyPaid && breathingSpaceData.isDefined && calculationData.penaltyChargeCreationDate.isDefined) {
+      breathingSpaceData.get.count(!_.bsEndDate.isBefore(calculationData.penaltyChargeCreationDate.get)) > 0
+    } else {
+      false
     }
-    false
   }
 
 }

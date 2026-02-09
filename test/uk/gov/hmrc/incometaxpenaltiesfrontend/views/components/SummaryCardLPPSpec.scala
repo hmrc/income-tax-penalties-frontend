@@ -201,7 +201,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
                       document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                      document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
+                      document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                       document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                       document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                     }
@@ -239,7 +239,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         val document = Jsoup.parse(summaryCardHtml.toString)
 
                         document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                        document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
+                        document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                         document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
 
                         val appealLink = document.select("#lpp-appeal-link-1")
@@ -285,7 +285,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                           val document = Jsoup.parse(summaryCardHtml.toString)
 
                           document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                          document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
+                          document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                           document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                           document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                         }
@@ -318,7 +318,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                             val document = Jsoup.parse(summaryCardHtml.toString)
 
                             document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                            document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.paid)
+                            document.select("#lpp-status-1").text() shouldBe penaltyStatusMessages.paid
                             document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                             document.select("#lpp-appeal-link-1").text() shouldBe messagesForLanguage.cardLinksCheckIfCanAppeal
                           }

@@ -48,6 +48,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AL300002A" -> AL300002A,
     "AL300003A" -> AL300003A,
     "PE000002A" -> PE000002A,
+    "AA200000B-overdue" -> AA200000BOverdue,
     "AA200000C-overdue" -> AA200000COverdue,
     "AA233330A-overdue" -> AA233330AOverdue,
     "AA233440A-overdue" -> AA233440AOverdue,

@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
@@ -96,7 +96,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpa
     }
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, inBreathingSpace, breathingSpaceData)) {
-        <p class="govuk-body" id="breathingSpace">
+        <p class="govuk-body" id="breathingSpaceExpired">
             @messages(s"calculation.$individualOrAgent.breathingSpace.expired")
         </p>
     }

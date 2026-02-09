@@ -18,8 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails
 
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.*
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.{BreathingSpace, BreathingSpaceStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LatePaymentPenalty
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LateSubmissionPenalty
 
