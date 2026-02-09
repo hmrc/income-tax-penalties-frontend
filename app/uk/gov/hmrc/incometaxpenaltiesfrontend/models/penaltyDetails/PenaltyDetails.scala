@@ -22,7 +22,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.{BreathingSpace, BreathingSpaceStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LatePaymentPenalty
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LateSubmissionPenalty
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 
 import java.time.LocalDate
 
@@ -30,7 +29,7 @@ import java.time.LocalDate
 case class PenaltyDetails(totalisations: Option[Totalisations],
                           lateSubmissionPenalty: Option[LateSubmissionPenalty],
                           latePaymentPenalty: Option[LatePaymentPenalty],
-                          breathingSpace: Option[Seq[BreathingSpace]]) {
+                          breathingSpace: Option[Seq[BreathingSpace]]){
 
   val lspPointsActive: Int = lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
   val lspThreshold: Int = lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
@@ -53,23 +52,6 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 
   val lspPeriodOfComplianceDate: Option[LocalDate] = lateSubmissionPenalty.flatMap(_.summary.pocAchievementDate)
   
-//  val isInBreathingSpace: Boolean =
-//    breathingSpace.fold(false)(_.nonEmpty)
-
-  val isInBreathingSpace: Boolean =
-    breathingSpace.fold(false)(_.count(bs =>
-      bs.bsStartDate.isBefore(TimeMachine.getCurrentDate().plusDays(1)) && 
-        bs.bsEndDate.isAfter(timeMachine.getCurrentDate().minusDays(1))
-    ) > 0)
-
-//  private val isBreathingSpaceExpired: Boolean =
-//    breathingSpace.fold(false)(_.count(_.bsStartDate.isAfter(timeMachine.getCurrentDate())) > 0)
-//
-//  val breathingSpaceStatus: BreathingSpaceStatusEnum = (isBreathingSpaceActive, isBreathingSpaceExpired) match {
-//    case (true, _) => BreathingSpaceStatusEnum.Active
-//    case (_, true) => BreathingSpaceStatusEnum.Expired
-//    case _ => BreathingSpaceStatusEnum.None
-//  }
 }
 
 object PenaltyDetails {

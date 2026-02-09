@@ -45,17 +45,21 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
     val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
     val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(timeMachine.getCurrentDate()))
+    val isInBreathingSpace = penaltyData.breathingSpace.fold(false)(_.count(bs =>
+      bs.bsStartDate.isBefore(timeMachine.getCurrentDate().plusDays(1)) &&
+        bs.bsEndDate.isAfter(timeMachine.getCurrentDate().minusDays(1))
+    ) > 0)
 
     val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(
       penalties = sortPointsInDescendingOrder(lsp),
       threshold = lspThreshold,
       activePoints = lspActivePoints,
       pointsRemovedAfterPeriodOfCompliance = pocAchieved,
-      isBreathingSpace = penaltyData.isInBreathingSpace
+      isBreathingSpace = isInBreathingSpace
     )
 
     val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
-    val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex, penaltyData.isInBreathingSpace)
+    val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex, isInBreathingSpace)
 
     Future(
       updateSessionCookie(penaltyData) {

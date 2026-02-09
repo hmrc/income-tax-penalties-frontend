@@ -58,14 +58,19 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
             _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && isCorrectLPP(lpp, isLPP2) => lpp }
           }
 
+        val isInBreathingSpace = currentUserRequest.penaltyDetails.breathingSpace.fold(false)(_.count(bs =>
+          bs.bsStartDate.isBefore(timeMachine.getCurrentDate().plusDays(1)) &&
+            bs.bsEndDate.isAfter(timeMachine.getCurrentDate().minusDays(1))
+        ) > 0)
+        
         penaltyDetailsForId match {
           case Some(lppDetails) => {
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             if (isLPP2) {
-              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, currentUserRequest.penaltyDetails.isInBreathingSpace))
+              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace))
             } else {
-              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, currentUserRequest.penaltyDetails.isInBreathingSpace))
+              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, isInBreathingSpace))
             }
           }
           case None =>
