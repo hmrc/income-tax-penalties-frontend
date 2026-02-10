@@ -37,8 +37,6 @@ object AA100001D extends UserDetailsData {
     validateViewCalculationLink(card, 0)
   }
 
-
-
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent
   )

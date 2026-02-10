@@ -28,7 +28,7 @@ import java.time.LocalDate
 case class PenaltyDetails(totalisations: Option[Totalisations],
                           lateSubmissionPenalty: Option[LateSubmissionPenalty],
                           latePaymentPenalty: Option[LatePaymentPenalty],
-                          breathingSpace: Option[Seq[BreathingSpace]]){
+                          breathingSpace: Option[Seq[BreathingSpace]]) {
 
   val lspPointsActive: Int = lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
   val lspThreshold: Int = lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
