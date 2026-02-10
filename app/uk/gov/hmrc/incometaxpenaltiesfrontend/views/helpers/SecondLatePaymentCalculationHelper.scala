@@ -86,11 +86,6 @@ class SecondLatePaymentCalculationHelper {
   }
 
   def isExpiredBreathingSpace(breathingSpaceData: Option[Seq[BreathingSpace]]): Boolean = {
-    val date = timeM
-    breathingSpaceData.fold(false)(_.count(bs =>
-      (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
-        (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
-    ) > 0)
     breathingSpaceData.isDefined
     //TODO: make this only return true if penalty was accruing during a breathing space period that is no longer active
   }

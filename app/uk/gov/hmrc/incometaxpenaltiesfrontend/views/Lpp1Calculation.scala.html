@@ -95,7 +95,7 @@
         </p>
     }
 
-    @if(calculationHelper.isExpiredBreathingSpace(calculationData, inBreathingSpace, breathingSpaceData)) {
+    @if(calculationHelper.isExpiredBreathingSpace(breathingSpaceData)) {
         <p class="govuk-body" id="breathingSpaceExpired">
             @messages(s"calculation.$individualOrAgent.breathingSpace.expired")
         </p>
