@@ -40,14 +40,17 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
 
 
   def homePage(isAgent:Boolean): Action[AnyContent] = authActions.asMTDUserWithPenaltyData(isAgent).async { implicit penaltyDataUserRequest =>
+    val date = timeMachine.getCurrentDate()
     val penaltyData = penaltyDataUserRequest.penaltyDetails
+    
     val lsp = penaltyData.lateSubmissionPenalty.map(_.details).getOrElse(Seq.empty)
     val lspThreshold = penaltyData.lateSubmissionPenalty.map(_.summary.regimeThreshold).getOrElse(0)
     val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
-    val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(timeMachine.getCurrentDate()))
+    val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(date))
+    
     val isInBreathingSpace = penaltyData.breathingSpace.fold(false)(_.count(bs =>
-      bs.bsStartDate.isBefore(timeMachine.getCurrentDate().plusDays(1)) &&
-        bs.bsEndDate.isAfter(timeMachine.getCurrentDate().minusDays(1))
+      (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
+        (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
     ) > 0)
 
     val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(

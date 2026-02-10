@@ -58,9 +58,10 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
             _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && isCorrectLPP(lpp, isLPP2) => lpp }
           }
 
+        val date = timeMachine.getCurrentDate()
         val isInBreathingSpace = currentUserRequest.penaltyDetails.breathingSpace.fold(false)(_.count(bs =>
-          bs.bsStartDate.isBefore(timeMachine.getCurrentDate().plusDays(1)) &&
-            bs.bsEndDate.isAfter(timeMachine.getCurrentDate().minusDays(1))
+          (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
+            (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
         ) > 0)
         
         penaltyDetailsForId match {
