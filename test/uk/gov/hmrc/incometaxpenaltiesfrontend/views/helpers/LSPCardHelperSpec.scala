@@ -72,7 +72,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPoint), 2, 1, false) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPoint), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -82,7 +82,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testPointExpiryRow
                     ),
                     cardTitle = s"${messagesForLanguage.cardTitlePoint(1)}: ${messagesForLanguage.lateUpdate}",
-                    status = getTagStatus(penalty1, false, 2),
+                    status = getTagStatus(penalty1, 2),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -110,7 +110,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty), 2, 1, false) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -119,7 +119,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow
                     ),
                     cardTitle = s"${messagesForLanguage.cardTitlePoint(1)}: ${messagesForLanguage.lateUpdate}",
-                    status = getTagStatus(penalty1, false, 2),
+                    status = getTagStatus(penalty1, 2),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -145,7 +145,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPoint), 1, 1, false) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPoint), 1, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -154,7 +154,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow
                     ),
                     cardTitle = s"${messagesForLanguage.cardTitlePoint(1)}: ${messagesForLanguage.lateUpdate}",
-                    status = getTagStatus(penalty1, false, 1),
+                    status = getTagStatus(penalty1, 1),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -176,7 +176,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   )
                   val penalty1 = adjustedPointAddedPenalty.copy(penaltyOrder = Some("1"))
 
-                  lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(adjustedPointAddedPenalty), 1, 1, false) shouldBe
+                  lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(adjustedPointAddedPenalty), 1, 1) shouldBe
                     Seq(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq(
                         summaryListRow(
@@ -185,7 +185,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                         ),
                       ),
                       cardTitle = messagesForLanguage.cardTitleAdjustmentPoint(1),
-                      status = getTagStatus(penalty1, false, 1),
+                      status = getTagStatus(penalty1, 1),
                       penaltyPoint = "1",
                       penaltyId = penalty1.penaltyNumber,
                       isReturnSubmitted = true,
@@ -209,7 +209,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
 
                   mockPointExpiryDate(penalty1)(testPointExpiryRow)
 
-                  lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(adjustedPointAddedPenalty), 2, 1, false) shouldBe
+                  lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(adjustedPointAddedPenalty), 2, 1) shouldBe
                     Seq(LateSubmissionPenaltySummaryCard(
                       cardRows = Seq(
                         summaryListRow(
@@ -219,7 +219,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                         testPointExpiryRow
                       ),
                       cardTitle = messagesForLanguage.cardTitleAdjustmentPoint(1),
-                      status = getTagStatus(penalty1, false, 2),
+                      status = getTagStatus(penalty1, 2),
                       penaltyPoint = "1",
                       penaltyId = penalty1.penaltyNumber,
                       isReturnSubmitted = true,
@@ -232,127 +232,123 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               }
             }
           }
+          
+          s"rendering a Single Financial Penalty Card" should {
 
-          for (isBreathingSpace <- Seq(true, false)) {
-            s"rendering a Single Financial Penalty Card and breathingSpace = $isBreathingSpace" should {
+            "construct a card with correct messages including penalty amount" in {
 
-              "construct a card with correct messages including penalty amount" in {
+              val penalty1 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("1"))
 
-                val penalty1 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("1"))
+              mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
+              mockPayPenaltyByRow(penalty1, 1)(None)
+              mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
+              mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
+              mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
+              mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
+              mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
+              (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).anyNumberOfTimes()
 
-                mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
-                mockPayPenaltyByRow(penalty1, 1)(None)
-                mockTaxPeriodSummaryRow(penalty1)(Some(testTaxPeriodRow))
-                mockTaxYearSummaryRow(penalty1)(Some(testTaxYearRow))
-                mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
-                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
-                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
-                if (isBreathingSpace) mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+
+              lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPenaltyCharge), 1, 1) shouldBe
+                Seq(LateSubmissionPenaltySummaryCard(
+                  cardRows = Seq(
+                    testTaxPeriodRow,
+                    testTaxYearRow,
+                    testDueDateRow,
+                    testReceivedDateRow,
+                    testAppealStatusRow
+                  ),
+                  cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": ${messagesForLanguage.lateUpdate}", "200"),
+                  status = getTagStatus(penalty1, 1),
+                  penaltyPoint = "1",
+                  penaltyId = penalty1.penaltyNumber,
+                  isReturnSubmitted = true,
+                  penaltyCategory = penalty1.penaltyCategory,
+                  dueDate = penalty1.dueDate.map(dateToString(_))
+                ))
+            }
+          }
+
+          s"rendering a multiple Financial Penalty Cards so that the threshold is breached leading to additional penalty amount" should {
+
+            "construct cards with correct messages including penalty amount" in {
+
+              val penalty1 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("1"))
+              val penalty2 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("2"))
+              val penalty3 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("3"))
+
+              Seq(penalty1, penalty2, penalty3).foreach { penalty =>
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
+                mockPayPenaltyByRow(penalty, 2)(Some(testPayPenaltyByRow))
+                mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
+                mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
+                mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
                 (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).anyNumberOfTimes()
+              }
 
-
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(sampleLateSubmissionPenaltyCharge), 1, 1, isBreathingSpace) shouldBe
-                  Seq(LateSubmissionPenaltySummaryCard(
+              lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
+                penalties = Seq(penalty3, penalty2, penalty1),
+                threshold = 2,
+                activePoints = 3
+              ) shouldBe
+                Seq(
+                  LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
+                      testPayPenaltyByRow,
                       testTaxPeriodRow,
                       testTaxYearRow,
                       testDueDateRow,
                       testReceivedDateRow,
                       testAppealStatusRow
-                    ) ++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
-                    cardTitle = messagesForLanguage.cardTitleFinancialPoint(1, s": ${messagesForLanguage.lateUpdate}", "200"),
-                    status = getTagStatus(penalty1, isBreathingSpace, 1),
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleAdditionalFinancialPoint("200", s": ${messagesForLanguage.lateUpdate}"),
+                    status = getTagStatus(penalty3, 2),
+                    penaltyPoint = "3",
+                    penaltyId = penalty3.penaltyNumber,
+                    isReturnSubmitted = true,
+                    penaltyCategory = penalty3.penaltyCategory,
+                    dueDate = penalty3.dueDate.map(dateToString(_))
+                  ),
+                  LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testPayPenaltyByRow,
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testAppealStatusRow
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleFinancialPoint(2, s": ${messagesForLanguage.lateUpdate}", "200"),
+                    status = getTagStatus(penalty2, 2),
+                    penaltyPoint = "2",
+                    penaltyId = penalty2.penaltyNumber,
+                    isReturnSubmitted = true,
+                    penaltyCategory = penalty2.penaltyCategory,
+                    dueDate = penalty2.dueDate.map(dateToString(_))
+                  ),
+                  LateSubmissionPenaltySummaryCard(
+                    cardRows = Seq(
+                      testPayPenaltyByRow,
+                      testTaxPeriodRow,
+                      testTaxYearRow,
+                      testDueDateRow,
+                      testReceivedDateRow,
+                      testAppealStatusRow
+                    ),
+                    cardTitle = messagesForLanguage.cardTitleFinancialPointNoThreshold(1, s": ${messagesForLanguage.lateUpdate}"),
+                    status = getTagStatus(penalty1, 2),
                     penaltyPoint = "1",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
                     penaltyCategory = penalty1.penaltyCategory,
                     dueDate = penalty1.dueDate.map(dateToString(_))
-                  ))
-              }
-            }
-
-            s"rendering a multiple Financial Penalty Cards so that the threshold is breached leading to additional penalty amount and breathingSpace = $isBreathingSpace" should {
-
-              "construct cards with correct messages including penalty amount" in {
-
-                val penalty1 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("1"))
-                val penalty2 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("2"))
-                val penalty3 = sampleLateSubmissionPenaltyCharge.copy(penaltyOrder = Some("3"))
-
-                Seq(penalty1, penalty2, penalty3).foreach { penalty =>
-                  mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
-                  mockPayPenaltyByRow(penalty, 2)(Some(testPayPenaltyByRow))
-                  mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
-                  mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
-                  mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
-                  mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
-                  if (isBreathingSpace) mockBreathingSpaceStatusRow()(testBreathingSpaceRow) else ()
-                  mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel)(Some(testAppealStatusRow))
-                  (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 6)).anyNumberOfTimes()
-                }
-
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
-                  penalties = Seq(penalty3, penalty2, penalty1),
-                  threshold = 2,
-                  activePoints = 3,
-                  isBreathingSpace = isBreathingSpace
-                ) shouldBe
-                  Seq(
-                    LateSubmissionPenaltySummaryCard(
-                      cardRows = Seq(
-                        testPayPenaltyByRow,
-                        testTaxPeriodRow,
-                        testTaxYearRow,
-                        testDueDateRow,
-                        testReceivedDateRow,
-                        testAppealStatusRow
-                      ) ++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
-                      cardTitle = messagesForLanguage.cardTitleAdditionalFinancialPoint("200", s": ${messagesForLanguage.lateUpdate}"),
-                      status = getTagStatus(penalty3, isBreathingSpace, 2),
-                      penaltyPoint = "3",
-                      penaltyId = penalty3.penaltyNumber,
-                      isReturnSubmitted = true,
-                      penaltyCategory = penalty3.penaltyCategory,
-                      dueDate = penalty3.dueDate.map(dateToString(_))
-                    ),
-                    LateSubmissionPenaltySummaryCard(
-                      cardRows = Seq(
-                        testPayPenaltyByRow,
-                        testTaxPeriodRow,
-                        testTaxYearRow,
-                        testDueDateRow,
-                        testReceivedDateRow,
-                        testAppealStatusRow
-                      ) ++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
-                      cardTitle = messagesForLanguage.cardTitleFinancialPoint(2, s": ${messagesForLanguage.lateUpdate}", "200"),
-                      status = getTagStatus(penalty2, isBreathingSpace, 2),
-                      penaltyPoint = "2",
-                      penaltyId = penalty2.penaltyNumber,
-                      isReturnSubmitted = true,
-                      penaltyCategory = penalty2.penaltyCategory,
-                      dueDate = penalty2.dueDate.map(dateToString(_))
-                    ),
-                    LateSubmissionPenaltySummaryCard(
-                      cardRows = Seq(
-                        testPayPenaltyByRow,
-                        testTaxPeriodRow,
-                        testTaxYearRow,
-                        testDueDateRow,
-                        testReceivedDateRow,
-                        testAppealStatusRow
-                      )++ (if (isBreathingSpace) Some(testBreathingSpaceRow) else None),
-                      cardTitle = messagesForLanguage.cardTitleFinancialPointNoThreshold(1, s": ${messagesForLanguage.lateUpdate}"),
-                      status = getTagStatus(penalty1, isBreathingSpace, 2),
-                      penaltyPoint = "1",
-                      penaltyId = penalty1.penaltyNumber,
-                      isReturnSubmitted = true,
-                      penaltyCategory = penalty1.penaltyCategory,
-                      dueDate = penalty1.dueDate.map(dateToString(_))
-                    )
                   )
-              }
+                )
             }
           }
+          
           "rendering a Single Removed Point" when {
 
             "the penalty has Expired" should {
@@ -366,7 +362,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockPointExpiredOnRow(penalty1)(testPointExpiredOnRow)
                 mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, false) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -377,7 +373,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testAppealStatusRow
                     ),
                     cardTitle = messagesForLanguage.cardTitleRemovedPoint,
-                    status = getTagStatus(penalty1, false, 2),
+                    status = getTagStatus(penalty1, 2),
                     penaltyPoint = "",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -398,7 +394,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, false, pointsRemovedAfterPeriodOfCompliance = true) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, pointsRemovedAfterPeriodOfCompliance = true) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -407,7 +403,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow
                     ),
                     cardTitle = messagesForLanguage.cardTitleRemovedPoint,
-                    status = getTagStatus(penalty1, false, 2, pointsRemovedAfterPoc = Some(true)),
+                    status = getTagStatus(penalty1, 2, pointsRemovedAfterPoc = Some(true)),
                     penaltyPoint = "",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -431,7 +427,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, false) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -440,7 +436,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow
                     ),
                     cardTitle = messagesForLanguage.cardTitleRemovedPoint,
-                    status = getTagStatus(penalty1, false, 2),
+                    status = getTagStatus(penalty1, 2),
                     penaltyPoint = "",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -463,7 +459,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 mockDueDateSummaryRow(penalty1)(Some(testDueDateRow))
                 mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
 
-                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1, false) shouldBe
+                lspSummaryListRowHelper.createLateSubmissionPenaltyCards(Seq(penalty1), 2, 1) shouldBe
                   Seq(LateSubmissionPenaltySummaryCard(
                     cardRows = Seq(
                       testTaxPeriodRow,
@@ -472,7 +468,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       testReceivedDateRow
                     ),
                     cardTitle = messagesForLanguage.cardTitleRemovedPoint,
-                    status = getTagStatus(penalty1, false, 2),
+                    status = getTagStatus(penalty1, 2),
                     penaltyPoint = "",
                     penaltyId = penalty1.penaltyNumber,
                     isReturnSubmitted = true,
@@ -505,8 +501,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               val cards = lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
                 Seq(penalty),
                 threshold = 1,
-                activePoints = 1,
-                isBreathingSpace = false
+                activePoints = 1
               )(messages)
 
               cards.head.status shouldBe Tag(Text(messages("status.overdue")), "govuk-tag--red")
@@ -531,8 +526,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
               val cards = lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
                 Seq(penalty),
                 threshold = 1,
-                activePoints = 1,
-                isBreathingSpace = false
+                activePoints = 1
               )(messages)
 
               cards.head.status shouldBe Tag(Text(messages("status.due")), "govuk-tag--red")
