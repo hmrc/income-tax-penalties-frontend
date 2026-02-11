@@ -94,7 +94,6 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                    penaltyChargeReference: Option[String],
                                                    penaltyPercentage: BigDecimal,
                                                    daysOverdue: String,
-                                                   amountPenaltyAppliedTo: BigDecimal,
                                                    chargeStartDate: LocalDate,
                                                    chargeEndDate: LocalDate,
                                                    principalChargeDueDate: LocalDate,
@@ -114,7 +113,6 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     penaltyChargeReference = lppDetails.penaltyChargeReference,
     penaltyPercentage = lppDetails.lpp2Percentage.getOrElse(0.04),
     daysOverdue = lppDetails.lpp2Days.getOrElse("31"),
-    amountPenaltyAppliedTo = lppDetails.lpp1HRCalculationAmt.get,
     chargeStartDate = lppDetails.penaltyChargeDueDate.get,
     chargeEndDate = lppDetails.communicationsDate.getOrElse(timeMachine.getCurrentDate()),
     principalChargeDueDate = lppDetails.principalChargeDueDate,
@@ -124,7 +122,6 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
-  val formattedAmountPenaltyAppliedTo: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(amountPenaltyAppliedTo)
 
   def chargePeriodDays(currentDate: LocalDate) : Int = {
     val endDate = if(isEstimate) currentDate.minusDays(1) else payPenaltyBy.minusDays(32)
