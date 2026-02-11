@@ -20,7 +20,7 @@ import play.api.libs.json.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum.Posted
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{JsonUtils, TimeMachine}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.LocalDateHelper._
+
 import java.time.LocalDate
 
 case class  LPPDetails(principalChargeReference: String,
