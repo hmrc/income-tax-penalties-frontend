@@ -105,6 +105,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
 
     SecondLatePaymentPenaltyCalculationData(
       penaltyAmount = 1001.45,
+      penaltyStatus = LPPPenaltyStatusEnum.Posted,
       taxPeriodStartDate = penaltyChargeDueDate.minusDays(90),
       taxPeriodEndDate = penaltyChargeDueDate.minusDays(60),
       isPenaltyPaid = isPenaltyPaid,
@@ -273,8 +274,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       latePaymentPenalty = Some(lpp),
       breathingSpace = Some(Seq(
         BreathingSpace(
-          bsStartDate = LocalDate.of(2025, 6, 1),
-          bsEndDate = LocalDate.of(2026, 6, 1)
+          bsStartDate = LocalDate.now().minusDays(30),
+          bsEndDate = LocalDate.now().plusDays(30)
         )))
     )))
   }
@@ -302,7 +303,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       appealInformation = None,
       principalChargeBillingFrom = firstLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = firstLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = firstLPPCalData.payPenaltyBy,
+      principalChargeDueDate = firstLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
@@ -327,8 +328,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       latePaymentPenalty = Some(lpp),
       breathingSpace = Some(Seq(
         BreathingSpace(
-          bsStartDate = firstLPPCalData.penaltyChargeCreationDate.orNull.minusDays(10),
-          bsEndDate = firstLPPCalData.penaltyChargeCreationDate.orNull.plusDays(10)
+          bsStartDate = firstLPPCalData.principalChargeDueDate.minusDays(10),
+          bsEndDate = firstLPPCalData.principalChargeDueDate.plusDays(10)
         )))
     )))
   }
@@ -434,8 +435,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       latePaymentPenalty = Some(lpp),
       breathingSpace = Some(Seq(
         BreathingSpace(
-          bsStartDate = LocalDate.of(2025, 6, 1),
-          bsEndDate = LocalDate.of(2026, 6, 1)
+          bsStartDate = LocalDate.now().minusDays(30),
+          bsEndDate = LocalDate.now().plusDays(30)
         )))
     )))
   }
@@ -463,7 +464,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
@@ -489,8 +490,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       latePaymentPenalty = Some(lpp),
       breathingSpace = Some(Seq(
         BreathingSpace(
-          bsStartDate = secondLPPCalData.penaltyChargeCreationDate.orNull.minusDays(10),
-          bsEndDate = secondLPPCalData.penaltyChargeCreationDate.orNull.plusDays(10)
+          bsStartDate = secondLPPCalData.principalChargeDueDate,
+          bsEndDate = secondLPPCalData.principalChargeDueDate.plusDays(40)
         )))
     )))
   }

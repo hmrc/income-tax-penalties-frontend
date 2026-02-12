@@ -69,7 +69,7 @@
             ))
     }
 
-    @if(calculationHelper.isExpiredBreathingSpace(breathingSpaceData)) {
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         @govukInsetText(InsetText(
             content = Text(messages(s"calculation.$individualOrAgent.calc2.breathingSpace.expired")),
             id = Some("breathingSpaceExpired")

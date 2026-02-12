@@ -86,6 +86,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
 }
 
 case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
+                                                   penaltyStatus: LPPPenaltyStatusEnum.Value,
                                                    taxPeriodStartDate: LocalDate,
                                                    taxPeriodEndDate: LocalDate,
                                                    isPenaltyPaid: Boolean,
@@ -106,6 +107,7 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
+    penaltyStatus = lppDetails.penaltyStatus,
     taxPeriodStartDate = lppDetails.principalChargeBillingFrom,
     taxPeriodEndDate = lppDetails.principalChargeBillingTo,
     isPenaltyPaid = lppDetails.isPaid,
