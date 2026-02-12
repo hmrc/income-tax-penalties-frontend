@@ -40,7 +40,6 @@ trait TagHelper {
             case _ => messages("status.expired")
           }
         Tag(Text(messages(tagStatusMessage)))
-      case _ if penalty.outstandingAmount == 0 && isLsp4OrAdditional(penalty, threshold) => Tag(Text(messages("status.paid")), "govuk-tag--green")
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid, penalty.chargeDueDate)
       case _ =>
@@ -64,8 +63,8 @@ trait TagHelper {
     (penalty.appealStatus, penalty.penaltyStatus) match {
       case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
       case _ if isBreathingSpace => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
-      case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
+      case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
       case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)), penalty.penaltyChargeDueDate)
     }
 
