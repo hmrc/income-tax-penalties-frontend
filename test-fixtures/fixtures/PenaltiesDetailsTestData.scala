@@ -114,7 +114,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       penaltyChargeReference = if (!isIncomeTaxPaid) None else Some("PEN1234567"),
       penaltyPercentage = 2.00,
       daysOverdue = "4",
-      chargeStartDate = LocalDate.now(),
+      chargeStartDate = Some(LocalDate.now()),
       chargeEndDate = LocalDate.now(),
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
       isPFA = false,
