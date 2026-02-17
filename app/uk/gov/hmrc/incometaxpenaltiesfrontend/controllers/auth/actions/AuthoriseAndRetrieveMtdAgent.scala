@@ -56,7 +56,7 @@ class AuthoriseAndRetrieveMtdAgent @Inject()(override val authConnector: AuthCon
         case _ =>
           authorised(agentDelegatedAuthorityRule(request.mtdItId))
           {
-            Future.successful(Left(Redirect(routes.SessionExpiredController.onPageLoad(true))))
+            Future.successful(Left(Redirect(routes.UnauthorisedErrorController.onPageLoad())))
           }.recoverWith {
             case authorisationException: AuthorisationException =>
               handleAuthFailure(authorisationException, isAgent = true)(implicitly, implicitly, logger).map(Left(_))
