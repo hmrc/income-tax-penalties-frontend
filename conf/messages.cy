@@ -368,3 +368,7 @@ agentErrorView.link = Ewch i gyfrif gwasanaethau asiant
 # Breathing Space
 breathingSpace.status = Statws
 breathingSpace.paused = Wedi’i oedi oherwydd cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space)
+
+# Unauthorised Error View
+unauthorised.page.h1 = You do not have access to this service
+unauthorised.page.p = You do not have the correct permissions to access this service. Please contact HMRC if you think this is a mistake.
