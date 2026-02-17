@@ -18,11 +18,13 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions
 
 import com.google.inject.Singleton
 import play.api.Logging
-import play.api.mvc._
-import uk.gov.hmrc.auth.core._
+import play.api.mvc.*
+import play.api.mvc.Results.Redirect
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthorisedAndEnrolledAgent
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.agentDelegatedAuthorityRule
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
@@ -51,8 +53,14 @@ class AuthoriseAndRetrieveMtdAgent @Inject()(override val authConnector: AuthCon
      {
       Future.successful(Right(request))
     }.recoverWith {
-      case authorisationException: AuthorisationException =>
-        handleAuthFailure(authorisationException, isAgent = true)(implicitly, implicitly, logger).map(Left(_))
+        case _ =>
+          authorised(agentDelegatedAuthorityRule(request.mtdItId))
+          {
+            Future.successful(Left(Redirect(routes.SessionExpiredController.onPageLoad(true))))
+          }.recoverWith {
+            case authorisationException: AuthorisationException =>
+              handleAuthFailure(authorisationException, isAgent = true)(implicitly, implicitly, logger).map(Left(_))
+          }
     }
   }
 }
