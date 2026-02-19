@@ -57,7 +57,8 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
       penalties = sortPointsInDescendingOrder(lsp),
       threshold = lspThreshold,
       activePoints = lspActivePoints,
-      pointsRemovedAfterPeriodOfCompliance = pocAchieved
+      pointsRemovedAfterPeriodOfCompliance = pocAchieved,
+      isBreathingSpace = isInBreathingSpace
     )
 
     val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)

@@ -31,14 +31,15 @@ object PE000003A extends UserDetailsData {
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 4: Late update - £200 penalty")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Breathing Space")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 5
+    cardRows.size() shouldBe 6
     validateSummary(cardRows.get(0), "Missing or late income sources", "JB Painting and Decorating")
     validateSummary(cardRows.get(1), "Pay penalty by", "21 September 2027")
     validateSummary(cardRows.get(2), "Update period", "6 April 2027 to 5 July 2027")
     validateSummary(cardRows.get(3), "Update due", "7 August 2027")
     validateSummary(cardRows.get(4), "Update submitted", "1 September 2027")
+    validateSummary(cardRows.get(5), "Status", "Paused due to Breathing Space")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
