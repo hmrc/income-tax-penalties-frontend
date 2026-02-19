@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenaltyCalculationData
@@ -33,7 +34,7 @@
         calculationHelper: SecondLatePaymentCalculationHelper
 )
 
-@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @individualOrAgent = {@if(isAgent){agent}else{individual}}
 
@@ -66,6 +67,13 @@
                 content = Text(messages(s"calculation.$individualOrAgent.calc.breathing.space")),
                 id = Some("breathingSpaceMessage")
             ))
+    }
+
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
+        @govukInsetText(InsetText(
+            content = Text(messages(s"calculation.$individualOrAgent.calc2.breathingSpace.expired")),
+            id = Some("breathingSpaceExpired")
+        ))
     }
 
     @if(calculationData.incomeTaxIsPaid){
@@ -116,7 +124,6 @@
             @insetMsg
         </div>
     }
-
 
     <div id="paymentPlanContent">
         @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>

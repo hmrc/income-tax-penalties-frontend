@@ -17,7 +17,9 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenaltyCalculationData
 
@@ -81,6 +83,27 @@ class SecondLatePaymentCalculationHelper {
           )
         }.getOrElse(List.empty)
       case _ => List.empty
+    }
+  }
+
+  def isExpiredBreathingSpace(calculationData: SecondLatePaymentPenaltyCalculationData,
+                              breathingSpaceData: Option[Seq[BreathingSpace]],
+                              timeMachine: TimeMachine): Boolean = {
+    breathingSpaceData match {
+      case Some(breathingSpace) => breathingSpace.count(bs =>
+        (bs.bsEndDate.isBefore(timeMachine.getCurrentDate()) && !bs.bsEndDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) &&
+          (
+            (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Accruing && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))) ||
+              (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted &&
+                (
+                  (bs.bsStartDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)) && bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1))) ||
+                    (bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)) && bs.bsEndDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1))) ||
+                    (bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(31)) && bs.bsEndDate.isAfter(calculationData.penaltyChargeCreationDate.get))
+                  )
+                )
+            )
+      ) > 0
+      case None => false
     }
   }
 }

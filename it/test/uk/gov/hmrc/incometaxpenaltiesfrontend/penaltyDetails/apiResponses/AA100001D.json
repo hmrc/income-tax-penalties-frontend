@@ -1,6 +1,6 @@
 {
   "idType" : "NINO",
-  "idNumber" : "AA100000D",
+  "idNumber" : "AA100001D",
   "payload" : {
     "success" : {
       "processingDate" : "2025-04-05T10:15:10Z",
@@ -17,7 +17,7 @@
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
-            "principalChargeReference" : "XJ002616061015",
+            "principalChargeReference" : "XJ002616061074",
             "penaltyStatus" : "A",
             "penaltyAmountAccruing" : 40,
             "penaltyAmountPosted" : 0,
@@ -32,13 +32,13 @@
             "lpp1LRDays" : "15",
             "lpp1LRPercentage" : 2,
             "penaltyChargeCreationDate" : "2026-02-15",
-            "penaltyChargeReference" : "XJ002616061015",
+            "penaltyChargeReference" : "XJ002616061074",
             "penaltyChargeDueDate" : "2026-03-17"
           } ]
         },
         "breathingSpace" : [ {
-          "bsStartDate" : "2026-02-02",
-          "bsEndDate" : "2027-02-02"
+          "bsStartDate" : "2026-01-16",
+          "bsEndDate" : "2026-02-16"
         } ]
       }
     }
