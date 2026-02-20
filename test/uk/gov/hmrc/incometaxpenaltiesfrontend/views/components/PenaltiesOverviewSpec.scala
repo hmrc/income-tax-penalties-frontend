@@ -98,7 +98,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
                   Selectors.overviewP1 -> messagesForLanguage.overviewP1(isAgent),
                   Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPPoints(1),
                   Selectors.overviewBullet(2) -> messagesForLanguage.overviewLPP(1),
-                  Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay(isAgent)
+                  Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay
                 )
 
                 "has a link to the check and pay page" in {
