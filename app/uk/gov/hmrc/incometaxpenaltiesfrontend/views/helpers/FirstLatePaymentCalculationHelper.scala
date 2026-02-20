@@ -17,7 +17,8 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 
@@ -114,5 +115,18 @@ class FirstLatePaymentCalculationHelper {
       case _ => List.empty
     }
   }
-
+  
+  def isExpiredBreathingSpace(calculationData: FirstLatePaymentPenaltyCalculationData,
+                              breathingSpaceData: Option[Seq[BreathingSpace]],
+                              timeMachine: TimeMachine): Boolean = {
+    breathingSpaceData match {
+      case Some(breathingSpace) => breathingSpace.count(bs =>
+        (bs.bsEndDate.isBefore(timeMachine.getCurrentDate()) && !bs.bsEndDate.isBefore(calculationData.principalChargeDueDate)) && (
+          (bs.bsStartDate.isAfter(calculationData.principalChargeDueDate) && bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) ||
+            (bs.bsEndDate.isAfter(calculationData.principalChargeDueDate) && bs.bsEndDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) ||
+            (bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)))
+        )) > 0
+      case None => false
+    }
+  }
 }

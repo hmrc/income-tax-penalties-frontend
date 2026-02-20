@@ -368,3 +368,7 @@ agentErrorView.link = Ewch i gyfrif gwasanaethau asiant
 # Breathing Space
 breathingSpace.status = Statws
 breathingSpace.paused = Wedi’i oedi oherwydd cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space)
+calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation. (Welsh)
+calculation.agent.breathingSpace.expired = Your client has been in Breathing Space. The time they were in Breathing Space will not be added to the calculation. (Welsh)
+calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation. (Welsh)
+calculation.agent.calc2.breathingSpace.expired = Your client’s Breathing Space has ended. The time they were in Breathing Space has not been added to their calculation. (Welsh)

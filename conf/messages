@@ -368,3 +368,7 @@ agentErrorView.link = Go to agent services account
 # Breathing Space
 breathingSpace.status = Status
 breathingSpace.paused = Paused due to Breathing Space
+calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation.
+calculation.agent.breathingSpace.expired = Your client has been in Breathing Space. The time they were in Breathing Space will not be added to the calculation.
+calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
+calculation.agent.calc2.breathingSpace.expired = Your client’s Breathing Space has ended. The time they were in Breathing Space has not been added to their calculation.

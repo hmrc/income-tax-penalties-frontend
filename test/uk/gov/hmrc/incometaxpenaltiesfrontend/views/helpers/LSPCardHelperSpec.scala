@@ -540,7 +540,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
           }
         }
       }
-      }
+    }
 
   }
 }

@@ -51,8 +51,6 @@ case class PenaltyDetails(totalisations: Option[Totalisations],
 
   val lspPeriodOfComplianceDate: Option[LocalDate] = lateSubmissionPenalty.flatMap(_.summary.pocAchievementDate)
   
-  val isInBreathingSpace: Boolean =
-    breathingSpace.fold(false)(_.nonEmpty)
 }
 
 object PenaltyDetails {
