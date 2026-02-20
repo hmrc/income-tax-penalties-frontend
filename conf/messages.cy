@@ -43,8 +43,8 @@ agent.index.overview.lsp.points.singular = Mae gan gyfrif eich cleient 1 pwynt c
 agent.index.overview.lsp.points.plural = Mae gan gyfrif eich cleient {0} bwynt cosb am gyflwyno’n hwyr
 agent.index.overview.lsp.points.max = Mae gan gyfrif eich cleient y nifer uchaf o bwyntiau cosb am gyflwyno’n hwyr
 
-individual.index.overview.checkAmount.button = Gwirio’r hyn sydd arnoch
-agent.index.overview.checkAmount.button = Gwirio’r hyn sydd arnoch
+individual.index.overview.checkWhatYouOwe.button = Gwirio’r hyn sydd arnoch
+agent.index.overview.checkWhatYouOwe.button = Gwirio’r hyn sydd arnoch
 
 # --- LSP Tab Content
 index.lsp.tab.h2 = Cosbau am gyflwyno’n hwyr

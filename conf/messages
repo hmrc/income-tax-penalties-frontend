@@ -43,8 +43,8 @@ agent.index.overview.lsp.points.singular = Your client’s account has 1 late su
 agent.index.overview.lsp.points.plural = Your client’s account has {0} late submission penalty points
 agent.index.overview.lsp.points.max = Your client’s account has the maximum number of late submission penalty points
 
-individual.index.overview.checkAmount.button = Check what you owe
-agent.index.overview.checkAmount.button = Check what you owe
+individual.index.overview.checkWhatYouOwe.button = Check what you owe
+agent.index.overview.checkWhatYouOwe.button = Check what you owe
 
 # --- LSP Tab Content
 index.lsp.tab.h2 = Late submission penalties
