@@ -25,7 +25,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthorisedAndEnrolledAgent
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.agentDelegatedAuthorityRule
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.SecondaryAgentAccessDeniedAuditModel
+import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.EnrolmentUtil.{agentDelegatedAuthorityRule, secondaryAgentDelegatedAuthorityRule}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import javax.inject.Inject
@@ -35,7 +37,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthoriseAndRetrieveMtdAgent @Inject()(override val authConnector: AuthConnector,
                                              val appConfig: AppConfig,
                                              val errorHandler: ErrorHandler,
-                                             mcc: MessagesControllerComponents)
+                                             mcc: MessagesControllerComponents,
+                                             auditService: AuditService)
   extends AuthoriseHelper
     with ActionRefiner[AuthorisedAndEnrolledAgent, AuthorisedAndEnrolledAgent]
     with AuthorisedFunctions
@@ -54,8 +57,9 @@ class AuthoriseAndRetrieveMtdAgent @Inject()(override val authConnector: AuthCon
       Future.successful(Right(request))
     }.recoverWith {
         case _ =>
-          authorised(agentDelegatedAuthorityRule(request.mtdItId))
+          authorised(secondaryAgentDelegatedAuthorityRule(request.mtdItId))
           {
+            auditService.audit(SecondaryAgentAccessDeniedAuditModel(request))
             Future.successful(Left(Redirect(routes.UnauthorisedErrorController.onPageLoad())))
           }.recoverWith {
             case authorisationException: AuthorisationException =>
