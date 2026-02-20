@@ -57,7 +57,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
           document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
           document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
-          document.getSubmitButton.text() shouldBe "Check amounts and pay"
+          document.getSubmitButton.text() shouldBe "Check what you owe"
         }
 
         "the user is an authorised agent" in {
@@ -76,7 +76,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
           document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
           document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"
-          document.getSubmitButton.text() shouldBe "Check amounts"
+          document.getSubmitButton.text() shouldBe "Check what you owe"
         }
       }
     }
