@@ -65,8 +65,8 @@ object IndexViewMessages {
     val overviewOverdueTaxCharge: String = "overdue Income Tax charges"
     val overviewInterest: String = "unpaid interest"
     val overviewCheckAndPay: Boolean => String = {
-      case true => "Check amounts"
-      case false => "Check amounts and pay"
+      case true => "Check what you owe"
+      case false => "Check what you owe"
     }
   }
 
@@ -119,8 +119,8 @@ object IndexViewMessages {
     override val overviewOverdueTaxCharge: String = "taliadau Treth Incwm gorddyledus"
     override val overviewInterest: String = "llog sydd heb ei dalu"
     override val overviewCheckAndPay: Boolean => String = {
-      case true => "Gwirio’r symiau"
-      case false => "Gwirio’r symiau a thalu"
+      case true => "Gwirio’r hyn sydd arnoch"
+      case false => "Gwirio’r hyn sydd arnoch"
     }
   }
 }
