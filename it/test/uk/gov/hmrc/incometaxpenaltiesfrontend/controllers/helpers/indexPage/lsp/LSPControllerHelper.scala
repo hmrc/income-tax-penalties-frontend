@@ -111,7 +111,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       overview.text() shouldBe expectedOverview
       document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
       if (hasUnpaidPenalty) {
-        document.getSubmitButton.text() shouldBe s"Check amounts${if (isAgent) "" else " and pay"}"
+        document.getSubmitButton.text() shouldBe "Check what you owe"
       }
     }
   }
