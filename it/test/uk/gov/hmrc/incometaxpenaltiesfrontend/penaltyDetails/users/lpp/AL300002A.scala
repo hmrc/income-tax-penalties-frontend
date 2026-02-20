@@ -113,7 +113,7 @@ object AL300002A extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check amounts${if(isAgent) "" else " and pay"}"
+    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check what you owe"
 
   override val timeMachineDate: Option[String] = Some("05/03/2028")
 }

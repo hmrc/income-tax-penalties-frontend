@@ -37,7 +37,6 @@ object AA200000B extends UserDetailsData {
     validateViewCalculationLink(card, 0, isSecondLPP = true)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
-
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
     validateCardTag(card, expectedTag = "Breathing Space")
@@ -51,14 +50,13 @@ object AA200000B extends UserDetailsData {
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
-
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
     1 -> penaltyCard1ExpectedContent
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check amounts${if(isAgent) "" else " and pay"}"
+    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check what you owe"
 
   override val timeMachineDate: Option[String] = Some("10/03/2028")
 }

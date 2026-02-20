@@ -57,5 +57,5 @@ object PE000002A extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties 1 late submission penalty point Check amounts${if(isAgent) "" else " and pay"}"
+    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties 1 late submission penalty point Check what you owe"
 }

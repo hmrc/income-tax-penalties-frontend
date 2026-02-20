@@ -70,7 +70,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
       document.getH2Elements.get(0).text() shouldBe "Overview"
       overview.text() shouldBe expectedContent
       document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-      document.getSubmitButton.text() shouldBe s"Check amounts${if (isAgent) "" else " and pay"}"
+      document.getSubmitButton.text() shouldBe "Check what you owe"
     }
   }
 

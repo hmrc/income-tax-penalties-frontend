@@ -42,10 +42,10 @@
 
             @if(penaltiesOverviewViewModel.hasFinancialCharge) {
                 @link(
-                    link = appConfig.checkAmountAndPayUrl(isAgent),
-                    messageKey = s"$individualOrAgent.index.overview.checkAmount.button",
+                    link = appConfig.checkWhatYouOweUrl(isAgent),
+                    messageKey = s"$individualOrAgent.index.overview.checkWhatYouOwe.button",
                     classes = Some("govuk-button"),
-                    id = Some("checkAmountPayButton")
+                    id = Some("checkWhatYouOweButton")
                 )
             }
         </div>
