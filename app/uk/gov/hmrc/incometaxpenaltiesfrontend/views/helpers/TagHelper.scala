@@ -40,7 +40,8 @@ trait TagHelper {
             case _ => messages("status.expired")
           }
         Tag(Text(messages(tagStatusMessage)))
-      case _ if isBreathingSpace && isLsp4OrAdditional(penalty, threshold) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
+      case _ if isBreathingSpace && isLsp4OrAdditional(penalty, 4) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
+      case LSPPenaltyStatusEnum.Active if isLsp4OrAdditional(penalty, 4) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid, penalty.chargeDueDate)
       case _ =>
@@ -48,16 +49,11 @@ trait TagHelper {
     }
 
   def isLsp4OrAdditional(penalty: LSPDetails, threshold: Int): Boolean = {
-    if (penalty.penaltyOrder.exists(_.toInt >= threshold)) {
-      if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
-        if (!penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
-          return true
-        }
-      } else if (penalty.penaltyOrder.exists(_.toInt == threshold)) {
-          return true
-      }
-    }
-    false
+    val isLps4AndMore = penalty.penaltyOrder.forall(_.toInt >= threshold)
+    isLps4AndMore && (
+      (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive && !penalty.appealStatus.contains(AppealStatusEnum.Upheld)) ||
+        (penalty.penaltyStatus != LSPPenaltyStatusEnum.Inactive)
+      )
   }
 
   def getTagStatus(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
