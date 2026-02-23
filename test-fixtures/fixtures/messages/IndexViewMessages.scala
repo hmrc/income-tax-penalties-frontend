@@ -64,10 +64,7 @@ object IndexViewMessages {
     val overviewLSPPointsMax: String = "the maximum number of late submission penalty points"
     val overviewOverdueTaxCharge: String = "overdue Income Tax charges"
     val overviewInterest: String = "unpaid interest"
-    val overviewCheckAndPay: Boolean => String = {
-      case true => "Check amounts"
-      case false => "Check amounts and pay"
-    }
+    val overviewCheckAndPay: String = "Check what you owe"
   }
 
   object English extends Messages with En
@@ -118,9 +115,6 @@ object IndexViewMessages {
     override val overviewLSPPointsMax: String = "uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr"
     override val overviewOverdueTaxCharge: String = "taliadau Treth Incwm gorddyledus"
     override val overviewInterest: String = "llog sydd heb ei dalu"
-    override val overviewCheckAndPay: Boolean => String = {
-      case true => "Gwirio’r symiau"
-      case false => "Gwirio’r symiau a thalu"
-    }
+    override val overviewCheckAndPay: String = "Gwirio’r hyn sydd arnoch"
   }
 }
