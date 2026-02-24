@@ -148,7 +148,7 @@
                 TableRow(
                     content = Text(messages("calculation.calc2.table.charge.period",
                         dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-                        dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate().minusDays(1) else calculationData.payPenaltyBy.minusDays(32)),
+                        dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
                         calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
                 )
             ),
