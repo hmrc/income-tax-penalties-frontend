@@ -41,7 +41,6 @@ trait TagHelper {
           }
         Tag(Text(messages(tagStatusMessage)))
       case _ if isBreathingSpace && isLsp4OrAdditional(penalty, 4) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
-      case LSPPenaltyStatusEnum.Active if isLsp4OrAdditional(penalty, 4) => Tag(Text(messages("status.breathing.space")), "govuk-tag--yellow")
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid, penalty.chargeDueDate)
       case _ =>
