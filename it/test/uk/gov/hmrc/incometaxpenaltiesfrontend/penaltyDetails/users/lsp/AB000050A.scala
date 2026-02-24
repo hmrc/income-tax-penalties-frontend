@@ -30,35 +30,32 @@ object AB000050A extends UserDetailsData {
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point")
-    validateCardTag(card, expectedTag = "Expired")
+    validateCardTag(card, expectedTag = "Removed")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
+    cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Tax year", "2026 to 2027")
     validateSummary(cardRows.get(1), "Return due", "31 January 2028")
     validateSummary(cardRows.get(2), "Return submitted", "23 February 2028")
-    validateSummary(cardRows.get(3), "Point expired on", "5 April 2029")
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point")
-    validateCardTag(card, expectedTag = "Expired")
+    validateCardTag(card, expectedTag = "Removed")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
+    cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(1), "Return due", "31 January 2027")
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
-    validateSummary(cardRows.get(3), "Point expired on", "5 April 2028")
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point")
-    validateCardTag(card, expectedTag = "Expired")
+    validateCardTag(card, expectedTag = "Removed")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
+    cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Tax year", "2024 to 2025")
     validateSummary(cardRows.get(1), "Return due", "31 January 2026")
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2026")
-    validateSummary(cardRows.get(3), "Point expired on", "5 April 2027")
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
@@ -68,4 +65,6 @@ object AB000050A extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = _ => ""
+
+  override val timeMachineDate: String = "01/12/2029"
 }

@@ -40,7 +40,7 @@ trait UserDetailsData extends Matchers {
   
   val expectedOverviewText: Boolean => String
   
-  val timeMachineDate: Option[String] = None
+  val timeMachineDate: String
 
   def getFilePath(nino: String): String = {
     s"it/test/uk/gov/hmrc/incometaxpenaltiesfrontend/penaltyDetails/apiResponses/$nino.json"

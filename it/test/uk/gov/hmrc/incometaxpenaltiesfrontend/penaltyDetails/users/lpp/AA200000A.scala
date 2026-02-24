@@ -38,7 +38,7 @@ object AA200000A extends UserDetailsData {
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
@@ -55,5 +55,6 @@ object AA200000A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check what you owe"
-}
 
+  override val timeMachineDate: String = "05/04/2028"
+}

@@ -28,9 +28,9 @@ object AA000000A extends UserDetailsData {
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   override val expectedNumberOfLPPPenaltyCards: Int = 0
 
-  
-
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map.empty
 
   override val expectedOverviewText: Boolean => String = _ => ""
+
+  override val timeMachineDate: String = "now"
 }

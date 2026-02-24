@@ -37,17 +37,18 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
     disable(UseStubForBackend)
   }
 
-  val defaultTimeMachineDate: LocalDate = getFeatureDate(appConfig)
+  setFeatureDate(None)
+  val currentDate: LocalDate = getFeatureDate(appConfig)
   
   "GET /view-penalty/self-assessment" when {
     "the call to penalties backend returns data" should {
       "render the expected penalty cards" when {
         lspUsers.foreach { case (nino, userdetails) => 
-
-          val date: LocalDate = userdetails.timeMachineDate.map(date =>
-            LocalDate.parse(date.replace("/", "-"), timeMachineDateFormatter)
-          ).getOrElse {
-            defaultTimeMachineDate
+          
+          val date = userdetails.timeMachineDate match {
+            case "now" => currentDate
+            case dateText =>
+              LocalDate.parse(dateText.replace("/", "-"), timeMachineDateFormatter)
           }
 
           s"the user with nino $nino is an authorised individual" in {

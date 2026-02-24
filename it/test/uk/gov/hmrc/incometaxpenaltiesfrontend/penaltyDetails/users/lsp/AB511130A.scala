@@ -113,8 +113,7 @@ object AB511130A extends UserDetailsData {
     validateSummary(cardRows.get(3), "Update submitted", "1 March 2027")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
-
-
+  
   def penaltyCard7ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 1: Late tax return")
     validateCardTag(card, expectedTag = "Active")
@@ -139,4 +138,6 @@ object AB511130A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview Your${if (isAgent) " client’s" else ""} account has the maximum number of late submission penalty points"
+
+  override val timeMachineDate: String = "01/06/2028"
 }

@@ -45,4 +45,6 @@ object AA000000C extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = _ => ""
+
+  override val timeMachineDate: String = "01/08/2027"
 }

@@ -37,11 +37,11 @@ object AA100000C extends UserDetailsData {
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
-
-
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent
   )
 
   override val expectedOverviewText: Boolean => String = _ =>  ""
+  
+  override val timeMachineDate: String = "14/02/2026"
 }

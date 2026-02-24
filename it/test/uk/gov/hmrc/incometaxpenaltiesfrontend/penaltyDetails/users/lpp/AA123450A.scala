@@ -50,13 +50,12 @@ object AA123450A extends UserDetailsData {
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
-
-
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
     1 -> penaltyCard1ExpectedContent
   )
 
   override val expectedOverviewText: Boolean => String = _ =>  ""
-}
 
+  override val timeMachineDate: String = "02/03/2025"
+}
