@@ -48,16 +48,8 @@ trait TagHelper {
     }
 
   def isLsp4OrAdditional(penalty: LSPDetails, threshold: Int): Boolean = {
-    if (penalty.penaltyOrder.exists(_.toInt >= threshold)) {
-      if (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive) {
-        if (!penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
-          return true
-        }
-      } else if (penalty.penaltyOrder.exists(_.toInt == threshold)) {
-          return true
-      }
-    }
-    false
+    val isLps4AndMore = penalty.penaltyOrder.forall(_.toInt >= threshold)
+    isLps4AndMore && (penalty.penaltyStatus != LSPPenaltyStatusEnum.Inactive)
   }
 
   def getTagStatus(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Tag =

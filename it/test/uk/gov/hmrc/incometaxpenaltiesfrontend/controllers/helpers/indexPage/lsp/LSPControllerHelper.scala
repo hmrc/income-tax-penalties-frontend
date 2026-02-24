@@ -95,6 +95,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       "AB511120A" -> AB511120A,
       "AB511130A" -> AB511130A,
       "AB511140A" -> AB511140A,
+      "AB522240A" -> AB522240A,
       "AB611150A" -> AB611150A,
       "AA511110A-overdue" -> AA511110AOverdue,
       "AB511140A-overdue" -> AB511140AOverdue,
