@@ -49,10 +49,7 @@ trait TagHelper {
 
   def isLsp4OrAdditional(penalty: LSPDetails, threshold: Int): Boolean = {
     val isLps4AndMore = penalty.penaltyOrder.forall(_.toInt >= threshold)
-    isLps4AndMore && (
-      (penalty.penaltyStatus == LSPPenaltyStatusEnum.Inactive && !penalty.appealStatus.contains(AppealStatusEnum.Upheld)) ||
-        (penalty.penaltyStatus != LSPPenaltyStatusEnum.Inactive)
-      )
+    isLps4AndMore && (penalty.penaltyStatus != LSPPenaltyStatusEnum.Inactive)
   }
 
   def getTagStatus(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
