@@ -49,6 +49,9 @@
     </ol>
 }
 
+    @chargePeriodText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
+
+
 @main(pageTitle = messages(s"calculation.individual.second.title"), backLinkEnabled = true, isAgent = isAgent) {
 
 
@@ -146,7 +149,7 @@
                     classes = "govuk-!-font-weight-bold"
                 ),
                 TableRow(
-                    content = Text(messages("calculation.calc2.table.charge.period",
+                    content = Text(messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
                         dateToString(calculationData.principalChargeDueDate.plusDays(31)),
                         dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
                         calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
