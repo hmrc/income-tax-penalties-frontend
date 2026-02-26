@@ -40,7 +40,7 @@ case class LatePaymentPenaltySummaryCard(
                                           taxPeriodEndDate: String,
                                           incomeTaxOutstandingAmountInPence: Int,
                                           isTTPActive: Boolean = false,
-                                          isEstimatedLPP1: Boolean
+                                          isEstimate: Boolean
                                         ) {
   val isLPP2: Boolean = penaltyCategory.equals(LPPPenaltyCategoryEnum.LPP2)
   val hasCalulcationDetailsLink: Boolean = !appealStatus.contains(AppealStatusEnum.Upheld)
@@ -51,7 +51,7 @@ case class LatePaymentPenaltySummaryCard(
   }
   val isSecondStageAppeal: Boolean = appealLevel.contains(AppealLevelEnum.FirstStageAppeal)
   val isRejectedFirstStageAppeal: Boolean = appealStatus.contains(AppealStatusEnum.Rejected) && isSecondStageAppeal
-  val canAppeal: Boolean = isRejectedFirstStageAppeal || (appealStatus.isEmpty && !isEstimatedLPP1)
+  val canAppeal: Boolean = (isRejectedFirstStageAppeal || appealStatus.isEmpty) && !isEstimate
   val hasAppealLink: Boolean = penaltyChargeReference.isDefined && canAppeal
   def optAppealLink(isAgent: Boolean): Option[String] = {
     if (hasAppealLink) {

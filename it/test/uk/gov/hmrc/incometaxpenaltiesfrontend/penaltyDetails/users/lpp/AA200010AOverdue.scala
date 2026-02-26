@@ -38,6 +38,7 @@ object AA200010AOverdue extends UserDetailsData {
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1), is2ndStage = true)
   }
+  
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> AA200010A.penaltyCard0ExpectedContent,
     1 -> penaltyCard1ExpectedContent

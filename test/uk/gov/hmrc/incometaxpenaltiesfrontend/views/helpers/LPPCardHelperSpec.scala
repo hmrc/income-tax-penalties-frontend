@@ -90,7 +90,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
                       incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
                       isTTPActive = false,
-                      isEstimatedLPP1 = true
+                      isEstimate = true
                     ))
                 }
               }
@@ -136,7 +136,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
                       incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
                       isTTPActive = false,
-                      isEstimatedLPP1 = false
+                      isEstimate = false
                     ))
                 }
               }
@@ -171,7 +171,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     taxPeriodEndDate = penalty1.principalChargeBillingTo.toString,
                     incomeTaxOutstandingAmountInPence = penalty1.incomeTaxOutstandingAmountInPence,
                     isTTPActive = false,
-                    isEstimatedLPP1 = false
+                    isEstimate = false
                   ))
               }
             }

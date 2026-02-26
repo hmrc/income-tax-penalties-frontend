@@ -34,7 +34,6 @@ object AA200000C extends UserDetailsData {
     validateSummary(cardRows.get(1), "Extra amount due", "31 January 2028")
     validateSummary(cardRows.get(2), "Extra amount paid", "Payment not yet received")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
-    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
   
   def penaltyCard1ExpectedContent(card: Element): Unit = {

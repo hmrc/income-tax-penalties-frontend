@@ -52,7 +52,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         taxPeriodStartDate = lpp.principalChargeBillingFrom.toString,
         taxPeriodEndDate = lpp.principalChargeBillingTo.toString,
         incomeTaxOutstandingAmountInPence = lpp.incomeTaxOutstandingAmountInPence,
-        isEstimatedLPP1 = lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing
+        isEstimate = lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing
       )
     }
 
