@@ -416,7 +416,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             def getPenaltyAmount(calcData: CalculationData): String = calcData.formattedPenaltyAmount
             val estimatedPenaltyAmount = getPenaltyAmount(secondLPPCalcData)
             //endDateChargePeriod when it has been estimated:
-            def endDateChargePeriod = getFeatureDate(appConfig).minusDays(1)
+            def endDateChargePeriod = getFeatureDate(appConfig)
             val startDateChargePeriod = secondLPPCalcData.payPenaltyBy.plusDays(31)
             def getEndDateChargePeriod = getDateString(endDateChargePeriod)
             def getStartDateChargePeriod = getDateString(startDateChargePeriod)
