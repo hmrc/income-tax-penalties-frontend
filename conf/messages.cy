@@ -375,5 +375,11 @@ calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has e
 calculation.agent.calc2.breathingSpace.expired = Your client’s Breathing Space has ended. The time they were in Breathing Space has not been added to their calculation. (Welsh)
 
 # Unauthorised Error View
-unauthorised.page.h1 = You do not have access to this service (Welsh)
-unauthorised.page.p = You do not have the correct permissions to access this service. Please contact HMRC if you think this is a mistake. (Welsh)
+unauthorised.page.h1 = Nid ydych wedi'ch awdurdodi i gael mynediad at y dudalen hon
+unauthorised.page.p = Rydych yn asiant ategol ar gyfer y cleient hyn. Y prif asiant yn unig sy'n gallu cael mynediad at gofnodion sy'n dangos:
+unauthorised.page.bullet1 = taliadau, credydau ac ad-daliadau
+unauthorised.page.bullet2 = Ffurflenni Treth
+unauthorised.page.bullet3 = y ffioedd sy'n ddyledus nesaf
+unauthorised.page.bullet4 = cosbau ac apeliadau
+unauthorised.page.read.more = Darllenwch ragor am y gwahaniaeth rhwng prif asiantau ac asiantau ategol ar
+unauthorised.page.link.text = GOV.UK
