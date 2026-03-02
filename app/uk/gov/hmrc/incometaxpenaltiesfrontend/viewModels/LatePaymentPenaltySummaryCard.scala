@@ -40,20 +40,27 @@ case class LatePaymentPenaltySummaryCard(
                                           taxPeriodEndDate: String,
                                           incomeTaxOutstandingAmountInPence: Int,
                                           isTTPActive: Boolean = false,
-                                          isEstimatedLPP1: Boolean
+                                          isEstimate: Boolean
                                         ) {
   val isLPP2: Boolean = penaltyCategory.equals(LPPPenaltyCategoryEnum.LPP2)
-  def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if(!appealStatus.contains(AppealStatusEnum.Upheld)) {
+  val hasCalulcationDetailsLink: Boolean = !appealStatus.contains(AppealStatusEnum.Upheld)
+  def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if(hasCalulcationDetailsLink) {
     Some(routes.PenaltyCalculationController.penaltyCalculationPage(principalChargeReference, isAgent, isLPP2).url)
   } else {
     None
   }
   val isSecondStageAppeal: Boolean = appealLevel.contains(AppealLevelEnum.FirstStageAppeal)
   val isRejectedFirstStageAppeal: Boolean = appealStatus.contains(AppealStatusEnum.Rejected) && isSecondStageAppeal
-  val canAppeal: Boolean = isRejectedFirstStageAppeal || (appealStatus.isEmpty && !isEstimatedLPP1)
-  def optAppealLink(isAgent: Boolean): Option[String] = penaltyChargeReference match {
-    case Some(pcr) if canAppeal => Some(routes.AppealsController.redirectToAppeals(
-      pcr, isAgent, true, isLPP2 = isLPP2, is2ndStageAppeal = isSecondStageAppeal).url)
-    case _ => None
+  val canAppeal: Boolean = (isRejectedFirstStageAppeal || appealStatus.isEmpty) && !isEstimate
+  val hasAppealLink: Boolean = penaltyChargeReference.isDefined && canAppeal
+  def optAppealLink(isAgent: Boolean): Option[String] = {
+    if (hasAppealLink) {
+      Some(routes.AppealsController.redirectToAppeals(
+        penaltyChargeReference.get, isAgent, true, isLPP2 = isLPP2, is2ndStageAppeal = isSecondStageAppeal).url)
+    } else {
+      None
+    }
   }
+  val cannotAppeal: Boolean = penaltyCategory.equals(LPPPenaltyCategoryEnum.MANUAL)
+  val hasFooter: Boolean = cannotAppeal || hasCalulcationDetailsLink || hasAppealLink
 }

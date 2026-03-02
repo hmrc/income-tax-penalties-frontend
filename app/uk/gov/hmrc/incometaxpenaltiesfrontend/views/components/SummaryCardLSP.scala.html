@@ -42,26 +42,28 @@
         SummaryList(summaryCard.cardRows)
     )
     </div>
-    <div class="govuk-summary-card__title-wrapper">
-        @if(summaryCard.isAddedPoint && !summaryCard.isAppealedPoint) {
-                @{<span id={s"penalty-id-${summaryCard.penaltyId}-cannotAppeal"}>
-                {messages("cardLinks.cannotAppeal")}
-                </span>}
-        } else {
-            @if(!summaryCard.isAddedOrRemovedPoint && !summaryCard.status.content.asHtml.body.contains("Expired")) {
-                @{summaryCard.appealStatus match {
-                    case Some(AppealStatusEnum.Rejected) if summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal) =>
-                        <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent, is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
-                        {messages("cardLinks.reviewAppeal", summaryCard.penaltyPoint)}
-                        </a>
-                    case None =>
-                        <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent).url}>
-                        {messages("cardLinks.appeal", summaryCard.penaltyPoint)}
-                        </a>
-                    case _ =>
+    @if(summaryCard.hasFooter) {
+        <div class="govuk-summary-card__title-wrapper">
+            @if(summaryCard.cannotAppeal) {
+                    @{<span id={s"penalty-id-${summaryCard.penaltyId}-cannotAppeal"}>
+                    {messages("cardLinks.cannotAppeal")}
+                    </span>}
+            } else {
+                @if(summaryCard.hasLink) {
+                    @{(summaryCard.canReview, summaryCard.canAppeal) match {
+                        case (true, _) =>
+                            <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent, is2ndStageAppeal = summaryCard.appealLevel.contains(AppealLevelEnum.FirstStageAppeal)).url}>
+                            {messages("cardLinks.reviewAppeal", summaryCard.penaltyPoint)}
+                            </a>
+                        case (_, true) =>
+                            <a id={s"penalty-id-${summaryCard.penaltyId}-appealLink"} class="govuk-link" href={controllers.routes.AppealsController.redirectToAppeals(summaryCard.penaltyId, isAgent).url}>
+                            {messages("cardLinks.appeal", summaryCard.penaltyPoint)}
+                            </a>
+                        case _ =>
+                        }
+                    }
                 }
             }
-        }
+        </div>
     }
-    </div>
 </div>

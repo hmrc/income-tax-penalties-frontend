@@ -131,6 +131,6 @@ object AB522240A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview Your${if (isAgent) " client’s" else ""} account has: a late submission penalty the maximum number of late submission penalty points Check what you owe"
-  override val timeMachineDate: Option[String] = Some("30/08/2027")
+  override val timeMachineDate: String = "30/08/2027"
 }
 

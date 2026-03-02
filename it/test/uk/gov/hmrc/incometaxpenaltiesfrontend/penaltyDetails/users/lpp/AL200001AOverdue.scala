@@ -25,6 +25,18 @@ object AL200001AOverdue extends UserDetailsData {
   override val expectedNumberOfLPPPenaltyCards: Int = AL200001A.expectedNumberOfLPPPenaltyCards
   override val expectedNumberOfLSPPenaltyCards: Int = AL200001A.expectedNumberOfLSPPenaltyCards
 
+  def penaltyCard0ExpectedContent(card: Element): Unit = {
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £80.00")
+    validateCardTag(card, expectedTag = "Overdue")
+    val cardRows = getCardsRows(card)
+    cardRows.size() shouldBe 4
+    validateSummary(cardRows.get(0), "Pay penalty by", "18 April 2026")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
+    validateSummary(cardRows.get(3), "Income Tax paid", "17 March 2026")
+    validateViewCalculationLink(card, 0, isSecondLPP = true)
+  }
+
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
     validateCardTag(card, expectedTag = "Overdue")
@@ -39,11 +51,10 @@ object AL200001AOverdue extends UserDetailsData {
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
-    0 -> AL200001A.penaltyCard0ExpectedContent,
+    0 -> penaltyCard0ExpectedContent,
     1 -> penaltyCard1ExpectedContent
   )
 
   override val expectedOverviewText: Boolean => String = AL200001A.expectedOverviewText
-
-  override val timeMachineDate: Option[String] = Some("05/05/2026")
+  override val timeMachineDate: String = "20/04/2026"
 }

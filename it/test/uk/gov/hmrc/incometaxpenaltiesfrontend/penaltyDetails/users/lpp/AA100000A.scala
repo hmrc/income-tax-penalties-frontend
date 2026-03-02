@@ -36,12 +36,12 @@ object AA100000A extends UserDetailsData {
     validateViewCalculationLink(card, 0)
   }
 
-
-
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent
   )
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges unpaid interest a late payment penalty Check what you owe"
+
+  override val timeMachineDate: String = "02/02/2026"
 }

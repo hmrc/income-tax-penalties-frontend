@@ -65,6 +65,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     val youAreOrYourClientIsSmall = if(isAgent){"your client is"}else{"you are"}
 
     s"GET $firstLPPPath" should {
+      setFeatureDate(None)
 
       "render the expected first late payment calculation" when {
         "a first late payment penalty exists for the penaltyId" that {

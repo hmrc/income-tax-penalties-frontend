@@ -37,4 +37,10 @@ case class LateSubmissionPenaltySummaryCard(
                                              isAddedOrRemovedPoint: Boolean = false,
                                              isManuallyRemovedPoint: Boolean = false,
                                              dueDate: Option[String]
-                                           )
+                                           ) {
+  val cannotAppeal: Boolean = isAddedPoint && !isAppealedPoint
+  val hasLink: Boolean = !isAddedOrRemovedPoint && !status.content.asHtml.body.contains("Expired")
+  val canAppeal: Boolean = appealStatus.isEmpty
+  val canReview: Boolean = appealStatus.exists(_.equals(AppealStatusEnum.Rejected)) && appealLevel.contains(AppealLevelEnum.FirstStageAppeal)
+  val hasFooter: Boolean = cannotAppeal || (hasLink && (canAppeal || canReview))
+}

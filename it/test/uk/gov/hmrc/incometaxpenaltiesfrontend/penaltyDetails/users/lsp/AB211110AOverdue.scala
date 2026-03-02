@@ -47,6 +47,5 @@ object AB211110AOverdue extends UserDetailsData {
   )
 
   override val expectedOverviewText: Boolean => String = AB211110A.expectedOverviewText
-
-  override val timeMachineDate: Option[String] = Some("30/03/2028")
+  override val timeMachineDate: String = "30/03/2028"
 }

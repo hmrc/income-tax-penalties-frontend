@@ -34,7 +34,6 @@ object AC200000B extends UserDetailsData {
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan proposed")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
-    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -57,4 +56,6 @@ object AC200000B extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check what you owe"
+
+  override val timeMachineDate: String = "04/03/2028"
 }

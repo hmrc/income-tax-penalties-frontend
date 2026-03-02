@@ -88,7 +88,6 @@ object AB411110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
-  
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
@@ -100,12 +99,6 @@ object AB411110A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview Your${if (isAgent) " client’s" else ""} account has the maximum number of late submission penalty points"
+
+  override val timeMachineDate: String = "30/11/2027"
 }
-
-
-
-
-
-
-
-

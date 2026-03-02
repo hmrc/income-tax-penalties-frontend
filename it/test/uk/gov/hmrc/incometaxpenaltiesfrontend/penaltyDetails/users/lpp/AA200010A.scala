@@ -29,14 +29,13 @@ object AA200010A extends UserDetailsData {
     validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
     validateCardTag(card, expectedTag = "Estimate")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
+    cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
-    validateAppealLink(card.getElementsByClass("govuk-link").get(1), is2ndStage = true)
   }
+  
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
     validateCardTag(card, expectedTag = "Due")
@@ -50,6 +49,7 @@ object AA200010A extends UserDetailsData {
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1), is2ndStage = true)
   }
+  
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
     1 -> penaltyCard1ExpectedContent
@@ -57,6 +57,6 @@ object AA200010A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview ${if (isAgent) "Your client’s" else "Your"} account has: overdue Income Tax charges late payment penalties Check what you owe"
+
+  override val timeMachineDate: String = "05/03/2028"
 }
-
-
