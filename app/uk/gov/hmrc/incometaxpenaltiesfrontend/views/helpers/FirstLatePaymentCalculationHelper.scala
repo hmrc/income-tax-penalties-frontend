@@ -107,7 +107,7 @@ class FirstLatePaymentCalculationHelper {
       case (Some(agreedDate), _) =>
         calculationData.paymentPlanAgreed.map { agreedDate =>
           List(
-            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p1", agreedDate),
+            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
             messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p2"),
             messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p3")
           )
