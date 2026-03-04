@@ -373,3 +373,13 @@ calculation.individual.breathingSpace.expired = You have been in Breathing Space
 calculation.agent.breathingSpace.expired = Your client has been in Breathing Space. The time they were in Breathing Space will not be added to the calculation. (Welsh)
 calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation. (Welsh)
 calculation.agent.calc2.breathingSpace.expired = Your client’s Breathing Space has ended. The time they were in Breathing Space has not been added to their calculation. (Welsh)
+
+# Unauthorised Error View
+unauthorised.page.h1 = Nid ydych wedi'ch awdurdodi i gael mynediad at y dudalen hon
+unauthorised.page.p = Rydych yn asiant ategol ar gyfer y cleient hyn. Y prif asiant yn unig sy'n gallu cael mynediad at gofnodion sy'n dangos:
+unauthorised.page.bullet1 = taliadau, credydau ac ad-daliadau
+unauthorised.page.bullet2 = Ffurflenni Treth
+unauthorised.page.bullet3 = y ffioedd sy'n ddyledus nesaf
+unauthorised.page.bullet4 = cosbau ac apeliadau
+unauthorised.page.read.more = Darllenwch ragor am y gwahaniaeth rhwng prif asiantau ac asiantau ategol ar
+unauthorised.page.link.text = GOV.UK

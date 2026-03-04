@@ -373,3 +373,14 @@ calculation.individual.breathingSpace.expired = You have been in Breathing Space
 calculation.agent.breathingSpace.expired = Your client has been in Breathing Space. The time they were in Breathing Space will not be added to the calculation.
 calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
 calculation.agent.calc2.breathingSpace.expired = Your client’s Breathing Space has ended. The time they were in Breathing Space has not been added to their calculation.
+
+# Unauthorised Error View
+unauthorised.page.h1 = You are not authorised to access this page
+unauthorised.page.p = You are a supporting agent for this client. Only their main agent can access records that show:
+unauthorised.page.bullet1 = payments, credits and refunds
+unauthorised.page.bullet2 = returns
+unauthorised.page.bullet3 = next charges due
+unauthorised.page.bullet4 = penalties and appeals
+unauthorised.page.read.more = Read more about the difference between main and supporting agents on
+unauthorised.page.link.text = GOV.UK
+
