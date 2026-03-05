@@ -102,5 +102,5 @@ object AL300001A extends UserDetailsData {
 
   override val expectedOverviewText: Boolean => String = _ => ""
 
-  override val timeMachineDate: String = "05/03/2028"
+  override val timeMachineDate: String = "27/03/2028"
 }
