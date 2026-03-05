@@ -5,7 +5,7 @@ This is Scala/Play service that allows Income Tax users/agents to view their/the
 
 It also allows users to appeal the penalties, view how the penalties were calculated and to see when their penalties will be removed from their account.
 
-This service does not use Mongo.
+This service does not use Mongo
 
 ## Running
 This application runs on port 9185.
