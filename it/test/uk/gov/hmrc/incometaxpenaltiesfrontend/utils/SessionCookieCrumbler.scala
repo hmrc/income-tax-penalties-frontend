@@ -17,14 +17,14 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
 import play.api.libs.ws.{WSCookie, WSResponse}
-import uk.gov.hmrc.crypto.{CompositeSymmetricCrypto, Crypted}
+import uk.gov.hmrc.crypto.{CompositeSymmetricCrypto, Crypted, SymmetricCryptoFactory}
 
 object SessionCookieCrumbler {
   private val cookieKey = "gvBoGdgzqG1AarzF1LY0zQ=="
 
   private def crumbleCookie(cookie: WSCookie): Map[String, String] = {
     val crypted = Crypted(cookie.value)
-    val decrypted = CompositeSymmetricCrypto.aesGCM(cookieKey, Seq()).decrypt(crypted).value
+    val decrypted = SymmetricCryptoFactory.aesGcmCrypto(cookieKey).decrypt(crypted).value
 
     def decode(data: String): Map[String, String] = {
       // this part is hard coded because we are not certain at this time which hash algorithm is used by default
