@@ -30,7 +30,8 @@
         govukPhaseBanner: GovukPhaseBanner,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
-        hmrcStandardPage: HmrcStandardPage
+        hmrcStandardPage: HmrcStandardPage,
+        dateBannerHelper: dateBannerHelper
 )(implicit cfConfig: ContactFrontendConfig)
 
 @(
@@ -57,7 +58,14 @@
     <link href="@routes.Assets.versioned("stylesheets/application.css")" media="all" rel="stylesheet" type="text/css"@CSPNonce.get.map {n=> nonce="@n"} />
 }
 
+@dateBanner = {
+    @if(appConfig.timeMachineBannerEnabled) {
+        @Some(dateBannerHelper())
+    }
+}
+
 @beforeContent = {
+    @dateBanner
     @{ request match {
         case req: RequestWithNavBar => req.navBar.getOrElse(Html(""))
         case _ => Html("")
