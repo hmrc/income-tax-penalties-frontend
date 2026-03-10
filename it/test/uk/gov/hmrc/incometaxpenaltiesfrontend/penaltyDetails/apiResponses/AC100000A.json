@@ -9,15 +9,15 @@
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
           "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 0,
-          "totalAccountOverdue" : 40,
+          "lppEstimatedTotal" : 40,
+          "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
-          "totalAccountAccruingInterest" : 0.81
+          "totalAccountAccruingInterest" : 0
         },
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
-            "principalChargeReference" : "XJ002616061046",
+            "principalChargeReference" : "XJ002616061089",
             "penaltyStatus" : "A",
             "penaltyAmountAccruing" : 40,
             "penaltyAmountPosted" : 0,
@@ -32,7 +32,7 @@
             "lpp1LRDays" : "15",
             "lpp1LRPercentage" : 2,
             "penaltyChargeCreationDate" : "2026-02-15",
-            "penaltyChargeReference" : "XJ002616061046",
+            "penaltyChargeReference" : "XJ002616061089",
             "penaltyChargeDueDate" : "2026-03-17",
             "timeToPay" : {
               "agreementDate" : "2026-02-17"
