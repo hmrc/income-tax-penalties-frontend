@@ -52,7 +52,7 @@ object AB500010A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update period", "6 October 2026 to 5 January 2027")
     validateSummary(cardRows.get(3), "Update due", "7 February 2027")
     validateSummary(cardRows.get(4), "Update submitted", "1 March 2027")
-    validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(5), "Appeal status", "Decision upheld")
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {

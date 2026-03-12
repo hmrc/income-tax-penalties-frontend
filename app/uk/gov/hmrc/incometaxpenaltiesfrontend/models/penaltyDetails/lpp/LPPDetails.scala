@@ -53,6 +53,14 @@ case class  LPPDetails(principalChargeReference: String,
   private val AppealInfoWithHighestAppealLevel: Option[AppealInformationType] = appealInformation.flatMap(_.maxByOption(_.appealLevel.map(_.id).getOrElse(-1)))
   val appealStatus: Option[AppealStatusEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealStatus)
   val appealLevel: Option[AppealLevelEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealLevel)
+  private val hasFirstStageRejection: Boolean = appealInformation.fold(false)(_.exists(b => b.appealLevel.fold(false)(_ == AppealLevelEnum.FirstStageAppeal) && b.appealStatus.fold(false)(_ == AppealStatusEnum.Rejected)))
+  private val hasSecondStageRejection: Boolean = appealInformation.fold(false)(_.exists(b => b.appealLevel.fold(false)(_ == AppealLevelEnum.SecondStageAppeal) && b.appealStatus.fold(false)(_ == AppealStatusEnum.Rejected)))
+  val previousRejection: Option[AppealLevelEnum.Value] = (hasFirstStageRejection, hasSecondStageRejection) match
+    case (_, true) =>
+      Some(AppealLevelEnum.SecondStageAppeal)
+    case (true, _) =>
+      Some(AppealLevelEnum.FirstStageAppeal)
+    case _ => None
 
   val amountDue: BigDecimal = if (penaltyStatus == Posted) penaltyAmountPosted else penaltyAmountAccruing
 

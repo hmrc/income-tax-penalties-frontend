@@ -24,10 +24,17 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{
 
 trait SummaryListRowHelper {
 
-  def appealStatusRow(appealStatus: Option[AppealStatusEnum.Value],
-                      appealLevel: Option[AppealLevelEnum.Value])(implicit messages: Messages): Option[SummaryListRow] =
-    (appealStatus, appealLevel) match {
-      case (Some(status), Some(level)) if status != AppealStatusEnum.Unappealable =>
+  def appealStatusRow(appealStatus: Option[AppealStatusEnum.Value], 
+                      appealLevel: Option[AppealLevelEnum.Value], 
+                      previousRejection: Option[AppealLevelEnum.Value]
+                     )(implicit messages: Messages): Option[SummaryListRow] =
+    (appealStatus, appealLevel, previousRejection) match {
+      case (Some(status), Some(level), Some(rejectionLevel)) if status == AppealStatusEnum.Under_Appeal && level == AppealLevelEnum.Tribunal =>
+        Some(summaryListRow(
+          label = messages("appealStatus.key"),
+          value = Html(messages(s"appealStatus.${AppealStatusEnum.Rejected}.$rejectionLevel"))
+        ))
+      case (Some(status), Some(level), _) if status != AppealStatusEnum.Unappealable =>
         Some(summaryListRow(
           label = messages("appealStatus.key"),
           value = Html(messages(s"appealStatus.$status.$level"))

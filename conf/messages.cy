@@ -312,7 +312,6 @@ lpp.incomeTaxPaymentDate.key.pfa = Swm ychwanegol a dalwyd
 appealStatus.key = Statws yr apêl
 appealStatus.A.01 = Apêl ar y gweill
 appealStatus.A.02 = Dan adolygiad
-appealStatus.A.03 = Apêl wedi’i gwrthod
 appealStatus.B.01 = Apêl lwyddiannus
 appealStatus.B.02 = Apêl lwyddiannus
 appealStatus.B.03 = Apêl lwyddiannus
