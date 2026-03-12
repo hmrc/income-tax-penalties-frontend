@@ -312,7 +312,6 @@ lpp.incomeTaxPaymentDate.key.pfa = Extra amount paid
 appealStatus.key = Appeal status
 appealStatus.A.01 = Appeal in progress
 appealStatus.A.02 = Under review
-appealStatus.A.03 = Appeal rejected
 appealStatus.B.01 = Appeal successful
 appealStatus.B.02 = Appeal successful
 appealStatus.B.03 = Appeal successful
