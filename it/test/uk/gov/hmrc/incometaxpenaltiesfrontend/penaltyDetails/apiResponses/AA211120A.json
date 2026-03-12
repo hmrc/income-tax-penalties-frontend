@@ -24,17 +24,19 @@
             "lateSubmissions" : [ {
               "lateSubmissionID" : "001",
               "incomeSource" : "JB Painting and Decorating",
-              "taxReturnStatus" : "Open",
+              "taxReturnStatus" : "Fulfilled",
               "taxPeriodStartDate" : "2027-04-06",
               "taxPeriodEndDate" : "2027-07-05",
-              "taxPeriodDueDate" : "2027-08-07"
+              "taxPeriodDueDate" : "2027-08-07",
+              "returnReceiptDate" : "2027-09-01"
             }, {
               "lateSubmissionID" : "002",
               "incomeSource" : "UK property rental income",
-              "taxReturnStatus" : "Open",
+              "taxReturnStatus" : "Fulfilled",
               "taxPeriodStartDate" : "2027-04-06",
               "taxPeriodEndDate" : "2027-07-05",
-              "taxPeriodDueDate" : "2027-08-07"
+              "taxPeriodDueDate" : "2027-08-07",
+              "returnReceiptDate" : "2027-09-01"
             } ],
             "appealInformation" : [ {
               "appealStatus" : "C",
@@ -53,17 +55,19 @@
             "lateSubmissions" : [ {
               "lateSubmissionID" : "001",
               "incomeSource" : "JB Painting and Decorating",
-              "taxReturnStatus" : "Open",
+              "taxReturnStatus" : "Fulfilled",
               "taxPeriodStartDate" : "2027-07-06",
               "taxPeriodEndDate" : "2027-10-05",
-              "taxPeriodDueDate" : "2027-11-07"
+              "taxPeriodDueDate" : "2027-11-07",
+              "returnReceiptDate" : "2027-12-01"
             }, {
               "lateSubmissionID" : "002",
               "incomeSource" : "UK property rental income",
-              "taxReturnStatus" : "Open",
+              "taxReturnStatus" : "Fulfilled",
               "taxPeriodStartDate" : "2027-07-06",
               "taxPeriodEndDate" : "2027-10-05",
-              "taxPeriodDueDate" : "2027-11-07"
+              "taxPeriodDueDate" : "2027-11-07",
+              "returnReceiptDate" : "2027-12-01"
             } ],
             "appealInformation" : [ {
               "appealStatus" : "C",
