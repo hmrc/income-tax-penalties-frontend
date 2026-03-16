@@ -9,8 +9,8 @@
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
           "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 0,
-          "totalAccountOverdue" : 120,
+          "lppEstimatedTotal" : 120,
+          "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
           "totalAccountAccruingInterest" : 0
         },
