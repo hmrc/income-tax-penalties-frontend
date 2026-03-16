@@ -14,9 +14,9 @@
             "pocAchievementDate" : "2029-11-07"
           },
           "lspDetails" : [ {
-            "penaltyNumber" : "005000001026",
+            "penaltyNumber" : "005000001039",
             "penaltyCreationDate" : "2028-01-31",
-            "penaltyExpiryDate" : "2029-04-05",
+            "penaltyExpiryDate" : "2030-02-28",
             "triggeringProcess" : "ICRU",
             "penaltyOrder" : "5",
             "penaltyCategory" : "T",
@@ -41,9 +41,9 @@
             "chargeOutstandingAmount" : 200,
             "chargeDueDate" : "2028-03-16"
           }, {
-            "penaltyNumber" : "005000001046",
+            "penaltyNumber" : "005000001015",
             "penaltyCreationDate" : "2027-11-07",
-            "penaltyExpiryDate" : "2029-10-05",
+            "penaltyExpiryDate" : "2029-12-07",
             "triggeringProcess" : "ICRU",
             "penaltyOrder" : "4",
             "penaltyCategory" : "T",
@@ -74,9 +74,9 @@
             "chargeAmount" : 200,
             "chargeDueDate" : "2027-12-22"
           }, {
-            "penaltyNumber" : "005000001035",
+            "penaltyNumber" : "005000001084",
             "penaltyCreationDate" : "2027-08-07",
-            "penaltyExpiryDate" : "2029-07-05",
+            "penaltyExpiryDate" : "2029-09-07",
             "triggeringProcess" : "ICRU",
             "penaltyOrder" : "3",
             "penaltyCategory" : "P",
@@ -111,9 +111,9 @@
               "appealDescription" : "some description"
             } ]
           }, {
-            "penaltyNumber" : "005000001078",
+            "penaltyNumber" : "005000001025",
             "penaltyCreationDate" : "2027-05-07",
-            "penaltyExpiryDate" : "2029-04-05",
+            "penaltyExpiryDate" : "2029-06-07",
             "triggeringProcess" : "ICRU",
             "penaltyOrder" : "2",
             "penaltyCategory" : "P",
@@ -137,9 +137,9 @@
               "returnReceiptDate" : "2027-06-01"
             } ]
           }, {
-            "penaltyNumber" : "005000001018",
+            "penaltyNumber" : "005000001084",
             "penaltyCreationDate" : "2027-02-07",
-            "penaltyExpiryDate" : "2029-01-05",
+            "penaltyExpiryDate" : "2029-03-07",
             "triggeringProcess" : "ICRU",
             "penaltyOrder" : "1",
             "penaltyCategory" : "P",
@@ -163,9 +163,9 @@
               "returnReceiptDate" : "2027-03-01"
             } ]
           }, {
-            "penaltyNumber" : "005000001043",
+            "penaltyNumber" : "005000001090",
             "penaltyCreationDate" : "2027-01-31",
-            "penaltyExpiryDate" : "2028-04-05",
+            "penaltyExpiryDate" : "2029-02-28",
             "triggeringProcess" : "ICRU",
             "penaltyCategory" : "P",
             "penaltyStatus" : "Inactive",

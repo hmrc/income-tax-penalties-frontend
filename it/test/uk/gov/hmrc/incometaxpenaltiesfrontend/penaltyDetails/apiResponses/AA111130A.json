@@ -13,9 +13,9 @@
             "penaltyChargeAmount" : 0
           },
           "lspDetails" : [ {
-            "penaltyNumber" : "005000001041",
+            "penaltyNumber" : "005000001021",
             "penaltyCreationDate" : "2027-08-07",
-            "penaltyExpiryDate" : "2029-07-05",
+            "penaltyExpiryDate" : "2029-09-07",
             "triggeringProcess" : "ICRU",
             "penaltyOrder" : "1",
             "penaltyCategory" : "P",
