@@ -91,9 +91,11 @@ trait MockLSPSummaryListRowHelper extends MockFactory {
       .returning(value)
 
   def mockAppealStatusSummaryRow(appealStatus: Option[AppealStatusEnum.Value],
-                                 appealLevel: Option[AppealLevelEnum.Value])(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
-    (mockLSPSummaryListRowHelper.appealStatusRow(_:Option[AppealStatusEnum.Value], _:Option[AppealLevelEnum.Value])(_:Messages))
-      .expects(appealStatus, appealLevel, *)
+                                 appealLevel: Option[AppealLevelEnum.Value],
+                                 previousRejection: Option[AppealLevelEnum.Value]
+                                )(value: Option[SummaryListRow]): CallHandler[Option[SummaryListRow]] =
+    (mockLSPSummaryListRowHelper.appealStatusRow(_:Option[AppealStatusEnum.Value], _:Option[AppealLevelEnum.Value], _:Option[AppealLevelEnum.Value])(_:Messages))
+      .expects(appealStatus, appealLevel, previousRejection, *)
       .returning(value)
 
 }

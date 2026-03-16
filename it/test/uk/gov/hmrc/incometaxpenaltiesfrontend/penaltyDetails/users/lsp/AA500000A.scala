@@ -31,7 +31,7 @@ object AA500000A extends UserDetailsData {
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Additional £200 penalty: Late update")
-    validateCardTag(card, expectedTag = "Overdue")
+    validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 6
     validateSummary(cardRows.get(0), "Missing or late income sources", "JB Painting and Decorating")
@@ -44,7 +44,7 @@ object AA500000A extends UserDetailsData {
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 4: Late tax return - £200 penalty")
-    validateCardTag(card, expectedTag = "Overdue")
+    validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
     validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
@@ -64,7 +64,7 @@ object AA500000A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 July 2027 to 5 October 2027")
     validateSummary(cardRows.get(2), "Update due", "7 November 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
-    validateSummary(cardRows.get(4), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(4), "Appeal status", "Decision upheld")
   }
 
   def penaltyCard3ExpectedContent(card: Element): Unit = {
@@ -103,5 +103,5 @@ object AA500000A extends UserDetailsData {
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview Your${if (isAgent) " client’s" else ""} account has: late submission penalties the maximum number of late submission penalty points Check what you owe"
 
-  override val timeMachineDate: String = "30/03/2028"
+  override val timeMachineDate: String = "12/03/2028"
 }

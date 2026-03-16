@@ -49,7 +49,8 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
                 summaryListRowHelper.appealStatusRow(
                   Some(AppealStatusEnum.Under_Appeal),
-                  Some(AppealLevelEnum.FirstStageAppeal)
+                  Some(AppealLevelEnum.FirstStageAppeal),
+                  None
                 ) shouldBe
                   Some(summaryListRowHelper.summaryListRow(
                     label = appealStatusMessages.appealStatusKey,
@@ -64,7 +65,8 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
                 summaryListRowHelper.appealStatusRow(
                   Some(AppealStatusEnum.Upheld),
-                  Some(AppealLevelEnum.FirstStageAppeal)
+                  Some(AppealLevelEnum.FirstStageAppeal),
+                  None
                 ) shouldBe
                   Some(summaryListRowHelper.summaryListRow(
                     label = appealStatusMessages.appealStatusKey,
@@ -80,6 +82,39 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
                 summaryListRowHelper.appealStatusRow(
                   Some(AppealStatusEnum.Rejected),
+                  Some(AppealLevelEnum.FirstStageAppeal),
+                  Some(AppealLevelEnum.FirstStageAppeal)
+                ) shouldBe
+                  Some(summaryListRowHelper.summaryListRow(
+                    label = appealStatusMessages.appealStatusKey,
+                    value = Html(appealStatusMessages.appealRejected)
+                  ))
+              }
+            }
+
+            "user is at tribunal appeal with first and second stage appeals rejected" when {
+
+              "construct a summaryListRow model with a second stage rejection appeal status message" in {
+
+                summaryListRowHelper.appealStatusRow(
+                  Some(AppealStatusEnum.Under_Appeal),
+                  Some(AppealLevelEnum.Tribunal),
+                  Some(AppealLevelEnum.SecondStageAppeal)
+                ) shouldBe
+                  Some(summaryListRowHelper.summaryListRow(
+                    label = appealStatusMessages.appealStatusKey,
+                    value = Html(appealStatusMessages.decisionUpheld)
+                  ))
+              }
+            }
+
+            "user is at tribunal appeal with only a first stage appeals rejected" when {
+
+              "construct a summaryListRow model with a first stage rejection appeal status message" in {
+
+                summaryListRowHelper.appealStatusRow(
+                  Some(AppealStatusEnum.Under_Appeal),
+                  Some(AppealLevelEnum.Tribunal),
                   Some(AppealLevelEnum.FirstStageAppeal)
                 ) shouldBe
                   Some(summaryListRowHelper.summaryListRow(
@@ -95,7 +130,8 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
 
                 summaryListRowHelper.appealStatusRow(
                   Some(AppealStatusEnum.Unappealable),
-                  Some(AppealLevelEnum.FirstStageAppeal)
+                  Some(AppealLevelEnum.FirstStageAppeal),
+                  None
                 ) shouldBe None
               }
             }
@@ -104,7 +140,7 @@ class SummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOneAp
           "there is NO appeal in progress" when {
 
             "return None" in {
-              summaryListRowHelper.appealStatusRow(None, None) shouldBe None
+              summaryListRowHelper.appealStatusRow(None, None, None) shouldBe None
             }
           }
         }

@@ -33,7 +33,7 @@ object AL300003A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(2), "Income Tax paid", "16 March 2028")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(3), "Appeal status", "Decision upheld")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
 
@@ -45,7 +45,7 @@ object AL300003A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(2), "Income Tax paid", "16 March 2028")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(3), "Appeal status", "Decision upheld")
     validateViewCalculationLink(card, 1)
   }
 
