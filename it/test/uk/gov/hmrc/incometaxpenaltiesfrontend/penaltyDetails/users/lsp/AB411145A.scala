@@ -72,7 +72,7 @@ object AB411145A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 July 2027 to 5 October 2027")
     validateSummary(cardRows.get(2), "Update due", "7 November 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 December 2027")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 October 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 December 2029")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
@@ -85,7 +85,7 @@ object AB411145A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 April 2027 to 5 July 2027")
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 September 2027")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 July 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 September 2029")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
@@ -98,7 +98,7 @@ object AB411145A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 January 2027 to 5 April 2027")
     validateSummary(cardRows.get(2), "Update due", "7 May 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 June 2027")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 April 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 June 2029")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 

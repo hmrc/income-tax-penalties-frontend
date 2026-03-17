@@ -37,7 +37,7 @@ object AA111122A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 April 2027 to 5 July 2027")
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 September 2027")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 July 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 September 2029")
     validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
   }
 

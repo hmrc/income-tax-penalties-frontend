@@ -36,7 +36,7 @@ object AB111120A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Tax year", "2026 to 2027")
     validateSummary(cardRows.get(1), "Return due", "31 January 2028")
     validateSummary(cardRows.get(2), "Return submitted", "23 February 2028")
-    validateSummary(cardRows.get(3), "Point due to expire", "5 April 2029")
+    validateSummary(cardRows.get(3), "Point due to expire", "28 February 2030")
     validateSummary(cardRows.get(4), "Appeal status", "Appeal in progress")
   }
 
