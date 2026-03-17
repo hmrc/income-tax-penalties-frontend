@@ -37,7 +37,7 @@ object PE000002A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 October 2027 to 5 January 2028")
     validateSummary(cardRows.get(2), "Update due", "7 February 2028")
     validateSummary(cardRows.get(3), "Update submitted", "1 March 2028")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 January 2030")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 March 2030")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 

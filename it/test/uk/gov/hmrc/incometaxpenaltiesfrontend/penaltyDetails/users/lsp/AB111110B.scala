@@ -34,7 +34,7 @@ object AB111110B extends UserDetailsData {
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 2
     validateSummary(cardRows.get(0), "Added on", "31 January 2028")
-    validateSummary(cardRows.get(1), "Point due to expire", "5 April 2029")
+    validateSummary(cardRows.get(1), "Point due to expire", "28 February 2030")
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(

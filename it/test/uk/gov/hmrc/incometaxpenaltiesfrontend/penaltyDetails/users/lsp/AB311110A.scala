@@ -37,7 +37,7 @@ object AB311110A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 January 2027 to 5 April 2027")
     validateSummary(cardRows.get(2), "Update due", "7 May 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 April 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 June 2029")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
@@ -50,7 +50,7 @@ object AB311110A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 October 2026 to 5 January 2027")
     validateSummary(cardRows.get(2), "Update due", "7 February 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 March 2027")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 January 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 March 2029")
     validateAppealLink(card.getElementsByClass("govuk-link").first())
   }
 
@@ -62,7 +62,7 @@ object AB311110A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(1), "Return due", "31 January 2027")
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
-    validateSummary(cardRows.get(3), "Point due to expire", "5 April 2028")
+    validateSummary(cardRows.get(3), "Point due to expire", "28 February 2029")
     validateSummary(cardRows.get(4), "Appeal status", "Decision upheld")
   }
 

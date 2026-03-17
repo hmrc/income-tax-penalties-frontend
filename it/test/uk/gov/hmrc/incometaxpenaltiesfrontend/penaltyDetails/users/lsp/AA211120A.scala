@@ -37,7 +37,7 @@ object AA211120A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 July 2027 to 5 October 2027")
     validateSummary(cardRows.get(2), "Update due", "7 November 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 October 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 December 2029")
     validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
     validateAppealLink(card.getElementsByClass("govuk-link").first(), is2ndStage = true)
   }
@@ -51,7 +51,7 @@ object AA211120A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 April 2027 to 5 July 2027")
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
-    validateSummary(cardRows.get(4), "Point due to expire", "5 July 2029")
+    validateSummary(cardRows.get(4), "Point due to expire", "7 September 2029")
     validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
     validateAppealLink(card.getElementsByClass("govuk-link").first(), is2ndStage = true)
   }
