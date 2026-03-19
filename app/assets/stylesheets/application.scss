@@ -18,3 +18,9 @@
     margin-top: 3em;
   }
 }
+
+@media screen and (max-width: 52.125em) {
+  .govuk-grid-column-two-thirds.landing-page {
+    width: 100%;
+  }
+}
