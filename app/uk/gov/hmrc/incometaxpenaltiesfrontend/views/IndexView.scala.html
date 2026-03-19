@@ -85,7 +85,7 @@
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
-    @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent) {
+    @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent, wrapperClass = Some("landing-page")) {
 
         @h1("index.h1")
 
