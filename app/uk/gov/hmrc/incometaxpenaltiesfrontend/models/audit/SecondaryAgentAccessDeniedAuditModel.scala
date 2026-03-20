@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit
 
 import play.api.libs.json.{Json, JsValue}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthorisedAndEnrolledAgent//, CurrentUserRequest}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.AuthorisedAndEnrolledAgent
 
 case class SecondaryAgentAccessDeniedAuditModel(request: AuthorisedAndEnrolledAgent[_]) extends AuditModel {
 
