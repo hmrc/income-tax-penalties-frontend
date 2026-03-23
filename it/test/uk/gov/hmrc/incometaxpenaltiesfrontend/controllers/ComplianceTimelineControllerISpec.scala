@@ -69,6 +69,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send all your submissions for the next 24 months on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
+        document.getLink("moreInformationLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
@@ -92,6 +93,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send all your submissions for the next 24 months on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
+        document.getLink("moreInformationLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getH2Elements.get(1).text() shouldBe quarter1
@@ -137,6 +139,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If they miss a deadline, they will have to send all their submissions for the next 24 months on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
+        document.getLink("moreInformationLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
@@ -161,6 +164,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
         document.getElementById("missedDeadlinePara").text() shouldBe "If they miss a deadline, they will have to send all their submissions for the next 24 months on time before HMRC can remove their points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
+        document.getLink("moreInformationLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getH2Elements.get(1).text() shouldBe quarter1
