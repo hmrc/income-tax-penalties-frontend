@@ -101,4 +101,8 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
   }
 
   lazy val agentServicesUrl: String = config.get[String]("agent-services-account-frontend.baseUrl") +"/agent-services-account/no-assignment"
+
+  val guidanceOnLSPUrl: String = "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-submission-penalties"
+  val guidanceOnAdjustmentPointUrl: String = "https://www.gov.uk/guidance/penalties-for-income-tax-self-assessment-volunteers#if-you-already-have-a-penalty-point"
+
 }

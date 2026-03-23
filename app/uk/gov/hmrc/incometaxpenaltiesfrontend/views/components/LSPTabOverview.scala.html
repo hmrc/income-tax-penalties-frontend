@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @import java.time.LocalDate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToMonthYearString
 @this(
@@ -27,7 +28,7 @@
 )
 
 
-@(lsp: LSPOverviewViewModel, isAgent: Boolean, actionsToRemoveLinkDate: Option[LocalDate])(implicit messages: Messages)
+@(lsp: LSPOverviewViewModel, isAgent: Boolean, actionsToRemoveLinkDate: Option[LocalDate])(implicit messages: Messages, appConfig: AppConfig)
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
@@ -54,7 +55,7 @@
                 @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
 
                 @link(
-                    link = "#", //TODO: Update link as part of future story
+                    link = appConfig.guidanceOnLSPUrl,
                     messageKey = messages("index.lsp.tab.overview.pointsGuidanceLink") + " " + messages("common.opensInNewTab"),
                     attrTarget = true,
                     id = Some("pointsGuidanceLink")
@@ -62,7 +63,7 @@
 
                 @if(lsp.addedPoint){
                     @link(
-                        link = "#", //TODO: Update link as part of future story
+                        link = appConfig.guidanceOnAdjustmentPointUrl,
                         messageKey = messages("index.lsp.tab.overview.addedPointsGuidanceLink") + " " + messages("common.opensInNewTab"),
                         attrTarget = true,
                         id = Some("addedPointsGuidanceLink")
