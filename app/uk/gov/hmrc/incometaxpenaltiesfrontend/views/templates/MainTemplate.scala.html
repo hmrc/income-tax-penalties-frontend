@@ -35,11 +35,11 @@
 
 @(
         pageTitle: String,
-        beforeContentHtml: Option[Html] = None,
         disableSessionExpired: Boolean = false,
         backLinkEnabled: Boolean = true,
         signOutUrl: Option[String] = None,
-        isAgent: Boolean
+        isAgent: Boolean,
+        wrapperClass: Option[String] = None
 )(content: Html)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
 
@@ -82,8 +82,12 @@
 
 
 @contentBlock = {
-    @content
-    @hmrcReportTechnicalIssueHelper()
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds@wrapperClass.map(" " + _).getOrElse("")">
+            @content
+            @hmrcReportTechnicalIssueHelper()
+        </div>
+    </div>
 }
 
 @fullPageTitle = {@pageTitle - @Messages("service.name") - GOV.UK}
@@ -100,7 +104,7 @@
         isWelshTranslationAvailable = true,
         templateOverrides = TemplateOverrides(
             additionalHeadBlock = Some(headBlock),
-            beforeContentBlock = Some(beforeContent)
+            beforeContentBlock = Some(beforeContent),
+            mainContentLayout = Some(TemplateOverrides.noMainContentLayout)
         )
     ))(contentBlock)
-

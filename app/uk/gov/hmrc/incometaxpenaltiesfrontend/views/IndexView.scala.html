@@ -71,8 +71,8 @@
         @p(individualOrAgent + ".index.lpp.tab.payEarlyInfo")
 
         @link(
-            link = "#", //TODO: Add link as part of future story,
-            messageKey = messages("index.lpp.tab.guidanceOnLatePayments") + " " + messages("common.opensInNewTab"),
+            link = appConfig.guidanceOnLPPUrl,
+            messageKey = messages("index.lpp.tab.guidanceOnLatePayments") + " " + messages("common.opensInNewTab") + ".",
             attrTarget = true,
             id = Some("guidanceLatePaymentLink")
         )
@@ -85,7 +85,7 @@
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
-    @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent) {
+    @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent, wrapperClass = Some("landing-page")) {
 
         @h1("index.h1")
 
