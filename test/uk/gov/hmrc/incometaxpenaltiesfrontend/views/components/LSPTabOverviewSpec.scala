@@ -24,6 +24,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewBehaviours
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.LSPTabOverview
@@ -35,6 +36,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val lspTabOverview: LSPTabOverview = app.injector.instanceOf[LSPTabOverview]
   private val somePocDate: Option[LocalDate] = Some(LocalDate.of(2028, 4, 1))
+  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   object Selectors extends BaseSelectors
 
@@ -53,7 +55,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
             "a single LSP point exists" should {
 
               val data = LSPOverviewViewModel(lateSubmissionPenalty)
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -78,7 +80,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -103,7 +105,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -125,7 +127,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -145,7 +147,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge, sampleLateSubmissionPenaltyCharge)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -165,7 +167,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 details = Seq(sampleAdditionalLateSubmissionPenaltyCharge)
               ))
 
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -178,6 +180,10 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
               )
 
+              "have the correct href on the addedPointsGuidanceLink" in {
+                document.getElementById("addedPointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
+              }
+              
               behave like pageWithoutElementsRendered(
                 Selectors.warning
               )
