@@ -35,8 +35,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val lspTabOverview: LSPTabOverview = app.injector.instanceOf[LSPTabOverview]
-  lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
-  implicit val implicitAppConfig: AppConfig = appConfig
+  implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   private val somePocDate: Option[LocalDate] = Some(LocalDate.of(2028, 4, 1))
 
   object Selectors extends BaseSelectors
