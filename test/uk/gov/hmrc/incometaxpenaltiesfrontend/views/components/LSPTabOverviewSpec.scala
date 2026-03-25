@@ -180,7 +180,11 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
               )
               "addedPointGuidanceLink should have the correct URL" in {
-                document.select(Selectors.linkWithId("addedPointsGuidanceLink")).attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-income-tax-self-assessment-volunteers#if-you-already-have-a-penalty-point"
+                document.select(Selectors.linkWithId("addedPointsGuidanceLink")).attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
+              }
+
+              "have the correct href on the addedPointsGuidanceLink" in {
+                document.getElementById("addedPointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
               }
 
               behave like pageWithoutElementsRendered(

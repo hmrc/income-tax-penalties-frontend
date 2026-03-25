@@ -70,7 +70,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             val lppTab = getLPPTabContent(document)
             lppTab.getElementById("lppHeading").text() shouldBe "Late payment penalties"
             lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
-            lppTab.getElementById("guidanceLatePaymentLink").text() shouldBe "Read the guidance about how late payment penalties are calculated (opens in new tab)"
+            lppTab.getElementById("guidanceLatePaymentLink").text() shouldBe "Read the guidance about how late payment penalties are calculated (opens in new tab)."
             lppTab.getElementById("guidanceLatePaymentLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-paymentpenalties"
 
             val lppCards: Elements = lppTab.getElementsByClass("govuk-summary-card")
