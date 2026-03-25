@@ -55,7 +55,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
             "a single LSP point exists" should {
 
               val data = LSPOverviewViewModel(lateSubmissionPenalty)
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -80,7 +80,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -105,7 +105,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -127,7 +127,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -147,7 +147,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 ),
                 details = Seq(sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPoint, sampleLateSubmissionPenaltyCharge, sampleLateSubmissionPenaltyCharge)
               ))
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -167,7 +167,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 details = Seq(sampleAdditionalLateSubmissionPenaltyCharge)
               ))
 
-              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)(appConfig = appConfig)
+              val lspTabOverviewHtml = lspTabOverview(data, isAgent, somePocDate)
 
               implicit val document: Document = asDocument(lspTabOverviewHtml)
 
@@ -183,7 +183,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
               "have the correct href on the addedPointsGuidanceLink" in {
                 document.getElementById("addedPointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
               }
-              
+
               behave like pageWithoutElementsRendered(
                 Selectors.warning
               )

@@ -24,11 +24,12 @@
 @this(
         p: components.P,
         warning: components.Warning,
-        link: components.Link
+        link: components.Link,
+        appConfig: AppConfig
 )
 
 
-@(lsp: LSPOverviewViewModel, isAgent: Boolean, actionsToRemoveLinkDate: Option[LocalDate])(implicit messages: Messages, appConfig: AppConfig)
+@(lsp: LSPOverviewViewModel, isAgent: Boolean, actionsToRemoveLinkDate: Option[LocalDate])(implicit messages: Messages)
 
 @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
 
