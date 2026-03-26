@@ -20,10 +20,12 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components
 @import java.time.LocalDate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToMonthYearString
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @this(
         p: components.P,
         warning: components.Warning,
-        link: components.Link
+        link: components.Link,
+        appConfig: AppConfig
 )
 
 
@@ -62,7 +64,7 @@
 
                 @if(lsp.addedPoint){
                     @link(
-                        link = "#", //TODO: Update link as part of future story
+                        link = appConfig.addedPointsGuidanceLinkUrl,
                         messageKey = messages("index.lsp.tab.overview.addedPointsGuidanceLink") + " " + messages("common.opensInNewTab"),
                         attrTarget = true,
                         id = Some("addedPointsGuidanceLink")
