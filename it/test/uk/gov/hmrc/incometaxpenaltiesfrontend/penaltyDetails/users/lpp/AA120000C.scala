@@ -31,7 +31,7 @@ object AA120000C extends UserDetailsData {
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Extra amount due to amended return for 2024 to 2025 tax year")
-    validateSummary(cardRows.get(1), "Extra amount due", "31 January 2026")
+    validateSummary(cardRows.get(1), "Extra amount due", "19 March 2026")
     validateSummary(cardRows.get(2), "Extra amount paid", "Payment not yet received")
     validateViewCalculationLink(card, 0)
   }
