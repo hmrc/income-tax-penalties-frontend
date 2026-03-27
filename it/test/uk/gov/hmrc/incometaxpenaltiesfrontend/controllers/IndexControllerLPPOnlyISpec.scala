@@ -62,7 +62,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            validatePenaltyOverview(document, userdetails.expectedOverviewText(false))
+            validatePenaltyOverview(document, userdetails.expectedOverviewText)
             validatePenaltyTabs(document)
             if (userdetails.numberOfLSPPenalties == 0) {
               validateNoLSPPenalties(document)
@@ -88,14 +88,14 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            validatePenaltyOverview(document, userdetails.expectedOverviewText(true), true)
+            validatePenaltyOverview(document, userdetails.expectedOverviewText, true)
             validatePenaltyTabs(document)
             if (userdetails.numberOfLSPPenalties == 0) {
               validateNoLSPPenalties(document, true)
             }
             val lppTab = getLPPTabContent(document)
             lppTab.getElementById("lppHeading").text() shouldBe "Late payment penalties"
-            lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier your client pays their Income Tax, the lower their penalties and interest will be."
+            lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
             val lppCards: Elements = lppTab.getElementsByClass("govuk-summary-card")
             lppCards.size() shouldBe userdetails.expectedNumberOfLPPPenaltyCards
             userdetails.validatePenaltyCardsContent(lppCards)

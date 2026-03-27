@@ -55,7 +55,7 @@ object AA123450A extends UserDetailsData {
     1 -> penaltyCard1ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = _ =>  ""
+  override val expectedOverviewText: String = ""
 
   override val timeMachineDate: String = "17/03/2025"
 }

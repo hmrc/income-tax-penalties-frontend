@@ -103,7 +103,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     )
   }
 
-  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidPenalty: Boolean, isAgent: Boolean = false): Unit = {
+  def validatePenaltyOverview(document: Document, expectedOverview: String, hasUnpaidPenalty: Boolean): Unit = {
     if (expectedOverview.equals("")) {
       document.getElementById("penaltiesOverview") shouldBe null
     } else {
@@ -117,59 +117,33 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     }
   }
 
-  def validateNoLPPPenalties(document: Document, isAgent: Boolean = false): Unit = {
+  def validateNoLPPPenalties(document: Document): Unit = {
     val lppTabContent = getLPPTabContent(document)
     lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
-    val expectedLSPContent = if(isAgent){
-      "Your client has no late payment penalties that are currently due."
-    } else{
-      "You have no late payment penalties that are currently due."
-    }
+    val expectedLSPContent = "You have no late payment penalties that are currently due."
     lppTabContent.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPContent
   }
 
-  def expectedLSPTabBody(userDetailsData: UserDetailsData, isAgent: Boolean = false): String = {
+  def expectedLSPTabBody(userDetailsData: UserDetailsData): String = {
     if (userDetailsData.numberOfLSPPenalties == 0) {
-      if (isAgent) {
-        "Your client has no active late submission penalties."
-      } else {
-        "You don’t have any active late submission penalties."
-      }
-    } else if(userDetailsData.hasFinancialLSP) {
+      "You don’t have any active late submission penalties."
+    } else if (userDetailsData.hasFinancialLSP) {
       if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1) {
-        if (isAgent) {
-          "They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed." +
-            " They should send any missing submissions as soon as possible if they haven’t already."
-        } else {
-          "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed." +
-            " You should send any missing submissions as soon as possible if you haven’t already."
-        }
+        "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed." +
+          " You should send any missing submissions as soon as possible if you haven’t already."
       } else {
-        if (isAgent) {
-          "They will get another £200 penalty every time they send a late submission in the future, until their points are removed." +
-            " They should send any missing submissions as soon as possible if they haven’t already."
-        } else {
-          "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
-            " You should send any missing submissions as soon as possible if you haven’t already."
-        }
+        "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
+          " You should send any missing submissions as soon as possible if you haven’t already."
       }
-    } else if(userDetailsData.numberOfLSPPenalties == 1) {
-      if (isAgent) {
-        s"Your client has 1 penalty point for sending a late submission." +
-          s" They should send this missing submission as soon as possible if they haven’t already."
-      } else {
-        s"You have 1 penalty point for sending a late submission." +
-          s" You should send this missing submission as soon as possible if you haven’t already."
-      }
+    } else if (userDetailsData.numberOfLSPPenalties == 1) {
+      s"You have 1 penalty point for sending a late submission." +
+        s" You should send this missing submission as soon as possible if you haven’t already."
+
     } else {
       val numPenPoints = userDetailsData.numberOfLSPPenalties.toString
-      if(isAgent) {
-        s"Your client has $numPenPoints penalty points for sending late submissions." +
-          s" They should send any missing submissions as soon as possible if they haven’t already."
-      } else {
-        s"You have $numPenPoints penalty points for sending late submissions." +
-          s" You should send any missing submissions as soon as possible if you haven’t already."
-      }
+      s"You have $numPenPoints penalty points for sending late submissions." +
+        s" You should send any missing submissions as soon as possible if you haven’t already."
+
     }
   }
 }

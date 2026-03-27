@@ -38,7 +38,7 @@ trait UserDetailsData extends Matchers {
 
   val expectedPenaltyCardsContent: Map[Int, Element => Unit]
   
-  val expectedOverviewText: Boolean => String
+  val expectedOverviewText: String
   
   val timeMachineDate: String
 

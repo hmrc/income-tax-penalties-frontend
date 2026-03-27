@@ -54,7 +54,7 @@ object AC200000B extends UserDetailsData {
     1 -> penaltyCard1ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = isAgent =>
+  override val expectedOverviewText: String =
     s"Overview Your account has late payment penalties Check what you owe"
 
   override val timeMachineDate: String = "04/03/2028"
