@@ -67,7 +67,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1, isAgent)
+                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1)
                 )
 
                 behave like pageWithoutElementsRendered(
@@ -95,7 +95,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewP1(isAgent),
+                  Selectors.overviewP1 -> messagesForLanguage.overviewP1,
                   Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPPoints(1),
                   Selectors.overviewBullet(2) -> messagesForLanguage.overviewLPP(1),
                   Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay

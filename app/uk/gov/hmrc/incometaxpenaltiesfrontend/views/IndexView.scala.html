@@ -50,25 +50,21 @@
     @h3(msg = "index.lsp.tab.h2", elmId = "lspHeading", classes=Some("govuk-heading-m"))
 
     @if(lspCardData.isEmpty && lspOverviewData.isEmpty) {
-        @if(isAgent){
-            @p("lsp.noPenalties.agent")
-        } else {
-            @p("lsp.noPenalties")
-        }
+       @p("lsp.noPenalties")
     }
 
     @lspOverviewData.map(lspTabOverview(_, isAgent, actionsToRemoveLinkDate))
     @lspCardData.map(summaryCardLSP(_, isAgent))
 }
 
-@lppMainTab(individualOrAgent: String) = {
+@lppMainTab() = {
     @h3(msg = "index.lpp.tab.h2", elmId = "lppHeading", classes=Some("govuk-heading-m"))
 
     @if(lppCardData.isEmpty) {
-    @p(individualOrAgent + ".lpp.noPenalties")
+    @p("individual.lpp.noPenalties")
     } else {
 
-        @p(individualOrAgent + ".index.lpp.tab.payEarlyInfo")
+        @p("individual.index.lpp.tab.payEarlyInfo")
 
         @link(
             link = appConfig.guidanceOnLPPUrl,
@@ -82,9 +78,7 @@
         }
     }
 }
-
-@defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
-
+    
     @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent, wrapperClass = Some("landing-page")) {
 
         @h1("index.h1")
@@ -106,10 +100,10 @@
                     id = Some("lppTab"),
                     label = messages("index.lpp.tab.h2"),
                     panel = TabPanel(
-                        content = HtmlContent(lppMainTab(individualOrAgent))
+                        content = HtmlContent(lppMainTab())
                     )
                 )
             )
         ))
-    }
+    
 }

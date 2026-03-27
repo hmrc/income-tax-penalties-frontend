@@ -32,16 +32,10 @@
 
 @(lsp: LSPOverviewViewModel, isAgent: Boolean, actionsToRemoveLinkDate: Option[LocalDate])(implicit messages: Messages)
 
-@defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
-
     <div class="govuk-form-group" id="lspTabOverview">
 
         @if(lsp.activePoints == 0) {
-            @if(isAgent){
-                @p("lsp.noPenalties.agent")
-            } else {
-                @p("lsp.noPenalties")
-            }
+           @p("lsp.noPenalties")
         } else {
             <p class="govuk-body-l">
                 @messages("index.lsp.tab.overview.penalty.warningPointTotal")
@@ -50,11 +44,11 @@
 
             @if(lsp.activePoints < lsp.threshold) {
                 @if(lsp.activePoints == lsp.threshold - 1) {
-                    @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.warning", elmId = "penaltyNextTime")
+                    @warning(msg = "individual.index.lsp.tab.overview.pointsAccruing.warning", elmId = "penaltyNextTime")
                 }
-                @p(individualOrAgent + pluralOrSingular(".index.lsp.tab.overview.pointsAccruing.p1", lsp.activePoints), Seq(lsp.activePoints))
-                @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p2")
-                @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
+                @p("individual" + pluralOrSingular(".index.lsp.tab.overview.pointsAccruing.p1", lsp.activePoints), Seq(lsp.activePoints))
+                @p("individual.index.lsp.tab.overview.pointsAccruing.p2")
+                @p("individual.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
 
                 @link(
                     link = appConfig.guidanceOnLSPUrl,
@@ -74,16 +68,16 @@
 
             } else {
                 @if(lsp.numberOfFinancialPenalties == 1) {
-                    @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")
-                    @p(s"$individualOrAgent.index.lsp.tab.overview.penalty.p1")
+                    @warning(msg = "individual.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")
+                    @p("individual.index.lsp.tab.overview.penalty.p1")
                 } else {
-                    @warning(msg = s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.warning", elmId = "additionalPenalty")
-                    @p(s"$individualOrAgent.index.lsp.tab.overview.additionalPenalty.p1")
+                    @warning(msg = "individual.index.lsp.tab.overview.additionalPenalty.warning", elmId = "additionalPenalty")
+                    @p("individual.index.lsp.tab.overview.additionalPenalty.p1")
                 }
 
                 @actionsToRemoveLinkDate.map(removeLinkDate => {link(
                     link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
-                    messageKey = messages(s"$individualOrAgent.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(removeLinkDate)),
+                    messageKey = messages("individual.index.lsp.tab.overview.actionsToRemoveLink", dateToMonthYearString(removeLinkDate)),
                     attrTarget = false,
                     id = Some("actionsToRemoveLink")
                 )})
@@ -91,4 +85,4 @@
             }
         }
     </div>
-}
+    

@@ -34,8 +34,6 @@
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@individualOrAgent = {@if(isAgent){agent}else{individual}}
-
 @main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
     <span class="govuk-caption-l" id="captionSpan">
@@ -49,12 +47,12 @@
 
     @if(inBreathingSpace){
         @govukInsetText(InsetText(
-            content = Text(messages(s"calculation.$individualOrAgent.calc.breathing.space")),
+            content = Text(messages("calculation.individual.calc.breathing.space")),
             id = Some("breathingSpaceMessage")
         ))
     }
 
-    @calculationHelper.getPaymentDetails(calculationData, isAgent).map{msg =>
+    @calculationHelper.getPaymentDetails(calculationData).map{msg =>
         <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@msg</p>
     }
 
@@ -66,43 +64,43 @@
 
     @if(calculationData.isPFA) {
         <p class="govuk-body" id="taxYearAmended">
-        @messages(s"calculation.$individualOrAgent.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+        @messages("calculation.individual.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
         </p>
 
         <p class="govuk-body" id="paymentDeadline">
-        @messages(s"calculation.payment.deadline.pfa", dateToString(calculationData.principalChargeDueDate))
+        @messages("calculation.payment.deadline.pfa", dateToString(calculationData.principalChargeDueDate))
         </p>
     } else {
         <p class="govuk-body" id="paymentDeadline">
-        @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
+        @messages("calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
         </p>
     }
 
 
     <p class="govuk-body" id="missedDeadline">
-        @calculationHelper.getMissedDeadlineMsg(calculationData, individualOrAgent.toString)
+        @calculationHelper.getMissedDeadlineMsg(calculationData)
     </p>
 
 
     <ul class="govuk-list govuk-list--bullet" id="reasonList">
-        @calculationHelper.getBulletListContent(calculationData, individualOrAgent.toString, if(calculationData.isPFA) ".pfa" else "").map { bulletContent =>
+        @calculationHelper.getBulletListContent(calculationData, if(calculationData.isPFA) ".pfa" else "").map { bulletContent =>
             <li>@bulletContent</li>
         }
     </ul>
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-            @calculationHelper.getFinalUnpaidMsg(calculationData, individualOrAgent.toString, if(calculationData.isPFA) ".pfa" else "")
+            @calculationHelper.getFinalUnpaidMsg(calculationData, if(calculationData.isPFA) ".pfa" else "")
         </p>
     }
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         <p class="govuk-body" id="breathingSpaceExpired">
-            @messages(s"calculation.$individualOrAgent.breathingSpace.expired")
+            @messages("calculation.individual.breathingSpace.expired")
         </p>
     }
 
-    @calculationHelper.getPaymentPlanInset(calculationData, individualOrAgent.toString).map{insetMsg =>
+    @calculationHelper.getPaymentPlanInset(calculationData).map{insetMsg =>
         <div class="govuk-inset-text">
             @insetMsg
         </div>
@@ -143,9 +141,9 @@
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">
-            @calculationHelper.getPaymentPlanHeading(calculationData, individualOrAgent.toString)
+            @calculationHelper.getPaymentPlanHeading(calculationData)
         </p>
-        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+        @calculationHelper.getPaymentPlanContent(calculationData).map{ msg =>
         <p class="govuk-body">
             @msg
         </p>
@@ -155,7 +153,7 @@
     <div class="govuk-!-margin-bottom-8">
         @link(
             link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages(s"calculation.${individualOrAgent.toString}.return.link"),
+            messageKey = messages("calculation.individual.return.link"),
             id = Some("returnToIndex")
         )
     </div>

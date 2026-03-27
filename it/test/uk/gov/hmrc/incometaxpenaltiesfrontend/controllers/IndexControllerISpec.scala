@@ -72,7 +72,7 @@ class IndexControllerISpec extends ControllerISpecHelper with FeatureSwitching
           document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
           document.getH2Elements.get(0).text() shouldBe "Overview"
-          document.getParagraphs.get(0).text() shouldBe "Your client’s account has:"
+          document.getParagraphs.get(0).text() shouldBe "Your account has:"
           document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
           document.getH3Elements.get(0).text() shouldBe "Late submission penalties"
           document.getH3Elements.get(1).text() shouldBe "Late payment penalties"

@@ -29,25 +29,24 @@
 @(penaltiesOverviewViewModel: PenaltiesOverviewViewModel, isAgent: Boolean)(implicit messages: Messages)
 
 @if(penaltiesOverviewViewModel.overviewItems.nonEmpty) {
-        @defining(if(isAgent) "agent" else "individual") { individualOrAgent =>
-            <div id="penaltiesOverview">
+    
+        <div id="penaltiesOverview">
             @h2(msg = "index.overview.h2", elmId = "overviewHeading")
 
             @if(penaltiesOverviewViewModel.overviewItems.size > 1) {
-                @p(s"$individualOrAgent.index.overview.p1")
-                @list(penaltiesOverviewViewModel.content(isAgent))
+                @p("individual.index.overview.p1")
+                @list(penaltiesOverviewViewModel.content())
             } else {
-                @p(messages(penaltiesOverviewViewModel.content(isAgent)))
+                @p(messages(penaltiesOverviewViewModel.content()))
             }
 
             @if(penaltiesOverviewViewModel.hasFinancialCharge) {
                 @link(
                     link = appConfig.checkWhatYouOweUrl(isAgent),
-                    messageKey = s"$individualOrAgent.index.overview.checkWhatYouOwe.button",
+                    messageKey = "individual.index.overview.checkWhatYouOwe.button",
                     classes = Some("govuk-button"),
                     id = Some("checkWhatYouOweButton")
                 )
             }
         </div>
-    }
 }

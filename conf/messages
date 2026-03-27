@@ -11,7 +11,6 @@ index.h2 = Penalty and appeal details
 # --- Overview Content
 index.overview.h2 = Overview
 individual.index.overview.p1 = Your account has:
-agent.index.overview.p1 = Your client’s account has:
 
 index.overview.unpaidReturnCharges.bullet = overdue Income Tax charges
 index.overview.unpaidInterest.bullet = unpaid interest
@@ -33,18 +32,7 @@ individual.index.overview.lsp.points.singular= Your account has 1 late submissio
 individual.index.overview.lsp.points.plural = Your account has {0} late submission penalty points
 individual.index.overview.lsp.points.max = Your account has the maximum number of late submission penalty points
 
-agent.index.overview.unpaidReturnCharges= Your client’s account has overdue Income Tax charges
-agent.index.overview.unpaidInterest = Your client’s account has unpaid interest
-agent.index.overview.lpp.penalties.singular = Your client’s account has a late payment penalty
-agent.index.overview.lpp.penalties.plural = Your client’s account has late payment penalties
-agent.index.overview.lsp.penalties.singular = Your client’s account has a late submission penalty
-agent.index.overview.lsp.penalties.plural = Your client’s account has late submission penalties
-agent.index.overview.lsp.points.singular = Your client’s account has 1 late submission penalty point
-agent.index.overview.lsp.points.plural = Your client’s account has {0} late submission penalty points
-agent.index.overview.lsp.points.max = Your client’s account has the maximum number of late submission penalty points
-
 individual.index.overview.checkWhatYouOwe.button = Check what you owe
-agent.index.overview.checkWhatYouOwe.button = Check what you owe
 
 # --- LSP Tab Content
 index.lsp.tab.h2 = Late submission penalties
@@ -54,29 +42,18 @@ individual.index.lsp.tab.overview.pointsAccruing.p1.plural = You have {0} penalt
 individual.index.lsp.tab.overview.pointsAccruing.p2 = You’ll get another point if you send another submission after a deadline has passed.
 individual.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if you keep sending late submissions. If you reach {0} points, you’ll have to pay a £200 penalty.
 individual.index.lsp.tab.overview.pointsAccruing.warning = You’ll get a £200 penalty if you send another late submission.
-agent.index.lsp.tab.overview.pointsAccruing.p1.singular = Your client has 1 penalty point for sending a late submission. They should send this missing submission as soon as possible if they haven’t already.
-agent.index.lsp.tab.overview.pointsAccruing.p1.plural = Your client has {0} penalty points for sending late submissions. They should send any missing submissions as soon as possible if they haven’t already.
-agent.index.lsp.tab.overview.pointsAccruing.p2 = They’ll get another point if they send another submission after a deadline has passed.
-agent.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if they keep sending late submissions. If they reach {0} points, they’ll have to pay a £200 penalty.
-agent.index.lsp.tab.overview.pointsAccruing.warning = Your client will get a £200 penalty if they send another late submission.
 individual.index.lsp.tab.overview.penalty.warning = You have been given a £200 penalty for reaching the penalty threshold.
 individual.index.lsp.tab.overview.penalty.p1 = You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already.
-agent.index.lsp.tab.overview.penalty.warning = Your client has been given a £200 penalty for reaching the penalty threshold.
-agent.index.lsp.tab.overview.penalty.p1 = They will get an additional £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already.
 individual.index.lsp.tab.overview.additionalPenalty.warning = You have been given an additional £200 penalty.
 individual.index.lsp.tab.overview.additionalPenalty.p1 = You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already.
-agent.index.lsp.tab.overview.additionalPenalty.warning = Your client has been given an additional £200 penalty.
-agent.index.lsp.tab.overview.additionalPenalty.p1 = They will get another £200 penalty every time they send a late submission in the future, until their points are removed. They should send any missing submissions as soon as possible if they haven’t already.
 index.lsp.tab.overview.pointsGuidanceLink = Read the guidance about late submission penalties
 index.lsp.tab.overview.addedPointsGuidanceLink = Read the guidance about adjustment points
 individual.index.lsp.tab.overview.actionsToRemoveLink = Actions you must take to get your points removed by {0}
-agent.index.lsp.tab.overview.actionsToRemoveLink = Actions your client must take to get their points removed by {0}
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Late payment penalties
 index.lpp.tab.guidanceOnLatePayments = Read the guidance about how late payment penalties are calculated
 individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the lower your penalties and interest will be.
-agent.index.lpp.tab.payEarlyInfo = The earlier your client pays their Income Tax, the lower their penalties and interest will be.
 
 session.expired.h1 = For your security, this service has been reset
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
@@ -89,7 +66,6 @@ calculation.individual.second.h1 = Second late payment penalty calculation
 calculation.individual.p1 = This penalty applies if Income Tax has not been paid for 30 days.
 calculation.individual.p2 = It is made up of 2 parts:
 calculation.individual.return.link = View your Self Assessment penalties and appeals
-calculation.agent.return.link = View your client’s Self Assessment penalties and appeals
 calculation.penalty.amount = Penalty amount:
 calculation.individual.amount.received = Amount received
 calculation.individual.left.to.pay = Left to pay
@@ -99,25 +75,17 @@ calculation.individual.pay.penalty.by = Pay penalty by {0}
 calculation.individual.paid.penalty.on = Penalty paid on {0}
 calculation.payment.deadline = The payment deadline for the {0} to {1} tax year was {2}.
 calculation.individual.payment.15.30.missed.reason.taxUnpaid = Because you missed this deadline, you will be charged a late payment penalty.
-calculation.agent.payment.15.30.missed.reason.taxUnpaid = Because your client missed this deadline, they will be charged a late payment penalty.
 calculation.payment.deadline.pfa = The payment deadline for the extra amount was {0}.
 calculation.individual.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
-calculation.agent.payment.deadline.pfa.tax.year = The tax return for the {0} to {1} tax year has been amended.
 
 calculation.individual.payment.15.30.missed.reason = Because you missed this deadline, you have been charged a late payment penalty.
-calculation.agent.payment.15.30.missed.reason = Because your client missed this deadline, they have been charged a late payment penalty.
 
 calculation.individual.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
-calculation.agent.payment.missed.reason.additional = Because your client missed this deadline by more than 30 days, they have been charged a late payment penalty. This penalty is made up of two parts.
 
 calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.missed.reason.bullet.1 = They missed the deadline by 15 to 30 days, so they have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
 calculation.individual.payment.15.30.missed.reason.bullet.1.pfa = You missed the deadline by 15 to 30 days, so you have been charged 3% of the amount that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.missed.reason.bullet.1.pfa = They missed the deadline by 15 to 30 days, so they have been charged 3% of the amount that was outstanding 15 days after the payment deadline (£{0})
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15 to 30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1 = They missed the deadline by 15 to 30 days, so they will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£{0})
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = You have missed the deadline by 15 to 30 days, so you will be charged 3% of the amount that was outstanding 15 days after the payment deadline (£{0})
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.1.pfa = They missed the deadline by 15 to 30 days, so they will be charged 3% of the amount that was outstanding 15 days after the payment deadline (£{0})
 
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = 3% of £{0} (the tax that was outstanding 15 days after the payment deadline)
 calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = 3% of £{0} (the amount that was outstanding 15 days after the payment deadline)
@@ -125,8 +93,6 @@ calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional 3%
 calculation.individual.payment.30.plus.missed.reason.bullet.2.pfa = An additional 3% of £{0} (the amount that was outstanding 30 days after the payment deadline)
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the amount that is outstanding 30 days after the payment deadline
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2 = If they miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline
-calculation.agent.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If they miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the amount that is outstanding 30 days after the payment deadline
 
 calculation.table.caption.amountApplied = Amount penalty is applied to
 calculation.table.caption.days.payment = Days after payment deadline
@@ -142,13 +108,7 @@ calculation.individual.penalty.isEstimate.pfa = This penalty is currently an est
 calculation.individual.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 calculation.individual.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
 
-calculation.agent.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
-calculation.agent.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
-calculation.agent.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
-calculation.agent.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, your client should pay the outstanding amount immediately or set up a payment plan.
-
 calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
-calculation.agent.penalty.isDue = To avoid interest charges, your client should pay this penalty by {0}.
 
 calculation.individual.penalty.isOverdue = This penalty is now overdue and interest is being charged.
 
@@ -157,17 +117,9 @@ calculation.individual.penalty.payment.plan.agreed.h1 = Your payment plan
 calculation.individual.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
 calculation.individual.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments.
 calculation.individual.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
-calculation.agent.penalty.payment.plan.proposed.inset = Your client proposed a payment plan on {0}. If their payment plan is agreed this penalty will not increase.
-calculation.agent.penalty.payment.plan.agreed.h1 = Your client’s payment plan
-calculation.agent.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}.
-calculation.agent.penalty.payment.plan.agreed.p2 = This penalty will not increase if they keep up with payments.
-calculation.agent.penalty.payment.plan.agreed.p3 = If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date.
 
 calculation.individual.calc2.missed.deadline.tax.unpaid = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
 calculation.individual.calc2.missed.deadline.tax.paid = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
-
-calculation.agent.calc2.missed.deadline.tax.unpaid = Because your client missed this deadline by more than 30 days, they will be charged a second late payment penalty.
-calculation.agent.calc2.missed.deadline.tax.paid = Because your client missed this deadline by more than 30 days, they have been charged a second late payment penalty.
 
 calculation.individual.calc2.penalty.increase.tax.unpaid = This penalty will increase daily at an annual rate of 10% of the outstanding tax.
 calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.
@@ -177,12 +129,6 @@ calculation.individual.calc2.penalty.due = To avoid interest charges, you should
 calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
 calculation.individual.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
 calculation.individual.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
-
-calculation.agent.calc2.penalty.due = To avoid interest charges, they should pay this penalty by {0}.
-calculation.agent.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
-calculation.agent.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
-calculation.agent.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, your client should pay the outstanding tax immediately or set up a payment plan.
-
 calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
 
 calculation.individual.calc2.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
@@ -190,14 +136,8 @@ calculation.individual.calc2.penalty.payment.plan.agreed.h1 = Your payment plan
 calculation.individual.calc2.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
 calculation.individual.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax.
 calculation.individual.calc2.penalty.payment.plan.agreed.p3 = You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
-calculation.agent.calc2.penalty.payment.plan.proposed.inset = Your client proposed a payment plan on {0}. If their payment plan is agreed this penalty will not increase.
-calculation.agent.calc2.penalty.payment.plan.agreed.h1 = Your client’s payment plan
-calculation.agent.calc2.penalty.payment.plan.agreed.p1 = Your client agreed to a payment plan on {0}.
-calculation.agent.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when they agreed their payment plan. It will remain an estimate until the payment plan pays off the outstanding tax.
-calculation.agent.calc2.penalty.payment.plan.agreed.p3 = Your client must keep up with payments. If they do not, their payment plan will fail. Any penalties they owe will be calculated from their original date.
 
 calculation.individual.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
-calculation.agent.calc.breathing.space = Your client is in Breathing Space. This penalty is paused and will not increase. The time your client is in Breathing Space will not be added to their calculation.
 
 calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount
 calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.
@@ -208,7 +148,6 @@ calculation.calc2.how.we.work.penalty.amount.point.3 = divide the amount by days
 calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts together to get the total amount
 
 calculation.individual.calc2.penalty.details.heading = Your penalty details
-calculation.agent.calc2.penalty.details.heading = Your client’s penalty details
 
 calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)
@@ -225,11 +164,6 @@ compliance.timeline.updatePeriod.heading = Update period: {0} to {1}
 compliance.timeline.tax.return.heading = Tax return: {0} to {1}
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now.
 compliance.timeline.send.by = Send by {0}
-
-compliance.timeline.agent.title = Actions your client needs to take to get their points removed
-compliance.timeline.agent.maximum.penalty.points = Your client has the maximum number of late submission penalty points. This means that their points can no longer expire.
-compliance.timeline.agent.send.submission.listed = To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline.
-compliance.timeline.agent.if.you.missed.deadline = If they miss a deadline, they will have to send all their submissions for the next {0} months on time before HMRC can remove their points.
 
 # Penalty Status tags
 # ===================
@@ -277,7 +211,6 @@ lsp.returnSubmitted.key = Return submitted
 lsp.updateSubmitted.notReceived = Not yet received
 lsp.expiry.key = Point due to expire
 lsp.noPenalties = You don’t have any active late submission penalties.
-lsp.noPenalties.agent = Your client has no active late submission penalties.
 lsp.pointExpiredOn.key = Point expired on
 lsp.pay.penalty.by = Pay penalty by
 lsp.compliance.remove.by = Your points will be removed in {0} {1} because:
@@ -357,7 +290,6 @@ month.12 = December
 individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your penalties are no longer estimated and can be paid for immediately.
 agent.lpp.tab.overdueTax = Because your client has paid their outstanding tax, their penalties are no longer estimated and can be paid for immediately.
 individual.lpp.noPenalties = You have no late payment penalties that are currently due.
-agent.lpp.noPenalties = Your client has no late payment penalties that are currently due.
 
 # Agent Error View
 agentErrorView.h1 = Your organisation has not given you access to this client
@@ -369,9 +301,7 @@ agentErrorView.link = Go to agent services account
 breathingSpace.status = Status
 breathingSpace.paused = Paused due to Breathing Space
 calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation.
-calculation.agent.breathingSpace.expired = Your client has been in Breathing Space. The time they were in Breathing Space will not be added to the calculation.
 calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
-calculation.agent.calc2.breathingSpace.expired = Your client’s Breathing Space has ended. The time they were in Breathing Space has not been added to their calculation.
 
 # Unauthorised Error View
 unauthorised.page.h1 = You are not authorised to access this page

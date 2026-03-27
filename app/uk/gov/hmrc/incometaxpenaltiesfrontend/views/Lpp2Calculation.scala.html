@@ -36,8 +36,6 @@
 
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@individualOrAgent = {@if(isAgent){agent}else{individual}}
-
 @penaltyAmountDetails = {
     @p("calculation.calc2.how.we.work.penalty.amount.p1", elmId = Some("penaltyAmountDetailsP1"))
     @p("calculation.calc2.how.we.work.penalty.amount.p2", elmId = Some("penaltyAmountDetailsP2"))
@@ -67,14 +65,14 @@
 
     @if(inBreathingSpace){
             @govukInsetText(InsetText(
-                content = Text(messages(s"calculation.$individualOrAgent.calc.breathing.space")),
+                content = Text(messages("calculation.individual.calc.breathing.space")),
                 id = Some("breathingSpaceMessage")
             ))
     }
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         @govukInsetText(InsetText(
-            content = Text(messages(s"calculation.$individualOrAgent.calc2.breathingSpace.expired")),
+            content = Text(messages("calculation.individual.calc2.breathingSpace.expired")),
             id = Some("breathingSpaceExpired")
         ))
     }
@@ -97,17 +95,17 @@
 
     @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
         <p class="govuk-body" id="missedDeadline">
-        @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.unpaid")
+        @messages("calculation.individual.calc2.missed.deadline.tax.unpaid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
-        @messages(s"calculation.individual.calc2.penalty.increase.tax.unpaid")
+        @messages("calculation.individual.calc2.penalty.increase.tax.unpaid")
         </p>
 
     } else {
 
         <p class="govuk-body" id="missedDeadline">
-        @messages(s"calculation.$individualOrAgent.calc2.missed.deadline.tax.paid")
+        @messages("calculation.individual.calc2.missed.deadline.tax.paid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
@@ -118,18 +116,18 @@
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-        @calculationHelper.getFinalUnpaidMsg(calculationData, isAgent)
+        @calculationHelper.getFinalUnpaidMsg(calculationData)
         </p>
     }
 
-    @calculationHelper.getPaymentPlanInset(calculationData, individualOrAgent.toString).map{ insetMsg =>
+    @calculationHelper.getPaymentPlanInset(calculationData).map{ insetMsg =>
         <div class="govuk-inset-text">
             @insetMsg
         </div>
     }
 
     <div id="paymentPlanContent">
-        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+        @calculationHelper.getPaymentPlanContent(calculationData).map{ msg =>
             <p class="govuk-body">
                 @msg
             </p>
@@ -165,7 +163,7 @@
                 )
             )
         ),
-        caption = Some(messages(s"calculation.$individualOrAgent.calc2.penalty.details.heading")),
+        caption = Some(messages("calculation.individual.calc2.penalty.details.heading")),
         attributes = Map("id" -> "second-lpp-penalty-details-table"),
         captionClasses = "govuk-table__caption--m",
         firstCellIsHeader = false
@@ -173,9 +171,9 @@
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">
-            @calculationHelper.getPaymentPlanHeading(calculationData, individualOrAgent.toString)
+            @calculationHelper.getPaymentPlanHeading(calculationData)
         </p>
-        @calculationHelper.getPaymentPlanContent(calculationData, individualOrAgent.toString).map{ msg =>
+        @calculationHelper.getPaymentPlanContent(calculationData).map{ msg =>
         <p class="govuk-body">
             @msg
         </p>
@@ -185,7 +183,7 @@
     <div class="govuk-!-margin-bottom-8">
         @link(
             link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages(s"calculation.${individualOrAgent.toString}.return.link"),
+            messageKey = messages("calculation.individual.return.link"),
             id = Some("returnToIndex")
         )
     </div>
