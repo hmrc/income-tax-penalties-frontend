@@ -105,6 +105,8 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
 
   val guidanceOnLSPUrl: String = "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-submission-penalties"
 
+  val guidanceOnLPPUrl: String = "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-paymentpenalties"
+  
   val moreInformationLinkUrl: String = "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
 
   val addedPointsGuidanceLinkUrl: String = "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
