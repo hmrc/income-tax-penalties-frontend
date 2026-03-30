@@ -62,7 +62,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
                   mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                   mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
-                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(None)
+                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel, penalty1.previousRejection)(None)
                   if(isBreathingSpace) {
                     mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
                   }
@@ -105,7 +105,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
                   mockIncomeTaxDueRow(penalty1)(testDueDateRow)
                   mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
-                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel)(Some(testAppealStatusRow))
+                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel, penalty1.previousRejection)(Some(testAppealStatusRow))
                   if(isBreathingSpace) {
                     mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
                   }

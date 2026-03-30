@@ -62,7 +62,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),
       Some(lppSummaryRow.incomeTaxDueRow(lpp)),
       Some(lppSummaryRow.incomeTaxPaymentDateRow(lpp)),
-      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel),
+      lppSummaryRow.appealStatusRow(lpp.appealStatus, lpp.appealLevel, lpp.previousRejection),
       if(isBreathingSpace) Some(lppSummaryRow.breathingSpaceStatusRow()) else None
     ).flatten
 

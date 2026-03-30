@@ -38,7 +38,7 @@ object AA111122A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 September 2027")
     validateSummary(cardRows.get(4), "Point due to expire", "7 September 2029")
-    validateSummary(cardRows.get(5), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(5), "Appeal status", "Decision upheld")
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
@@ -48,5 +48,5 @@ object AA111122A extends UserDetailsData {
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview Your${if (isAgent) " client’s" else ""} account has 1 late submission penalty point"
 
-  override val timeMachineDate: String = "30/08/2027"
+  override val timeMachineDate: String = "30/09/2027"
 }
