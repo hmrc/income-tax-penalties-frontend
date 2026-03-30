@@ -93,7 +93,7 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(isAgent)(data.threshold),
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink
               )
-              
+
               "have the correct href on the pointsGuidanceLink" in {
                 document.getElementById("pointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-submission-penalties"
               }
@@ -189,6 +189,10 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink,
                 Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
               )
+
+              "have the correct href on the pointsGuidanceLink" in {
+                document.getElementById("pointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-submission-penalties"
+              }
 
               "have the correct href on the addedPointsGuidanceLink" in {
                 document.getElementById("addedPointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
