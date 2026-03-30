@@ -24,7 +24,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewBehaviours
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components.LSPTabOverview
@@ -35,7 +34,6 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   lazy val lspTabOverview: LSPTabOverview = app.injector.instanceOf[LSPTabOverview]
-  implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   private val somePocDate: Option[LocalDate] = Some(LocalDate.of(2028, 4, 1))
 
   object Selectors extends BaseSelectors
@@ -179,9 +177,6 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink,
                 Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
               )
-              "addedPointGuidanceLink should have the correct URL" in {
-                document.select(Selectors.linkWithId("addedPointsGuidanceLink")).attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
-              }
 
               "have the correct href on the addedPointsGuidanceLink" in {
                 document.getElementById("addedPointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"

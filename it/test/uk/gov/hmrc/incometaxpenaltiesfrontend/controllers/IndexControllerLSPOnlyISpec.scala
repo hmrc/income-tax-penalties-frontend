@@ -70,12 +70,6 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             val lspTab = getLSPTabContent(document)
             lspTab.getElementById("lspHeading").text() shouldBe "Late submission penalties"
             lspTab.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPTabBody(userdetails)
-
-            if(userdetails.activeLSPPoints > userdetails.thresholdForLSP) {
-              lspTab.getElementById("pointsGuidanceLink").text() shouldBe "Read the guidance about late submission penalties (opens in new tab)"
-              lspTab.getElementById("pointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-submission-penalties"
-            }
-
             val lspCards: Elements = lspTab.getElementsByClass("govuk-summary-card")
             lspCards.size() shouldBe userdetails.expectedNumberOfLSPPenaltyCards
             userdetails.validatePenaltyCardsContent(lspCards)

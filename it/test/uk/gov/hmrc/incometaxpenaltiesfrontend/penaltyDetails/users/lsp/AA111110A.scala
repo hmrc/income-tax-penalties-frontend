@@ -27,8 +27,6 @@ object AA111110A extends UserDetailsData {
 
   override val expectedNumberOfLSPPenaltyCards: Int = 1
   override val expectedNumberOfLPPPenaltyCards: Int = 0
-  override val activeLSPPoints: Int = 3
-  override val thresholdForLSP: Int = 2
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 1: Late update")

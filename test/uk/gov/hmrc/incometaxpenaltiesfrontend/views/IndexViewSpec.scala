@@ -110,6 +110,11 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                   concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.pointsGuidanceLink
                 )
 
+                "have the correct href on the pointsGuidanceLink" in {
+                  document.getElementById("pointsGuidanceLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-submission-penalties"
+                }
+
+
                 behave like pageWithoutElementsRendered(
                   Selectors.overviewButton
                 )
