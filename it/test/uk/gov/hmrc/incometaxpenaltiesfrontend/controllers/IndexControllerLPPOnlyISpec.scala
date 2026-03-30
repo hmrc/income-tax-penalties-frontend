@@ -45,14 +45,16 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
     "GET /view-penalty/self-assessment" when {
       "the call to penalties backend returns data" should {
         "render the expected penalty cards" when {
-
-          val date = userdetails.timeMachineDate match {
-            case "now" => currentDate
-            case dateText =>
-              LocalDate.parse(dateText.replace("/", "-"), timeMachineDateFormatter)
-          }
-
           s"the user with nino $nino is an authorised individual" in {
+            val date = userdetails.timeMachineDate match {
+              case "now" => currentDate
+              case dateText =>
+                val tMDate = LocalDate.parse(dateText.replace("/", "-"), timeMachineDateFormatter)
+                if (tMDate.isBefore(principleChargeBillingStartDate))
+                  throw new IllegalArgumentException(s"timeMachineDate $tMDate is before principalChargeDueDate for nino $nino")
+                else
+                  tMDate
+            }
             setFeatureDate(Some(date))
             stubAuthRequests(false, userdetails.nino)
             stubGetPenalties(userdetails.nino, None)(OK, userdetails.getApiResponseJson(userdetails.nino))
@@ -79,6 +81,15 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
           }
 
           s"the user is an authorised agent for a client with nino $nino" in {
+            val date = userdetails.timeMachineDate match {
+              case "now" => currentDate
+              case dateText =>
+                val tMDate = LocalDate.parse(dateText.replace("/", "-"), timeMachineDateFormatter)
+                if (tMDate.isBefore(principleChargeBillingStartDate))
+                  throw new IllegalArgumentException(s"timeMachineDate $tMDate is before principalChargeDueDate for nino $nino")
+                else
+                  tMDate
+            }
             setFeatureDate(Some(date))
             stubAuthRequests(true, userdetails.nino)
             stubGetPenalties(userdetails.nino, Some("123456789"))(OK, userdetails.getApiResponseJson(userdetails.nino))
