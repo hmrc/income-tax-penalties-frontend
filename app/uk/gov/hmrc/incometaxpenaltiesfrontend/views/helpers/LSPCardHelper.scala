@@ -129,7 +129,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         summaryRow.taxYearSummaryRow(penalty),
         summaryRow.dueDateSummaryRow(penalty),
         Some(summaryRow.receivedDateSummaryRow(penalty)),
-        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
+        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel, penalty.previousRejection)
       ).flatten ++
         (if (isBreathingSpace) Some(summaryRow.breathingSpaceStatusRow()) else None),
       penalty = penalty,
@@ -173,7 +173,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
         else Option.when(!thresholdMet && !penalty.appealStatus.contains(AppealStatusEnum.Upheld)) {
           summaryRow.pointExpiryDate(penalty)
         },
-          summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
+          summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel, penalty.previousRejection)
       ).flatten,
       penalty = penalty,
       isBreathingSpace = isBreathingSpace,
@@ -184,7 +184,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
   def removedPointCard(penalty: LSPDetails, pointsRemovedAfterPeriodOfCompliance: Boolean, isBreathingSpace: Boolean, threshold: Int)(implicit messages: Messages): LateSubmissionPenaltySummaryCard = {
     val pointExpiredAndAppealRow = if(penalty.lspTypeEnum == LSPTypeEnum.RemovedPoint && !pointsRemovedAfterPeriodOfCompliance) {
       Seq(summaryRow.pointExpiredOnRow(penalty),
-        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel)
+        summaryRow.appealStatusRow(penalty.appealStatus, penalty.appealLevel, penalty.previousRejection)
       ).flatten
     } else {
       Seq.empty

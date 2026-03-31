@@ -42,6 +42,14 @@ case class LSPDetails(penaltyNumber: String,
   private val AppealInfoWithHighestAppealLevel: Option[AppealInformationType] = appealInformation.flatMap(_.maxByOption(_.appealLevel.map(_.id).getOrElse(-1)))
   val appealLevel: Option[AppealLevelEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealLevel)
   val appealStatus: Option[AppealStatusEnum.Value] = AppealInfoWithHighestAppealLevel.flatMap(_.appealStatus)
+  private val hasFirstStageRejection: Boolean = appealInformation.fold(false)(_.exists(b => b.appealLevel.fold(false)(_ == AppealLevelEnum.FirstStageAppeal) && b.appealStatus.fold(false)(_ == AppealStatusEnum.Rejected)))
+  private val hasSecondStageRejection: Boolean = appealInformation.fold(false)(_.exists(b => b.appealLevel.fold(false)(_ == AppealLevelEnum.SecondStageAppeal) && b.appealStatus.fold(false)(_ == AppealStatusEnum.Rejected)))
+  val previousRejection: Option[AppealLevelEnum.Value] = (hasFirstStageRejection, hasSecondStageRejection) match
+    case (_, true) =>
+      Some(AppealLevelEnum.SecondStageAppeal)
+    case (true, _) =>
+      Some(AppealLevelEnum.FirstStageAppeal)
+    case _ => None
 
   val lspTypeEnum: LSPTypeEnum.Value =
     (penaltyCategory, appealStatus) match {

@@ -26,31 +26,31 @@ object AL300003A extends UserDetailsData {
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Paid")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(2), "Income Tax paid", "16 March 2028")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(3), "Appeal status", "Decision upheld")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Paid")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(2), "Income Tax paid", "16 March 2028")
-    validateSummary(cardRows.get(3), "Appeal status", "Appeal rejected")
+    validateSummary(cardRows.get(3), "Appeal status", "Decision upheld")
     validateViewCalculationLink(card, 1)
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
@@ -63,7 +63,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard3ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
@@ -76,7 +76,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard4ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £40.00")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
@@ -89,7 +89,7 @@ object AL300003A extends UserDetailsData {
   }
 
   def penaltyCard5ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5

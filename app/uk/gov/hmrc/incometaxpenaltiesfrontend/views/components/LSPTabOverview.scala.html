@@ -21,6 +21,7 @@
 @import java.time.LocalDate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToMonthYearString
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+
 @this(
         p: components.P,
         warning: components.Warning,
@@ -56,7 +57,7 @@
                 @p(s"$individualOrAgent.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
 
                 @link(
-                    link = "#", //TODO: Update link as part of future story
+                    link = appConfig.guidanceOnLSPUrl,
                     messageKey = messages("index.lsp.tab.overview.pointsGuidanceLink") + " " + messages("common.opensInNewTab"),
                     attrTarget = true,
                     id = Some("pointsGuidanceLink")
