@@ -31,7 +31,7 @@ object AA200000C extends UserDetailsData {
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Extra amount due to amended return for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(1), "Extra amount due", "31 January 2028")
+    validateSummary(cardRows.get(1), "Extra amount due", "19 March 2028")
     validateSummary(cardRows.get(2), "Extra amount paid", "Payment not yet received")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
@@ -41,9 +41,9 @@ object AA200000C extends UserDetailsData {
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
+    validateSummary(cardRows.get(0), "Pay penalty by", "19 May 2028")
     validateSummary(cardRows.get(1), "Overdue charge", "Extra amount due to amended return for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(2), "Extra amount due", "31 January 2028")
+    validateSummary(cardRows.get(2), "Extra amount due", "19 March 2028")
     validateSummary(cardRows.get(3), "Extra amount paid", "Payment not yet received")
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
@@ -57,5 +57,5 @@ object AA200000C extends UserDetailsData {
   override val expectedOverviewText: Boolean => String = isAgent =>
     s"Overview ${if (isAgent) "Your client’s" else "Your"} account has late payment penalties Check what you owe"
 
-  override val timeMachineDate: String = "05/03/2028"
+  override val timeMachineDate: String = "05/05/2028"
 }
