@@ -216,9 +216,6 @@ lsp.pay.penalty.by = Talu cosb erbyn
 lsp.compliance.remove.by = Bydd eich pwyntiau yn cael eu dileu ym mis {0} {1} am y rhesymau canlynol:
 lsp.compliance.history = mae eich cofnod cyflwyno yn gyfredol
 lsp.compliance.submitted =  rydych wedi cyflwyno mewn pryd am y {0} mis diwethaf
-lsp.compliance.remove.by.agent = Bydd pwyntiau eich cleient yn cael eu dileu ym mis {0} {1} am y rhesymau canlynol:
-lsp.compliance.history.agent = mae cofnod cyflwyno eich cleient yn gyfredol
-lsp.compliance.submitted.agent = mae’ch cleient wedi cyflwyno mewn pryd am y {0} o fisoedd diwethaf
 
 # Late Payment Penalty - Summary Row Key/Values
 # =============================================
@@ -288,7 +285,6 @@ month.11 = Tachwedd
 month.12 = Rhagfyr
 
 individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
-agent.lpp.tab.overdueTax = Oherwydd bod eich cleient wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd ganddo bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
 individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
 
 # Agent Error View
