@@ -18,15 +18,14 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.models.RequestWithNavBar
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.servicenavigation.{ServiceNavigation, ServiceNavigationItem}
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 @import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 
 
 @this(
-        govukBackLink: GovukBackLink,
         standardBetaBanner: StandardBetaBanner,
-        hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
         govukPhaseBanner: GovukPhaseBanner,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
@@ -39,7 +38,8 @@
         backLinkEnabled: Boolean = true,
         signOutUrl: Option[String] = None,
         isAgent: Boolean,
-        wrapperClass: Option[String] = None
+        wrapperClass: Option[String] = None,
+        useServiceNavigation: Boolean = true,
 )(content: Html)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
 
@@ -56,7 +56,31 @@
 
     <link href="@routes.Assets.versioned("stylesheets/application.css")" media="all" rel="stylesheet" type="text/css"@CSPNonce.get.map {n=> nonce="@n"} />
 }
+@*
+@serviceNavItems = @{
+    Seq(
+        ServiceNavigationItem(content = HtmlContent("Home"), href = "#", current = true),
+        ServiceNavigationItem(content = HtmlContent("Sub page 1"), href = "#"),
+        ServiceNavigationItem(content = HtmlContent("Sub page 1"), href = "#"),
+        ServiceNavigationItem(content = HtmlContent("Sub page 1"), href = "#"),
+        ServiceNavigationItem(content = HtmlContent("Sub page 1"), href = "#"),
+        ServiceNavigationItem(content = HtmlContent("Sub page 2"), href = "#"))
+}
 
+@serviceNav = @{
+    if (useServiceNavigation) {
+        val baseNav = ServiceNavigation(
+            serviceName = Some(messages("service.name")),
+            serviceUrl  = Some(appConfig.ITSAPenaltiesHomeUrl(isAgent)),
+            navigation  = serviceNavItems
+        )
+
+        Some(baseNav.withLanguageToggle())
+    } else {
+        None
+    }
+}
+*@
 @beforeContent = {
     @{ request match {
         case req: RequestWithNavBar => req.navBar.getOrElse(Html(""))
@@ -64,19 +88,6 @@
     }}
 
    @govukPhaseBanner(standardBetaBanner())
-
-    @if(backLinkEnabled) {
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-half">
-                @govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)
-            </div>
-            <div class="govuk-grid-column-one-half">
-                @hmrcLanguageSelectHelper()
-            </div>
-        </div>
-    } else {
-        @hmrcLanguageSelectHelper()
-    }
 
 }
 
