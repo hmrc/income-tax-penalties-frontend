@@ -55,6 +55,6 @@ object AL200001AOverdue extends UserDetailsData {
     1 -> penaltyCard1ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = AL200001A.expectedOverviewText
+  override val expectedOverviewText: String = AL200001A.expectedOverviewText
   override val timeMachineDate: String = "20/04/2026"
 }

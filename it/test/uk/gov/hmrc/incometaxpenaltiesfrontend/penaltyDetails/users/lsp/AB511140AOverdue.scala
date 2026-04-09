@@ -51,6 +51,6 @@ object AB511140AOverdue extends UserDetailsData {
     5 -> AB511140A.penaltyCard5ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = AB511140A.expectedOverviewText
+  override val expectedOverviewText: String = AB511140A.expectedOverviewText
   override val timeMachineDate: String = "04/04/2028"
 }

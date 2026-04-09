@@ -59,9 +59,9 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(isAgent)(data.activePoints),
-                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2(isAgent),
-                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(isAgent)(data.threshold),
+                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(data.activePoints),
+                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2,
+                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(data.threshold),
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink
               )
 
@@ -88,9 +88,9 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(isAgent)(data.activePoints),
-                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2(isAgent),
-                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(isAgent)(data.threshold),
+                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(data.activePoints),
+                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2,
+                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(data.threshold),
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink
               )
 
@@ -117,10 +117,10 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.warning -> messagesForLanguage.pointsAccruingWarning(isAgent),
-                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(isAgent)(data.activePoints),
-                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2(isAgent),
-                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(isAgent)(data.threshold),
+                Selectors.warning -> messagesForLanguage.pointsAccruingWarning,
+                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(data.activePoints),
+                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2,
+                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(data.threshold),
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink
               )
 
@@ -143,9 +143,9 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.warning -> messagesForLanguage.penaltyWarning(isAgent),
-                Selectors.p(2) -> messagesForLanguage.penaltyP1(isAgent),
-                Selectors.link(1) -> messagesForLanguage.actionsLink(isAgent)
+                Selectors.warning -> messagesForLanguage.penaltyWarning,
+                Selectors.p(2) -> messagesForLanguage.penaltyP1,
+                Selectors.link(1) -> messagesForLanguage.actionsLink
               )
             }
 
@@ -163,9 +163,9 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.warning -> messagesForLanguage.additionalPenaltyWarning(isAgent),
-                Selectors.p(2) -> messagesForLanguage.additionalPenaltyP1(isAgent),
-                Selectors.link(1) -> messagesForLanguage.actionsLink(isAgent)
+                Selectors.warning -> messagesForLanguage.additionalPenaltyWarning,
+                Selectors.p(2) -> messagesForLanguage.additionalPenaltyP1,
+                Selectors.link(1) -> messagesForLanguage.actionsLink
               )
             }
 
@@ -183,9 +183,9 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(isAgent)(data.activePoints),
-                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2(isAgent),
-                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(isAgent)(data.threshold),
+                Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(data.activePoints),
+                Selectors.p(3) -> messagesForLanguage.pointsAccruingP2,
+                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(data.threshold),
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink,
                 Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
               )

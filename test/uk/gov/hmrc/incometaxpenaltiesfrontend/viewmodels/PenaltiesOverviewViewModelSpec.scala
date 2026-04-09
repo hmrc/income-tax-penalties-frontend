@@ -71,7 +71,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                   lateSubmissionPenalty = None,
                   latePaymentPenalty = None))
 
-              result.overviewItems.map(oi => Messages(oi.messageKey(hasBullets = true, isAgent = false))) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(oi.messageKey(hasBullets = true))) shouldBe Seq(
                 messagesForLanguage.overviewOverdueTaxCharge,
                 messagesForLanguage.overviewInterest
               )
@@ -85,7 +85,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 val penaltyDetails = samplePenaltyDetailsModel.copy(latePaymentPenalty = None)
                 val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-                result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 1), 1)) shouldBe Seq(
+                result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 1), 1)) shouldBe Seq(
                   messagesForLanguage.overviewLSPPointsNoBullets(1)
                 )
                 result.hasFinancialCharge shouldBe false
@@ -110,7 +110,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                     ))
                   )
                 val result = PenaltiesOverviewViewModel(penaltyDetails)
-                result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 2), 2)) shouldBe Seq(
+                result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
                   messagesForLanguage.overviewLSPPointsNoBullets(2)
                 )
                 result.hasFinancialCharge shouldBe false
@@ -142,7 +142,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 2), 2)) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
                 messagesForLanguage.overviewLSPPointsNoBullets(2)
               )
 
@@ -174,7 +174,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 2), 2)) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
                 messagesForLanguage.overviewLSPPointsNoBullets(2)
               )
 
@@ -206,7 +206,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-              val keys = result.overviewItems.map(_.messageKey(hasBullets = true, isAgent = false))
+              val keys = result.overviewItems.map(_.messageKey(hasBullets = true))
               Seq(
                 Messages(pluralOrSingular(keys.head, 1), 1),
                 Messages(keys(1))
@@ -245,7 +245,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
 
-              val keys = result.overviewItems.map(_.messageKey(hasBullets = true, isAgent = false))
+              val keys = result.overviewItems.map(_.messageKey(hasBullets = true))
               Seq(
                 Messages(pluralOrSingular(keys.head, 2), 2),
                 Messages(keys(1))
@@ -266,7 +266,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val penaltyDetails = samplePenaltyDetailsModel.copy(lateSubmissionPenalty = None)
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 1), 1)) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 1), 1)) shouldBe Seq(
                 messagesForLanguage.overviewLPPNoBullets(1)
               )
 
@@ -290,7 +290,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
 
-              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 2), 2)) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
                 messagesForLanguage.overviewLPPNoBullets(2)
               )
 
@@ -315,7 +315,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
 
-              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 1), 1)) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 1), 1)) shouldBe Seq(
                 messagesForLanguage.overviewLPPNoBullets(1)
               )
 
@@ -340,7 +340,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
 
-              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false, isAgent = false), 1), 1)) shouldBe Seq(
+              result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 1), 1)) shouldBe Seq(
                 messagesForLanguage.overviewLPPNoBullets(1)
               )
 
@@ -364,7 +364,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-              result.overviewItems.map(oi => Messages(oi.messageKey(hasBullets = false, isAgent = false))) shouldBe Seq.empty
+              result.overviewItems.map(oi => Messages(oi.messageKey(hasBullets = false))) shouldBe Seq.empty
 
               result.hasFinancialCharge shouldBe false
             }
@@ -406,7 +406,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
 
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
-              val keys = result.overviewItems.map(_.messageKey(hasBullets = true, isAgent = false))
+              val keys = result.overviewItems.map(_.messageKey(hasBullets = true))
               Seq(
                 Messages(keys.head),
                 Messages(keys(1)),

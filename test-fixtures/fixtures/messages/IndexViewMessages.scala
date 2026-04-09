@@ -20,29 +20,23 @@ object IndexViewMessages {
 
   sealed trait Messages { this: i18n =>
     val noLSP = "You don’t have any active late submission penalties"
-    val noLSPAgent = "Your client has no active late submission penalties."
     val noLPPIndividual = "You have no late payment penalties that are currently due"
-    val noLPPAgent = "Your client has no late payment penalties that are currently due."
     val overviewH2 = "Overview"
-    val overviewP1: Boolean => String = {
-      case true => "Your client’s account has:"
-      case false => "Your account has:"
-    }
-    val overviewP1NoBullets: Boolean => String => String = {
-      isAgent =>
+    val overviewP1: String = "Your account has:"
+
+    val overviewP1NoBullets: String => String = {
         message =>
-          if (isAgent) s"Your client’s account has $message"
-          else s"Your account has $message"
+           s"Your account has $message"
     }
     val overviewLSPPoints: Int => String = {
       case 1 => "1 late submission penalty point"
       case n => s"$n late submission penalty points"
     }
 
-    def overviewLSPPointsNoBullets(num: Int, isAgent: Boolean = false): String = {
+    def overviewLSPPointsNoBullets(num: Int): String = {
       num match {
-        case 1 => if (isAgent) "Your client’s account has 1 late submission penalty point" else "Your account has 1 late submission penalty point"
-        case n => if (isAgent) s"Your client’s account has $n late submission penalty points" else s"Your account has $n late submission penalty points"
+        case 1 => "Your account has 1 late submission penalty point"
+        case n => s"Your account has $n late submission penalty points"
       }
     }
 
@@ -71,29 +65,23 @@ object IndexViewMessages {
 
   object Welsh extends Messages with Cy {
     override val noLPPIndividual = "Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd."
-    override val noLPPAgent = "Nid oes gan eich cleient unrhyw gosbau am dalu’n hwyr ar hyn o bryd."
     override val noLSP = "Cosbau am gyflwyno’n hwyr Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd"
-    override val noLSPAgent = "Nid oes gan eich cleient unrhyw gosbau actif am gyflwyno’n hwyr ar hyn o bryd."
     override val overviewH2 = "Trosolwg"
-    override val overviewP1: Boolean => String = {
-      case true => "Mae gan gyfrif eich cleient y canlynol:"
-      case false => "Mae gan eich cyfrif y canlynol:"
-    }
-    override val overviewP1NoBullets: Boolean => String => String = {
-      isAgent =>
+    override val overviewP1: String = "Mae gan eich cyfrif y canlynol:"
+
+    override val overviewP1NoBullets: String => String = {
         message =>
-          if (isAgent) s"Mae gan gyfrif eich cleient y canlynol $message"
-          else s"Mae gan eich cyfrif y canlynol $message"
+          s"Mae gan eich cyfrif y canlynol $message"
     }
     override val overviewLSPPoints: Int => String = {
       case 1 => "1 pwynt cosb am gyflwyno’n hwyr"
       case n => s"$n o bwyntiau cosb am gyflwyno’n hwyr"
     }
 
-    override def overviewLSPPointsNoBullets(num: Int, isAgent: Boolean = false): String = {
+    override def overviewLSPPointsNoBullets(num: Int): String = {
       num match {
-        case 1 => if (isAgent) "Mae gan gyfrif eich cleient 1 pwynt cosb am gyflwyno’n hwyr" else "Mae gan eich cyfrif 1 pwynt cosb am gyflwyno’n hwyr"
-        case n => if (isAgent) s"Mae gan gyfrif eich cleient $n bwynt cosb am gyflwyno’n hwyr" else s"Mae gan eich cyfrif $n bwynt cosb am gyflwyno’n hwyr"
+        case 1 => "Mae gan eich cyfrif 1 pwynt cosb am gyflwyno’n hwyr"
+        case n => s"Mae gan eich cyfrif $n bwynt cosb am gyflwyno’n hwyr"
       }
     }
 

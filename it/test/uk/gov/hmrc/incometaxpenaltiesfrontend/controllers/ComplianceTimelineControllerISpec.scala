@@ -132,12 +132,12 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         val document = Jsoup.parse(result.body)
 
         document.getServiceName.get(0).text() shouldBe serviceName
-        document.title() shouldBe "Actions your client needs to take to get their points removed - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "Actions your client needs to take to get their points removed"
-        document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
-        document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
+        document.title() shouldBe "Actions you need to take to get your points removed - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Actions you need to take to get your points removed"
+        document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
+        document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
-        document.getElementById("missedDeadlinePara").text() shouldBe "If they miss a deadline, they will have to send all their submissions for the next 24 months on time before HMRC can remove their points."
+        document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send all your submissions for the next 24 months on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("moreInformationLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
         document.getLink("returnToSA").text() shouldBe returnToSALink
@@ -157,12 +157,12 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         val document = Jsoup.parse(result.body)
 
         document.getServiceName.get(0).text() shouldBe serviceName
-        document.title() shouldBe "Actions your client needs to take to get their points removed - Manage your Self Assessment - GOV.UK"
-        document.getH1Elements.text() shouldBe "Actions your client needs to take to get their points removed"
-        document.getParagraphs.get(0).text() shouldBe "Your client has the maximum number of late submission penalty points. This means that their points can no longer expire."
-        document.getParagraphs.get(1).text() shouldBe "To get their points removed by HMRC, they will need to send any submissions listed on this timeline before the deadline."
+        document.title() shouldBe "Actions you need to take to get your points removed - Manage your Self Assessment - GOV.UK"
+        document.getH1Elements.text() shouldBe "Actions you need to take to get your points removed"
+        document.getParagraphs.get(0).text() shouldBe "You have the maximum number of late submission penalty points. This means that your points can no longer expire."
+        document.getParagraphs.get(1).text() shouldBe "To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline."
         document.getElementById("pointsToBeRemovedPara").text() shouldBe pointsToBeRemoved
-        document.getElementById("missedDeadlinePara").text() shouldBe "If they miss a deadline, they will have to send all their submissions for the next 24 months on time before HMRC can remove their points."
+        document.getElementById("missedDeadlinePara").text() shouldBe "If you miss a deadline, you will have to send all your submissions for the next 24 months on time before HMRC can remove your points."
         document.getLink("moreInformationLink").text() shouldBe moreInformationLink
         document.getLink("moreInformationLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#removing-penalty-points-and-penalties"
         document.getLink("returnToSA").text() shouldBe returnToSALink

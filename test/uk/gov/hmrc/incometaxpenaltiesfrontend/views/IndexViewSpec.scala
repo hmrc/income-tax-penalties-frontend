@@ -79,9 +79,8 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               implicit lazy val document: Document = asDocument(html)
 
               behave like pageWithExpectedElementsAndMessages(
-                Selectors.lspTab -> (if (isAgent) messagesForLanguage.noLSPAgent else messagesForLanguage.noLSP),
-                Selectors.lppTab -> (if
-                (isAgent) messagesForLanguage.noLPPAgent else messagesForLanguage.noLPPIndividual)
+                Selectors.lspTab -> (messagesForLanguage.noLSP),
+                Selectors.lppTab -> (messagesForLanguage.noLPPIndividual)
               )
             }
 
@@ -102,11 +101,11 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1, isAgent),
+                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1),
                   concat(Selectors.lspTab, Selectors.p(1)) -> lspMessages.pointsTotal(1),
-                  concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.pointsAccruingP1(isAgent)(1),
-                  concat(Selectors.lspTab, Selectors.p(3)) -> lspMessages.pointsAccruingP2(isAgent),
-                  concat(Selectors.lspTab, Selectors.p(4)) -> lspMessages.pointsAccruingP3(isAgent)(4),
+                  concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.pointsAccruingP1(1),
+                  concat(Selectors.lspTab, Selectors.p(3)) -> lspMessages.pointsAccruingP2,
+                  concat(Selectors.lspTab, Selectors.p(4)) -> lspMessages.pointsAccruingP3(4),
                   concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.pointsGuidanceLink
                 )
 
@@ -145,14 +144,14 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewP1(isAgent),
+                  Selectors.overviewP1 -> messagesForLanguage.overviewP1,
                   Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPFinancial(1),
                   Selectors.overviewBullet(2) -> messagesForLanguage.overviewLSPPointsMax,
                   Selectors.overviewButton -> messagesForLanguage.overviewCheckAndPay,
                   concat(Selectors.lspTab, Selectors.p(1)) -> lspMessages.pointsTotal(4),
-                  concat(Selectors.lspTab, Selectors.warning) -> lspMessages.penaltyWarning(isAgent),
-                  concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.penaltyP1(isAgent),
-                  concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.actionsLink(isAgent)
+                  concat(Selectors.lspTab, Selectors.warning) -> lspMessages.penaltyWarning,
+                  concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.penaltyP1,
+                  concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.actionsLink
                 )
               }
             }

@@ -36,14 +36,12 @@ class SecondLatePaymentCalculationHelper {
   }
 
 
-  def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData,
-                        isAgent: Boolean)(implicit messages: Messages): String = {
-    val isAgentTag = if (isAgent) "agent" else "individual"
+  def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
     if (!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
-      val isEstimateMsg = messages(s"calculation.$isAgentTag.calc2.penalty.isEstimate",
+      val isEstimateMsg = messages("calculation.individual.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
-      val toStopEstimateIncMsg = messages(s"calculation.$isAgentTag.calc2.penalty.stopEstimateIncreasing")
+      val toStopEstimateIncMsg = messages("calculation.individual.calc2.penalty.stopEstimateIncreasing")
       if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
         isEstimateMsg
       } else {
@@ -52,34 +50,34 @@ class SecondLatePaymentCalculationHelper {
     } else if (calculationData.isPenaltyOverdue) {
       messages("calculation.individual.calc2.penalty.overdue")
     } else {
-      messages(s"calculation.$isAgentTag.calc2.penalty.due", dateToString(calculationData.principalChargeDueDate))
+      messages("calculation.individual.calc2.penalty.due", dateToString(calculationData.principalChargeDueDate))
     }
   }
 
-  def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+  def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (_, Some(proposedDate)) =>
-        Some(messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
+        Some(messages("calculation.individual.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
   }
 
-  def getPaymentPlanHeading(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+  def getPaymentPlanHeading(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
-        Some(messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.agreed.h1"))
+        Some(messages("calculation.individual.calc2.penalty.payment.plan.agreed.h1"))
       case _ => None
     }
   }
 
-  def getPaymentPlanContent(calculationData: SecondLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): List[String] = {
+  def getPaymentPlanContent(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): List[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
         calculationData.paymentPlanAgreed.map { agreedDate =>
           List(
-            messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
-            messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.agreed.p2"),
-            messages(s"calculation.$individualOrAgent.calc2.penalty.payment.plan.agreed.p3")
+            messages("calculation.individual.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
+            messages("calculation.individual.calc2.penalty.payment.plan.agreed.p2"),
+            messages("calculation.individual.calc2.penalty.payment.plan.agreed.p3")
           )
         }.getOrElse(List.empty)
       case _ => List.empty

@@ -42,8 +42,8 @@ object AA100000B extends UserDetailsData {
     0 -> penaltyCard0ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = isAgent =>
-    s"Overview ${if (isAgent) "Your client’s" else "Your"} account has a late payment penalty Check what you owe"
+  override val expectedOverviewText: String =
+    "Overview Your account has a late payment penalty Check what you owe"
 
   override val timeMachineDate: String = "25/02/2026"
 }

@@ -30,7 +30,7 @@ object AA000000A extends UserDetailsData {
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map.empty
 
-  override val expectedOverviewText: Boolean => String = _ => ""
+  override val expectedOverviewText: String = ""
 
   override val timeMachineDate: String = "now"
 }

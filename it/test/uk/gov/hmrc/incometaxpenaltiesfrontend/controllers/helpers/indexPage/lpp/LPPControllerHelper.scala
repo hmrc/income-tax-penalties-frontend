@@ -76,11 +76,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
   def validateNoLSPPenalties(document: Document, isAgent: Boolean = false) = {
     val lspTabContent = getLSPTabContent(document)
     lspTabContent.getElementById("lspHeading").text() shouldBe "Late submission penalties"
-    val expectedLSPContent = if(isAgent){
-      "Your client has no active late submission penalties."
-    } else{
-      "You don’t have any active late submission penalties."
-    }
+    val expectedLSPContent = "You don’t have any active late submission penalties."
     lspTabContent.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPContent
   }
 

@@ -24,22 +24,20 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
 sealed trait PenaltiesOverviewItem {
   val name: String
 
-  def messageKey(hasBullets: Boolean, isAgent: Boolean): String = {
+  def messageKey(hasBullets: Boolean): String = {
 
     val key = s"index.overview.$name"
 
     if (hasBullets) s"$key.bullet"
-    else if (isAgent) s"agent.$key"
-
     else s"individual.$key"
   }
 
-  def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String
+  def content(hasMultipleBullets: Boolean)(implicit messages: Messages): String
 }
 
 final case class SimpleOverviewItem(override val name: String) extends PenaltiesOverviewItem {
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String =
-    messages(messageKey(hasMultipleBullets, isAgent))
+  override def content(hasMultipleBullets: Boolean)(implicit messages: Messages): String =
+    messages(messageKey(hasMultipleBullets))
 }
 
 val UnpaidReturnChargesOverviewItem: PenaltiesOverviewItem = SimpleOverviewItem("unpaidReturnCharges")
@@ -48,8 +46,8 @@ val LSPMaxItem: PenaltiesOverviewItem = SimpleOverviewItem("lsp.points.max")
 
 
 abstract class CountOverviewItem(override val name: String, count: Int) extends PenaltiesOverviewItem {
-  override def content(hasMultipleBullets: Boolean, isAgent: Boolean)(implicit messages: Messages): String =
-    messages(pluralOrSingular(messageKey(hasMultipleBullets, isAgent), count), count)
+  override def content(hasMultipleBullets: Boolean)(implicit messages: Messages): String =
+    messages(pluralOrSingular(messageKey(hasMultipleBullets), count), count)
 }
 
 case class LPPNotPaidOrAppealed(count: Int) extends CountOverviewItem("lpp.penalties", count)
@@ -60,11 +58,11 @@ case class LSPPointsActive(count: Int) extends CountOverviewItem("lsp.points", c
 
 case class PenaltiesOverviewViewModel(overviewItems: Seq[PenaltiesOverviewItem], hasFinancialCharge: Boolean) {
 
-  def content(isAgent: Boolean)(implicit messages: Messages): Seq[String] = {
+  def content()(implicit messages: Messages): Seq[String] = {
     if (overviewItems.size > 1) {
-      overviewItems.map(_.content(hasMultipleBullets = true, isAgent))
+      overviewItems.map(_.content(hasMultipleBullets = true))
     } else {
-      overviewItems.map(_.content(hasMultipleBullets = false, isAgent))
+      overviewItems.map(_.content(hasMultipleBullets = false))
     }
   }
 }

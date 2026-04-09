@@ -42,6 +42,6 @@ object AA100000BOverdue extends UserDetailsData {
     0 -> penaltyCard0ExpectedContent
   )
 
-  override val expectedOverviewText: Boolean => String = AA100000B.expectedOverviewText
+  override val expectedOverviewText: String = AA100000B.expectedOverviewText
   override val timeMachineDate: String = "20/05/2026"
 }

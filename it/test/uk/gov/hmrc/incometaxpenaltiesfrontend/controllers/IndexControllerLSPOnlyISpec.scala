@@ -61,7 +61,7 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            validatePenaltyOverview(document, userdetails.expectedOverviewText(false),
+            validatePenaltyOverview(document, userdetails.expectedOverviewText,
               userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0)
             validatePenaltyTabs(document)
             if (userdetails.expectedNumberOfLPPPenaltyCards == 0) {
@@ -85,15 +85,15 @@ class IndexControllerLSPOnlyISpec extends LSPControllerHelper with FeatureSwitch
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            validatePenaltyOverview(document, userdetails.expectedOverviewText(true),
-              userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0, true)
+            validatePenaltyOverview(document, userdetails.expectedOverviewText,
+              userdetails.numberOfUnpaidFinancialPenalties > 0 || userdetails.expectedNumberOfLPPPenaltyCards > 0)
             validatePenaltyTabs(document)
             if (userdetails.expectedNumberOfLPPPenaltyCards == 0) {
-              validateNoLPPPenalties(document, true)
+              validateNoLPPPenalties(document)
             }
             val lspTab = getLSPTabContent(document)
             lspTab.getElementById("lspHeading").text() shouldBe "Late submission penalties"
-            lspTab.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPTabBody(userdetails, true)
+            lspTab.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPTabBody(userdetails)
             val lspCards: Elements = lspTab.getElementsByClass("govuk-summary-card")
             lspCards.size() shouldBe userdetails.expectedNumberOfLSPPenaltyCards
             userdetails.validatePenaltyCardsContent(lspCards)

@@ -25,8 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenalty
 class FirstLatePaymentCalculationHelper {
 
 
-  def getPaymentDetails(calculationData: FirstLatePaymentPenaltyCalculationData,
-                        isAgent: Boolean)(implicit messages: Messages): Option[String] = {
+  def getPaymentDetails(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
 
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
       None
@@ -41,38 +40,37 @@ class FirstLatePaymentCalculationHelper {
     }
   }
 
-  def getMissedDeadlineMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
-                           individualOrAgent: String)(implicit messages: Messages): String = {
+  def getMissedDeadlineMsg(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
     calculationData.llpHRCharge match {
-      case Some(_) => messages(s"calculation.$individualOrAgent.payment.missed.reason.additional")
+      case Some(_) => messages("calculation.individual.payment.missed.reason.additional")
       case None if !calculationData.incomeTaxIsPaid =>
-        messages(s"calculation.$individualOrAgent.payment.15.30.missed.reason.taxUnpaid")
-      case _ => messages(s"calculation.$individualOrAgent.payment.15.30.missed.reason")
+        messages("calculation.individual.payment.15.30.missed.reason.taxUnpaid")
+      case _ => messages("calculation.individual.payment.15.30.missed.reason")
     }
   }
 
   def getBulletListContent(calculationData: FirstLatePaymentPenaltyCalculationData,
-                           individualOrAgent: String, isPfa: String)(implicit messages: Messages): List[String] = {
+                           isPfa: String)(implicit messages: Messages): List[String] = {
     calculationData.llpHRCharge match {
       case Some(llpHRCharge) => List(
         messages(s"calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount),
         messages(s"calculation.individual.payment.30.plus.missed.reason.bullet.2$isPfa", llpHRCharge.formattedChargeAmount)
       )
       case None if !calculationData.incomeTaxIsPaid => List(
-        messages(s"calculation.$individualOrAgent.payment.15.30.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount),
-        messages(s"calculation.$individualOrAgent.payment.15.30.unpaid.missed.reason.bullet.2$isPfa")
+        messages(s"calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount),
+        messages(s"calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2$isPfa")
       )
       case None => List(
-        messages(s"calculation.$individualOrAgent.payment.15.30.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount)
+        messages(s"calculation.individual.payment.15.30.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount)
       )
     }
   }
 
   def getFinalUnpaidMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
-                        individualOrAgent: String, isPfa: String)(implicit messages: Messages): String = {
+                        isPfa: String)(implicit messages: Messages): String = {
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
-      val isEstimateMsg = messages(s"calculation.$individualOrAgent.penalty.isEstimate$isPfa", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
-      val toStopEstimateIncMsg = messages(s"calculation.$individualOrAgent.penalty.stopEstimateIncreasing$isPfa")
+      val isEstimateMsg = messages(s"calculation.individual.penalty.isEstimate$isPfa", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+      val toStopEstimateIncMsg = messages(s"calculation.individual.penalty.stopEstimateIncreasing$isPfa")
       if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
         isEstimateMsg
       } else {
@@ -82,34 +80,34 @@ class FirstLatePaymentCalculationHelper {
 
       messages("calculation.individual.penalty.isOverdue")
     } else {
-      messages(s"calculation.$individualOrAgent.penalty.isDue", dateToString(calculationData.payPenaltyBy))
+      messages("calculation.individual.penalty.isDue", dateToString(calculationData.payPenaltyBy))
     }
   }
 
-  def getPaymentPlanInset(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+  def getPaymentPlanInset(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (_, Some(proposedDate)) =>
-        Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
+        Some(messages("calculation.individual.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
   }
 
-  def getPaymentPlanHeading(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): Option[String] = {
+  def getPaymentPlanHeading(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
-          Some(messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.h1", agreedDate))
+          Some(messages("calculation.individual.penalty.payment.plan.agreed.h1", agreedDate))
       case _ => None
     }
   }
 
-  def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData, individualOrAgent: String)(implicit messages: Messages): List[String] = {
+  def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): List[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
         calculationData.paymentPlanAgreed.map { agreedDate =>
           List(
-            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
-            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p2"),
-            messages(s"calculation.$individualOrAgent.penalty.payment.plan.agreed.p3")
+            messages("calculation.individual.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
+            messages("calculation.individual.penalty.payment.plan.agreed.p2"),
+            messages(s"calculation.individual.penalty.payment.plan.agreed.p3")
           )
         }.getOrElse(List.empty)
       case _ => List.empty
