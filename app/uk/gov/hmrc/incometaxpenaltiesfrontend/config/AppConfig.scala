@@ -102,13 +102,10 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
   }
 
   def isTimeMachineBannerEnabled: Boolean = {
-    if (isEnabled(EnableTimeMachineBanner)) {
-      logger.info(s"Time machine banner is enabled - current time machine date is ${optCurrentDate.getOrElse(LocalDate.now())}")
-      true
-    } else {
-      logger.info(s"Time machine banner is disabled - current time machine date is ${optCurrentDate.getOrElse(LocalDate.now())}")
-      false
-    }
+    val enabled = isEnabled(EnableTimeMachineBanner)
+    val date = optCurrentDate.getOrElse(LocalDate.now())
+    logger.info(s"Time machine banner is ${if (enabled) "enabled" else "disabled"} - current time machine date is $date")
+    enabled
   }
 
   lazy val agentServicesUrl: String = config.get[String]("agent-services-account-frontend.baseUrl") +"/agent-services-account/no-assignment"
