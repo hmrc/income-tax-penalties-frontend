@@ -92,10 +92,6 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
   lazy val timeMachineDate: String =
     config.get[String]("timemachine.date")
 
-  lazy val timeMachineBannerEnabled: Boolean =
-    config.get[Boolean]("timeMachineBanner.enabled")
-
-
   def optCurrentDate: Option[LocalDate] = {
     if(timeMachineEnabled) {
       val optDateString = sys.props.get(TIME_MACHINE_NOW).getOrElse(timeMachineDate)
