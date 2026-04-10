@@ -17,7 +17,8 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.Configuration
-import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend, UseStubForMessageFrontend}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{EnableTimeMachineBanner, FeatureSwitching, UseStubForBackend, UseStubForMessageFrontend}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -46,7 +47,7 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
   lazy val surveyOrigin: String = servicesConfig.getString("exit-survey-origin")
   lazy val survey = s"""${servicesConfig.getString("feedback-frontend-host")}/feedback/$surveyOrigin"""
 
-  lazy val alphaBannerUrl = servicesConfig.getString("alpha-banner-url")
+  lazy val alphaBannerUrl: String = servicesConfig.getString("alpha-banner-url")
 
   def penaltiesUrl: String =
     if (isEnabled(UseStubForBackend)) s"${servicesConfig.baseUrl("income-tax-penalties-stubs")}/income-tax-penalties-stubs"
@@ -101,6 +102,16 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
       Try(LocalDate.parse(optDateString, timeMachineDateFormatter)).toOption
     } else {
       None
+    }
+  }
+
+  def isTimeMachineBannerEnabled: Boolean = {
+    if (isEnabled(EnableTimeMachineBanner)) {
+      logger.info(s"Time machine banner is enabled - current time machine date is ${optCurrentDate.getOrElse(LocalDate.now())}")
+      true
+    } else {
+      logger.info(s"Time machine banner is disabled - current time machine date is ${optCurrentDate.getOrElse(LocalDate.now())}")
+      false
     }
   }
 
