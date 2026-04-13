@@ -27,7 +27,8 @@ class FeatureSwitchingModule extends Module with FeatureSwitchRegistry {
 
   val switches: Seq[FeatureSwitch] = Seq(
     UseStubForBackend,
-    UseStubForMessageFrontend
+    UseStubForMessageFrontend,
+    EnableTimeMachineBanner
   )
 
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
@@ -45,4 +46,9 @@ case object UseStubForBackend extends FeatureSwitch {
 case object UseStubForMessageFrontend extends FeatureSwitch {
   override val configName: String = "features.useStubForMessageFrontend"
   override val displayName: String = "Use stub instead of Message Frontend service"
+}
+
+case object EnableTimeMachineBanner extends FeatureSwitch {
+  override val configName: String = "timeMachineBanner.enabled"
+  override val displayName: String = "Enable Time Machine Banner"
 }
