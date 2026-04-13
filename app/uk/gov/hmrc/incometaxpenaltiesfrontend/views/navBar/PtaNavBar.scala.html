@@ -14,22 +14,12 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.config.AccountMenuConfig
-@import uk.gov.hmrc.hmrcfrontend.views.html.components.HmrcAccountMenu
-@import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits.RichAccountMenu
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accountmenu.{AccountMenu, SignOut}
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.language.{Cy, En}
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
-@this(hmrcAccountMenu: HmrcAccountMenu)(implicit accountMenuConfig: AccountMenuConfig)
+@this()()
 
 @(count: Int)(implicit request : Request[_], messages: Messages)
 
-@hmrcAccountMenu(
-  AccountMenu(
-    signOut = SignOut(href = controllers.routes.ServiceController.signOut().url),
-    language = if(messages.lang.code.toUpperCase == "CY") Cy else En
-  )
-  .withUrlsFromConfig()
-  .withMessagesCount(count)
-)
+
+
+

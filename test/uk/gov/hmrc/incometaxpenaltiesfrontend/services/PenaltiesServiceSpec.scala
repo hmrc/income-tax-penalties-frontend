@@ -39,7 +39,7 @@ class PenaltiesServiceSpec extends AnyWordSpec with Matchers with PenaltiesDetai
 
   class Setup {
 
-    implicit val userRequest: CurrentUserRequest[AnyContentAsEmpty.type] = AuthorisedAndEnrolledIndividual("1234567890", "AA123456A", None)(FakeRequest())
+    implicit val userRequest: CurrentUserRequest[AnyContentAsEmpty.type] = AuthorisedAndEnrolledIndividual("1234567890", "AA123456A", None, None)(FakeRequest())
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
     val mockPenaltiesConnector: PenaltiesConnector = mock[PenaltiesConnector]

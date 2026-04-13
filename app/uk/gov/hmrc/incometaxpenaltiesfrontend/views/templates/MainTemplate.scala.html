@@ -24,9 +24,7 @@
 
 
 @this(
-        govukBackLink: GovukBackLink,
         standardBetaBanner: StandardBetaBanner,
-        hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
         govukPhaseBanner: GovukPhaseBanner,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
@@ -40,7 +38,8 @@
         backLinkEnabled: Boolean = true,
         signOutUrl: Option[String] = None,
         isAgent: Boolean,
-        wrapperClass: Option[String] = None
+        wrapperClass: Option[String] = None,
+        useServiceNavigation: Boolean = true
 )(content: Html)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
 
@@ -73,19 +72,29 @@
 
    @govukPhaseBanner(standardBetaBanner())
 
-    @if(backLinkEnabled) {
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-half">
-                @govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)
-            </div>
-            <div class="govuk-grid-column-one-half">
-                @hmrcLanguageSelectHelper()
-            </div>
-        </div>
-    } else {
-        @hmrcLanguageSelectHelper()
-    }
+}
 
+@defaultServiceNavigation(serviceName: Option[String], serviceUrl: String) = @{
+    ServiceNavigation(serviceName = serviceName, serviceUrl = Some(serviceUrl)).withLanguageToggle()
+}
+
+@serviceNav = @{
+    if (useServiceNavigation) {
+
+        val serviceNavigationFromRequest = request match {
+            case req: RequestWithNavBar => req.serviceNavigationPartial
+            case _ => None
+        }
+
+        val navBar = serviceNavigationFromRequest match {
+            case Some(nav) => nav.copy(serviceName = Some(messages("service.name")), serviceUrl = Some(appConfig.ITSAPenaltiesHomeUrl(isAgent))).withLanguageToggle()
+            case None => defaultServiceNavigation(Some(messages("service.name")), serviceUrl = appConfig.ITSAPenaltiesHomeUrl(isAgent))
+        }
+
+        Some(navBar.withLanguageToggle())
+    } else {
+        None
+    }
 }
 
 
@@ -114,5 +123,6 @@
             additionalHeadBlock = Some(headBlock),
             beforeContentBlock = Some(beforeContent),
             mainContentLayout = Some(TemplateOverrides.noMainContentLayout)
-        )
+        ),
+        serviceNavigation = serviceNav
     ))(contentBlock)

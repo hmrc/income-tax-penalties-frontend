@@ -107,5 +107,3 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     pointsWithOrder.sortWith((thisElement, nextElement) => thisElement.penaltyOrder.getOrElse("0").toInt >= nextElement.penaltyOrder.getOrElse("0").toInt)
   }
 }
-
-
