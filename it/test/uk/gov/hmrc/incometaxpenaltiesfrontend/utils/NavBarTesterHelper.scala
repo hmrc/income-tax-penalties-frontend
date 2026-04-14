@@ -37,7 +37,7 @@ trait NavBarTesterHelper extends AnyWordSpec with MessagesStub { this: Component
           val document = Jsoup.parse(result.body)
 
           document.select("ul#pta-service-navigation").isEmpty shouldBe false
-          document.select("ul#pta-service-navigation li").size() shouldBe 4
+          document.select("ul#pta-service-navigation li").size() shouldBe 3
         }
       }
 

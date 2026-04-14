@@ -61,10 +61,6 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
         ServiceNavigationItem(
           content = Text(messages("pta.navigation.profileAndSettings")),
           href = appConfig.personalTaxAccountProfileUrl
-        ),
-        ServiceNavigationItem(
-          content = Text(messages("pta.navigation.businessTaxAccount")),
-          href = appConfig.personalTaxAccountBtaUrl
         )
       ),
       navigationId = "pta-service-navigation"
@@ -185,7 +181,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
         val serviceNav = enrichedRequest.serviceNavigationPartial.get
 
         serviceNav.navigationId shouldBe "pta-service-navigation"
-        serviceNav.navigation.length shouldBe 4
+        serviceNav.navigation.length shouldBe 3
 
         serviceNav.navigation.head.content shouldBe Text("Messages")
         serviceNav.navigation.head.href shouldBe appConfig.personalTaxAccountMessagesUrl
@@ -196,8 +192,6 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
         serviceNav.navigation(2).content shouldBe Text("Profile and settings")
         serviceNav.navigation(2).href shouldBe appConfig.personalTaxAccountProfileUrl
 
-        serviceNav.navigation(3).content shouldBe Text("Business tax account")
-        serviceNav.navigation(3).href shouldBe appConfig.personalTaxAccountBtaUrl
       }
     }
 

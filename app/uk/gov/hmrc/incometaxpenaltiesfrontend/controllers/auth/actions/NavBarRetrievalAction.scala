@@ -76,10 +76,6 @@ class NavBarRetrievalAction @Inject()(val messageCountConnector: MessageCountCon
           ServiceNavigationItem(
             content = Text(messages("pta.navigation.profileAndSettings")),
             href = appConfig.personalTaxAccountProfileUrl
-          ),
-          ServiceNavigationItem(
-            content = Text(messages("pta.navigation.businessTaxAccount")),
-            href = appConfig.personalTaxAccountBtaUrl
           )
         ),
         navigationId = "pta-service-navigation"
