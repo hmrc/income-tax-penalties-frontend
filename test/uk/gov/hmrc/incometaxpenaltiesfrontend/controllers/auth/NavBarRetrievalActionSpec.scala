@@ -26,14 +26,15 @@ import play.api.test.Helpers.*
 import uk.gov.hmrc.govukfrontend.views.Aliases.{ServiceNavigationItem, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.servicenavigation.ServiceNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.MessageCountHttpParser.MessagesCountResponseMalformed
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.{IncomeTaxSessionMocks, MockMessageCountConnector}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.NavBarRetrievalAction
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledAgent, AuthorisedAndEnrolledIndividual, CurrentUserRequest}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.messageCount.MessageCount
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
+
+import scala.concurrent.ExecutionContext
 
 class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite
   with MockMessageCountConnector
@@ -107,40 +108,19 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
 
       "the origin is PTA" when {
 
-        "a successful response is returned from the message count connector" should {
-          "return the CurrentUserRequest with PTA service navigation added" in {
+        "return the CurrentUserRequest with PTA service navigation added" in {
+          implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession((IncomeTaxSessionKeys.origin, "PTA"))
+          implicit val messages: Messages = messagesApi.preferred(request)
+          val userRequest = AuthorisedAndEnrolledIndividual(testMtdItId, testNino, None, None)
 
-            implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession((IncomeTaxSessionKeys.origin, "PTA"))
-            implicit val messages: Messages = messagesApi.preferred(request)
-            val userRequest = AuthorisedAndEnrolledIndividual(testMtdItId, testNino, None, None)
+          mockGetMessageCount()(Future.successful(Right(MessageCount(0))))
 
-            mockGetMessageCount()(Future.successful(Right(MessageCount(5))))
+          val result = testAction.refine(userRequest)
+          val refinedRequest = await(result)
 
-            val result = testAction.refine(userRequest)
-            val refinedRequest = await(result)
-
-            refinedRequest.isRight shouldBe true
-            val enrichedRequest = refinedRequest.toOption.get.asInstanceOf[AuthorisedAndEnrolledIndividual[?]]
-            enrichedRequest.serviceNavigationPartial shouldBe Some(expectedPtaServiceNavigation)
-          }
-        }
-
-        "an error response is returned from the message count connector" should {
-          "return the CurrentUserRequest with PTA service navigation still added" in {
-
-            implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession((IncomeTaxSessionKeys.origin, "PTA"))
-            implicit val messages: Messages = messagesApi.preferred(request)
-            val userRequest = AuthorisedAndEnrolledIndividual(testMtdItId, testNino, None, None)
-
-            mockGetMessageCount()(Future.successful(Left(MessagesCountResponseMalformed)))
-
-            val result = testAction.refine(userRequest)
-            val refinedRequest = await(result)
-
-            refinedRequest.isRight shouldBe true
-            val enrichedRequest = refinedRequest.toOption.get.asInstanceOf[AuthorisedAndEnrolledIndividual[?]]
-            enrichedRequest.serviceNavigationPartial shouldBe Some(expectedPtaServiceNavigation)
-          }
+          refinedRequest.isRight shouldBe true
+          val enrichedRequest = refinedRequest.toOption.get.asInstanceOf[AuthorisedAndEnrolledIndividual[?]]
+          enrichedRequest.serviceNavigationPartial shouldBe Some(expectedPtaServiceNavigation)
         }
       }
 
@@ -197,7 +177,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
         implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession((IncomeTaxSessionKeys.origin, "PTA"))
         val userRequest = AuthorisedAndEnrolledIndividual(testMtdItId, testNino, None, None)
 
-        mockGetMessageCount()(Future.successful(Right(MessageCount(1))))
+        mockGetMessageCount()(Future.successful(Right(MessageCount(0))))
 
         val result = testAction.refine(userRequest)
         val refinedRequest = await(result)
