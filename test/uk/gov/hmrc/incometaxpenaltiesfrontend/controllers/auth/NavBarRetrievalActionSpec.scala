@@ -31,13 +31,11 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.{IncomeTaxSession
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.NavBarRetrievalAction
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledAgent, AuthorisedAndEnrolledIndividual, CurrentUserRequest}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.messageCount.MessageCount
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.mocks.MockBtaNavBarService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite
-  with MockBtaNavBarService
   with MockMessageCountConnector
   with IncomeTaxSessionMocks {
 
@@ -45,8 +43,7 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
   implicit lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
 
   val testAction = new NavBarRetrievalAction(
-    messageCountConnector = mockMessageCountConnector,
-    btaNavBarService = mockBtaNavBarService
+    messageCountConnector = mockMessageCountConnector
   )(appConfig, ExecutionContext.global, messagesApi)
 
   def expectedPtaServiceNavigation(implicit messages: Messages): ServiceNavigation = {

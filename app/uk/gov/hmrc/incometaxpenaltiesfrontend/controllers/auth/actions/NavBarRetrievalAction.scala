@@ -24,7 +24,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.MessageCountConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledIndividual, CurrentUserRequest}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.BtaNavBarService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -33,8 +32,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NavBarRetrievalAction @Inject()(val messageCountConnector: MessageCountConnector,
-                                      val btaNavBarService: BtaNavBarService)
+class NavBarRetrievalAction @Inject()(val messageCountConnector: MessageCountConnector)
                                      (implicit val appConfig: AppConfig,
                                       val executionContext: ExecutionContext,
                                       val messagesApi: MessagesApi) extends ActionRefiner[CurrentUserRequest, CurrentUserRequest] with I18nSupport {
