@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
+
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, TimeMachine}
 
@@ -34,6 +35,11 @@ sealed trait CalculationData {
   val principalChargeDueDate: LocalDate
   val payPenaltyBy: LocalDate
   val formattedPenaltyAmount: String
+}
+object CalculationData {
+  def lpp1Percentage(taxPeriodStartDate: LocalDate): BigDecimal =
+    if (taxPeriodStartDate.getYear >= 2027) 4
+    else 3
 }
 
 case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
@@ -69,13 +75,13 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     llpLRCharge = LLPCharge(
       chargeAmount = lppDetails.lpp1LRCalculationAmt.getOrElse(0),
       daysOverdue = lppDetails.lpp1LRDays.getOrElse("15"),
-      penaltyPercentage = lppDetails.lpp1LRPercentage.getOrElse(0.03)
+      penaltyPercentage = lppDetails.lpp1LRPercentage.getOrElse(CalculationData.lpp1Percentage(lppDetails.principalChargeBillingFrom))
     ),
     llpHRCharge = lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
       LLPCharge(
         chargeAmount = calcAmount,
         daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
-        penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.03)
+        penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(CalculationData.lpp1Percentage(lppDetails.principalChargeBillingFrom))
       )),
     paymentPlanAgreed = lppDetails.ttpAgreementDate,
     paymentPlanProposed = lppDetails.ttpProposalDate
