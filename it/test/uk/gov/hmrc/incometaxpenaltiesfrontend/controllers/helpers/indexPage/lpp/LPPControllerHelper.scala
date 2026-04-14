@@ -28,11 +28,14 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AA100000B" -> AA100000B,
     "AA100000C" -> AA100000C,
     "AA100000D" -> AA100000D,
+    "AA100001A" -> AA100001A,
+    "AA100011A" -> AA100011A,
     "AA100001D" -> AA100001D,
     "AA100002C" -> AA100002C,
     "AA120000C" -> AA120000C,
     "AA123450A" -> AA123450A,
     "AA200000A" -> AA200000A,
+    "AA200001A" -> AA200001A,
     "AA200000B" -> AA200000B,
     "AA200000C" -> AA200000C,
     "AA200001B" -> AA200001B,
@@ -80,4 +83,5 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     lspTabContent.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPContent
   }
 
+  
 }
