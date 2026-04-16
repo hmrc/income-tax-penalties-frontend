@@ -72,11 +72,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You have missed the deadline by 15 to 30 days, so you will be charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"If you miss the deadline by more than 30 days, this penalty will increase by an additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that is outstanding 30 days after the payment deadline"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15 to 30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
           }
 
@@ -93,13 +93,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You missed the deadline by 15 to 30 days, so you have been charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
 
           }
@@ -118,13 +118,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You missed the deadline by 15 to 30 days, so you have been charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
 
           }
@@ -143,13 +143,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"An additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
             document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
 
 
@@ -168,13 +168,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"An additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
             document.getElementById("penaltyStatus").text() shouldBe "This penalty is now overdue and interest is being charged."
 
 
@@ -194,13 +194,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You missed the deadline by 15 to 30 days, so you have been charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
 
 
           }
@@ -218,13 +218,13 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"An additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
 
 
           }
@@ -242,12 +242,12 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("breathingSpaceMessage").text() shouldBe "You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You have missed the deadline by 15 to 30 days, so you will be charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"If you miss the deadline by more than 30 days, this penalty will increase by an additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that is outstanding 30 days after the payment deadline"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15 to 30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
           }
 
@@ -266,14 +266,14 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You missed the deadline by 15 to 30 days, so you have been charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the amount that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the amount that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
 
           }
@@ -292,14 +292,14 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the amount that was outstanding 15 days after the payment deadline)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"An additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of £99.99 (the amount that was outstanding 30 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the amount that was outstanding 15 days after the payment deadline)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the amount that was outstanding 30 days after the payment deadline)"
             document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}."
           }
 
@@ -317,11 +317,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${firstLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
-            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe s"You have missed the deadline by 15 to 30 days, so you will be charged ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe s"If you miss the deadline by more than 30 days, this penalty will increase by an additional ${CalculationData.lpp1Percentage(firstLPPCalcData.taxPeriodStartDate)}% of the tax that is outstanding 30 days after the payment deadline"
+            document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15 to 30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
             document.getElementById("breathingSpaceExpired").text() shouldBe "You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation."
           }
@@ -359,7 +359,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe s"Penalty amount: £${secondLPPCalcData.formattedPenaltyAmount}"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
