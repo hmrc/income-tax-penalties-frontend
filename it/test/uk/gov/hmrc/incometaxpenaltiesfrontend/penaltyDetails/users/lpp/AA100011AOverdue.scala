@@ -26,7 +26,7 @@ object AA100011AOverdue extends UserDetailsData {
   override val expectedNumberOfLPPPenaltyCards: Int = AA100011A.expectedNumberOfLPPPenaltyCards
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £80.00")
     validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
