@@ -55,7 +55,9 @@ class NavBarRetrievalAction @Inject()(val messageCountConnector: MessageCountCon
 
   private def handlePtaNavBar[A]()(implicit request: AuthorisedAndEnrolledIndividual[A], hc: HeaderCarrier): Future[Either[Result, CurrentUserRequest[A]]] = {
     messageCountConnector.getMessageCount().map { _ =>
-      logger.warn("[NavBarRetrievalAction][refine] Failed to retrieve message count from 'message' microservice, continuing with 0 messages to continue gracefully")
+      Right(request.addServiceNavigation(createPtaServiceNavigation()))
+    }.recover { case ex =>
+      logger.warn(s"[NavBarRetrievalAction][refine] Failed to retrieve message count from 'message' microservice, continuing with 0 messages to continue gracefully. Error: ${ex.getMessage}")
       Right(request.addServiceNavigation(createPtaServiceNavigation()))
     }
   }
