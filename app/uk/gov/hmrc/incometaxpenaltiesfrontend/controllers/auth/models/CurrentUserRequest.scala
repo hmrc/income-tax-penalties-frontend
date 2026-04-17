@@ -20,6 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Request, WrappedRequest}
 import play.twirl.api.Html
 import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.govukfrontend.views.Aliases.ServiceNavigation
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.RequestWithNavBar
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 
@@ -28,6 +29,7 @@ abstract class CurrentUserRequest[A](request: Request[A]) extends WrappedRequest
   val nino: String
   val navBar: Option[Html]
   val arn: Option[String]
+  val serviceNavigationPartial: Option[ServiceNavigation]
 
   val isAgent: Boolean
 
@@ -40,10 +42,12 @@ abstract class CurrentUserRequest[A](request: Request[A]) extends WrappedRequest
 
 case class AuthorisedAndEnrolledIndividual[A](mtdItId: String,
                                               nino: String,
+                                              serviceNavigationPartial: Option[ServiceNavigation] = None,
                                               navBar: Option[Html])(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
   override val isAgent: Boolean = false
   override val arn: Option[String] = None
   def addNavBar(content: Html): CurrentUserRequest[A] = copy(navBar = Some(content))
+  def addServiceNavigation(partial: ServiceNavigation): AuthorisedAndEnrolledIndividual[A] = copy(serviceNavigationPartial = Some(partial))
 }
 
 case class AuthorisedAndEnrolledAgent[A](sessionData: SessionData,
@@ -53,6 +57,7 @@ case class AuthorisedAndEnrolledAgent[A](sessionData: SessionData,
   override val nino: String = sessionData.nino
   override val isAgent: Boolean = true
   override val navBar: Option[Html] = None
+  override val serviceNavigationPartial: Option[ServiceNavigation] = None
 }
 
 case class AuthorisedUserRequest[A](affinityGroup: AffinityGroup,
@@ -60,9 +65,11 @@ case class AuthorisedUserRequest[A](affinityGroup: AffinityGroup,
                                    (implicit request: Request[A]) extends WrappedRequest[A](request)
 
 case class AuthenticatedUserWithPenaltyData[A](mtdItId: String,
-                                               nino: String,
-                                               penaltyDetails: PenaltyDetails,
-                                               arn: Option[String] = None,
-                                               navBar: Option[Html])(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
+                                                nino: String,
+                                                penaltyDetails: PenaltyDetails,
+                                                arn: Option[String] = None,
+                                                navBar: Option[Html],
+                                                serviceNavigationPartial: Option[ServiceNavigation] = None)(implicit request: Request[A]) extends CurrentUserRequest[A](request) {
   val isAgent: Boolean = arn.isDefined
+  def addServiceNavigation(partial: ServiceNavigation): AuthenticatedUserWithPenaltyData[A] = copy(serviceNavigationPartial = Some(partial))
 }
