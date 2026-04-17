@@ -49,19 +49,20 @@ class FirstLatePaymentCalculationHelper {
     }
   }
 
+
   def getBulletListContent(calculationData: FirstLatePaymentPenaltyCalculationData,
                            isPfa: String)(implicit messages: Messages): List[String] = {
     calculationData.llpHRCharge match {
       case Some(llpHRCharge) => List(
-        messages(s"calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount),
-        messages(s"calculation.individual.payment.30.plus.missed.reason.bullet.2$isPfa", llpHRCharge.formattedChargeAmount)
+        messages(s"calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.penaltyPercentage, calculationData.llpLRCharge.formattedChargeAmount),
+        messages(s"calculation.individual.payment.30.plus.missed.reason.bullet.2$isPfa", calculationData.llpLRCharge.penaltyPercentage, llpHRCharge.formattedChargeAmount)
       )
       case None if !calculationData.incomeTaxIsPaid => List(
-        messages(s"calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount),
-        messages(s"calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2$isPfa")
+        messages(s"calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.penaltyPercentage, calculationData.llpLRCharge.formattedChargeAmount),
+        messages(s"calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2$isPfa", calculationData.llpLRCharge.penaltyPercentage)
       )
       case None => List(
-        messages(s"calculation.individual.payment.15.30.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.formattedChargeAmount)
+        messages(s"calculation.individual.payment.15.30.missed.reason.bullet.1$isPfa", calculationData.llpLRCharge.penaltyPercentage, calculationData.llpLRCharge.formattedChargeAmount)
       )
     }
   }
