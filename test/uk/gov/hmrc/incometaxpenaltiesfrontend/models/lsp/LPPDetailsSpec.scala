@@ -94,6 +94,7 @@ class LPPDetailsSpec extends AnyWordSpec with Matchers {
       principalChargeDueDate = principleChargeBillingDueDate,
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
+      supplement = None,
       metadata = lppMetadata
     )
   }
