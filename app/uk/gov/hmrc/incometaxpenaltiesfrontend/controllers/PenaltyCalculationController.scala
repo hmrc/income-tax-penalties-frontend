@@ -70,10 +70,7 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
             auditService.audit(auditEvent)(implicitly)
             if (isLPP2) {
               Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
-            } else if(lppDetails.supplement.contains(true)) {
-              Redirect(routes.SupplementaryCalculationController.supplementaryCalculationPage(penaltyId, isAgent))
-            }
-            else{
+            } else {
               Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
             }
           }
