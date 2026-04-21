@@ -153,6 +153,10 @@ calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)
 calculation.calc2.table.charge.period.days = {0} to {1} ({2} days)
 
+calculation.supplementary.first.title = Additional first late payment penalty calculation
+calculation.supplementary.first.h1 = Additional first late payment penalty calculation
+
+
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
 compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
@@ -223,6 +227,7 @@ lpp.penaltyType.key = Penalty type
 lpp.penaltyType.LPP1 = First late payment penalty: £{0}
 lpp.penaltyType.LPP2 = Second late payment penalty: £{0}
 lpp.penaltyType.MANUAL = Penalty for late payment - details are in the letter we sent you
+lpp.penaltyTYpe.supplement.LPP1 = Additional first late payment penalty: £{0}
 lpp.addedOn.key = Added on
 lpp.incomeTaxPeriod.key = Overdue charge
 lpp.incomeTaxPeriod.value = Income Tax for {0} to {1} tax year

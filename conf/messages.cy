@@ -153,6 +153,10 @@ calculation.calc2.estimated.penalty = Cosb amcangyfrifedig
 calculation.calc2.table.charge.period.day = {0} i {1} ({2} o ddiwrnod)
 calculation.calc2.table.charge.period.days = {0} i {1} ({2} o ddiwrnodau)
 
+calculation.supplementary.first.title = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
+calculation.supplementary.first.h1 = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
+
+
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
 compliance.timeline.individual.send.submission.listed = Fel bod modd i CThEF ddileu eich pwyntiau, mae angen i chi anfon unrhyw gyflwyniadau sydd wedi’u rhestru ar y llinell amser hon cyn y dyddiad cau.
@@ -223,6 +227,7 @@ lpp.penaltyType.key = Math o gosb
 lpp.penaltyType.LPP1 = Cosb gyntaf am dalu’n hwyr: £{0}
 lpp.penaltyType.LPP2 = Ail gosb am dalu’n hwyr: £{0}
 lpp.penaltyType.MANUAL = Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch
+lpp.penaltyTYpe.supplement.LPP1 = Cosb gyntaf ychwanegol am dalu’n hwyr: £{0}
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
 lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
