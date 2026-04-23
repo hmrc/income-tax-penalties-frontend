@@ -32,7 +32,7 @@ object AA100000D extends UserDetailsData {
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2026")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
+    validateSummary(cardRows.get(2), "Income Tax paid", "20 February 2026")
     validateSummary(cardRows.get(3), "Status", "Paused due to Breathing Space")
     validateViewCalculationLink(card, 0)
   }

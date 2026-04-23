@@ -92,7 +92,7 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
 
             "construct a SummaryListRow model for payment received date with expected messages" in new Setup(){
 
-              lspSummaryListRowHelper.incomeTaxPaymentDateRow(samplePaidLPP1) shouldBe
+              lspSummaryListRowHelper.incomeTaxPaymentDateRow(samplePaidLPP1, isBreathingSpace = false) shouldBe
                 summaryListRow(
                   label = messagesForLanguage.incomeTaxPaidKey,
                   value = Html(dateToString(samplePaidLPP1.principalChargeLatestClearing.get))
@@ -105,7 +105,7 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
             "the penalty has a proposed payment plan" should {
               "construct a SummaryListRow model for payment received date with expected messages" in new Setup(LocalDate.of(2021, 7, 1)) {
 
-                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPP1ProposedPaymentPlan) shouldBe
+                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPP1ProposedPaymentPlan, isBreathingSpace = false) shouldBe
                   summaryListRow(
                     label = messagesForLanguage.incomeTaxPaidKey,
                     value = Html(messagesForLanguage.paymentPlanProposed)
@@ -115,7 +115,7 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
             "the penalty has an agreed payment plan" should {
               "construct a SummaryListRow model for payment received date with expected messages" in new Setup(LocalDate.of(2021, 7, 1)) {
 
-                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPP1AgreedPaymentPlan) shouldBe
+                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPP1AgreedPaymentPlan, isBreathingSpace = false) shouldBe
                   summaryListRow(
                     label = messagesForLanguage.incomeTaxPaidKey,
                     value = Html(messagesForLanguage.paymentPlanAgreed)
@@ -125,7 +125,7 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
             "the penalty has no payment plan" should {
               "construct a SummaryListRow model for payment received date with expected messages" in new Setup() {
 
-                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPP1) shouldBe
+                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPP1, isBreathingSpace = false) shouldBe
                   summaryListRow(
                     label = messagesForLanguage.incomeTaxPaidKey,
                     value = Html(messagesForLanguage.paymentNotReceived)
@@ -142,7 +142,7 @@ class LPPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
                     value = Html(dateToString(samplePaidLPP1.principalChargeDueDate))
                   )
 
-                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPPPFA) shouldBe
+                lspSummaryListRowHelper.incomeTaxPaymentDateRow(sampleUnpaidLPPPFA, isBreathingSpace = false) shouldBe
                   summaryListRow(
                     label = messagesForLanguage.extraAmountPaid,
                     value = Html(messagesForLanguage.paymentNotReceived)
