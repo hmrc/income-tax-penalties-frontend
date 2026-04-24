@@ -70,7 +70,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
                       index = 1,
-                      cardTitle = messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
+                      cardTitle = if(penalty1.supplement.contains(true))messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)) else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
                       cardRows = Seq(
                           testTaxPeriodRow,
                           testDueDateRow,
@@ -115,7 +115,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
                       index = 1,
-                      cardTitle = messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
+                      cardTitle = if(penalty1.supplement.contains(true))messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)) else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
                       cardRows = Seq(
                         testTaxPeriodRow,
                         testDueDateRow,
