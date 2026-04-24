@@ -153,8 +153,22 @@ calculation.calc2.estimated.penalty = Cosb amcangyfrifedig
 calculation.calc2.table.charge.period.day = {0} i {1} ({2} o ddiwrnod)
 calculation.calc2.table.charge.period.days = {0} i {1} ({2} o ddiwrnodau)
 
+# supplementary Late Payment Penalty Tab - content
+# =============================================
 calculation.supplementary.first.title = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
 calculation.supplementary.first.h1 = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
+calculation.supplementary.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
+calculation.supplementary.reason = Rydym wedi dyroddi’r gosb ychwanegol hon gan fod swm y dreth a ddefnyddiwyd i gyfrifo’r gosb flaenorol yn rhy isel.
+calculation.supplementary.p1 = Mae’n rhaid i chi dalu’r gosb flaenorol os nad ydych wedi gwneud hynny eisoes.
+calculation.supplementary.dueDateHasNotPassed.p2 = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
+calculation.supplementary.dueDateHasPassed.p2 = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = Rydym yn codi’r cosbau canlynol:
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
+calculation.supplementary.return.link = Bwrw golwg dros gosbau ac apeliadau
+calculation.supplementary.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
 
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
@@ -227,7 +241,6 @@ lpp.penaltyType.key = Math o gosb
 lpp.penaltyType.LPP1 = Cosb gyntaf am dalu’n hwyr: £{0}
 lpp.penaltyType.LPP2 = Ail gosb am dalu’n hwyr: £{0}
 lpp.penaltyType.MANUAL = Cosb am dalu’n hwyr – mae’r manylion yn y llythyr a anfonom atoch
-lpp.penaltyTYpe.supplement.LPP1 = Cosb gyntaf ychwanegol am dalu’n hwyr: £{0}
 lpp.addedOn.key = Ychwanegwyd ar
 lpp.incomeTaxPeriod.key = Taliad sy’n hwyr
 lpp.incomeTaxPeriod.value = Treth Incwm ar gyfer blwyddyn dreth {0} i {1}
@@ -240,6 +253,10 @@ lpp.payPenaltyBy.key = Talu cosb erbyn
 lpp.incomeTaxPeriod.value.pfa = Swm ychwanegol sy’n ddyledus i Ffurflen Dreth ddiwygiedig ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key.pfa = Swm ychwanegol sy’n ddyledus
 lpp.incomeTaxPaymentDate.key.pfa = Swm ychwanegol a dalwyd
+
+# supplementary Late Payment Penalty - Summary Row Key/Values
+# =============================================
+lpp.penaltyType.supplementary.LPP1 = Cosb gyntaf ychwanegol am dalu’n hwyr: £{0}
 
 # Appeal Status
 # =============
