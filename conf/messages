@@ -153,6 +153,24 @@ calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)
 calculation.calc2.table.charge.period.days = {0} to {1} ({2} days)
 
+# supplementary Late Payment Penalty Tab - content
+# =============================================
+calculation.supplementary.first.title = Additional first late payment penalty calculation
+calculation.supplementary.first.h1 = Additional first late payment penalty calculation
+calculation.supplementary.pay.penalty.by = Pay penalty by {0}
+calculation.supplementary.reason = We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low.
+calculation.supplementary.p1 = You still need to pay the earlier penalty if you have not paid it.
+calculation.supplementary.dueDateHasNotPassed.p2 = To avoid interest charges, you should pay this penalty by {0}.
+calculation.supplementary.dueDateHasPassed.p2 = This penalty is overdue. We are charging interest.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = How we work out the penalty amount
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two parts.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = We charge:
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
+calculation.supplementary.return.link = View penalties and appeals
+calculation.supplementary.checkWhatYouOwe.link = Check what you owe
+
+
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
 compliance.timeline.individual.send.submission.listed = To get your points removed by HMRC, you need to send any submissions listed on this timeline before the deadline.
@@ -235,6 +253,10 @@ lpp.payPenaltyBy.key = Pay penalty by
 lpp.incomeTaxPeriod.value.pfa = Extra amount due to amended return for {0} to {1} tax year
 lpp.incomeTaxDue.key.pfa = Extra amount due
 lpp.incomeTaxPaymentDate.key.pfa = Extra amount paid
+
+# supplementary Late Payment Penalty - Summary Row Key/Values
+# =============================================
+lpp.penaltyType.supplementary.LPP1 = Additional first late payment penalty: £{0}
 
 # Appeal Status
 # =============

@@ -37,7 +37,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
       LatePaymentPenaltySummaryCard(
         index,
-        cardTitle = messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)),
+        cardTitle = if (lpp.supplement.contains(true)) messages("lpp.penaltyType.supplementary.LPP1", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)) else messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)),
         cardRows = cardRows,
         status = getTagStatus(lpp, isBreathingSpace),
         penaltyChargeReference = lpp.penaltyChargeReference,
@@ -52,7 +52,8 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
         taxPeriodStartDate = lpp.principalChargeBillingFrom.toString,
         taxPeriodEndDate = lpp.principalChargeBillingTo.toString,
         incomeTaxOutstandingAmountInPence = lpp.incomeTaxOutstandingAmountInPence,
-        isEstimate = lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing
+        isEstimate = lpp.penaltyStatus == LPPPenaltyStatusEnum.Accruing,
+        supplement = lpp.supplement
       )
     }
 
