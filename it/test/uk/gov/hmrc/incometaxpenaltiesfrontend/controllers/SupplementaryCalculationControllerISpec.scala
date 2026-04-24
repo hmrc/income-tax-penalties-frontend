@@ -50,7 +50,8 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
       "render the supplementary calculation page for LPP1" when {
         "first late payment penalty supplementary charge exists for the penaltyId" in {
           stubAuthRequests(isAgent)
-          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(sampleFirstLPPCalcData())))
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData()
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)))
           val result = get(LPP1SupplementaryPath, isAgent)
           result.status shouldBe OK
 
@@ -59,8 +60,35 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
-          document.getElementById("penaltyStatusPaid").text() shouldBe "This penalty is overdue. We are charging interest."
-          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("penaltyStatusPaid").text() shouldBe "To avoid interest charges, you should pay this penalty by 29 April 2026."
+          document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("SupplementaryPenaltyAmountDetailsP2").text() shouldBe "We charge:"
+          document.getElementById("SupplementaryPenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+          document.getElementById("SupplementaryPenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
+        }
+        "first late payment penalty supplementary charge exists for the penaltyId and is overdue" in {
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isOverdue = true)
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)))
+          val result = get(LPP1SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
+          document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
+          document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("penaltyStatusUnpaid").text() shouldBe "This penalty is overdue. We are charging interest."
+          document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("SupplementaryPenaltyAmountDetailsP2").text() shouldBe "We charge:"
+          document.getElementById("SupplementaryPenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+          document.getElementById("SupplementaryPenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
         }
       }
     }
