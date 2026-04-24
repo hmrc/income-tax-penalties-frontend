@@ -38,8 +38,8 @@
 @p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1", elmId = Some("SupplementaryPenaltyAmountDetailsP1"))
 @p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2", elmId = Some("SupplementaryPenaltyAmountDetailsP2"))
 <ul class="govuk-list govuk-list--bullet">
-    <li id="penaltyAmountDetailsPoint1">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1")</li>
-    <li id="penaltyAmountDetailsPoint2">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2")</li>
+    <li id="SupplementaryPenaltyAmountDetailsPoint1">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1")</li>
+    <li id="SupplementaryPenaltyAmountDetailsPoint2">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2")</li>
 </ul>
 }
 @main(pageTitle = messages("calculation.supplementary.first.title"), backLinkEnabled = true, isAgent = isAgent) {
@@ -64,7 +64,7 @@
     }
 
         <P class="govuk-body" id="supplementaryReason"> @messages("calculation.supplementary.reason")</P>
-        <p class="govuk-body"> @messages("calculation.supplementary.p1")</p>
+        <p class="govuk-body" id="supplementaryAlert"> @messages("calculation.supplementary.p1")</p>
 
     @if(calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.dueDateHasPassed.p2")</p>
