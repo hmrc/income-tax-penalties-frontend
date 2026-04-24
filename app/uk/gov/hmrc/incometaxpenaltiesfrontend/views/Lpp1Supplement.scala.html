@@ -66,10 +66,10 @@
         <P class="govuk-body" id="supplementaryReason"> @messages("calculation.supplementary.reason")</P>
         <p class="govuk-body" id="supplementaryAlert"> @messages("calculation.supplementary.p1")</p>
 
-    @if(calculationData.isPenaltyPaid) {
-        <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.dueDateHasPassed.p2")</p>
+    @if(calculationData.isPenaltyOverdue) {
+        <p class="govuk-body" id="penaltyStatusUnpaid">@messages("calculation.supplementary.dueDateHasPassed.p2")</p>
     } else {
-        <p class="govuk-body" id="penaltyStatusUnpaid">@messages("calculation.supplementary.dueDateHasNotPassed.p2", dateToString(calculationData.payPenaltyBy))</p>
+        <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.dueDateHasNotPassed.p2", dateToString(calculationData.payPenaltyBy))</p>
     }
 
     @govukDetails(Details(
