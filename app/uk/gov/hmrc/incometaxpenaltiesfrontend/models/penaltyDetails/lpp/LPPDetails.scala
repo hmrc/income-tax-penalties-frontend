@@ -202,6 +202,7 @@ object LPPDetails extends JsonUtils {
         "penaltyAmountAccruing" -> o.penaltyAmountAccruing,
         "principalChargeMainTr" -> o.metadata.principalChargeMainTr,
         "vatOutstandingAmount" -> o.vatOutstandingAmount,
+        "supplement" -> o.supplement,
         "principalChargeDocNumber" -> o.metadata.principalChargeDocNumber,
         "principalChargeSubTr" -> o.metadata.principalChargeSubTr
       )
