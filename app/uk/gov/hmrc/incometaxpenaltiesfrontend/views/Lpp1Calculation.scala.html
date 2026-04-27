@@ -30,6 +30,7 @@
         link: Link,
         govukInsetText : GovukInsetText,
         calculationHelper: FirstLatePaymentCalculationHelper,
+        govukTable : GovukTable
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -106,38 +107,64 @@
         </div>
     }
 
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amountApplied")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.days.payment")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.rate")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell">£@calculationData.llpLRCharge.formattedChargeAmount</td>
-                <td class="govuk-table__cell">@calculationData.llpLRCharge.daysOverdue</td>
-                <td class="govuk-table__cell">@{calculationData.llpLRCharge.penaltyPercentage}%</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.llpLRCharge.formattedPenaltyAmount</td>
-            </tr>
-            @calculationData.llpHRCharge.map {lppHRCharge =>
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">£@lppHRCharge.formattedChargeAmount</td>
-                    <td class="govuk-table__cell">@lppHRCharge.daysOverdue</td>
-                    <td class="govuk-table__cell">@{lppHRCharge.penaltyPercentage}%</td>
-                    <td class="govuk-table__cell govuk-table__cell--numeric">£@lppHRCharge.formattedPenaltyAmount</td>
-                </tr>
-            }
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
-                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
-                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
-            </tr>
-        </tbody>
-    </table>
+
+    @govukTable(Table(
+        rows = Seq(
+          Seq(
+            TableRow(
+              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
+            ),
+            TableRow(
+              content = Text(s"${calculationData.llpLRCharge.daysOverdue}")
+            ),
+            TableRow(
+              content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
+              format = Some("numeric")
+            ),
+            TableRow(
+              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
+              format = Some("numeric")
+            )
+          ),
+          Seq(
+            TableRow(
+              content = Text(messages("calculation.table.caption.total.penalty")),
+              classes ="govuk-table__header"
+            ),
+            TableRow(
+              content = Text(""),
+              format = Some("numeric")
+            ),
+            TableRow(
+              content = Text(""),
+              format = Some("numeric")
+            ),
+            TableRow(
+              content = Text(s"£${calculationData.formattedPenaltyAmount}"),
+              format = Some("numeric")
+            )
+          ),
+
+        ),
+        head = Some(Seq(
+          HeadCell(
+            content = Text(messages("calculation.table.caption.amountApplied"))
+          ),
+          HeadCell(
+            content = Text(messages("calculation.table.caption.days.payment"))
+          ),
+          HeadCell(
+            content = Text(messages("calculation.table.caption.rate")),
+            format = Some("numeric")
+          ),
+          HeadCell(
+            content = Text(messages(messages("calculation.table.caption.amount"))),
+            format = Some("numeric")
+          )
+        )),
+        caption = Some(messages("calculation.table.caption")),
+        captionClasses = "govuk-table__caption--m"
+    ))
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">
