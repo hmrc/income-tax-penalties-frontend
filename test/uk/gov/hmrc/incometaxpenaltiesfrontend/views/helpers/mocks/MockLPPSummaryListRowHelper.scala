@@ -56,8 +56,8 @@ trait MockLPPSummaryListRowHelper extends MockFactory {
       .returning(value)
 
   def mockIncomeTaxPaymentDateRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
-    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails)(_:Messages, _:TimeMachine))
-      .expects(penalty, *, *)
+    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails, _:Boolean)(_:Messages, _:TimeMachine))
+      .expects(penalty, *, *, *)
       .returning(value)
 
   def mockBreathingSpaceStatusRow()(value: SummaryListRow): CallHandler[SummaryListRow] =
