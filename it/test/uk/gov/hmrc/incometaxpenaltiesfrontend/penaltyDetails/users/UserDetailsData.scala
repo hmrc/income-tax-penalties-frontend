@@ -109,7 +109,7 @@ trait UserDetailsData extends Matchers {
     val expectedLinkContent = if(is2ndStage) {
       "Ask for review"
     } else {
-      "Check if you can appeal this penalty"
+      "Appeal this penalty"
     }
     link.text() shouldBe expectedLinkContent
     link.attr("href") should include(expectedHref)

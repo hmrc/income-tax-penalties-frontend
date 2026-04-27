@@ -136,7 +136,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                   "a penalty appeal is NOT in progress" should {
 
-                    "generate a Summary Card with a Calculation and Check if you can appeal this penalty" in {
+                    "generate a Summary Card with a Calculation and appeal this penalty" in {
 
                       val penalty = sampleUnpaidLPP1
                       val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
