@@ -30,32 +30,24 @@
         link: Link,
         p: P,
         govukDetails : GovukDetails,
-        calculationHelper: FirstLatePaymentCalculationHelper,
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
-@SupplementaryPenaltyAmountDetails = {
-@p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1", elmId = Some("SupplementaryPenaltyAmountDetailsP1"))
-@p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2", elmId = Some("SupplementaryPenaltyAmountDetailsP2"))
-<ul class="govuk-list govuk-list--bullet">
-    <li id="SupplementaryPenaltyAmountDetailsPoint1">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1")</li>
-    <li id="SupplementaryPenaltyAmountDetailsPoint2">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2")</li>
-</ul>
-}
+    @SupplementaryPenaltyAmountDetails = {
+        @p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1", elmId = Some("SupplementaryPenaltyAmountDetailsP1"))
+        @p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2", elmId = Some("SupplementaryPenaltyAmountDetailsP2"))
+        <ul class="govuk-list govuk-list--bullet">
+            <li id="SupplementaryPenaltyAmountDetailsPoint1">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1")</li>
+             <li id="SupplementaryPenaltyAmountDetailsPoint2">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2")</li>
+        </ul>
+    }
 @main(pageTitle = messages("calculation.supplementary.first.title"), backLinkEnabled = true, isAgent = isAgent) {
-
-    <span class="govuk-caption-l" id="captionSpan">
-        @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
-    </span>
+    <span class="govuk-caption-l" id="captionSpan">@messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))</span>
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.supplementary.first.h1")</h1>
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
     <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyByDate">@messages("calculation.supplementary.pay.penalty.by", dateToString(calculationData.payPenaltyBy))<p>
 
-
-    @calculationHelper.getPaymentDetails(calculationData).map{msg =>
-        <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@msg</p>
-    }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>
         <p class="govuk-body" id="chargeReference">
@@ -91,7 +83,6 @@
             id = Some("checkWhatYouOwLink")
         )
     </div>
-
 
 
 }
