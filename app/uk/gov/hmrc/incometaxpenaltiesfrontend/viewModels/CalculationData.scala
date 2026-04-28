@@ -36,6 +36,7 @@ sealed trait CalculationData {
   val formattedPenaltyAmount: String
 }
 
+
 case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   taxPeriodStartDate: LocalDate,
                                                   taxPeriodEndDate: LocalDate,

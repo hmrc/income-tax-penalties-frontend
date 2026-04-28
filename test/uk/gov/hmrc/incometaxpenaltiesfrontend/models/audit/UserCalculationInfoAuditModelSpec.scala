@@ -60,7 +60,7 @@ class UserCalculationInfoAuditModelSpec extends AnyWordSpec with Matchers with I
 
       val mtditid = "XA123456"
 
-      implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledIndividual(mtditid, "AA123456A", None)(FakeRequest())
+      implicit val user: CurrentUserRequest[_] = AuthorisedAndEnrolledIndividual(mtditid, "AA123456A", None, None)(FakeRequest())
 
       val model = UserCalculationInfoAuditModel(
         penaltyNumber = Some("123456"),

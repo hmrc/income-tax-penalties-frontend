@@ -51,7 +51,7 @@ class PenaltyDataActionSpec extends AnyWordSpec with should.Matchers with GuiceO
     mcc = stubMessagesControllerComponents()
   )
 
-  lazy val authorisedAndEnrolledIndividualRequest: AuthorisedAndEnrolledIndividual[_] = AuthorisedAndEnrolledIndividual("mtditid", "AA123456A", None)(FakeRequest())
+  lazy val authorisedAndEnrolledIndividualRequest: AuthorisedAndEnrolledIndividual[_] = AuthorisedAndEnrolledIndividual("mtditid", "AA123456A", None, None)(FakeRequest())
 
   ".refine()" when {
     "the user has penalty details" should {

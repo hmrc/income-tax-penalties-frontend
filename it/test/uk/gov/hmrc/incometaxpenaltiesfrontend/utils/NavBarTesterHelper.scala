@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-import fixtures.BtaNavContentFixture
 import org.jsoup.Jsoup
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status.OK
 import play.api.libs.json.Json
-import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, BtaNavLinksStub, IncomeTaxSessionDataStub, MessagesStub}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.{AuthStub, IncomeTaxSessionDataStub, MessagesStub}
 
-trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesStub with BtaNavContentFixture { this: ComponentSpecHelper with AuthStub with IncomeTaxSessionDataStub =>
+trait NavBarTesterHelper extends AnyWordSpec with MessagesStub { this: ComponentSpecHelper with AuthStub with IncomeTaxSessionDataStub =>
   val nino = "AA123456A"
   def testNavBar(url: String, queryParams: Map[String, String] = Map.empty)(runStubs: => Unit = ()): Unit = {
     "Checking the Navigation Bar" when {
       "the origin is PTA" should {
-        "render the PTA content" in {
+        "render the PTA service navigation" in {
           stubAuth(OK, successfulIndividualAuthResponse(nino))
           stubMessagesCount()(OK, Json.obj("count" -> 0))
           runStubs
@@ -37,26 +36,28 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
           result.status shouldBe OK
           val document = Jsoup.parse(result.body)
 
-          document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe false
+          document.select("ul#pta-service-navigation").isEmpty shouldBe false
+          document.select("ul#pta-service-navigation li").size() shouldBe 3
         }
       }
 
       "the origin is BTA" should {
-        "render the BTA content" in {
+        "render the BTA service navigation" in {
           stubAuth(OK, successfulIndividualAuthResponse(nino))
+          stubMessagesCount()(OK, Json.obj("count" -> 0))
           runStubs
-          stubBtaNavLinks()(OK, Json.toJson(btaNavContent))
           val result = get(url, origin = Some("BTA"), queryParams = queryParams)
 
           result.status shouldBe OK
           val document = Jsoup.parse(result.body)
 
-          document.select("nav#secondary-nav-bta.hmrc-account-menu").isEmpty shouldBe false
+          document.select("ul#bta-service-navigation").isEmpty shouldBe false
+          document.select("ul#bta-service-navigation li").size() shouldBe 3
         }
       }
 
       "the origin is unknown" should {
-        "render without a Nav" in {
+        "render without PTA or BTA service navigation items" in {
           stubAuth(OK, successfulIndividualAuthResponse(nino))
           runStubs
           val result = get(url, origin = None, queryParams = queryParams)
@@ -64,8 +65,8 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
           result.status shouldBe OK
           val document = Jsoup.parse(result.body)
 
-          document.select("nav#secondary-nav-bta.hmrc-account-menu").isEmpty shouldBe true
-          document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe true
+          document.select("ul#pta-service-navigation").isEmpty shouldBe true
+          document.select("ul#bta-service-navigation").isEmpty shouldBe true
         }
       }
     }
@@ -73,7 +74,7 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
 
   def testNoNavBar(url: String, queryParams: Map[String, String] = Map.empty)(runStubs: => Unit = ()): Unit = {
     "the user is an Agent" should {
-      "render without a Nav" in {
+      "render without PTA or BTA service navigation items" in {
         stubAuth(OK, successfulAgentAuthResponse)
         stubGetIncomeTaxSessionDataSuccessResponse(nino)
         runStubs
@@ -82,8 +83,8 @@ trait NavBarTesterHelper extends AnyWordSpec with BtaNavLinksStub with MessagesS
         result.status shouldBe OK
         val document = Jsoup.parse(result.body)
 
-        document.select("nav#secondary-nav-bta.hmrc-account-menu").isEmpty shouldBe true
-        document.select("nav#secondary-nav.hmrc-account-menu").isEmpty shouldBe true
+        document.select("ul#pta-service-navigation").isEmpty shouldBe true
+        document.select("ul#bta-service-navigation").isEmpty shouldBe true
       }
     }
   }
