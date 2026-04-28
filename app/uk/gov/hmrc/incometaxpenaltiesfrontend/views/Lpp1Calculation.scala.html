@@ -34,6 +34,21 @@
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+      @TotalTableRow = @{
+            Seq(
+                TableRow(
+                         content = Text(messages("calculation.table.caption.total.penalty")),
+                         classes ="govuk-table__header"
+                ),
+                TableRow(),
+                TableRow(),
+                TableRow(
+                         content = Text(s"£${calculationData.formattedPenaltyAmount}"),
+                         format = Some("numeric"),
+                         classes = "govuk-table__header"
+                )
+            )
+     }
 
 @main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
@@ -126,27 +141,27 @@
               format = Some("numeric")
             )
           ),
-          Seq(
+        ) ++ calculationData.llpHRCharge.map {lppHRCharge =>
+         Seq(
             TableRow(
-              content = Text(messages("calculation.table.caption.total.penalty")),
-              classes ="govuk-table__header"
+              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
             ),
             TableRow(
-              content = Text(""),
+              content = Text(s"${lppHRCharge.daysOverdue}")
+            ),
+            TableRow(
+              content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
               format = Some("numeric")
             ),
             TableRow(
-              content = Text(""),
-              format = Some("numeric")
-            ),
-            TableRow(
-              content = Text(s"£${calculationData.formattedPenaltyAmount}"),
+              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
               format = Some("numeric")
             )
-          ),
+        )
+        } ++
 
-        ),
-        head = Some(Seq(
+        Seq(TotalTableRow),
+         head = Some(Seq(
           HeadCell(
             content = Text(messages("calculation.table.caption.amountApplied"))
           ),
