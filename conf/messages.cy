@@ -166,6 +166,14 @@ compliance.timeline.tax.return.heading = Ffurflen Dreth: {0} i {1}
 compliance.timeline.submission.due.now = Y dyddiad cau yw {0}. Anfonwch y cyflwyniad sydd ar goll nawr.
 compliance.timeline.send.by = Anfonwch hwn erbyn {0}
 
+# How We Work Out Penalty Amount details
+# ===================
+howWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
+howWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
+howWeWorkOutPenaltyAmount.p2 = Rydym yn codi’r cosbau canlynol:
+howWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
+howWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
+
 # Penalty Status tags
 # ===========
 status.upheld = Penderfyniad wedi’i gadarnhau

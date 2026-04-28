@@ -166,6 +166,14 @@ compliance.timeline.tax.return.heading = Tax return: {0} to {1}
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now.
 compliance.timeline.send.by = Send by {0}
 
+# How We Work Out Penalty Amount details
+# ===================
+howWeWorkOutPenaltyAmount.details = How we work out the penalty amount
+howWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two parts.
+howWeWorkOutPenaltyAmount.p2 = We charge:
+howWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
+howWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
+
 # Penalty Status tags
 # ===================
 status.upheld = Decision upheld
