@@ -323,7 +323,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15 to 30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
-            document.getElementById("breathingSpaceExpired").text() shouldBe "You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation."
+            document.getElementById("breathingSpaceExpired").text() shouldBe "Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation."
           }
 
         }

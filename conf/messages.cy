@@ -296,8 +296,8 @@ agentErrorView.link = Ewch i gyfrif gwasanaethau asiant
 # Breathing Space
 breathingSpace.status = Statws
 breathingSpace.paused = Wedi’i oedi oherwydd cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space)
-calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation. (Welsh)
-calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation. (Welsh)
+calculation.individual.breathingSpace.expired = Mae’ch cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi dod i ben. Nid yw’r amser yr oeddech chi yn y cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi’i ychwanegu at eich cyfrifiad.
+calculation.individual.calc2.breathingSpace.expired = Mae’ch cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi dod i ben. Nid yw’r amser yr oeddech chi yn y cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi’i ychwanegu at eich cyfrifiad.
 
 # Unauthorised Error View
 unauthorised.page.h1 = Nid ydych wedi'ch awdurdodi i gael mynediad at y dudalen hon
