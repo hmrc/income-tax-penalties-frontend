@@ -94,6 +94,7 @@ calculation.individual.payment.30.plus.missed.reason.bullet.2.pfa = An additiona
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional {0}% of the tax that is outstanding 30 days after the payment deadline
 calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If you miss the deadline by more than 30 days, this penalty will increase by an additional {0}% of the amount that is outstanding 30 days after the payment deadline
 
+calculation.table.caption = Your penalty details
 calculation.table.caption.amountApplied = Amount penalty is applied to
 calculation.table.caption.days.payment = Days after payment deadline
 calculation.table.caption.charge.period = Charge period
