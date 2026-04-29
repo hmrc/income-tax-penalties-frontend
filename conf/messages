@@ -296,7 +296,7 @@ agentErrorView.link = Go to agent services account
 # Breathing Space
 breathingSpace.status = Status
 breathingSpace.paused = Paused due to Breathing Space
-calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation.
+calculation.individual.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
 calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
 
 # Unauthorised Error View
