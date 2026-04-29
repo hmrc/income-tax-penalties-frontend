@@ -200,6 +200,13 @@
             messageKey = messages("calculation.individual.return.link"),
             id = Some("returnToIndex")
         )
+        @if(!calculationData.isEstimate) {
+        @link(
+            link = appConfig.checkWhatYouOweUrl(isAgent),
+            messageKey = messages("calculation.checkWhatYouOwe.link"),
+            id = Some("checkWhatYouOwLink")
+        )
+        }
     </div>
 
 }
