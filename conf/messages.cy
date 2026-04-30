@@ -158,6 +158,24 @@ calculation.calc2.table.charge.period.days = {0} i {1} ({2} o ddiwrnodau)
 
 calculation.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
 
+# supplementary Late Payment Penalty Tab - content
+# =============================================
+calculation.supplementary.first.title = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
+calculation.supplementary.first.h1 = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
+calculation.supplementary.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
+calculation.supplementary.reason = Rydym wedi dyroddi’r gosb ychwanegol hon gan fod swm y dreth a ddefnyddiwyd i gyfrifo’r gosb flaenorol yn rhy isel.
+calculation.supplementary.p1 = Mae’n rhaid i chi dalu’r gosb flaenorol os nad ydych wedi gwneud hynny eisoes.
+calculation.supplementary.dueDateHasNotPassed.p2 = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
+calculation.supplementary.dueDateHasPassed.p2 = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = Rydym yn codi’r cosbau canlynol:
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
+calculation.supplementary.return.link = Bwrw golwg dros gosbau ac apeliadau
+calculation.supplementary.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
+
+
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
 compliance.timeline.individual.send.submission.listed = Fel bod modd i CThEF ddileu eich pwyntiau, mae angen i chi anfon unrhyw gyflwyniadau sydd wedi’u rhestru ar y llinell amser hon cyn y dyddiad cau.
@@ -249,6 +267,10 @@ lpp.incomeTaxPeriod.value.pfa = Swm ychwanegol sy’n ddyledus i Ffurflen Dreth 
 lpp.incomeTaxDue.key.pfa = Swm ychwanegol sy’n ddyledus
 lpp.incomeTaxPaymentDate.key.pfa = Swm ychwanegol a dalwyd
 
+# supplementary Late Payment Penalty - Summary Row Key/Values
+# =============================================
+lpp.penaltyType.supplementary.LPP1 = Cosb gyntaf ychwanegol am dalu’n hwyr: £{0}
+
 # Appeal Status
 # =============
 #TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
@@ -308,8 +330,8 @@ agentErrorView.link = Ewch i gyfrif gwasanaethau asiant
 # Breathing Space
 breathingSpace.status = Statws
 breathingSpace.paused = Wedi’i oedi oherwydd cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space)
-calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation. (Welsh)
-calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation. (Welsh)
+calculation.individual.breathingSpace.expired = Mae’ch cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi dod i ben. Nid yw’r amser yr oeddech chi yn y cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi’i ychwanegu at eich cyfrifiad.
+calculation.individual.calc2.breathingSpace.expired = Mae’ch cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi dod i ben. Nid yw’r amser yr oeddech chi yn y cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi’i ychwanegu at eich cyfrifiad.
 
 # Unauthorised Error View
 unauthorised.page.h1 = Nid ydych wedi'ch awdurdodi i gael mynediad at y dudalen hon

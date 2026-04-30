@@ -64,6 +64,7 @@ trait PenaltiesFixture {
     penaltyChargeReference = Some("PEN1234567"),
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
+    supplement = None,
     metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4700",
       timeToPay = None
@@ -207,6 +208,7 @@ trait PenaltiesFixture {
     penaltyChargeReference = Some("1234567890"),
     principalChargeLatestClearing = Some(LocalDate.parse("2069-10-30")),
     vatOutstandingAmount = Some(BigDecimal(123.45)),
+    supplement = None,
     metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4700",
       timeToPay = None
@@ -725,6 +727,7 @@ trait PenaltiesFixture {
           penaltyChargeReference = None,
           principalChargeLatestClearing = None,
           vatOutstandingAmount = None,
+          supplement = None,
           metadata = LPPDetailsMetadata(
             principalChargeMainTr = "4787",
             timeToPay = None

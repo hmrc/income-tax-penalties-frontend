@@ -72,7 +72,7 @@ calculation.individual.left.to.pay = Left to pay
 caption.date = {0} to {1} tax year
 calculation.charge.reference = Charge reference: {0}
 calculation.individual.pay.penalty.by = Pay penalty by {0}
-calculation.individual.paid.penalty.on = Penalty paid on {0
+calculation.individual.paid.penalty.on = Penalty paid on {0}
 calculation.payment.deadline = The payment deadline for the {0} to {1} tax year was {2}.
 calculation.individual.payment.15.30.missed.reason.taxUnpaid = Because you missed this deadline, you will be charged a late payment penalty.
 calculation.payment.deadline.pfa = The payment deadline for the extra amount was {0}.
@@ -155,6 +155,24 @@ calculation.individual.calc2.penalty.details.heading = Your penalty details
 calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)
 calculation.calc2.table.charge.period.days = {0} to {1} ({2} days)
+
+# supplementary Late Payment Penalty Tab - content
+# =============================================
+calculation.supplementary.first.title = Additional first late payment penalty calculation
+calculation.supplementary.first.h1 = Additional first late payment penalty calculation
+calculation.supplementary.pay.penalty.by = Pay penalty by {0}
+calculation.supplementary.reason = We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low.
+calculation.supplementary.p1 = You still need to pay the earlier penalty if you have not paid it.
+calculation.supplementary.dueDateHasNotPassed.p2 = To avoid interest charges, you should pay this penalty by {0}.
+calculation.supplementary.dueDateHasPassed.p2 = This penalty is overdue. We are charging interest.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = How we work out the penalty amount
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two parts.
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = We charge:
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
+calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
+calculation.supplementary.return.link = View penalties and appeals
+calculation.supplementary.checkWhatYouOwe.link = Check what you owe
+
 
 calculation.checkWhatYouOwe.link = Check what you owe
 
@@ -249,6 +267,10 @@ lpp.incomeTaxPeriod.value.pfa = Extra amount due to amended return for {0} to {1
 lpp.incomeTaxDue.key.pfa = Extra amount due
 lpp.incomeTaxPaymentDate.key.pfa = Extra amount paid
 
+# supplementary Late Payment Penalty - Summary Row Key/Values
+# =============================================
+lpp.penaltyType.supplementary.LPP1 = Additional first late payment penalty: £{0}
+
 # Appeal Status
 # =============
 #TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
@@ -308,7 +330,7 @@ agentErrorView.link = Go to agent services account
 # Breathing Space
 breathingSpace.status = Status
 breathingSpace.paused = Paused due to Breathing Space
-calculation.individual.breathingSpace.expired = You have been in Breathing Space. The time you were in Breathing Space will not be added to your calculation.
+calculation.individual.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
 calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
 
 # Unauthorised Error View
