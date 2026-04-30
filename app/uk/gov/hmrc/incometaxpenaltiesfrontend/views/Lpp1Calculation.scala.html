@@ -28,6 +28,8 @@
 @this(
         main: MainTemplate,
         link: Link,
+        h2: H2,
+        p: P,
         govukInsetText : GovukInsetText,
         calculationHelper: FirstLatePaymentCalculationHelper,
         govukTable : GovukTable,
@@ -122,8 +124,16 @@
             @insetMsg
         </div>
     }
-@howWeWorkOutThePenaltyAmount()
+    @howWeWorkOutThePenaltyAmount()
 
+    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+
+    @if(!calculationData.isPenaltyOverdue && !calculationData.isEstimate) {
+    @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.principalChargeDueDate)))
+    }
+    @if(calculationData.isPenaltyOverdue) {
+    @p(messages("calculation.penaltyDueDate.overDue.p", dateToString(calculationData.principalChargeDueDate)))
+    }
 
     @govukTable(Table(
         rows = Seq(
@@ -179,8 +189,7 @@
             format = Some("numeric")
           )
         )),
-        caption = Some(messages("calculation.table.caption")),
-        captionClasses = "govuk-table__caption--m"
+
     ))
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">

@@ -125,7 +125,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
+            document.getElementById("penaltyStatus").text() shouldBe ""
 
           }
 
@@ -175,7 +175,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
-            document.getElementById("penaltyStatus").text() shouldBe "This penalty is now overdue and interest is being charged."
+            document.getElementById("penaltyStatus").text() shouldBe ""
 
 
           }
@@ -274,7 +274,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the amount that was outstanding 15 days after the payment deadline (£99.99)"
-            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
+            document.getElementById("penaltyStatus").text() shouldBe ""
 
           }
 
