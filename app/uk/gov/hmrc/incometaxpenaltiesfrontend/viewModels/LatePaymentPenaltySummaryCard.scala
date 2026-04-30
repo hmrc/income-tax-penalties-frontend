@@ -40,11 +40,16 @@ case class LatePaymentPenaltySummaryCard(
                                           taxPeriodEndDate: String,
                                           incomeTaxOutstandingAmountInPence: Int,
                                           isTTPActive: Boolean = false,
-                                          isEstimate: Boolean
+                                          isEstimate: Boolean,
+                                          supplement: Option[Boolean]
                                         ) {
   val isLPP2: Boolean = penaltyCategory.equals(LPPPenaltyCategoryEnum.LPP2)
   val hasCalulcationDetailsLink: Boolean = !appealStatus.contains(AppealStatusEnum.Upheld)
-  def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if(hasCalulcationDetailsLink) {
+  val hasSupplementaryCharge: Boolean = supplement.contains(true)
+
+  def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if (hasCalulcationDetailsLink && hasSupplementaryCharge){
+    Some(routes.SupplementaryCalculationController.supplementaryCalculationPage(principalChargeReference, isAgent).url)
+  } else if(hasCalulcationDetailsLink){
     Some(routes.PenaltyCalculationController.penaltyCalculationPage(principalChargeReference, isAgent, isLPP2).url)
   } else {
     None

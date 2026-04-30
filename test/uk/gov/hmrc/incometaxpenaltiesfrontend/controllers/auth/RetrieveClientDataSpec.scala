@@ -77,7 +77,7 @@ class RetrieveClientDataSpec extends AnyWordSpec with should.Matchers with Guice
         mockIncomeTaxSessionDataNotFound()
         val result = testAction.invokeBlock(authorisedUserRequest, block)
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result).get should include("view/agents/client-utr")
+        redirectLocation(result).get should include("view/agents/what-your-client-owes")
       }
     }
 

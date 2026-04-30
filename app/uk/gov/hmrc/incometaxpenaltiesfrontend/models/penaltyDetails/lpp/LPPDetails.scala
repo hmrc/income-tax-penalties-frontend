@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{JsonUtils, TimeMachine}
 import java.time.LocalDate
 
 case class  LPPDetails(principalChargeReference: String,
+                      supplement: Option[Boolean] = Some(false),
                       penaltyCategory: LPPPenaltyCategoryEnum.Value,
                       penaltyStatus: LPPPenaltyStatusEnum.Value,
                       penaltyAmountAccruing: BigDecimal,
@@ -137,6 +138,7 @@ object LPPDetails extends JsonUtils {
         principalChargeDueDate <- (json \ "principalChargeDueDate").validate[LocalDate]
         principalChargeLatestClearing <- (json \ "principalChargeLatestClearing").validateOpt[LocalDate]
         vatOutstandingAmount <- (json \ "vatOutstandingAmount").validateOpt[BigDecimal]
+        supplement <- (json\"supplement").validateOpt[Boolean]
         metadata <- Json.fromJson(json)(LPPDetailsMetadata.format)
       } yield {
         LPPDetails(
@@ -165,6 +167,7 @@ object LPPDetails extends JsonUtils {
           principalChargeDueDate = principalChargeDueDate,
           principalChargeLatestClearing = principalChargeLatestClearing,
           vatOutstandingAmount = vatOutstandingAmount,
+          supplement = supplement,
           metadata = metadata
         )
       }
@@ -199,6 +202,7 @@ object LPPDetails extends JsonUtils {
         "penaltyAmountAccruing" -> o.penaltyAmountAccruing,
         "principalChargeMainTr" -> o.metadata.principalChargeMainTr,
         "vatOutstandingAmount" -> o.vatOutstandingAmount,
+        "supplement" -> o.supplement,
         "principalChargeDocNumber" -> o.metadata.principalChargeDocNumber,
         "principalChargeSubTr" -> o.metadata.principalChargeSubTr
       )

@@ -26,6 +26,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
   val lppUsers: Map[String, UserDetailsData] = Map(
     "AA100000A" -> AA100000A,
     "AA100000B" -> AA100000B,
+    "AA100001B" -> AA100001B,
     "AA100000C" -> AA100000C,
     "AA100000D" -> AA100000D,
     "AA100001A" -> AA100001A,
@@ -54,6 +55,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AL300003A" -> AL300003A,
     "PE000002A" -> PE000002A,
     "AA100000B-overdue" -> AA100000BOverdue,
+    "AA100001B-overdue" -> AA100001BOverdue,
     "AA100011A-overdue" -> AA100011AOverdue,
     "AA100002C-overdue" -> AA100002COverdue,
     "AA200000A-overdue" -> AA200000AOverdue,
