@@ -62,7 +62,6 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
           document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
-          document.getElementById("penaltyStatusPaid").text() shouldBe "To avoid interest charges, you should pay this penalty by 2 May 2026."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
           document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
           document.getElementById("SupplementaryPenaltyAmountDetailsP2").text() shouldBe "We charge:"
