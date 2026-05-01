@@ -104,12 +104,14 @@ trait UserDetailsData extends Matchers {
     link.attr("href") should include(expectedHref)
   }
   
-  def validateAppealLink(link: Element, is2ndStage: Boolean = false): Unit = {
+  def validateAppealLink(link: Element, is2ndStage: Boolean = false, isLSP: Boolean = false): Unit = {
     val expectedHref = "appeal-penalty"
     val expectedLinkContent = if(is2ndStage) {
       "Ask for review"
+    } else if(isLSP){
+      "Check if you can appeal this penalty"
     } else {
-      "Appeal this penalty"
+       "Appeal this penalty"
     }
     link.text() shouldBe expectedLinkContent
     link.attr("href") should include(expectedHref)

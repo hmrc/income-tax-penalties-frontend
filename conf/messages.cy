@@ -299,7 +299,8 @@ expiryReason.RES = Reset (Welsh)
 # Card Footer Links
 # =================
 cardLinks.cannotAppeal = Ni allwch apelio yn erbyn y pwynt hwn
-cardLinks.appeal = Apelio yn erbyn y gosb hon
+cardLinks.checkIfYouCanAppealThisPenalty = Apelio yn erbyn y gosb hon
+cardLinks.appeal = Gwirio a allwch apelio yn erbyn y gosb hon
 cardLinks.viewCalculation = Gweld y cyfrifiad
 cardLinks.reviewAppeal = Gofyn am adolygiad
 
