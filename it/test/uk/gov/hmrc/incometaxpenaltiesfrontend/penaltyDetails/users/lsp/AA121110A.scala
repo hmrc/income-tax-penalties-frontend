@@ -38,7 +38,7 @@ object AA121110A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Update due", "7 August 2027")
     validateSummary(cardRows.get(3), "Update submitted", "Not yet received")
     validateSummary(cardRows.get(4), "Point due to expire", "7 September 2029")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(

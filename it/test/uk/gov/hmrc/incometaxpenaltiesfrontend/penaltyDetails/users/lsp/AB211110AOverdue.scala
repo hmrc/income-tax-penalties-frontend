@@ -38,7 +38,7 @@ object AB211110AOverdue extends UserDetailsData {
     validateSummary(cardRows.get(1), "Tax year", "2026 to 2027")
     validateSummary(cardRows.get(2), "Return due", "31 January 2028")
     validateSummary(cardRows.get(3), "Return submitted", "Not yet received")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
