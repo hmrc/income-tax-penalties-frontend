@@ -78,6 +78,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You have missed the deadline by 15 to 30 days, so you will be charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "If you miss the deadline by more than 30 days, this penalty will increase by an additional 3% of the tax that is outstanding 30 days after the payment deadline"
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
           }
@@ -103,6 +108,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe ""
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -130,6 +140,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
             document.getElementById("penaltyStatus").text() shouldBe ""
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -157,6 +172,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
             document.getElementById("penaltyStatus").text() shouldBe ""
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -183,6 +203,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
             document.getElementById("penaltyStatus").text() shouldBe ""
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -209,6 +234,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("reasonList").getElementsByTag("li").size() shouldBe 1
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "You missed the deadline by 15 to 30 days, so you have been charged 3% of the tax that was outstanding 15 days after the payment deadline (£99.99)"
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -234,6 +264,11 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
             document.getElementById("reasonList").getElementsByTag("li").get(0).text() shouldBe "3% of £99.99 (the tax that was outstanding 15 days after the payment deadline)"
             document.getElementById("reasonList").getElementsByTag("li").get(1).text() shouldBe "An additional 3% of £99.99 (the tax that was outstanding 30 days after the payment deadline)"
+            document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+            document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+            document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+            document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+            document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
