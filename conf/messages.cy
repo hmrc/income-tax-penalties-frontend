@@ -164,11 +164,7 @@ calculation.supplementary.reason = Rydym wedi dyroddi’r gosb ychwanegol hon ga
 calculation.supplementary.p1 = Mae’n rhaid i chi dalu’r gosb flaenorol os nad ydych wedi gwneud hynny eisoes.
 calculation.supplementary.dueDateHasNotPassed.p2 = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.supplementary.dueDateHasPassed.p2 = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
-calculation.supplementary.detailshowWeWorkOutPenaltyAmount.lPP1.p2 = Rydym yn codi’r cosbau canlynol:
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
+
 calculation.supplementary.return.link = Bwrw golwg dros gosbau ac apeliadau
 calculation.supplementary.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
 
