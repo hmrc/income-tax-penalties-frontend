@@ -150,7 +150,6 @@ calculation.calc2.how.we.work.penalty.amount.point.2 = multiply by 0.10 (the ann
 calculation.calc2.how.we.work.penalty.amount.point.3 = divide the amount by days in a year
 calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts together to get the total amount
 
-calculation.individual.calc2.penalty.details.heading = Your penalty details
 
 calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)

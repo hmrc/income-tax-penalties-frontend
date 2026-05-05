@@ -30,6 +30,7 @@
         govukInsetText : GovukInsetText,
         govukDetails : GovukDetails,
         p: P,
+        h2: H2,
         govukTable : GovukTable,
         calculationHelper: SecondLatePaymentCalculationHelper
 )
@@ -139,6 +140,8 @@
         content = HtmlContent(penaltyAmountDetails)
     ))
 
+    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+
     @govukTable(Table(
         rows = Seq(
             Seq(
@@ -163,7 +166,6 @@
                 )
             )
         ),
-        caption = Some(messages("calculation.individual.calc2.penalty.details.heading")),
         attributes = Map("id" -> "second-lpp-penalty-details-table"),
         captionClasses = "govuk-table__caption--m",
         firstCellIsHeader = false

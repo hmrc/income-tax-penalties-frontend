@@ -150,7 +150,6 @@ calculation.calc2.how.we.work.penalty.amount.point.2 = ei lluosi â 0.10 (y gyfr
 calculation.calc2.how.we.work.penalty.amount.point.3 = a’i rhannu nifer y diwrnodau mewn blwyddyn
 calculation.calc2.how.we.work.penalty.amount.point.4 = yna, bydd yr holl symiau dyddiol yn cael eu hadio at ei gilydd i gael cyfanswm
 
-calculation.individual.calc2.penalty.details.heading = Manylion eich cosb
 
 calculation.calc2.estimated.penalty = Cosb amcangyfrifedig
 calculation.calc2.table.charge.period.day = {0} i {1} ({2} o ddiwrnod)
