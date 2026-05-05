@@ -166,7 +166,7 @@ calculation.supplementary.dueDateHasNotPassed.p2 = Er mwyn osgoi gorfod talu llo
 calculation.supplementary.dueDateHasPassed.p2 = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
 calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
 calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = Rydym yn codi’r cosbau canlynol:
+calculation.supplementary.detailshowWeWorkOutPenaltyAmount.lPP1.p2 = Rydym yn codi’r cosbau canlynol:
 calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
 calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
 calculation.supplementary.return.link = Bwrw golwg dros gosbau ac apeliadau
@@ -191,7 +191,7 @@ compliance.timeline.send.by = Anfonwch hwn erbyn {0}
 # ===================
 howWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
 howWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
-howWeWorkOutPenaltyAmount.p2 = Rydym yn codi’r cosbau canlynol:
+howWeWorkOutPenaltyAmount.lPP1.p2 = Rydym yn codi’r cosbau canlynol:
 howWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
 howWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
 howWeWorkOutPenaltyAmount.bullet1.4percent = 4% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod

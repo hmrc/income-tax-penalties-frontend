@@ -164,11 +164,7 @@ calculation.supplementary.reason = We issued this additional penalty because the
 calculation.supplementary.p1 = You still need to pay the earlier penalty if you have not paid it.
 calculation.supplementary.dueDateHasNotPassed.p2 = To avoid interest charges, you should pay this penalty by {0}.
 calculation.supplementary.dueDateHasPassed.p2 = This penalty is overdue. We are charging interest.
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = How we work out the penalty amount
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two parts.
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = We charge:
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
+
 calculation.supplementary.return.link = View penalties and appeals
 calculation.supplementary.checkWhatYouOwe.link = Check what you owe
 
@@ -190,8 +186,8 @@ compliance.timeline.send.by = Send by {0}
 # How We Work Out Penalty Amount details
 # ===================
 howWeWorkOutPenaltyAmount.details = How we work out the penalty amount
-howWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two parts.
-howWeWorkOutPenaltyAmount.p2 = We charge:
+howWeWorkOutPenaltyAmount.lPP1.p1 = A first late payment penalty is made up of two parts.
+howWeWorkOutPenaltyAmount.lPP1.p2 = We charge:
 howWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
 howWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
 howWeWorkOutPenaltyAmount.bullet1.4percent = 4% of the unpaid Income Tax after 15 days
