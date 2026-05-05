@@ -156,8 +156,6 @@ calculation.calc2.estimated.penalty = Cosb amcangyfrifedig
 calculation.calc2.table.charge.period.day = {0} i {1} ({2} o ddiwrnod)
 calculation.calc2.table.charge.period.days = {0} i {1} ({2} o ddiwrnodau)
 
-calculation.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
-
 # supplementary Late Payment Penalty Tab - content
 # =============================================
 calculation.supplementary.first.title = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
@@ -175,6 +173,8 @@ calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = 3% arall o 
 calculation.supplementary.return.link = Bwrw golwg dros gosbau ac apeliadau
 calculation.supplementary.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
 
+
+calculation.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
@@ -195,6 +195,8 @@ howWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o d
 howWeWorkOutPenaltyAmount.p2 = Rydym yn codi’r cosbau canlynol:
 howWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
 howWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
+howWeWorkOutPenaltyAmount.bullet1.4percent = 4% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
+howWeWorkOutPenaltyAmount.bullet2.4percent = 4% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod
 
 # Penalty Status tags
 # ===========

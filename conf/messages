@@ -195,6 +195,8 @@ howWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two pa
 howWeWorkOutPenaltyAmount.p2 = We charge:
 howWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
 howWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
+howWeWorkOutPenaltyAmount.bullet1.4percent = 4% of the unpaid Income Tax after 15 days
+howWeWorkOutPenaltyAmount.bullet2.4percent = another 4% of the unpaid Income Tax after 30 days
 
 # Penalty Status tags
 # ===================
