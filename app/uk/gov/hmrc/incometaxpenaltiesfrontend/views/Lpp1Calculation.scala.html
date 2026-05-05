@@ -129,7 +129,7 @@
     @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
 
     @if(!calculationData.isPenaltyOverdue && !calculationData.isEstimate) {
-    @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.principalChargeDueDate)))
+    @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.principalChargeDueDate)), elmId = Some("penaltyDetailsExtraText"))
     }
     @if(calculationData.isPenaltyOverdue) {
     @p(messages("calculation.penaltyDueDate.overDue.p", dateToString(calculationData.principalChargeDueDate)))

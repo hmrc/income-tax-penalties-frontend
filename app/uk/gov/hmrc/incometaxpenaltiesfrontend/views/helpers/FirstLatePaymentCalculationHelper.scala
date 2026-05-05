@@ -77,11 +77,8 @@ class FirstLatePaymentCalculationHelper {
       } else {
         isEstimateMsg + " " + toStopEstimateIncMsg
       }
-    } else if (calculationData.isPenaltyOverdue) {
-
-      ""
     } else {
-      messages("calculation.individual.penalty.isDue", dateToString(calculationData.payPenaltyBy))
+      ""
     }
   }
 
