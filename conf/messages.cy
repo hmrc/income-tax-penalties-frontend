@@ -111,10 +111,6 @@ calculation.individual.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’
 calculation.individual.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 calculation.individual.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
-calculation.individual.penalty.isDue = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
-
-calculation.individual.penalty.isOverdue = Mae’r gosb hon yn orddyledus erbyn hyn, ac mae llog yn cael ei godi arni.
-
 calculation.individual.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig cynllun talu ar {0}. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
 calculation.individual.penalty.payment.plan.agreed.h1 = Eich cynllun talu
 calculation.individual.penalty.payment.plan.agreed.p1 = Cytunoch i gynllun talu ar {0}.

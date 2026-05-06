@@ -111,10 +111,6 @@ calculation.individual.penalty.isEstimate.pfa = This penalty is currently an est
 calculation.individual.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 calculation.individual.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
 
-calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
-
-calculation.individual.penalty.isOverdue = This penalty is now overdue and interest is being charged.
-
 calculation.individual.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
 calculation.individual.penalty.payment.plan.agreed.h1 = Your payment plan
 calculation.individual.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
