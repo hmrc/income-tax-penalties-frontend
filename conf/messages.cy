@@ -123,8 +123,6 @@ calculation.individual.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi m
 calculation.individual.calc2.penalty.increase.tax.unpaid = Bydd swm y gosb yn cynyddu’n ddyddiol ar gyfradd flynyddol o 10% o’r dreth sy’n ddyledus.
 calculation.individual.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
 
-calculation.individual.calc2.penalty.due = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
-
 calculation.individual.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.individual.calc2.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.

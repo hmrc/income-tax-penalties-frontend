@@ -132,7 +132,7 @@
     @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.principalChargeDueDate)), elmId = Some("penaltyDetailsExtraText"))
     }
     @if(calculationData.isPenaltyOverdue) {
-    @p(messages("calculation.penaltyDueDate.overDue.p", dateToString(calculationData.principalChargeDueDate)))
+    @p(messages("calculation.penaltyDueDate.overDue.p"))
     }
 
     @govukTable(Table(
