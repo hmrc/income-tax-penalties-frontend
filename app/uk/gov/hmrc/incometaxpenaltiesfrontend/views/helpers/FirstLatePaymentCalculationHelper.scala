@@ -68,17 +68,17 @@ class FirstLatePaymentCalculationHelper {
   }
 
   def getFinalUnpaidMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
-                        isPfa: String)(implicit messages: Messages): String = {
+                        isPfa: String)(implicit messages: Messages): Option[String] = {
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
       val isEstimateMsg = messages(s"calculation.individual.penalty.isEstimate$isPfa", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
       val toStopEstimateIncMsg = messages(s"calculation.individual.penalty.stopEstimateIncreasing$isPfa")
       if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
-        isEstimateMsg
+        Some(isEstimateMsg)
       } else {
-        isEstimateMsg + " " + toStopEstimateIncMsg
+        Some(isEstimateMsg + " " + toStopEstimateIncMsg)
       }
     } else {
-      ""
+      None
     }
   }
 

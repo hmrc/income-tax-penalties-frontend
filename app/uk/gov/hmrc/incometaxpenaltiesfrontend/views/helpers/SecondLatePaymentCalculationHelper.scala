@@ -36,19 +36,19 @@ class SecondLatePaymentCalculationHelper {
   }
 
 
-  def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
+  def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     if (!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
       val isEstimateMsg = messages("calculation.individual.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
       val toStopEstimateIncMsg = messages("calculation.individual.calc2.penalty.stopEstimateIncreasing")
       if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
-        isEstimateMsg
+        Some(isEstimateMsg)
       } else {
-        isEstimateMsg + " " + toStopEstimateIncMsg
+        Some(isEstimateMsg + " " + toStopEstimateIncMsg)
       }
     } else {
-      ""
+      None
     }
   }
 
