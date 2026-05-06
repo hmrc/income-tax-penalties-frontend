@@ -58,6 +58,18 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
       "render the expected first late payment calculation" when {
         "a first late payment penalty exists for the penaltyId" that {
+          
+          "has back link" in {
+            stubAuthRequests(isAgent)
+            val firstLPPCalcData = sampleFirstLPPCalcData()
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getElementsByClass("govuk-back-link").text() shouldBe "Back"
+          }
 
           //scenario 1
           "is between 15 and 30 days and the tax is unpaid" in {
@@ -398,6 +410,18 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
       "render the expected second late payment calculation" when {
         "a second late payment penalty exists for the penaltyId" that {
+
+          "has back link" in {
+            stubAuthRequests(isAgent)
+            val firstLPPCalcData = sampleFirstLPPCalcData()
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getElementsByClass("govuk-back-link").text() shouldBe "Back"
+          }
 
           //scenario 1
           "the tax is unpaid" in {

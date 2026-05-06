@@ -120,6 +120,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
     }
 
     "return an OK with an agent view" when {
+      
       "the page has the correct elements for one entry in the compliance timeline" in {
 
         stubAuthRequests(true)
@@ -143,6 +144,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getLink("returnToSA").text() shouldBe returnToSALink
         document.getH2Elements.get(0).text() shouldBe taxYear1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
+        document.getElementsByClass("govuk-back-link").text() shouldBe "Back"
       }
 
       "the page has the correct elements for two entries in the compliance timeline" in {
@@ -170,6 +172,7 @@ class ComplianceTimelineControllerISpec extends ControllerISpecHelper
         document.getH2Elements.get(1).text() shouldBe quarter1
         document.getElementsByClass("hmrc-timeline__event-content").get(0).text() shouldBe timeline1
         document.getElementsByClass("hmrc-timeline__event-content").get(1).text() shouldBe timeline2
+        document.getElementsByClass("govuk-back-link").text() shouldBe "Back"
       }
 
     }

@@ -29,7 +29,8 @@
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
         hmrcStandardPage: HmrcStandardPage,
-        dateBannerHelper: dateBannerHelper
+        dateBannerHelper: dateBannerHelper,
+        govukBackLink: GovukBackLink
 )(implicit cfConfig: ContactFrontendConfig)
 
 @(
@@ -72,6 +73,9 @@
 
    @govukPhaseBanner(standardBetaBanner())
 
+    @if(backLinkEnabled) {
+        @govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)
+    }
 }
 
 @defaultServiceNavigation(serviceName: Option[String], serviceUrl: String) = @{
