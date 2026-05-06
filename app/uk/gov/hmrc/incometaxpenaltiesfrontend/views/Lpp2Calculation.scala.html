@@ -141,6 +141,12 @@
     ))
 
     @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+    @if(!calculationData.isPenaltyOverdue && !calculationData.isEstimate && !calculationData.isPenaltyPaid) {
+    @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.principalChargeDueDate)), elmId = Some("penaltyDetailsExtraText"))
+    }
+    @if(calculationData.isPenaltyOverdue) {
+    @p(messages("calculation.penaltyDueDate.overDue.p", dateToString(calculationData.principalChargeDueDate)))
+    }
 
     @govukTable(Table(
         rows = Seq(
@@ -188,6 +194,13 @@
             messageKey = messages("calculation.individual.return.link"),
             id = Some("returnToIndex")
         )
+        @if(!calculationData.isEstimate) {
+        @link(
+        link = appConfig.checkWhatYouOweUrl(isAgent),
+        messageKey = messages("calculation.checkWhatYouOwe.link"),
+        id = Some("checkWhatYouOwLink")
+        )
+        }
     </div>
 
 }
