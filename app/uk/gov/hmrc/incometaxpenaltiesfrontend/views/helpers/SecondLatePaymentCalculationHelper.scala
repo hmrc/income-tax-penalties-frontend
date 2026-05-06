@@ -47,10 +47,8 @@ class SecondLatePaymentCalculationHelper {
       } else {
         isEstimateMsg + " " + toStopEstimateIncMsg
       }
-    } else if (calculationData.isPenaltyOverdue) {
-      messages("calculation.individual.calc2.penalty.overdue")
     } else {
-      messages("calculation.individual.calc2.penalty.due", dateToString(calculationData.principalChargeDueDate))
+      ""
     }
   }
 

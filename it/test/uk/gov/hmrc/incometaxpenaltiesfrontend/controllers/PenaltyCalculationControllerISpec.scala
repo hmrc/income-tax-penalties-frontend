@@ -440,7 +440,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
-            document.getElementById("penaltyStatus").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -484,7 +484,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyAmountDetailsPoint2").text() shouldBe "multiply by 0.10 (the annual rate)"
             document.getElementById("penaltyAmountDetailsPoint3").text() shouldBe "divide the amount by days in a year"
             document.getElementById("penaltyAmountDetailsPoint4").text() shouldBe "add all the daily amounts together to get the total amount"
-            document.getElementById("penaltyStatus").text() shouldBe s"This penalty is now overdue and interest is being charged."
+            document.getElementById("penaltyStatus").text() shouldBe ""
             document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(1)").first().text() shouldBe s"$chargePeriod"
             document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(2)").first().text() shouldBe s"$getStartDateChargePeriod to $getEndDateChargePeriod ($getChargePeriodDays days)"
             document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(1)").first().text() shouldBe s"$estimatedPenalty"
