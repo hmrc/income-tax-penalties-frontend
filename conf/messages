@@ -82,17 +82,10 @@ calculation.payment.15.30.missed.reason = Because you missed this deadline, you 
 
 calculation.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
 
-calculation.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15 to 30 days, so you have been charged {0}% of the tax that was outstanding 15 days after the payment deadline (£{1})
-calculation.payment.15.30.missed.reason.bullet.1.pfa = You missed the deadline by 15 to 30 days, so you have been charged {0}% of the amount that was outstanding 15 days after the payment deadline (£{1})
-calculation.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15 to 30 days, so you will be charged {0}% of the tax that was outstanding 15 days after the payment deadline (£{1})
-calculation.payment.15.30.unpaid.missed.reason.bullet.1.pfa = You have missed the deadline by 15 to 30 days, so you will be charged {0}% of the amount that was outstanding 15 days after the payment deadline (£{1})
 
-calculation.payment.30.plus.unpaid.missed.reason.bullet.1 = {0}% of £{1} (the tax that was outstanding 15 days after the payment deadline)
-calculation.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = {0}% of £{1} (the amount that was outstanding 15 days after the payment deadline)
-calculation.payment.30.plus.missed.reason.bullet.2 = An additional {0}% of £{1} (the tax that was outstanding 30 days after the payment deadline)
-calculation.payment.30.plus.missed.reason.bullet.2.pfa = An additional {0}% of £{1} (the amount that was outstanding 30 days after the payment deadline)
-calculation.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional {0}% of the tax that is outstanding 30 days after the payment deadline
-calculation.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If you miss the deadline by more than 30 days, this penalty will increase by an additional {0}% of the amount that is outstanding 30 days after the payment deadline
+
+
+
 
 calculation.yourPenaltyDetails = Your penalty details
 calculation.penaltyDueDate.due.p = To avoid interest charges, you should pay this penalty by {0}.

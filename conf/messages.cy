@@ -82,17 +82,10 @@ calculation.payment.15.30.missed.reason = Oherwydd eich bod wedi methu’r dyddi
 
 calculation.payment.missed.reason.additional = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae cosb am dalu’n hwyr wedi’i chodi arnoch. Mae’r gosb hon yn cynnwys dwy ran.
 
-calculation.payment.15.30.missed.reason.bullet.1 = Gwnaethoch fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae {0}% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{1}) wedi’i chodi arnoch fel cosb
-calculation.payment.15.30.missed.reason.bullet.1.pfa =  Gwnaethoch fethu’r dyddiad cau gan 15 i 30 diwrnod, felly mae {0}% o’r swm a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{1}) wedi’i chodi arnoch fel cosb
-calculation.payment.15.30.unpaid.missed.reason.bullet.1 = Rydych wedi methu’r dyddiad cau gan 15 i 30 diwrnod, felly bydd {0}% o’r dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{1}) yn cael ei chodi arnoch fel cosb
-calculation.payment.15.30.unpaid.missed.reason.bullet.1.pfa = Rydych wedi methu’r dyddiad cau o 15 i 30 diwrnod, felly codir {0}% o’r dreth oedd yn ddyledus arnoch 15 diwrnod ar ôl y dyddiad cau ar gyfer talu (£{1})
 
-calculation.payment.30.plus.unpaid.missed.reason.bullet.1 = {0}% o £{1} (sef y dreth a oedd yn ddyledus 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
-calculation.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = {0}% o £{1} (y swm a oedd heb ei dalu 15 diwrnod ar ôl y dyddiad cau ar gyfer talu)
-calculation.payment.30.plus.missed.reason.bullet.2 = {0}% ychwanegol o £{1} (sef y dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
-calculation.payment.30.plus.missed.reason.bullet.2.pfa = {0}% ychwanegol o £{1} (y swm a oedd heb ei dalu 30 diwrnod ar ôl y dyddiad cau ar gyfer talu)
-calculation.payment.15.30.unpaid.missed.reason.bullet.2 = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan {0}% o’r dreth a oedd yn ddyledus 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
-calculation.payment.15.30.unpaid.missed.reason.bullet.2.pfa = Os byddwch yn methu’r dyddiad cau gan fwy na 30 diwrnod, bydd y gosb hon yn cynyddu gan {0}% o’r dreth sydd heb ei dalu 30 diwrnod ar ôl y dyddiad cau ar gyfer talu
+
+
+
 
 calculation.yourPenaltyDetails = Manylion eich cosb
 calculation.penaltyDueDate.due.p = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
