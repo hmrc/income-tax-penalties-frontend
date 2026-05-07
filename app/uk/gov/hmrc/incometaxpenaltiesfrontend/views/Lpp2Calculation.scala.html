@@ -78,7 +78,7 @@
         ))
     }
 
-    @if(calculationData.incomeTaxIsPaid){
+    @if(calculationData.incomeTaxIsPaid || calculationData.isEstimate){
         <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@calculationHelper.getPaymentDetails(calculationData)</p>
     }
 

@@ -459,7 +459,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
-            document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(secondLPPCalcData.payPenaltyBy)}"
+            document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(secondLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."

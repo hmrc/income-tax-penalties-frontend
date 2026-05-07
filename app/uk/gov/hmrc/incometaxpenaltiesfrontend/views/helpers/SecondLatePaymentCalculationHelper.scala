@@ -26,12 +26,14 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenalt
 class SecondLatePaymentCalculationHelper {
 
 
-  def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
+  def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
 
-    if (calculationData.isPenaltyPaid) {
-      messages("calculation.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
+    if (calculationData.isPenaltyPaid || !calculationData.isPenaltyOverdue) {
+      Some(messages("calculation.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy)))
+    } else if(calculationData.isEstimate){
+      Some(messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy)))
     } else {
-      messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+      None
     }
   }
 
