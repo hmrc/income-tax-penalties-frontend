@@ -101,11 +101,6 @@
     </p>
 
 
-    <ul class="govuk-list govuk-list--bullet" id="reasonList">
-        @calculationHelper.getBulletListContent(calculationData, if(calculationData.isPFA) ".pfa" else "").map { bulletContent =>
-            <li>@bulletContent</li>
-        }
-    </ul>
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
