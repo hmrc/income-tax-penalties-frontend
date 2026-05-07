@@ -27,13 +27,13 @@
 
 @this(
         main: MainTemplate,
-        link: Link,
         h2: H2,
         p: P,
         govukInsetText : GovukInsetText,
         calculationHelper: FirstLatePaymentCalculationHelper,
         govukTable : GovukTable,
-        howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount
+        howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount,
+        calculationFooterLinks : CalculationFooterLinks
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -198,19 +198,6 @@
         }
     </div>
 
-    <div class="govuk-!-margin-bottom-8">
-        @link(
-            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.return.link"),
-            id = Some("returnToIndex")
-        )
-        @if(!calculationData.isEstimate) {
-        @link(
-            link = appConfig.checkWhatYouOweUrl(isAgent),
-            messageKey = messages("calculation.checkWhatYouOwe.link"),
-            id = Some("checkWhatYouOweLink")
-        )
-        }
-    </div>
+   @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
 }

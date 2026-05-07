@@ -27,8 +27,8 @@
 
 @this(
         main: MainTemplate,
-        link: Link,
-        howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount
+        howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount,
+        calculationFooterLinks : CalculationFooterLinks
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -58,19 +58,8 @@
 
     @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
 
-    <div class="govuk-!-margin-bottom-8">
-        @link(
-            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.supplementary.return.link"),
-            id = Some("returnToIndex")
-        )
+    @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
-        @link(
-            link = appConfig.checkWhatYouOweUrl(isAgent),
-            messageKey = messages("calculation.supplementary.checkWhatYouOwe.link"),
-            id = Some("checkWhatYouOweLink")
-        )
-    </div>
 
 
 }
