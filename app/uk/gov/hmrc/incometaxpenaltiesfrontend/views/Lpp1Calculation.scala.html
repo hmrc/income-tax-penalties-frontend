@@ -53,20 +53,20 @@
             )
      }
 
-@main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true, isAgent = isAgent) {
+@main(pageTitle = messages(s"calculation.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
     <span class="govuk-caption-l" id="captionSpan">
         @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.first.h1")</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.first.h1")</h1>
 
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
     @if(inBreathingSpace){
         @govukInsetText(InsetText(
-            content = Text(messages("calculation.individual.calc.breathing.space")),
+            content = Text(messages("calculation.calc.breathing.space")),
             id = Some("breathingSpaceMessage")
         ))
     }
@@ -83,7 +83,7 @@
 
     @if(calculationData.isPFA) {
         <p class="govuk-body" id="taxYearAmended">
-        @messages("calculation.individual.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+        @messages("calculation.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
         </p>
 
         <p class="govuk-body" id="paymentDeadline">
@@ -115,7 +115,7 @@
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         <p class="govuk-body" id="breathingSpaceExpired">
-            @messages("calculation.individual.breathingSpace.expired")
+            @messages("calculation.breathingSpace.expired")
         </p>
     }
 
@@ -206,7 +206,7 @@
     <div class="govuk-!-margin-bottom-8">
         @link(
             link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.individual.return.link"),
+            messageKey = messages("calculation.return.link"),
             id = Some("returnToIndex")
         )
         @if(!calculationData.isEstimate) {
