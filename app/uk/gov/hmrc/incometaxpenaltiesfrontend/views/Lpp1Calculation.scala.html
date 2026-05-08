@@ -27,27 +27,46 @@
 
 @this(
         main: MainTemplate,
-        link: Link,
+        h2: H2,
+        p: P,
         govukInsetText : GovukInsetText,
         calculationHelper: FirstLatePaymentCalculationHelper,
+        govukTable : GovukTable,
+        howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount,
+        calculationFooterLinks : CalculationFooterLinks
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+      @TotalTableRow = @{
+            Seq(
+                TableRow(
+                         content = Text(messages("calculation.table.caption.total.penalty")),
+                         classes ="govuk-table__header"
+                ),
+                TableRow(),
+                TableRow(),
+                TableRow(
+                         content = Text(s"£${calculationData.formattedPenaltyAmount}"),
+                         format = Some("numeric"),
+                         classes = "govuk-table__header"
+                )
+            )
+     }
 
-@main(pageTitle = messages(s"calculation.individual.first.title"), backLinkEnabled = true, isAgent = isAgent) {
+@main(pageTitle = messages(s"calculation.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
     <span class="govuk-caption-l" id="captionSpan">
         @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.first.h1")</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.first.h1")</h1>
 
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
     @if(inBreathingSpace){
         @govukInsetText(InsetText(
-            content = Text(messages("calculation.individual.calc.breathing.space")),
+            content = Text(messages("calculation.calc.breathing.space")),
             id = Some("breathingSpaceMessage")
         ))
     }
@@ -64,7 +83,7 @@
 
     @if(calculationData.isPFA) {
         <p class="govuk-body" id="taxYearAmended">
-        @messages("calculation.individual.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+        @messages("calculation.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
         </p>
 
         <p class="govuk-body" id="paymentDeadline">
@@ -82,11 +101,6 @@
     </p>
 
 
-    <ul class="govuk-list govuk-list--bullet" id="reasonList">
-        @calculationHelper.getBulletListContent(calculationData, if(calculationData.isPFA) ".pfa" else "").map { bulletContent =>
-            <li>@bulletContent</li>
-        }
-    </ul>
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
@@ -96,7 +110,7 @@
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         <p class="govuk-body" id="breathingSpaceExpired">
-            @messages("calculation.individual.breathingSpace.expired")
+            @messages("calculation.breathingSpace.expired")
         </p>
     }
 
@@ -105,39 +119,73 @@
             @insetMsg
         </div>
     }
+    @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
 
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amountApplied")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.days.payment")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.rate")</th>
-                <th scope="col" class="govuk-table__header">@messages("calculation.table.caption.amount")</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell">£@calculationData.llpLRCharge.formattedChargeAmount</td>
-                <td class="govuk-table__cell">@calculationData.llpLRCharge.daysOverdue</td>
-                <td class="govuk-table__cell">@{calculationData.llpLRCharge.penaltyPercentage}%</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.llpLRCharge.formattedPenaltyAmount</td>
-            </tr>
-            @calculationData.llpHRCharge.map {lppHRCharge =>
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">£@lppHRCharge.formattedChargeAmount</td>
-                    <td class="govuk-table__cell">@lppHRCharge.daysOverdue</td>
-                    <td class="govuk-table__cell">@{lppHRCharge.penaltyPercentage}%</td>
-                    <td class="govuk-table__cell govuk-table__cell--numeric">£@lppHRCharge.formattedPenaltyAmount</td>
-                </tr>
-            }
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@messages("calculation.table.caption.total.penalty")</th>
-                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
-                <td class="govuk-table__cell govuk-table__cell--numeric"></td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£@calculationData.formattedPenaltyAmount</td>
-            </tr>
-        </tbody>
-    </table>
+    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+
+    @if(!calculationData.isPenaltyOverdue && !calculationData.isEstimate && !calculationData.isPenaltyPaid) {
+    @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+    }
+    @if(calculationData.isPenaltyOverdue) {
+    @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
+    }
+
+    @govukTable(Table(
+        rows = Seq(
+          Seq(
+            TableRow(
+              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
+            ),
+            TableRow(
+              content = Text(s"${calculationData.llpLRCharge.daysOverdue}")
+            ),
+            TableRow(
+              content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
+              format = Some("numeric")
+            ),
+            TableRow(
+              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
+              format = Some("numeric")
+            )
+          ),
+        ) ++ calculationData.llpHRCharge.map {lppHRCharge =>
+         Seq(
+            TableRow(
+              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
+            ),
+            TableRow(
+              content = Text(s"${lppHRCharge.daysOverdue}")
+            ),
+            TableRow(
+              content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
+              format = Some("numeric")
+            ),
+            TableRow(
+              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
+              format = Some("numeric")
+            )
+        )
+        } ++
+
+        Seq(TotalTableRow),
+         head = Some(Seq(
+          HeadCell(
+            content = Text(messages("calculation.table.caption.amountApplied"))
+          ),
+          HeadCell(
+            content = Text(messages("calculation.table.caption.days.payment"))
+          ),
+          HeadCell(
+            content = Text(messages("calculation.table.caption.rate")),
+            format = Some("numeric")
+          ),
+          HeadCell(
+            content = Text(messages(messages("calculation.table.caption.amount"))),
+            format = Some("numeric")
+          )
+        )),
+
+    ))
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">
@@ -150,12 +198,6 @@
         }
     </div>
 
-    <div class="govuk-!-margin-bottom-8">
-        @link(
-            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.individual.return.link"),
-            id = Some("returnToIndex")
-        )
-    </div>
+   @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
 }

@@ -61,12 +61,11 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
-          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
-          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
-          document.getElementById("SupplementaryPenaltyAmountDetailsP2").text() shouldBe "We charge:"
-          document.getElementById("SupplementaryPenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
-          document.getElementById("SupplementaryPenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
+          document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+          document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+          document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
         }
         "first late payment penalty supplementary charge exists for the penaltyId and is overdue" in {
           stubAuthRequests(isAgent)
@@ -81,13 +80,12 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
-          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
           document.getElementById("penaltyStatusUnpaid").text() shouldBe "This penalty is overdue. We are charging interest."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
-          document.getElementById("SupplementaryPenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
-          document.getElementById("SupplementaryPenaltyAmountDetailsP2").text() shouldBe "We charge:"
-          document.getElementById("SupplementaryPenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
-          document.getElementById("SupplementaryPenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
+          document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+          document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+          document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
         }
       }
     }

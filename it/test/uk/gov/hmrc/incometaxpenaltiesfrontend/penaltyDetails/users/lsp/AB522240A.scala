@@ -56,7 +56,7 @@ object AB522240A extends UserDetailsData {
     validateSummary(cardRows.get(2), "Return due", "31 January 2028")
     validateSummary(cardRows.get(3), "Return submitted", "Not yet received")
     validateSummary(cardRows.get(4), "Status", "Paused due to Breathing Space")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -94,7 +94,7 @@ object AB522240A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 January 2027 to 5 April 2027")
     validateSummary(cardRows.get(2), "Update due", "7 May 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 June 2027")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   def penaltyCard4ExpectedContent(card: Element): Unit = {
@@ -106,7 +106,7 @@ object AB522240A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 October 2026 to 5 January 2027")
     validateSummary(cardRows.get(2), "Update due", "7 February 2027")
     validateSummary(cardRows.get(3), "Update submitted", "1 March 2027")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   def penaltyCard5ExpectedContent(card: Element): Unit = {

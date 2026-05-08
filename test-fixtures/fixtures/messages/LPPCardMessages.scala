@@ -51,7 +51,7 @@ object LPPCardMessages {
     //Card Footer Links
     val cardLinksViewCalculation = "View calculation"
     val cardLinksReviewAppeal = "Ask for review"
-    val cardLinksCheckIfCanAppeal = "Check if you can appeal this penalty"
+    val cardLinksCheckIfCanAppeal = "Appeal this penalty"
     val cannotAppeal = "You cannot appeal this point"
   }
 
@@ -85,7 +85,7 @@ object LPPCardMessages {
 
     //Card Footer Links
     override val cardLinksViewCalculation = "Gweld y cyfrifiad"
-    override val cardLinksCheckIfCanAppeal = "Gwirio a allwch apelio yn erbyn y gosb hon"
+    override val cardLinksCheckIfCanAppeal = "Apelio yn erbyn y gosb hon"
     override val cardLinksReviewAppeal = "Gofyn am adolygiad"
     override val cannotAppeal = "Ni allwch apelio yn erbyn y pwynt hwn"
   }

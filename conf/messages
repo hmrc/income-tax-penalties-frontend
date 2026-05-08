@@ -59,41 +59,37 @@ session.expired.h1 = For your security, this service has been reset
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
 
 calculations.view.calculations = View calculation
-calculation.individual.first.title = First late payment penalty calculation
-calculation.individual.second.title = Second late payment penalty calculation
-calculation.individual.first.h1 = First late payment penalty calculation
-calculation.individual.second.h1 = Second late payment penalty calculation
-calculation.individual.p1 = This penalty applies if Income Tax has not been paid for 30 days.
-calculation.individual.p2 = It is made up of 2 parts:
-calculation.individual.return.link = View your Self Assessment penalties and appeals
+calculation.first.title = First late payment penalty calculation
+calculation.second.title = Second late payment penalty calculation
+calculation.first.h1 = First late payment penalty calculation
+calculation.second.h1 = Second late payment penalty calculation
+calculation.p1 = This penalty applies if Income Tax has not been paid for 30 days.
+calculation.p2 = It is made up of 2 parts:
+calculation.return.link = View penalties and appeals
 calculation.penalty.amount = Penalty amount:
-calculation.individual.amount.received = Amount received
-calculation.individual.left.to.pay = Left to pay
+calculation.amount.received = Amount received
+calculation.left.to.pay = Left to pay
 caption.date = {0} to {1} tax year
 calculation.charge.reference = Charge reference: {0}
-calculation.individual.pay.penalty.by = Pay penalty by {0}
-calculation.individual.paid.penalty.on = Penalty paid on {0}
+calculation.pay.penalty.by = Pay penalty by {0}
+calculation.paid.penalty.on = Penalty paid on {0}
 calculation.payment.deadline = The payment deadline for the {0} to {1} tax year was {2}.
-calculation.individual.payment.15.30.missed.reason.taxUnpaid = Because you missed this deadline, you will be charged a late payment penalty.
+calculation.payment.15.30.missed.reason.taxUnpaid = Because you missed this deadline, you will be charged a late payment penalty.
 calculation.payment.deadline.pfa = The payment deadline for the extra amount was {0}.
-calculation.individual.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
+calculation.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
 
-calculation.individual.payment.15.30.missed.reason = Because you missed this deadline, you have been charged a late payment penalty.
+calculation.payment.15.30.missed.reason = Because you missed this deadline, you have been charged a late payment penalty.
 
-calculation.individual.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
+calculation.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
 
-calculation.individual.payment.15.30.missed.reason.bullet.1 = You missed the deadline by 15 to 30 days, so you have been charged {0}% of the tax that was outstanding 15 days after the payment deadline (£{1})
-calculation.individual.payment.15.30.missed.reason.bullet.1.pfa = You missed the deadline by 15 to 30 days, so you have been charged {0}% of the amount that was outstanding 15 days after the payment deadline (£{1})
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1 = You have missed the deadline by 15 to 30 days, so you will be charged {0}% of the tax that was outstanding 15 days after the payment deadline (£{1})
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.1.pfa = You have missed the deadline by 15 to 30 days, so you will be charged {0}% of the amount that was outstanding 15 days after the payment deadline (£{1})
 
-calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1 = {0}% of £{1} (the tax that was outstanding 15 days after the payment deadline)
-calculation.individual.payment.30.plus.unpaid.missed.reason.bullet.1.pfa = {0}% of £{1} (the amount that was outstanding 15 days after the payment deadline)
-calculation.individual.payment.30.plus.missed.reason.bullet.2 = An additional {0}% of £{1} (the tax that was outstanding 30 days after the payment deadline)
-calculation.individual.payment.30.plus.missed.reason.bullet.2.pfa = An additional {0}% of £{1} (the amount that was outstanding 30 days after the payment deadline)
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2 = If you miss the deadline by more than 30 days, this penalty will increase by an additional {0}% of the tax that is outstanding 30 days after the payment deadline
-calculation.individual.payment.15.30.unpaid.missed.reason.bullet.2.pfa = If you miss the deadline by more than 30 days, this penalty will increase by an additional {0}% of the amount that is outstanding 30 days after the payment deadline
 
+
+
+
+calculation.yourPenaltyDetails = Your penalty details
+calculation.penaltyDueDate.due.p = To avoid interest charges, you should pay this penalty by {0}.
+calculation.penaltyDueDate.overDue.p = This penalty is overdue. We are charging interest.
 calculation.table.caption.amountApplied = Amount penalty is applied to
 calculation.table.caption.days.payment = Days after payment deadline
 calculation.table.caption.charge.period = Charge period
@@ -103,41 +99,34 @@ calculation.table.caption.amount = Amount
 calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
 
-calculation.individual.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
-calculation.individual.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
-calculation.individual.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
-calculation.individual.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
+calculation.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
+calculation.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
+calculation.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
 
-calculation.individual.penalty.isDue = To avoid interest charges, you should pay this penalty by {0}.
+calculation.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
+calculation.penalty.payment.plan.agreed.h1 = Your payment plan
+calculation.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
+calculation.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments.
+calculation.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
 
-calculation.individual.penalty.isOverdue = This penalty is now overdue and interest is being charged.
+calculation.calc2.missed.deadline.tax.unpaid = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
+calculation.calc2.missed.deadline.tax.paid = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
 
-calculation.individual.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
-calculation.individual.penalty.payment.plan.agreed.h1 = Your payment plan
-calculation.individual.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
-calculation.individual.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments.
-calculation.individual.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
+calculation.calc2.penalty.increase.tax.unpaid = This penalty will increase daily at an annual rate of 10% of the outstanding tax.
+calculation.calc2.penalty.increase.tax.paid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.
 
-calculation.individual.calc2.missed.deadline.tax.unpaid = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
-calculation.individual.calc2.missed.deadline.tax.paid = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
+calculation.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
+calculation.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
+calculation.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 
-calculation.individual.calc2.penalty.increase.tax.unpaid = This penalty will increase daily at an annual rate of 10% of the outstanding tax.
-calculation.individual.calc2.penalty.increase.tax.paid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.
+calculation.calc2.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
+calculation.calc2.penalty.payment.plan.agreed.h1 = Your payment plan
+calculation.calc2.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
+calculation.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax.
+calculation.calc2.penalty.payment.plan.agreed.p3 = You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
 
-calculation.individual.calc2.penalty.due = To avoid interest charges, you should pay this penalty by {0}.
-
-calculation.individual.calc2.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
-calculation.individual.calc2.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
-calculation.individual.calc2.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
-calculation.individual.calc2.penalty.overdue = This penalty is now overdue and interest is being charged.
-
-calculation.individual.calc2.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
-calculation.individual.calc2.penalty.payment.plan.agreed.h1 = Your payment plan
-calculation.individual.calc2.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
-calculation.individual.calc2.penalty.payment.plan.agreed.p2 = This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax.
-calculation.individual.calc2.penalty.payment.plan.agreed.p3 = You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
-
-calculation.individual.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
+calculation.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
 
 calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount
 calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.
@@ -147,7 +136,6 @@ calculation.calc2.how.we.work.penalty.amount.point.2 = multiply by 0.10 (the ann
 calculation.calc2.how.we.work.penalty.amount.point.3 = divide the amount by days in a year
 calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts together to get the total amount
 
-calculation.individual.calc2.penalty.details.heading = Your penalty details
 
 calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)
@@ -162,14 +150,7 @@ calculation.supplementary.reason = We issued this additional penalty because the
 calculation.supplementary.p1 = You still need to pay the earlier penalty if you have not paid it.
 calculation.supplementary.dueDateHasNotPassed.p2 = To avoid interest charges, you should pay this penalty by {0}.
 calculation.supplementary.dueDateHasPassed.p2 = This penalty is overdue. We are charging interest.
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details = How we work out the penalty amount
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1 = A first late payment penalty is made up of two parts.
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2 = We charge:
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
-calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
-calculation.supplementary.return.link = View penalties and appeals
-calculation.supplementary.checkWhatYouOwe.link = Check what you owe
-
+calculation.checkWhatYouOwe.link = Check what you owe
 
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.
@@ -182,6 +163,16 @@ compliance.timeline.updatePeriod.heading = Update period: {0} to {1}
 compliance.timeline.tax.return.heading = Tax return: {0} to {1}
 compliance.timeline.submission.due.now = Due on {0}. Send this missing submission now.
 compliance.timeline.send.by = Send by {0}
+
+# How We Work Out Penalty Amount details
+# ===================
+howWeWorkOutPenaltyAmount.details = How we work out the penalty amount
+howWeWorkOutPenaltyAmount.lPP1.p1 = A first late payment penalty is made up of two parts.
+howWeWorkOutPenaltyAmount.lPP1.p2 = We charge:
+howWeWorkOutPenaltyAmount.bullet1 = 3% of the unpaid Income Tax after 15 days
+howWeWorkOutPenaltyAmount.bullet2 = another 3% of the unpaid Income Tax after 30 days
+howWeWorkOutPenaltyAmount.bullet1.4percent = 4% of the unpaid Income Tax after 15 days
+howWeWorkOutPenaltyAmount.bullet2.4percent = another 4% of the unpaid Income Tax after 30 days
 
 # Penalty Status tags
 # ===================
@@ -286,7 +277,7 @@ expiryReason.RES = Reset
 # Card Footer Links
 # =================
 cardLinks.cannotAppeal = You cannot appeal this point
-cardLinks.checkIfYouCanAppealThisPenalty = Check if you can appeal this penalty
+cardLinks.checkIfYouCanAppealThisPenalty = Appeal this penalty
 cardLinks.appeal = Check if you can appeal this penalty
 cardLinks.viewCalculation = View calculation
 cardLinks.reviewAppeal = Ask for review
@@ -318,8 +309,8 @@ agentErrorView.link = Go to agent services account
 # Breathing Space
 breathingSpace.status = Status
 breathingSpace.paused = Paused due to Breathing Space
-calculation.individual.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
-calculation.individual.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
+calculation.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
+calculation.calc2.breathingSpace.expired = Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation.
 
 # Unauthorised Error View
 unauthorised.page.h1 = You are not authorised to access this page
