@@ -1,0 +1,133 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenaltyCalculationData
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.FirstLatePaymentCalculationHelper
+
+
+@this(
+        main: MainTemplate,
+        link: Link,
+        p: P,
+        govukTable : GovukTable,
+        govukDetails : GovukDetails,
+)
+
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@SupplementaryPenaltyAmountDetails = {
+    <p class="govuk-body" id="SupplementaryPenaltyAmountDetailsP1">@messages("calculation.supplementary.details.p1", calculationData.penaltyPercentage.toString())</p>
+    @p("calculation.supplementary.details.each.day", elmId = Some("SupplementaryPenaltyAmountDetailsP2"))
+    <ol class="govuk-list govuk-list--number">
+        <li id="SupplementaryPenaltyAmountDetailsPoint1">@messages("calculation.supplementary.details.list.1")</li>
+         <li id="SupplementaryPenaltyAmountDetailsPoint2">@messages("calculation.supplementary.details.list.2")</li>
+         <li id="SupplementaryPenaltyAmountDetailsPoint3">@messages("calculation.supplementary.details.list.3")</li>
+         <li id="SupplementaryPenaltyAmountDetailsPoint4">@messages("calculation.supplementary.details.list.4")</li>
+    </ol>
+}
+
+@chargePeriodText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
+
+@main(pageTitle = messages("calculation.supplementary.second.title"), backLinkEnabled = true, isAgent = isAgent) {
+    <span class="govuk-caption-l" id="captionSpan">@messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))</span>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.supplementary.second.h1")</h1>
+    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
+    <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyByDate">@messages("calculation.supplementary.second.pay.penalty.by", dateToString(calculationData.payPenaltyBy))<p>
+
+
+    @calculationData.penaltyChargeReference.map{chargeRef =>
+        <p class="govuk-body" id="chargeReference">
+            @messages("calculation.charge.reference", chargeRef)
+        </p>
+    }
+
+        <p class="govuk-body" id="supplementaryReason"> @messages("calculation.supplementary.second.reason")</p>
+        <p class="govuk-body" id="supplementaryAlert"> @messages("calculation.supplementary.second.p1")</p>
+
+    @govukDetails(Details(
+                    summary = Text(messages("calculation.supplementary.details")),
+                    content = HtmlContent(SupplementaryPenaltyAmountDetails)
+    ))
+
+    @if(calculationData.isPenaltyOverdue) {
+        <p class="govuk-body" id="penaltyStatusUnpaid">@messages("calculation.supplementary.second.penalty.overdue.text")</p>
+    } else {
+        <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
+    }
+
+    @govukTable(Table(
+        rows = Seq(
+            Seq(
+                TableRow(
+                    content = Text(messages("calculation.supplementary.second.charge.period")),
+                    classes = "govuk-!-font-weight-bold"
+                ),
+                TableRow(
+                    content = Text(messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
+                        dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+                        dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+                        calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+                )
+            ),
+            Seq(
+                TableRow(
+                    content = Text(messages("calculation.supplementary.second.annual.rate")),
+                    classes = "govuk-!-font-weight-bold"
+                ),
+                TableRow(
+                    content = Text(calculationData.penaltyPercentage.toString() + "%")
+                )
+            ),
+            Seq(
+                TableRow(
+                    content = Text(messages("calculation.supplementary.second.penalty.amount")),
+                    classes = "govuk-!-font-weight-bold"
+                ),
+                TableRow(
+                    content = Text("£" + calculationData.formattedPenaltyAmount)
+                )
+            )
+        ),
+        caption = Some(messages("calculation.individual.calc2.penalty.details.heading")),
+        attributes = Map("id" -> "second-lpp-penalty-details-table"),
+        captionClasses = "govuk-table__caption--m",
+        firstCellIsHeader = false
+    ))
+
+    <div class="govuk-!-margin-bottom-8">
+        @link(
+            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+            messageKey = messages("calculation.supplementary.return.link"),
+            id = Some("returnToIndex")
+        )
+
+        @link(
+            link = appConfig.checkWhatYouOweUrl(isAgent),
+            messageKey = messages("calculation.supplementary.checkWhatYouOwe.link"),
+            id = Some("checkWhatYouOwLink")
+        )
+    </div>
+
+
+}

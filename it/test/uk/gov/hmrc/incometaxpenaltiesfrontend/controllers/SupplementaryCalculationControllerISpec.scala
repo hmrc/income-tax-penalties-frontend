@@ -42,6 +42,7 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
   List(false, true).foreach { isAgent =>
     val pathStart = if (isAgent) "/agent-" else "/"
     val LPP1SupplementaryPath = addQueryParam(pathStart + "additional-first-lpp-calculation")
+    val LPP2SupplementaryPath = addQueryParam(pathStart + "additional-second-lpp-calculation")
     val optArn = if (isAgent) Some("123456789") else None
 
 
@@ -88,6 +89,43 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementById("SupplementaryPenaltyAmountDetailsP2").text() shouldBe "We charge:"
           document.getElementById("SupplementaryPenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
           document.getElementById("SupplementaryPenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
+        }
+      }
+    }
+
+    s"GET $LPP2SupplementaryPath" should {
+      setFeatureDate(None)
+      "render the supplementary calculation page for LPP2" when {
+        "second late payment penalty supplementary charge exists for the penaltyId" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData()
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
+          val result = get(LPP2SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+          document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
+          document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+        }
+        "second late payment penalty supplementary charge exists for the penaltyId and is overdue" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isOverdue = true)
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
+          val result = get(LPP2SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+          document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
+          document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementById("penaltyStatusUnpaid").text() shouldBe "This penalty is overdue. We are charging interest."
+          document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
         }
       }
     }

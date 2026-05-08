@@ -48,7 +48,11 @@ case class LatePaymentPenaltySummaryCard(
   val hasSupplementaryCharge: Boolean = supplement.contains(true)
 
   def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if (hasCalulcationDetailsLink && hasSupplementaryCharge){
-    Some(routes.SupplementaryCalculationController.supplementaryCalculationPage(principalChargeReference, isAgent).url)
+    if(isLPP2){
+      Some(routes.SupplementaryCalculationController.supplementaryCalculationPageLPP2(principalChargeReference, isAgent).url)
+    } else {
+      Some(routes.SupplementaryCalculationController.supplementaryCalculationPage(principalChargeReference, isAgent).url)
+    }
   } else if(hasCalulcationDetailsLink){
     Some(routes.PenaltyCalculationController.penaltyCalculationPage(principalChargeReference, isAgent, isLPP2).url)
   } else {
