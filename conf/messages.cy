@@ -150,11 +150,6 @@ calculation.supplementary.reason = Rydym wedi dyroddi’r gosb ychwanegol hon ga
 calculation.supplementary.p1 = Mae’n rhaid i chi dalu’r gosb flaenorol os nad ydych wedi gwneud hynny eisoes.
 calculation.supplementary.dueDateHasNotPassed.p2 = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.supplementary.dueDateHasPassed.p2 = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
-
-calculation.supplementary.return.link = Bwrw golwg dros gosbau ac apeliadau
-calculation.supplementary.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
-
-
 calculation.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu

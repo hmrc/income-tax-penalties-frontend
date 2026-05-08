@@ -150,11 +150,6 @@ calculation.supplementary.reason = We issued this additional penalty because the
 calculation.supplementary.p1 = You still need to pay the earlier penalty if you have not paid it.
 calculation.supplementary.dueDateHasNotPassed.p2 = To avoid interest charges, you should pay this penalty by {0}.
 calculation.supplementary.dueDateHasPassed.p2 = This penalty is overdue. We are charging interest.
-
-calculation.supplementary.return.link = View penalties and appeals
-calculation.supplementary.checkWhatYouOwe.link = Check what you owe
-
-
 calculation.checkWhatYouOwe.link = Check what you owe
 
 compliance.timeline.individual.title = Actions you need to take to get your points removed

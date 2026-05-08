@@ -115,7 +115,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -145,7 +144,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -175,7 +173,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -204,7 +201,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -315,7 +311,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -341,7 +336,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
           }
@@ -442,7 +436,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
@@ -486,7 +479,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyAmountDetailsPoint2").text() shouldBe "multiply by 0.10 (the annual rate)"
             document.getElementById("penaltyAmountDetailsPoint3").text() shouldBe "divide the amount by days in a year"
             document.getElementById("penaltyAmountDetailsPoint4").text() shouldBe "add all the daily amounts together to get the total amount"
-            document.getElementById("penaltyStatus").text() shouldBe ""
             document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(1)").first().text() shouldBe s"$chargePeriod"
             document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(2)").first().text() shouldBe s"$getStartDateChargePeriod to $getEndDateChargePeriod ($getChargePeriodDays days)"
             document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(1)").first().text() shouldBe s"$estimatedPenalty"
