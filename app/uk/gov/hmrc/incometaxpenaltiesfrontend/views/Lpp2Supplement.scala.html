@@ -29,7 +29,6 @@
         main: MainTemplate,
         link: Link,
         p: P,
-        govukTable : GovukTable,
         govukDetails : GovukDetails,
 )
 
@@ -70,50 +69,45 @@
                     content = HtmlContent(SupplementaryPenaltyAmountDetails)
     ))
 
+
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">@messages("calculation.individual.calc2.penalty.details.heading")</h2>
+
     @if(calculationData.isPenaltyOverdue) {
         <p class="govuk-body" id="penaltyStatusUnpaid">@messages("calculation.supplementary.second.penalty.overdue.text")</p>
     } else {
         <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
     }
 
-    @govukTable(Table(
-        rows = Seq(
-            Seq(
-                TableRow(
-                    content = Text(messages("calculation.supplementary.second.charge.period")),
-                    classes = "govuk-!-font-weight-bold"
-                ),
-                TableRow(
-                    content = Text(messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
-                        dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-                        dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-                        calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-                )
-            ),
-            Seq(
-                TableRow(
-                    content = Text(messages("calculation.supplementary.second.annual.rate")),
-                    classes = "govuk-!-font-weight-bold"
-                ),
-                TableRow(
-                    content = Text(calculationData.penaltyPercentage.toString() + "%")
-                )
-            ),
-            Seq(
-                TableRow(
-                    content = Text(messages("calculation.supplementary.second.penalty.amount")),
-                    classes = "govuk-!-font-weight-bold"
-                ),
-                TableRow(
-                    content = Text("£" + calculationData.formattedPenaltyAmount)
-                )
-            )
-        ),
-        caption = Some(messages("calculation.individual.calc2.penalty.details.heading")),
-        attributes = Map("id" -> "second-lpp-penalty-details-table"),
-        captionClasses = "govuk-table__caption--m",
-        firstCellIsHeader = false
-    ))
+    <dl class="govuk-summary-list govuk-!-margin-bottom-6">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                @messages("calculation.supplementary.second.charge.period")
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
+                dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+                dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+                calculationData.chargePeriodDays(timeMachine.getCurrentDate()))
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                @messages("calculation.supplementary.second.annual.rate")
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @calculationData.penaltyPercentage.toString()%
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                @messages("calculation.supplementary.second.penalty.amount")
+            </dt>
+            <dd class="govuk-summary-list__value">
+                £@calculationData.formattedPenaltyAmount
+            </dd>
+
+        </div>
+    </dl>
 
     <div class="govuk-!-margin-bottom-8">
         @link(
