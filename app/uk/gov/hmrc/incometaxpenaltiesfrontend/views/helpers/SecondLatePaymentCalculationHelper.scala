@@ -26,38 +26,38 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenalt
 class SecondLatePaymentCalculationHelper {
 
 
-  def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
+  def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
 
-    if (calculationData.isPenaltyPaid) {
-      messages("calculation.individual.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
+    if (calculationData.isPenaltyPaid || !calculationData.isPenaltyOverdue) {
+      Some(messages("calculation.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy)))
+    } else if(calculationData.isEstimate){
+      Some(messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy)))
     } else {
-      messages("calculation.individual.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+      None
     }
   }
 
 
-  def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
+  def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     if (!calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
-      val isEstimateMsg = messages("calculation.individual.calc2.penalty.isEstimate",
+      val isEstimateMsg = messages("calculation.calc2.penalty.isEstimate",
         dateToYearString(calculationData.taxPeriodStartDate),
         dateToYearString(calculationData.taxPeriodEndDate))
-      val toStopEstimateIncMsg = messages("calculation.individual.calc2.penalty.stopEstimateIncreasing")
+      val toStopEstimateIncMsg = messages("calculation.calc2.penalty.stopEstimateIncreasing")
       if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
-        isEstimateMsg
+        Some(isEstimateMsg)
       } else {
-        isEstimateMsg + " " + toStopEstimateIncMsg
+        Some(isEstimateMsg + " " + toStopEstimateIncMsg)
       }
-    } else if (calculationData.isPenaltyOverdue) {
-      messages("calculation.individual.calc2.penalty.overdue")
     } else {
-      messages("calculation.individual.calc2.penalty.due", dateToString(calculationData.principalChargeDueDate))
+      None
     }
   }
 
   def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (_, Some(proposedDate)) =>
-        Some(messages("calculation.individual.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
+        Some(messages("calculation.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
   }
@@ -65,7 +65,7 @@ class SecondLatePaymentCalculationHelper {
   def getPaymentPlanHeading(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
-        Some(messages("calculation.individual.calc2.penalty.payment.plan.agreed.h1"))
+        Some(messages("calculation.calc2.penalty.payment.plan.agreed.h1"))
       case _ => None
     }
   }
@@ -75,9 +75,9 @@ class SecondLatePaymentCalculationHelper {
       case (Some(agreedDate), _) =>
         calculationData.paymentPlanAgreed.map { agreedDate =>
           List(
-            messages("calculation.individual.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
-            messages("calculation.individual.calc2.penalty.payment.plan.agreed.p2"),
-            messages("calculation.individual.calc2.penalty.payment.plan.agreed.p3")
+            messages("calculation.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
+            messages("calculation.calc2.penalty.payment.plan.agreed.p2"),
+            messages("calculation.calc2.penalty.payment.plan.agreed.p3")
           )
         }.getOrElse(List.empty)
       case _ => List.empty

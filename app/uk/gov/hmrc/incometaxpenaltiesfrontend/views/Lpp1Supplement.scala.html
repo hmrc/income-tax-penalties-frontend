@@ -27,20 +27,12 @@
 
 @this(
         main: MainTemplate,
-        link: Link,
-        p: P,
-        govukDetails : GovukDetails,
+        howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount,
+        calculationFooterLinks : CalculationFooterLinks
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
-    @SupplementaryPenaltyAmountDetails = {
-        @p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p1", elmId = Some("SupplementaryPenaltyAmountDetailsP1"))
-        @p("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.p2", elmId = Some("SupplementaryPenaltyAmountDetailsP2"))
-        <ul class="govuk-list govuk-list--bullet">
-            <li id="SupplementaryPenaltyAmountDetailsPoint1">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet1")</li>
-             <li id="SupplementaryPenaltyAmountDetailsPoint2">@messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.bullet2")</li>
-        </ul>
-    }
+
 @main(pageTitle = messages("calculation.supplementary.first.title"), backLinkEnabled = true, isAgent = isAgent) {
     <span class="govuk-caption-l" id="captionSpan">@messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))</span>
 
@@ -64,25 +56,10 @@
         <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.dueDateHasNotPassed.p2", dateToString(calculationData.payPenaltyBy))</p>
     }
 
-    @govukDetails(Details(
-                    summary = Text(messages("calculation.supplementary.detailsHowWeWorkOutPenaltyAmount.details")),
-                    content = HtmlContent(SupplementaryPenaltyAmountDetails)
-    ))
+    @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
 
+    @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
-    <div class="govuk-!-margin-bottom-8">
-        @link(
-            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.supplementary.return.link"),
-            id = Some("returnToIndex")
-        )
-
-        @link(
-            link = appConfig.checkWhatYouOweUrl(isAgent),
-            messageKey = messages("calculation.supplementary.checkWhatYouOwe.link"),
-            id = Some("checkWhatYouOwLink")
-        )
-    </div>
 
 
 }

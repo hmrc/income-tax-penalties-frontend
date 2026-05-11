@@ -51,7 +51,7 @@ object AB311140A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(2), "Return due", "31 January 2027")
     validateSummary(cardRows.get(3), "Return submitted", "22 February 2027")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {

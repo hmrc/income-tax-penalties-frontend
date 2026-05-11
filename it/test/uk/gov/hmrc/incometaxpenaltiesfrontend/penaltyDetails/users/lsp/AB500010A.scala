@@ -63,7 +63,7 @@ object AB500010A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Tax year", "2025 to 2026")
     validateSummary(cardRows.get(1), "Return due", "31 January 2027")
     validateSummary(cardRows.get(2), "Return submitted", "22 February 2027")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
 
   def penaltyCard3ExpectedContent(card: Element): Unit = {
@@ -75,7 +75,7 @@ object AB500010A extends UserDetailsData {
     validateSummary(cardRows.get(1), "Update period", "6 July 2026 to 5 October 2026")
     validateSummary(cardRows.get(2), "Update due", "7 November 2026")
     validateSummary(cardRows.get(3), "Update submitted", "1 December 2026")
-    validateAppealLink(card.getElementsByClass("govuk-link").first())
+    validateAppealLink(card.getElementsByClass("govuk-link").first(), isLSP = true)
   }
   
   def penaltyCard4ExpectedContent(card: Element): Unit = {

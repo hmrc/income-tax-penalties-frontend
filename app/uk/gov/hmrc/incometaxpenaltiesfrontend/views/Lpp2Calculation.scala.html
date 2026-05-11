@@ -26,12 +26,13 @@
 
 @this(
         main: MainTemplate,
-        link: Link,
         govukInsetText : GovukInsetText,
         govukDetails : GovukDetails,
         p: P,
+        h2: H2,
         govukTable : GovukTable,
-        calculationHelper: SecondLatePaymentCalculationHelper
+        calculationHelper: SecondLatePaymentCalculationHelper,
+        calculationFooterLinks : CalculationFooterLinks
 )
 
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -50,7 +51,7 @@
     @chargePeriodText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
 
 
-@main(pageTitle = messages(s"calculation.individual.second.title"), backLinkEnabled = true, isAgent = isAgent) {
+@main(pageTitle = messages(s"calculation.second.title"), backLinkEnabled = true, isAgent = isAgent) {
 
 
 
@@ -58,26 +59,26 @@
     @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.individual.second.h1")</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.second.h1")</h1>
 
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
     @if(inBreathingSpace){
             @govukInsetText(InsetText(
-                content = Text(messages("calculation.individual.calc.breathing.space")),
+                content = Text(messages("calculation.calc.breathing.space")),
                 id = Some("breathingSpaceMessage")
             ))
     }
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         @govukInsetText(InsetText(
-            content = Text(messages("calculation.individual.calc2.breathingSpace.expired")),
+            content = Text(messages("calculation.calc2.breathingSpace.expired")),
             id = Some("breathingSpaceExpired")
         ))
     }
 
-    @if(calculationData.incomeTaxIsPaid){
+    @if(calculationData.incomeTaxIsPaid || calculationData.isEstimate){
         <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@calculationHelper.getPaymentDetails(calculationData)</p>
     }
 
@@ -95,21 +96,21 @@
 
     @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
         <p class="govuk-body" id="missedDeadline">
-        @messages("calculation.individual.calc2.missed.deadline.tax.unpaid")
+        @messages("calculation.calc2.missed.deadline.tax.unpaid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
-        @messages("calculation.individual.calc2.penalty.increase.tax.unpaid")
+        @messages("calculation.calc2.penalty.increase.tax.unpaid")
         </p>
 
     } else {
 
         <p class="govuk-body" id="missedDeadline">
-        @messages("calculation.individual.calc2.missed.deadline.tax.paid")
+        @messages("calculation.calc2.missed.deadline.tax.paid")
         </p>
 
         <p class="govuk-body" id="penaltyIncrease">
-        @messages("calculation.individual.calc2.penalty.increase.tax.paid")
+        @messages("calculation.calc2.penalty.increase.tax.paid")
         </p>
     }
 
@@ -139,6 +140,14 @@
         content = HtmlContent(penaltyAmountDetails)
     ))
 
+    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+    @if(!calculationData.isPenaltyOverdue && !calculationData.isEstimate && !calculationData.isPenaltyPaid) {
+    @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+    }
+    @if(calculationData.isPenaltyOverdue) {
+    @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
+    }
+
     @govukTable(Table(
         rows = Seq(
             Seq(
@@ -163,7 +172,6 @@
                 )
             )
         ),
-        caption = Some(messages("calculation.individual.calc2.penalty.details.heading")),
         attributes = Map("id" -> "second-lpp-penalty-details-table"),
         captionClasses = "govuk-table__caption--m",
         firstCellIsHeader = false
@@ -180,12 +188,6 @@
         }
     </div>
 
-    <div class="govuk-!-margin-bottom-8">
-        @link(
-            link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-            messageKey = messages("calculation.individual.return.link"),
-            id = Some("returnToIndex")
-        )
-    </div>
+    @calculationFooterLinks(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
 }
