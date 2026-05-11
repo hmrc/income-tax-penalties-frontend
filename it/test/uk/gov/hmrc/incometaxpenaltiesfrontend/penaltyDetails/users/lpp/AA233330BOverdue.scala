@@ -21,10 +21,10 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsDa
 
 object AA233330BOverdue extends UserDetailsData {
 
-  override val nino: String = AA233330A.nino
-  override val expectedNumberOfLPPPenaltyCards: Int = AA233330A.expectedNumberOfLPPPenaltyCards
-  override val expectedNumberOfLSPPenaltyCards: Int = AA233330A.expectedNumberOfLSPPenaltyCards
-  
+  override val nino: String = AA233330B.nino
+  override val expectedNumberOfLPPPenaltyCards: Int = AA233330B.expectedNumberOfLPPPenaltyCards
+  override val expectedNumberOfLSPPenaltyCards: Int = AA233330B.expectedNumberOfLSPPenaltyCards
+
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Additional second late payment penalty: £46.02")
     validateCardTag(card, expectedTag = "Overdue")
@@ -40,10 +40,10 @@ object AA233330BOverdue extends UserDetailsData {
   
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
-    1 -> AA233330A.penaltyCard1ExpectedContent,
-    2 -> AA233330A.penaltyCard2ExpectedContent
+    1 -> AA233330B.penaltyCard1ExpectedContent,
+    2 -> AA233330B.penaltyCard2ExpectedContent
   )
 
-  override val expectedOverviewText: String = AA233330A.expectedOverviewText
+  override val expectedOverviewText: String = AA233330B.expectedOverviewText
   override val timeMachineDate: String = "20/05/2028"
 }
