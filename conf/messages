@@ -78,9 +78,9 @@ calculation.payment.15.30.missed.reason.taxUnpaid = Because you missed this dead
 calculation.payment.deadline.pfa = The payment deadline for the extra amount was {0}.
 calculation.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
 
-calculation.payment.15.30.missed.reason = Because you missed this deadline, you have been charged a late payment penalty.
+calculation.payment.15.30.missed.reason = Because you missed this deadline, you were charged a late payment penalty.
 
-calculation.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts.
+calculation.payment.missed.reason.additional = Because you missed this deadline by more than 30 days, you have been charged a late payment penalty.
 
 
 
