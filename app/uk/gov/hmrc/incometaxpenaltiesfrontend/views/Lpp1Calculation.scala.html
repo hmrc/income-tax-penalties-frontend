@@ -126,7 +126,7 @@
     @if(!calculationData.isPenaltyOverdue && !calculationData.isEstimate && !calculationData.isPenaltyPaid) {
     @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
     }
-    @if(calculationData.isPenaltyOverdue && !calculationData.isEstimate && !calculationData.isPenaltyPaid) {
+    @if(calculationData.isPenaltyOverdue && !calculationData.isPenaltyPaid) {
     @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
     }
 
