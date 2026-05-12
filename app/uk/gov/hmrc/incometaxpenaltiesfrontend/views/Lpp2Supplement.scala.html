@@ -29,6 +29,7 @@
         main: MainTemplate,
         link: Link,
         p: P,
+        govukSummaryList : GovukSummaryList,
         govukDetails : GovukDetails,
 )
 
@@ -78,36 +79,37 @@
         <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
     }
 
-    <dl class="govuk-summary-list govuk-!-margin-bottom-6">
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                @messages("calculation.supplementary.second.charge.period")
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
-                dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-                dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-                calculationData.chargePeriodDays(timeMachine.getCurrentDate()))
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                @messages("calculation.supplementary.second.annual.rate")
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @calculationData.penaltyPercentage.toString()%
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                @messages("calculation.supplementary.second.penalty.amount")
-            </dt>
-            <dd class="govuk-summary-list__value">
-                £@calculationData.formattedPenaltyAmount
-            </dd>
-
-        </div>
-    </dl>
+    @govukSummaryList(SummaryList(
+        rows = Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("calculation.supplementary.second.charge.period"))
+            ),
+            value = Value(
+              content = Text(messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
+                  dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+                  dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+                  calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+            )
+          ),
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("calculation.supplementary.second.annual.rate"))
+            ),
+            value = Value(
+              content = Text(calculationData.penaltyPercentage.toString() + "%")
+            )
+          ),
+            SummaryListRow(
+            key = Key(
+                content = Text(messages("calculation.supplementary.second.penalty.amount"))
+            ),
+            value = Value(
+                content = Text("£" + calculationData.formattedPenaltyAmount)
+            )
+        )
+      ))
+    )
 
     <div class="govuk-!-margin-bottom-8">
         @link(
