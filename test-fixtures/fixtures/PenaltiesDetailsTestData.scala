@@ -442,6 +442,58 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     )))
   }
   
+  def getPenaltyDetailsForSecondCalculationPageWithSupplement(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
+    val lppDetails = LPPDetails(
+      principalChargeReference = principleChargeRef,
+      penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+      penaltyStatus = if (secondLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
+      penaltyAmountPaid = if (secondLPPCalData.isPenaltyPaid) Some(secondLPPCalData.penaltyAmount) else None,
+      penaltyAmountPosted = if (secondLPPCalData.isEstimate) 0 else secondLPPCalData.penaltyAmount,
+      penaltyAmountAccruing = if (secondLPPCalData.isEstimate) secondLPPCalData.penaltyAmount else 0,
+      penaltyAmountOutstanding = if (secondLPPCalData.isPenaltyPaid) Some(0) else Some(secondLPPCalData.penaltyAmount),
+      lpp1LRDays = Some("15"),
+      lpp1HRDays = Some("31"),
+      lpp2Days = Some("31"),
+      lpp1LRCalculationAmt = Some(99.99),
+      lpp1HRCalculationAmt = Some(99.99),
+      lpp2Percentage = None,
+      lpp1LRPercentage = Some(3.00),
+      lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      communicationsDate = Some(secondLPPCalData.payPenaltyBy),
+      penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
+      appealInformation = None,
+      principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
+      principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
+      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      penaltyChargeReference = Some("PEN1234567"),
+      principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
+      vatOutstandingAmount = None,
+      supplement = Some(true),
+      metadata = LPPDetailsMetadata(
+        principalChargeMainTr = "4700",
+        timeToPay = None
+      )
+    )
+    val lpp = LatePaymentPenalty(Some(Seq(lppDetails
+      .copy(metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)))))
+    
+    PenaltySuccessResponse("22/01/2023", Some(PenaltyDetails(
+      totalisations = Some(Totalisations(
+        lspTotalValue = Some(200),
+        penalisedPrincipalTotal = Some(2000),
+        lppPostedTotal = Some(165.25),
+        lppEstimatedTotal = Some(15.26),
+        totalAccountOverdue = None,
+        totalAccountPostedInterest = None,
+        totalAccountAccruingInterest = None
+      )),
+      lateSubmissionPenalty = Some(lateSubmissionPenalty),
+      latePaymentPenalty = Some(lpp),
+      breathingSpace = None
+    )))
+  }
+  
   def getPenaltyDetailsForSecondCalculationPageWithBreathingSpace(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
     val lppDetails = LPPDetails(
       principalChargeReference = principleChargeRef,

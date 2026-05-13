@@ -37,7 +37,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
       LatePaymentPenaltySummaryCard(
         index,
-        cardTitle = if (lpp.supplement.contains(true)) messages("lpp.penaltyType.supplementary.LPP1", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)) else messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)),
+        cardTitle = if (lpp.supplement.contains(true)) messages(s"lpp.penaltyType.supplementary.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)) else messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)),
         cardRows = cardRows,
         status = getTagStatus(lpp, isBreathingSpace),
         penaltyChargeReference = lpp.penaltyChargeReference,
