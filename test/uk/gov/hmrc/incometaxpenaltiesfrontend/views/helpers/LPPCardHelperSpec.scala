@@ -25,6 +25,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.mocks.MockLPPSummaryListRowHelper
@@ -70,7 +71,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
                       index = 1,
-                      cardTitle = if(penalty1.supplement.contains(true))messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)) else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
+                      cardTitle = if(penalty1.supplement.contains(true) && penalty1.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {messagesForLanguage.cardTitleSupplementaryPenaltyLPP2(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue))} else if(penalty1.supplement.contains(true)) {messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue))} else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
                       cardRows = Seq(
                           testTaxPeriodRow,
                           testDueDateRow,
@@ -115,7 +116,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
                       index = 1,
-                      cardTitle = if(penalty1.supplement.contains(true))messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)) else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
+                      cardTitle = if(penalty1.supplement.contains(true) && penalty1.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {messagesForLanguage.cardTitleSupplementaryPenaltyLPP2(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue))} else if(penalty1.supplement.contains(true)) {messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue))} else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
                       cardRows = Seq(
                         testTaxPeriodRow,
                         testDueDateRow,

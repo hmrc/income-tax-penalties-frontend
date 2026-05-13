@@ -22,6 +22,9 @@ GET        /agent-second-lpp-calculation               uk.gov.hmrc.incometaxpena
 GET        /additional-first-lpp-calculation          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SupplementaryCalculationController.supplementaryCalculationPage(penaltyId: String, isAgent: Boolean = false)
 GET        /agent-additional-first-lpp-calculation    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SupplementaryCalculationController.supplementaryCalculationPage(penaltyId: String, isAgent: Boolean = true)
 
+GET        /additional-second-lpp-calculation          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SupplementaryCalculationController.supplementaryCalculationPageLPP2(penaltyId: String, isAgent: Boolean = false)
+GET        /agent-additional-second-lpp-calculation    uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SupplementaryCalculationController.supplementaryCalculationPageLPP2(penaltyId: String, isAgent: Boolean = true)
+
 GET        /actions-to-get-points-removed             uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage(isAgent:Boolean = false)
 GET        /agent-actions-to-get-points-removed       uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.ComplianceTimelineController.complianceTimelinePage(isAgent:Boolean = true)
 

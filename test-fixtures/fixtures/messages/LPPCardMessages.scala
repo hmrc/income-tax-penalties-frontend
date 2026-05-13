@@ -27,6 +27,7 @@ object LPPCardMessages {
     val cardTitlePenalty: String => String = amount => s"£$amount penalty"
     val cardTitleFirstPenalty: String => String = amount => s"First late payment penalty: £$amount"
     val cardTitleSupplementaryPenalty: String => String = amount => s"Additional first late payment penalty: £$amount"
+    val cardTitleSupplementaryPenaltyLPP2: String => String = amount => s"Additional second late payment penalty: £$amount"
     val cardTitleSecondPenalty: String => String = amount => s"Second late payment penalty: £$amount"
     val cardTitlePenaltyDetailsLetter: String = "Penalty for late payment - details are in the letter we sent you"
 
