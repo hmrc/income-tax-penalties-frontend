@@ -114,7 +114,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you were charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -143,7 +143,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you were charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -310,7 +310,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you were charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
             document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
 
 
