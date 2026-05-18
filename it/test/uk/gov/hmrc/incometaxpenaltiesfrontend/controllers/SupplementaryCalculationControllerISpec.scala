@@ -108,6 +108,10 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
+          document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
+          document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
+          document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
         }
         "second late payment penalty supplementary charge exists for the penaltyId and is overdue" in {
           stubAuthRequests(isAgent)
@@ -124,6 +128,10 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
           document.getElementById("penaltyStatusUnpaid").text() shouldBe "This penalty is overdue. We are charging interest."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
+          document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
+          document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
+          document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
         }
       }
     }
