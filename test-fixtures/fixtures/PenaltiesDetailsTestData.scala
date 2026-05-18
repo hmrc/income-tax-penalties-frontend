@@ -122,7 +122,9 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
       isPFA = false,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
-      paymentPlanProposed = ttpDate(isPaymentPlanProposed)
+      paymentPlanProposed = ttpDate(isPaymentPlanProposed),
+      penaltyAmountOutstanding = None,
+      penaltyAmountPaid = None
     )
   }
 
