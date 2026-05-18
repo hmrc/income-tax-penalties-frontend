@@ -140,6 +140,16 @@ calculation.calc2.how.we.work.penalty.amount.point.4 = yna, bydd yr holl symiau 
 calculation.calc2.estimated.penalty = Cosb amcangyfrifedig
 calculation.calc2.table.charge.period.day = {0} i {1} ({2} o ddiwrnod)
 calculation.calc2.table.charge.period.days = {0} i {1} ({2} o ddiwrnodau)
+# LPP2 Summary List
+# ===================
+calculation.summaryList.LPP2.charge.period = Cyfnod y tâl
+calculation.summaryList.LPP2.annual.rate = Cyfradd flynyddol
+calculation.summaryList.LPP2.estimatedPenalty = Cosb amcangyfrifedig
+calculation.summaryList.LPP2.charge.period.day = {0} i {1} ({2} o ddiwrnod)
+calculation.summaryList.LPP2.charge.period.days = {0} i {1} ({2} o ddiwrnodau)
+calculation.summaryList.LPP2.penaltyAmount = Swm y gosb
+calculation.summaryList.LPP2.amountPaid = Swm a dalwyd
+calculation.summaryList.LPP2.stillToPay = I’w dalu o hyd
 
 # supplementary Late Payment Penalty Tab - content
 calculation.supplementary.first.title = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
