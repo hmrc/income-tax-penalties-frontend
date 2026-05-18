@@ -104,7 +104,9 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                    principalChargeDueDate: LocalDate,
                                                    isPFA: Boolean,
                                                    paymentPlanAgreed: Option[LocalDate],
-                                                   paymentPlanProposed: Option[LocalDate]
+                                                   paymentPlanProposed: Option[LocalDate],
+                                                   penaltyAmountOutstanding: Option[BigDecimal],
+                                                   penaltyAmountPaid: Option[BigDecimal]
                                                   ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
@@ -117,7 +119,7 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     payPenaltyBy = lppDetails.penaltyChargeDueDate.getOrElse(timeMachine.getCurrentDate()),
     isPenaltyOverdue = lppDetails.penaltyChargeDueDate.exists(_.isBefore(timeMachine.getCurrentDate().plusDays(1))),
     penaltyChargeReference = lppDetails.penaltyChargeReference,
-    penaltyPercentage = lppDetails.lpp2Percentage.getOrElse(0.06),
+    penaltyPercentage = lppDetails.lpp2Percentage.getOrElse(10),
     daysOverdue = lppDetails.lpp2Days.getOrElse("31"),
     chargeStartDate = lppDetails.penaltyChargeDueDate,
     chargeEndDate = lppDetails.communicationsDate.getOrElse(timeMachine.getCurrentDate()),
@@ -125,11 +127,14 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     principalChargeDueDate = lppDetails.principalChargeDueDate,
     isPFA = lppDetails.isPFA,
     paymentPlanAgreed = lppDetails.ttpAgreementDate,
-    paymentPlanProposed = lppDetails.ttpProposalDate
+    paymentPlanProposed = lppDetails.ttpProposalDate,
+    penaltyAmountOutstanding = lppDetails.penaltyAmountOutstanding,
+    penaltyAmountPaid = lppDetails.penaltyAmountPaid
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
-
+  val formattedPenaltyAmountOutstanding : String = penaltyAmountOutstanding.map(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces).getOrElse("")
+  val formattedPenaltyAmountPaid : String =  penaltyAmountPaid.map(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces).getOrElse("")
   def chargePeriodDays(currentDate: LocalDate) : Int = {
     val endDate = if(isEstimate) currentDate else payPenaltyBy.minusDays(32)
     val startDate = principalChargeDueDate.plusDays(31)
