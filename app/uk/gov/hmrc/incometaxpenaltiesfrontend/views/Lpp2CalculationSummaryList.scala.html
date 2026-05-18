@@ -32,121 +32,114 @@
 @dayOrDaysText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
 
 
-@if(calculationData.isEstimate){
+  @if(calculationData.isEstimate){
+      @govukSummaryList(SummaryList(
+          rows = Seq(
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.charge.period"))
+              ),
+              value = Value(
+               content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
+               dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+               dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+               calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+              )
+            ),
 
-@govukSummaryList(SummaryList(
-rows = Seq(
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.charge.period"))
-),
-value = Value(
-content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
-dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-)
-),
-
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.estimatedPenalty"))
-),
-value = Value(
-content = Text("£" + calculationData.formattedPenaltyAmount)
-)
-)
-))
-)} else if(calculationData.isPenaltyOverdue && (calculationData.formattedPenaltyAmountOutstanding != calculationData.formattedPenaltyAmount)){
-@govukSummaryList(SummaryList(
-rows = Seq(
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.charge.period"))
-),
-value = Value(
-content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
-dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-dateToString(if (calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-)
-)
-) ++ Seq(
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.annual.rate"))
-),
-value = Value(
-content = Text(calculationData.penaltyPercentage.toString() + "%")
-)
-
-),
-
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.penaltyAmount"))
-),
-value = Value(
-content = Text("£" + calculationData.formattedPenaltyAmount)
-)
-),
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.amountPaid"))
-),
-value = Value(
-content = Text("£" + calculationData.formattedPenaltyAmountPaid)
-)
-),
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.stillToPay"))
-),
-value = Value(
-content = Text("£" + calculationData.formattedPenaltyAmountOutstanding)
-)
-),
-)
-)
-)
-
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.estimatedPenalty"))
+              ),
+              value = Value(
+               content = Text("£" + calculationData.formattedPenaltyAmount)
+              )
+            )
+         )
+      ))
+ } else if(calculationData.isPenaltyOverdue && (calculationData.formattedPenaltyAmountOutstanding != calculationData.formattedPenaltyAmount)){
+      @govukSummaryList(SummaryList(
+          rows = Seq(
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.charge.period"))
+              ),
+              value = Value(
+               content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
+               dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+               dateToString(if (calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+               calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+              )
+             )
+         ) ++ Seq(
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.annual.rate"))
+             ),
+              value = Value(
+               content = Text(calculationData.penaltyPercentage.toString() + "%")
+             )
+            ),
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.penaltyAmount"))
+             ),
+              value = Value(
+               content = Text("£" + calculationData.formattedPenaltyAmount)
+             )
+            ),
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.amountPaid"))
+              ),
+              value = Value(
+               content = Text("£" + calculationData.formattedPenaltyAmountPaid)
+              )
+            ),
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.stillToPay"))
+              ),
+              value = Value(
+               content = Text("£" + calculationData.formattedPenaltyAmountOutstanding)
+              )
+            ),
+            )
+     ))
 } else {
-@govukSummaryList(SummaryList(
-rows = Seq(
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.charge.period"))
-),
-value = Value(
-content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
-dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-dateToString(if (calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-)
-)
-) ++ Seq(
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.annual.rate"))
-),
-value = Value(
-content = Text(calculationData.penaltyPercentage.toString() + "%")
-)
+      @govukSummaryList(SummaryList(
+          rows = Seq(
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.charge.period"))
+              ),
+              value = Value(
+               content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
+               dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+               dateToString(if (calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+               calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+              )
+            )
+           ) ++ Seq(
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.annual.rate"))
+              ),
+              value = Value(
+               content = Text(calculationData.penaltyPercentage.toString() + "%")
+              )
 
-),
-
-SummaryListRow(
-key = Key(
-content = Text(messages("calculation.summaryList.LPP2.penaltyAmount"))
-),
-value = Value(
-content = Text("£" + calculationData.formattedPenaltyAmount)
-)
-),
-
-)
-)
-)
+            ),
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.penaltyAmount"))
+              ),
+              value = Value(
+               content = Text("£" + calculationData.formattedPenaltyAmount)
+              )
+            ),
+         )
+     ))
 }
 
 
