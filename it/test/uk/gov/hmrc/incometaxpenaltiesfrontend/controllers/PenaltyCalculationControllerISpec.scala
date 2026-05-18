@@ -27,7 +27,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
 
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 class PenaltyCalculationControllerISpec extends ControllerISpecHelper
   with PenaltiesStub with PenaltiesDetailsTestData with FeatureSwitching {
@@ -52,7 +51,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
     val secondLPPPath = addQueryParam(pathStart + "second-lpp-calculation")
     val optArn = if(isAgent) Some("123456789") else None
 
-    val yourPenaltyDetails = "Your penalty details"
     s"GET $firstLPPPath" should {
       setFeatureDate(None)
 
@@ -93,7 +91,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
           }
 
@@ -120,7 +118,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -149,7 +147,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -178,7 +176,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -206,7 +204,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -235,7 +233,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -263,7 +261,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
             document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
             document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -286,7 +284,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
           }
 
@@ -311,7 +309,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
 
           }
@@ -336,7 +334,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
           }
 
@@ -359,7 +357,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
             document.getElementById("breathingSpaceExpired").text() shouldBe "Your Breathing Space has ended. The time you were in Breathing Space has not been added to your calculation."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
           }
 
@@ -413,7 +411,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "£1,001.45"
 
           }
 
@@ -436,8 +437,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
-
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "£1,001.45"
 
           }
 
@@ -451,17 +454,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             result.status shouldBe OK
 
             val document = Jsoup.parse(result.body)
-            val chargePeriod = "Charge period"
-            val estimatedPenalty = "Estimated penalty"
-
-            def getPenaltyAmount(calcData: CalculationData): String = calcData.formattedPenaltyAmount
-            val estimatedPenaltyAmount = getPenaltyAmount(secondLPPCalcData)
-            //endDateChargePeriod when it has been estimated:
-            def endDateChargePeriod = getFeatureDate(appConfig)
-            val startDateChargePeriod = secondLPPCalcData.payPenaltyBy.plusDays(31)
-            def getEndDateChargePeriod = getDateString(endDateChargePeriod)
-            def getStartDateChargePeriod = getDateString(startDateChargePeriod)
-            def getChargePeriodDays = ChronoUnit.DAYS.between(startDateChargePeriod, endDateChargePeriod).toInt + 1
+            
 
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
@@ -479,11 +472,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyAmountDetailsPoint2").text() shouldBe "multiply by 0.10 (the annual rate)"
             document.getElementById("penaltyAmountDetailsPoint3").text() shouldBe "divide the amount by days in a year"
             document.getElementById("penaltyAmountDetailsPoint4").text() shouldBe "add all the daily amounts together to get the total amount"
-            document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(1)").first().text() shouldBe s"$chargePeriod"
-            document.select("#second-lpp-penalty-details-table tr:nth-child(1) td:nth-child(2)").first().text() shouldBe s"$getStartDateChargePeriod to $getEndDateChargePeriod ($getChargePeriodDays days)"
-            document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(1)").first().text() shouldBe s"$estimatedPenalty"
-            document.select("#second-lpp-penalty-details-table tr:nth-child(2) td:nth-child(2)").first().text() shouldBe s"£$estimatedPenaltyAmount"
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "£1,001.45"
 
           }
 
@@ -506,7 +498,12 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
+            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
+            document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
 
           }
 
@@ -529,7 +526,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "£1,001.45"
 
           }
 
@@ -552,7 +552,10 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
-            document.getElementById("penaltyDetailsHeading").text() shouldBe s"$yourPenaltyDetails"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "£1,001.45"
 
           }
 
