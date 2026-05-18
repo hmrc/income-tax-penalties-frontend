@@ -170,7 +170,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -198,7 +198,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -227,7 +227,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you have been charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you were charged a late payment penalty."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -255,7 +255,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("payPenaltyBy").text() shouldBe s"Penalty paid on ${getDateString(firstLPPCalcData.payPenaltyBy)}"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
             document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
             document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -333,7 +333,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty. This penalty is made up of two parts."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
           }
@@ -454,7 +454,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             result.status shouldBe OK
 
             val document = Jsoup.parse(result.body)
-            
+
 
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"

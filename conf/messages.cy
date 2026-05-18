@@ -78,9 +78,9 @@ calculation.payment.15.30.missed.reason.taxUnpaid = Oherwydd eich bod wedi methu
 calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanegol oedd {0}.
 calculation.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
 
-calculation.payment.15.30.missed.reason = Oherwydd eich bod wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
-
-calculation.payment.missed.reason.additional = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae cosb am dalu’n hwyr wedi’i chodi arnoch. Mae’r gosb hon yn cynnwys dwy ran.
+calculation.payment.15.30.missed.reason.taxPaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, roedd cosb am dalu’n hwyr wedi’i chodi arnoch..
+calculation.payment.15.30.missed.reason.taxDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
+calculation.payment.missed.reason.additional = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
 
 
 

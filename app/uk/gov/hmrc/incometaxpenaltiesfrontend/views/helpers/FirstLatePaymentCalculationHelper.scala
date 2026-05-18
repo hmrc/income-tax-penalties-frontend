@@ -45,7 +45,10 @@ class FirstLatePaymentCalculationHelper {
       case Some(_) => messages("calculation.payment.missed.reason.additional")
       case None if !calculationData.incomeTaxIsPaid =>
         messages("calculation.payment.15.30.missed.reason.taxUnpaid")
-      case _ => messages("calculation.payment.15.30.missed.reason")
+      case None if calculationData.isPenaltyPaid =>
+        messages("calculation.payment.15.30.missed.reason.taxPaid")
+
+      case _ => messages("calculation.payment.15.30.missed.reason.taxDueOrOverdue") 
     }
   }
 
