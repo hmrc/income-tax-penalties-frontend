@@ -99,7 +99,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
                               isEstimate: Boolean = true,
                               isOverdue: Boolean = false,
                               isPaymentPlanAgreed: Boolean = false,
-                              isPaymentPlanProposed: Boolean = false) = {
+                              isPaymentPlanProposed: Boolean = false,
+                              isPartiallyPaid: Boolean = false) = {
     val penaltyChargeDueDate = if (isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
     def ttpDate(activePaymentPlan: Boolean) = if (activePaymentPlan) Some(LocalDate.now().plusDays(10)) else None
 
@@ -124,7 +125,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
       paymentPlanProposed = ttpDate(isPaymentPlanProposed),
       penaltyAmountOutstanding = None,
-      penaltyAmountPaid = None
+      penaltyAmountPaid = None,
+      isPartiallyPaid = true
     )
   }
 
@@ -397,10 +399,10 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeReference = principleChargeRef,
       penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
       penaltyStatus = if (secondLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
-      penaltyAmountPaid = if (secondLPPCalData.isPenaltyPaid) Some(secondLPPCalData.penaltyAmount) else None,
+      penaltyAmountPaid = if (secondLPPCalData.isPartiallyPaid) Some(101.45) else if(secondLPPCalData.isPenaltyPaid) Some(secondLPPCalData.penaltyAmount) else None,
       penaltyAmountPosted = if (secondLPPCalData.isEstimate) 0 else secondLPPCalData.penaltyAmount,
       penaltyAmountAccruing = if (secondLPPCalData.isEstimate) secondLPPCalData.penaltyAmount else 0,
-      penaltyAmountOutstanding = if (secondLPPCalData.isPenaltyPaid) Some(0) else Some(secondLPPCalData.penaltyAmount),
+      penaltyAmountOutstanding = if (secondLPPCalData.isPartiallyPaid) Some(1000) else if(secondLPPCalData.isPenaltyPaid) Some(0) else Some(secondLPPCalData.penaltyAmount),
       lpp1LRDays = Some("15"),
       lpp1HRDays = Some("31"),
       lpp2Days = Some("31"),

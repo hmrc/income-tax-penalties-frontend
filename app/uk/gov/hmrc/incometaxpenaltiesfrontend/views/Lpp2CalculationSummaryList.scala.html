@@ -57,7 +57,7 @@
             )
          )
       ))
- } else if(calculationData.formattedPenaltyAmountOutstanding != calculationData.formattedPenaltyAmount){
+ } else if(calculationData.isPartiallyPaid){
       @govukSummaryList(SummaryList(
           rows = Seq(
             SummaryListRow(

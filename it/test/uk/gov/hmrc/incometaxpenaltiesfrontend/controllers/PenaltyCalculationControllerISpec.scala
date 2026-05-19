@@ -507,8 +507,38 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
           }
 
-
           //scenario 5
+          "penalty partially paid" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData( isIncomeTaxPaid = true, isEstimate = false, isPartiallyPaid = true)
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
+            document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
+            document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
+            document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
+            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
+            document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
+            document.getElementsByClass("govuk-summary-list__key").get(3).text() shouldBe "Amount paid"
+            document.getElementsByClass("govuk-summary-list__value").get(3).text() shouldBe "£101.45"
+            document.getElementsByClass("govuk-summary-list__key").get(4).text() shouldBe "Still to pay"
+            document.getElementsByClass("govuk-summary-list__value").get(4).text() shouldBe "£1,000.00"
+
+          }
+
+          //scenario 6
           "the tax is unpaid and breathing space is true" in {
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData()
@@ -534,7 +564,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           }
 
 
-          //scenario 6
+          //scenario 7
           "the tax is unpaid and breathing space has expired" in {
             stubAuthRequests(isAgent)
             val secondLPPCalcData = sampleSecondLPPCalcData()
