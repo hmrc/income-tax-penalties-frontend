@@ -46,7 +46,14 @@
                calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
               )
             ),
-
+            SummaryListRow(
+              key = Key(
+               content = Text(messages("calculation.summaryList.LPP2.annual.rate"))
+              ),
+              value = Value(
+               content = Text(calculationData.penaltyPercentage.toString() + "%")
+              )
+            ),
             SummaryListRow(
               key = Key(
                content = Text(messages("calculation.summaryList.LPP2.estimatedPenalty"))
