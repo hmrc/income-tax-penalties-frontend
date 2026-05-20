@@ -133,6 +133,17 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
           document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
         }
+        "render LPP2 supplementary page when LPP1 appears before LPP2 in the penalty response" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData()
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsWithLPP1BeforeLPP2Supplement(supplementary2LPPCalcData)))
+          val result = get(LPP2SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+        }
       }
     }
   }

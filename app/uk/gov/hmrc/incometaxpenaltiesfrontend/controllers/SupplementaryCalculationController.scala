@@ -22,7 +22,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserCalculationInfoAuditModel
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetails
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{FirstLatePaymentPenaltyCalculationData, SecondLatePaymentPenaltyCalculationData}
@@ -49,10 +49,10 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 => lpp }
           }
-        
-        
+
+
         val date = timeMachine.getCurrentDate()
         val isInBreathingSpace = currentUserRequest.penaltyDetails.breathingSpace.fold(false)(_.count(bs =>
           (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
@@ -77,7 +77,7 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 => lpp }
           }
 
 
