@@ -140,6 +140,16 @@ calculation.calc2.how.we.work.penalty.amount.point.4 = add all the daily amounts
 calculation.calc2.estimated.penalty = Estimated penalty
 calculation.calc2.table.charge.period.day = {0} to {1} ({2} day)
 calculation.calc2.table.charge.period.days = {0} to {1} ({2} days)
+# LPP2 Summary List
+# ===================
+calculation.summaryList.LPP2.charge.period = Charge period
+calculation.summaryList.LPP2.annual.rate = Annual rate
+calculation.summaryList.LPP2.estimatedPenalty = Estimated penalty
+calculation.summaryList.LPP2.charge.period.day = {0} to {1} ({2} day)
+calculation.summaryList.LPP2.charge.period.days = {0} to {1} ({2} days)
+calculation.summaryList.LPP2.penaltyAmount = Penalty amount
+calculation.summaryList.LPP2.amountPaid = Amount paid
+calculation.summaryList.LPP2.stillToPay = Still to pay
 
 # supplementary Late Payment Penalty 1 - content
 calculation.supplementary.first.title = Additional first late payment penalty calculation
@@ -175,7 +185,7 @@ calculation.supplementary.second.avoid.interest.text = To avoid interest charges
 calculation.supplementary.second.penalty.overdue.text = This penalty is overdue. We are charging interest.
 calculation.supplementary.second.charge.period = Charge period
 calculation.supplementary.second.annual.rate = Annual rate
-calculation.supplementary.second.penalty.amount = Penalty Amount
+calculation.supplementary.second.penalty.amount = Penalty amount
 calculation.supplementary.second.amount.paid = Amount paid
 calculation.supplementary.second.still.to.pay = Still to pay
 calculation.supplementary.second.view.penalties.link = View penalties and appeals

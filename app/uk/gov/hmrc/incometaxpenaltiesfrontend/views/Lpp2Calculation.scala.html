@@ -30,11 +30,10 @@
         govukDetails : GovukDetails,
         p: P,
         h2: H2,
-        govukTable : GovukTable,
         calculationHelper: SecondLatePaymentCalculationHelper,
-        calculationFooterLinks : CalculationFooterLinks
+        calculationFooterLinks : CalculationFooterLinks,
+        lpp2CalculationSummaryList : Lpp2CalculationSummaryList
 )
-
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @penaltyAmountDetails = {
@@ -47,8 +46,6 @@
         <li id="penaltyAmountDetailsPoint4">@messages("calculation.calc2.how.we.work.penalty.amount.point.4")</li>
     </ol>
 }
-
-    @chargePeriodText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
 
 
 @main(pageTitle = messages(s"calculation.second.title"), backLinkEnabled = true, isAgent = isAgent) {
@@ -148,35 +145,7 @@
         @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
       }
     }
-
-    @govukTable(Table(
-        rows = Seq(
-            Seq(
-                TableRow(
-                    content = Text(messages("calculation.table.caption.charge.period")),
-                    classes = "govuk-!-font-weight-bold"
-                ),
-                TableRow(
-                    content = Text(messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
-                        dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-                        dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-                        calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-                )
-            ),
-            Seq(
-                TableRow(
-                    content = Text(messages("calculation.calc2.estimated.penalty")),
-                    classes = "govuk-!-font-weight-bold"
-                ),
-                TableRow(
-                    content = Text("£" + calculationData.formattedPenaltyAmount)
-                )
-            )
-        ),
-        attributes = Map("id" -> "second-lpp-penalty-details-table"),
-        captionClasses = "govuk-table__caption--m",
-        firstCellIsHeader = false
-    ))
+    @lpp2CalculationSummaryList(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">
