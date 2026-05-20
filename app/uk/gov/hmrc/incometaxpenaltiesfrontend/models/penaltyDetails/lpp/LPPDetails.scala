@@ -73,7 +73,7 @@ case class  LPPDetails(principalChargeReference: String,
   val incomeTaxOutstandingAmountInPence: Int = vatOutstandingAmount.map(amount => (amount * 100).toInt).getOrElse(0)
 
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
-  val isPartiallyPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountOutstanding.exists(_ > 0)
+  val isPartiallyPaid: Boolean = penaltyAmountPaid.nonEmpty && penaltyAmountOutstanding.nonEmpty
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
 
   def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
