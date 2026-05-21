@@ -28,9 +28,9 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
 
-    if (calculationData.isPenaltyPaid || !calculationData.isPenaltyOverdue) {
-      Some(messages("calculation.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy)))
-    } else if(calculationData.isEstimate){
+    if (calculationData.isPenaltyPaid && !calculationData.isPenaltyOverdue && !calculationData.isEstimate) {
+      Some(messages("calculation.paid.penalty"))
+    } else if(!calculationData.isEstimate && calculationData.incomeTaxIsPaid) {
       Some(messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy)))
     } else {
       None
