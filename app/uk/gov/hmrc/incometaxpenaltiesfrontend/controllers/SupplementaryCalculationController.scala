@@ -49,11 +49,11 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.supplement.contains(true) => lpp }
           }
 
         penaltyDetailsForId match {
-          case Some(lppDetails) if lppDetails.supplement.contains(true) =>
+          case Some(lppDetails) =>
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             Ok(lpp1SupplementView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
@@ -70,11 +70,11 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 && lpp.supplement.contains(true) => lpp }
           }
 
         penaltyDetailsForId match {
-          case Some(lppDetails) if lppDetails.supplement.contains(true) =>
+          case Some(lppDetails) =>
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             Ok(lpp2Supplement(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
