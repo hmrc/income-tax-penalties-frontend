@@ -126,7 +126,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       paymentPlanProposed = ttpDate(isPaymentPlanProposed),
       penaltyAmountOutstanding = None,
       penaltyAmountPaid = None,
-      isPartiallyPaid = true
+      isPartiallyPaid = isPartiallyPaid
     )
   }
 
