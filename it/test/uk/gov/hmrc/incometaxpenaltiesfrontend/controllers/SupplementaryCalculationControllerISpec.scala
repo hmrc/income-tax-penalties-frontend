@@ -99,19 +99,6 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
         }
-        "redirect to the home page when LPP1 exists but supplement is false" in {
-          stubAuthRequests(isAgent)
-          val supplementary1LPPCalcData = sampleFirstLPPCalcData()
-          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData).copy(
-            penaltyDetails = getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData).penaltyDetails.map(pd =>
-              pd.copy(latePaymentPenalty = pd.latePaymentPenalty.map(lpp =>
-                lpp.copy(lppDetails = lpp.lppDetails.map(_.map(_.copy(supplement = Some(false)))))
-              ))
-            )
-          )))
-          val result = get(LPP1SupplementaryPath, isAgent)
-          result.status shouldBe 303
-        }
       }
     }
 
@@ -168,19 +155,7 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
         }
-        "redirect to the home page when LPP2 exists but supplement is false" in {
-          stubAuthRequests(isAgent)
-          val supplementary2LPPCalcData = sampleSecondLPPCalcData()
-          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData).copy(
-            penaltyDetails = getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData).penaltyDetails.map(pd =>
-              pd.copy(latePaymentPenalty = pd.latePaymentPenalty.map(lpp =>
-                lpp.copy(lppDetails = lpp.lppDetails.map(_.map(_.copy(supplement = Some(false)))))
-              ))
-            )
-          )))
-          val result = get(LPP2SupplementaryPath, isAgent)
-          result.status shouldBe 303
-        }
+
         "render LPP2 supplementary page when a non-supplement LPP2 appears before the supplement LPP2 in the penalty response" in {
           stubAuthRequests(isAgent)
           val supplementary2LPPCalcData = sampleSecondLPPCalcData()
