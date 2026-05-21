@@ -99,6 +99,19 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
         }
+        "redirect to the home page when LPP1 exists but supplement is false" in {
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData()
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData).copy(
+            penaltyDetails = getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData).penaltyDetails.map(pd =>
+              pd.copy(latePaymentPenalty = pd.latePaymentPenalty.map(lpp =>
+                lpp.copy(lppDetails = lpp.lppDetails.map(_.map(_.copy(supplement = Some(false)))))
+              ))
+            )
+          )))
+          val result = get(LPP1SupplementaryPath, isAgent)
+          result.status shouldBe 303
+        }
       }
     }
 
