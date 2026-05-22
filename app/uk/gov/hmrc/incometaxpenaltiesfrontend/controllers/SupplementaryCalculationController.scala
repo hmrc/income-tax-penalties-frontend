@@ -22,7 +22,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserCalculationInfoAuditModel
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{FirstLatePaymentPenaltyCalculationData, SecondLatePaymentPenaltyCalculationData}
@@ -49,21 +49,14 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.supplement.contains(true) => lpp }
           }
 
-
-        val date = timeMachine.getCurrentDate()
-        val isInBreathingSpace = currentUserRequest.penaltyDetails.breathingSpace.fold(false)(_.count(bs =>
-          (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
-            (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
-        ) > 0)
-
         penaltyDetailsForId match {
-          case Some(lppDetails) if lppDetails.supplement.contains(true) =>
+          case Some(lppDetails) =>
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
-            Ok(lpp1SupplementView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
+            Ok(lpp1SupplementView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
           case _ =>
             Redirect(routes.IndexController.homePage(isAgent))
         }
@@ -77,21 +70,14 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 => lpp }
+            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 && lpp.supplement.contains(true) => lpp }
           }
 
-
-        val date = timeMachine.getCurrentDate()
-        val isInBreathingSpace = currentUserRequest.penaltyDetails.breathingSpace.fold(false)(_.count(bs =>
-          (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
-            (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
-        ) > 0)
-
         penaltyDetailsForId match {
-          case Some(lppDetails) if lppDetails.supplement.contains(true) =>
+          case Some(lppDetails) =>
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
-            Ok(lpp2Supplement(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
+            Ok(lpp2Supplement(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
           case _ =>
             Redirect(routes.IndexController.homePage(isAgent))
         }

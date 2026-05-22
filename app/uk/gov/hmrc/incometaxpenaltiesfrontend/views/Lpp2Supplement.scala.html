@@ -33,7 +33,7 @@
         govukDetails : GovukDetails,
 )
 
-@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @SupplementaryPenaltyAmountDetails = {
     <p class="govuk-body" id="SupplementaryPenaltyAmountDetailsP1">@messages("calculation.supplementary.details.p1", calculationData.penaltyPercentage.toString())</p>
