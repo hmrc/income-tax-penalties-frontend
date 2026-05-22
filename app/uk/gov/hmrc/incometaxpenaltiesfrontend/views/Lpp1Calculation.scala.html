@@ -72,7 +72,7 @@
     }
 
     @calculationHelper.getPaymentDetails(calculationData).map{msg =>
-        <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyBy">@msg</p>
+        <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
     }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>
