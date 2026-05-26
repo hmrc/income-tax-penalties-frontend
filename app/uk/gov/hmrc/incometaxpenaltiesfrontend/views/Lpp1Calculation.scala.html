@@ -152,7 +152,7 @@
         ) ++ calculationData.llpHRCharge.map {lppHRCharge =>
          Seq(
             TableRow(
-              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
+              content = Text(s"£${lppHRCharge.formattedChargeAmount}")
             ),
             TableRow(
               content = Text(s"${lppHRCharge.daysOverdue}")
@@ -162,7 +162,7 @@
               format = Some("numeric")
             ),
             TableRow(
-              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
+              content = Text(s"£${lppHRCharge.formattedPenaltyAmount}"),
               format = Some("numeric")
             )
         )
