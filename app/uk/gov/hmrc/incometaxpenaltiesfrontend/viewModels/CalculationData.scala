@@ -52,7 +52,10 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   llpHRCharge: Option[LLPCharge],
                                                   isPFA: Boolean,
                                                   paymentPlanAgreed: Option[LocalDate],
-                                                  paymentPlanProposed: Option[LocalDate]
+                                                  paymentPlanProposed: Option[LocalDate],
+                                                  penaltyAmountOutstanding: Option[BigDecimal],
+                                                  penaltyAmountPaid: Option[BigDecimal],
+                                                  isPartiallyPaid: Boolean,
                                                  ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
@@ -74,15 +77,18 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     ),
     llpHRCharge = lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
       LLPCharge(
-        chargeAmount = calcAmount,
+        chargeAmount = lppDetails.correctLpp1HRCalculationAmt,
         daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
         penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.03)
       )),
     paymentPlanAgreed = lppDetails.ttpAgreementDate,
-    paymentPlanProposed = lppDetails.ttpProposalDate
+    paymentPlanProposed = lppDetails.ttpProposalDate,
+    penaltyAmountOutstanding = lppDetails.penaltyAmountOutstanding,
+    penaltyAmountPaid = lppDetails.penaltyAmountPaid,
+    isPartiallyPaid = lppDetails.isPartiallyPaid
   )
 
-  val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
+  val formattedPenaltyAmount: String = if(isPartiallyPaid && !llpHRCharge.isEmpty) CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmountOutstanding.getOrElse(0)) else CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
 
 }
 

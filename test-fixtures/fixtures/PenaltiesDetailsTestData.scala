@@ -61,7 +61,10 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
                              isOverdue: Boolean = false,
                              isPaymentPlanAgreed: Boolean = false,
                              isPFA: Boolean = false,
-                             isPaymentPlanProposed: Boolean = false) = {
+                             isPaymentPlanProposed: Boolean = false,
+                             penaltyAmountOutstanding: Option[BigDecimal] = None,
+                             penaltyAmountPaid: Option[BigDecimal] = None,
+                             isPartiallyPaid: Boolean = false) = {
     val penaltyChargeDueDate = if (isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
 
     def ttpDate(activePaymentPlan: Boolean) = if (activePaymentPlan) Some(LocalDate.now().plusDays(10)) else None
@@ -90,7 +93,10 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       } else None,
       isPFA = false,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
-      paymentPlanProposed = ttpDate(isPaymentPlanProposed)
+      paymentPlanProposed = ttpDate(isPaymentPlanProposed),
+      penaltyAmountOutstanding = penaltyAmountOutstanding,
+      penaltyAmountPaid = penaltyAmountPaid,
+      isPartiallyPaid = isPartiallyPaid,
     )
   }
 
