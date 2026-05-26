@@ -98,6 +98,8 @@ calculation.table.caption.rate = Rate
 calculation.table.caption.amount = Amount
 calculation.table.charge.period = {0} to {1}
 calculation.table.caption.total.penalty = Total penalty
+calculation.table.amountPaid = Amount paid
+calculation.table.stillToPay = Still to pay
 
 calculation.penalty.isEstimate = This penalty is currently an estimate because the outstanding tax for the {0} to {1} tax year has not been paid.
 calculation.penalty.isEstimate.pfa = This penalty is currently an estimate because the extra amount for the {0} to {1} tax year has not been paid.
