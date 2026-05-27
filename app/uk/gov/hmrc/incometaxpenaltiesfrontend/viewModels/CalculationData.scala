@@ -77,7 +77,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     ),
     llpHRCharge = lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
       LLPCharge(
-        chargeAmount = lppDetails.correctLpp1HRCalculationAmt,
+        chargeAmount = lppDetails.lpp1HRCalculationAmt.getOrElse(0),
         daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
         penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.03)
       )),
