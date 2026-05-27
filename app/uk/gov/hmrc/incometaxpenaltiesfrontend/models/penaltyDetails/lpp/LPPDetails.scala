@@ -75,7 +75,6 @@ case class  LPPDetails(principalChargeReference: String,
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val isPartiallyPaid: Boolean = penaltyAmountPaid.exists(_ > 0) && penaltyAmountOutstanding.exists(_ > 0)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
-  val correctLpp1HRCalculationAmt: BigDecimal = if(isPartiallyPaid) (lpp1LRCalculationAmt.getOrElse(BigDecimal(0)) - penaltyAmountPaid.getOrElse(BigDecimal(0))) else lpp1LRCalculationAmt.getOrElse(0)
 
   def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
 
