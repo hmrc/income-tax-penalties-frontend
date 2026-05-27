@@ -88,8 +88,9 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     isPartiallyPaid = lppDetails.isPartiallyPaid
   )
 
-  val formattedPenaltyAmount: String = if(isPartiallyPaid && !llpHRCharge.isEmpty) CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmountOutstanding.getOrElse(0)) else CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
-
+  val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
+  val formattedPenaltyAmountOutstanding: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmountOutstanding.getOrElse(0))
+  val formattedPenaltyAmountPaid: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmountPaid.getOrElse(0))
 }
 
 case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,

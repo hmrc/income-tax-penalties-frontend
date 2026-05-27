@@ -48,9 +48,38 @@
                 TableRow(
                          content = Text(s"£${calculationData.formattedPenaltyAmount}"),
                          format = Some("numeric"),
-                         classes = "govuk-table__header"
                 )
             )
+     }
+     @AmountPaidRow = @{
+            Seq(
+                TableRow(
+                         content = Text(messages("calculation.table.amountPaid")),
+                         classes ="govuk-table__header"
+               ),
+               TableRow(),
+               TableRow(),
+               TableRow(
+                        content = Text(s"£${calculationData.formattedPenaltyAmountPaid}"),
+                        format = Some("numeric"),
+
+               )
+           )
+     }
+     @StillToPayRow = @{
+           Seq(
+               TableRow(
+                        content = Text(messages("calculation.table.stillToPay")),
+                        classes ="govuk-table__header"
+               ),
+               TableRow(),
+               TableRow(),
+               TableRow(
+                        content = Text(s"£${calculationData.formattedPenaltyAmountOutstanding}"),
+                        format = Some("numeric"),
+                        classes = "govuk-table__header"
+               )
+           )
      }
 
 @main(pageTitle = messages(s"calculation.first.title"), backLinkEnabled = true, isAgent = isAgent) {
@@ -168,7 +197,7 @@
         )
         } ++
 
-        Seq(TotalTableRow),
+      ( if(calculationData.isPartiallyPaid && !calculationData.llpHRCharge) Seq(TotalTableRow, AmountPaidRow, StillToPayRow) else Seq(TotalTableRow)),
          head = Some(Seq(
           HeadCell(
             content = Text(messages("calculation.table.caption.amountApplied"))
