@@ -155,6 +155,7 @@ calculation.summaryList.LPP2.stillToPay = Still to pay
 calculation.supplementary.first.title = Additional first late payment penalty calculation
 calculation.supplementary.first.h1 = Additional first late payment penalty calculation
 calculation.supplementary.pay.penalty.by = Pay penalty by {0}
+calculation.supplementary.penalty.paid = Penalty paid
 calculation.supplementary.reason = We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low.
 calculation.supplementary.p1 = You still need to pay the earlier penalty if you have not paid it.
 calculation.supplementary.dueDateHasNotPassed.p2 = To avoid interest charges, you should pay this penalty by {0}.

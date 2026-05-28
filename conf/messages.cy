@@ -155,6 +155,7 @@ calculation.summaryList.LPP2.stillToPay = I’w dalu o hyd
 calculation.supplementary.first.title = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
 calculation.supplementary.first.h1 = Cyfrifiad cosb gyntaf ychwanegol am dalu’n hwyr
 calculation.supplementary.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
+calculation.supplementary.penalty.paid = Cosb wedi’i thalu
 calculation.supplementary.reason = Rydym wedi dyroddi’r gosb ychwanegol hon gan fod swm y dreth a ddefnyddiwyd i gyfrifo’r gosb flaenorol yn rhy isel.
 calculation.supplementary.p1 = Mae’n rhaid i chi dalu’r gosb flaenorol os nad ydych wedi gwneud hynny eisoes.
 calculation.supplementary.dueDateHasNotPassed.p2 = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
