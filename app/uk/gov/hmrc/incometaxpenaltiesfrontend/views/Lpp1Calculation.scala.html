@@ -196,8 +196,7 @@
             )
         )
         } ++
-
-      ( if(calculationData.isPartiallyPaid) Seq(TotalTableRow, AmountPaidRow, StillToPayRow) else Seq(TotalTableRow)),
+        (if(calculationData.isPartiallyPaid) Seq(TotalTableRow, AmountPaidRow, StillToPayRow) else Seq(TotalTableRow)),
          head = Some(Seq(
           HeadCell(
             content = Text(messages("calculation.table.caption.amountApplied"))
