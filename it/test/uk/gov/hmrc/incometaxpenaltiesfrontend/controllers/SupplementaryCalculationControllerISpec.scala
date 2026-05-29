@@ -144,7 +144,7 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
       "render the supplementary calculation page for LPP2" when {
         "second late payment penalty supplementary charge exists for the penaltyId" in {
           stubAuthRequests(isAgent)
-          val supplementary2LPPCalcData = sampleSecondLPPCalcData()
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isEstimate = false)
           stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
           val result = get(LPP2SupplementaryPath, isAgent)
           result.status shouldBe OK
@@ -153,9 +153,15 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
           document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+          document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
+          document.getElementById("payPenaltyByDate").text() shouldBe s"Pay penalty by ${getDateString(supplementary2LPPCalcData.payPenaltyBy)}"
+          document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementById("yourPenaltyDetails").text() shouldBe "Your penalty details"
+          document.getElementById("penaltyDue").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(supplementary2LPPCalcData.payPenaltyBy)}."
+          document.getElementById("penaltyOverdue") shouldBe null
           document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
           document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
           document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
@@ -163,7 +169,7 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
         }
         "second late payment penalty supplementary charge exists for the penaltyId and is overdue" in {
           stubAuthRequests(isAgent)
-          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isOverdue = true)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isOverdue = true, isEstimate = false)
           stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
           val result = get(LPP2SupplementaryPath, isAgent)
           result.status shouldBe OK
@@ -172,10 +178,40 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
           document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+          document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
+          document.getElementById("payPenaltyByDate").text() shouldBe s"Pay penalty by ${getDateString(supplementary2LPPCalcData.payPenaltyBy)}"
+          document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
-          document.getElementById("penaltyStatusUnpaid").text() shouldBe "This penalty is overdue. We are charging interest."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementById("yourPenaltyDetails").text() shouldBe "Your penalty details"
+          document.getElementById("penaltyOverdue").text() shouldBe "This penalty is overdue. We are charging interest."
+          document.getElementById("penaltyDue") shouldBe null
+          document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
+          document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
+          document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
+          document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
+        }
+        "second late payment penalty supplementary charge exists for the penaltyId and is paid" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isPenaltyPaid = true, isEstimate = false)
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
+          val result = get(LPP2SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+          document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
+          document.getElementById("penaltyPaid").text() shouldBe "Penalty paid"
+          document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+          document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
+          document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementById("yourPenaltyDetails").text() shouldBe "Your penalty details"
+          document.getElementById("penaltyOverdue") shouldBe null
+          document.getElementById("penaltyDue") shouldBe null
           document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
           document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
           document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
