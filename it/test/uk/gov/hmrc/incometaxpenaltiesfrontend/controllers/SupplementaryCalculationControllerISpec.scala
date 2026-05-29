@@ -88,6 +88,17 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
           document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
         }
+        "render LPP1 supplementary page when a non-supplement LPP1 appears before the supplement LPP1 in the penalty response" in {
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData()
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsWithNonSupplementLPP1BeforeSupplementLPP1(supplementary1LPPCalcData)))
+          val result = get(LPP1SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
+        }
       }
     }
 
@@ -137,6 +148,18 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           stubAuthRequests(isAgent)
           val supplementary2LPPCalcData = sampleSecondLPPCalcData()
           stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsWithLPP1BeforeLPP2Supplement(supplementary2LPPCalcData)))
+          val result = get(LPP2SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.title() shouldBe "Additional second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional second late payment penalty calculation"
+        }
+
+        "render LPP2 supplementary page when a non-supplement LPP2 appears before the supplement LPP2 in the penalty response" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData()
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsWithNonSupplementLPP2BeforeSupplementLPP2(supplementary2LPPCalcData)))
           val result = get(LPP2SupplementaryPath, isAgent)
           result.status shouldBe OK
 
