@@ -372,7 +372,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
-            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
+            document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
 
           }
