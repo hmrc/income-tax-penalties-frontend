@@ -48,9 +48,38 @@
                 TableRow(
                          content = Text(s"£${calculationData.formattedPenaltyAmount}"),
                          format = Some("numeric"),
-                         classes = "govuk-table__header"
                 )
             )
+     }
+     @AmountPaidRow = @{
+            Seq(
+                TableRow(
+                         content = Text(messages("calculation.table.amountPaid")),
+                         classes ="govuk-table__header"
+               ),
+               TableRow(),
+               TableRow(),
+               TableRow(
+                        content = Text(s"£${calculationData.formattedPenaltyAmountPaid}"),
+                        format = Some("numeric"),
+
+               )
+           )
+     }
+     @StillToPayRow = @{
+           Seq(
+               TableRow(
+                        content = Text(messages("calculation.table.stillToPay")),
+                        classes ="govuk-table__header"
+               ),
+               TableRow(),
+               TableRow(),
+               TableRow(
+                        content = Text(s"£${calculationData.formattedPenaltyAmountOutstanding}"),
+                        format = Some("numeric"),
+                        classes = "govuk-table__header"
+               )
+           )
      }
 
 @main(pageTitle = messages(s"calculation.first.title"), backLinkEnabled = true, isAgent = isAgent) {
@@ -152,7 +181,7 @@
         ) ++ calculationData.llpHRCharge.map {lppHRCharge =>
          Seq(
             TableRow(
-              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
+              content = Text(s"£${lppHRCharge.formattedChargeAmount}")
             ),
             TableRow(
               content = Text(s"${lppHRCharge.daysOverdue}")
@@ -162,13 +191,12 @@
               format = Some("numeric")
             ),
             TableRow(
-              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
+              content = Text(s"£${lppHRCharge.formattedPenaltyAmount}"),
               format = Some("numeric")
             )
         )
         } ++
-
-        Seq(TotalTableRow),
+        (if(calculationData.isPartiallyPaid) Seq(TotalTableRow, AmountPaidRow, StillToPayRow) else Seq(TotalTableRow)),
          head = Some(Seq(
           HeadCell(
             content = Text(messages("calculation.table.caption.amountApplied"))
@@ -200,5 +228,4 @@
     </div>
 
    @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
-
 }
