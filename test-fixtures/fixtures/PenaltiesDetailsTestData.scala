@@ -84,18 +84,12 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       llpLRCharge = LLPCharge(
         2000.00, "15", 3.00
       ),
-      llpHRCharge = if (!is15to30Days && !isPartiallyPaid) {
+      llpHRCharge = if (!is15to30Days) {
         Some(
           LLPCharge(
             2000.00, "30", 3.00
           )
         )
-      } else if(!is15to30Days && isPartiallyPaid) {
-        Some(
-          LLPCharge(
-            1000.00, "30", 3.00
-          )
-        ) 
       } else None,
       isPFA = false,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
@@ -176,7 +170,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeBillingTo = firstLPPCalData.taxPeriodEndDate,
       principalChargeDueDate = firstLPPCalData.payPenaltyBy,
       penaltyChargeReference = Some("PEN1234567"),
-      principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid && !firstLPPCalData.isPartiallyPaid) Some(firstLPPCalData.payPenaltyBy) else None,
+      principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = if(firstLPPCalData.isPartiallyPaid) Some (firstLPPCalData.penaltyAmountOutstanding.getOrElse(BigDecimal(100))) else None,
       supplement = None,
       metadata = LPPDetailsMetadata(

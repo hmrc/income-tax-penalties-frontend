@@ -76,7 +76,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
       penaltyPercentage = lppDetails.lpp1LRPercentage.getOrElse(0.03)
     ),
     llpHRCharge = { 
-      if(lppDetails.is15To30Days || lppDetails.incomeTaxPartiallyPaid) None else
+      if(lppDetails.is15To30Days) None else
       lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
       LLPCharge(
         chargeAmount = calcAmount,
