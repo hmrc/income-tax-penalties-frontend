@@ -75,12 +75,14 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
       daysOverdue = lppDetails.lpp1LRDays.getOrElse("15"),
       penaltyPercentage = lppDetails.lpp1LRPercentage.getOrElse(0.03)
     ),
-    llpHRCharge = lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
+    llpHRCharge = { 
+      if(lppDetails.is15To30Days || lppDetails.incomeTaxPartiallyPaid) None else
+      lppDetails.lpp1HRCalculationAmt.map(calcAmount =>
       LLPCharge(
-        chargeAmount = lppDetails.lpp1HRCalculationAmt.getOrElse(0),
+        chargeAmount = calcAmount,
         daysOverdue = lppDetails.lpp1HRDays.getOrElse("31"),
         penaltyPercentage = lppDetails.lpp1HRPercentage.getOrElse(0.03)
-      )),
+      ))},
     paymentPlanAgreed = lppDetails.ttpAgreementDate,
     paymentPlanProposed = lppDetails.ttpProposalDate,
     penaltyAmountOutstanding = lppDetails.penaltyAmountOutstanding,
