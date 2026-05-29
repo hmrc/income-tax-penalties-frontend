@@ -32,7 +32,7 @@ class FirstLatePaymentCalculationHelper {
     } else {
       Some {
         if (calculationData.isPenaltyPaid) {
-          messages("calculation.paid.penalty.on", DateFormatter.dateToString(calculationData.payPenaltyBy))
+          messages("calculation.paid.penalty")
         } else {
           messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
         }

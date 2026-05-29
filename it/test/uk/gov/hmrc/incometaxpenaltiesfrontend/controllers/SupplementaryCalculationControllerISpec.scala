@@ -25,6 +25,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 import play.api.http.Status.OK
 import play.api.libs.json.Json
 
+import java.time.LocalDate
+
 class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
   with PenaltiesStub with PenaltiesDetailsTestData with FeatureSwitching {
 
@@ -39,6 +41,8 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
     pathNoQuery + "?penaltyId=" + principleChargeRef
   }
 
+  def getDateString(date: LocalDate): String = s"${date.getDayOfMonth} ${messagesAPI(s"month.${date.getMonthValue}")} ${date.getYear}"
+
   List(false, true).foreach { isAgent =>
     val pathStart = if (isAgent) "/agent-" else "/"
     val LPP1SupplementaryPath = addQueryParam(pathStart + "additional-first-lpp-calculation")
@@ -51,7 +55,7 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
       "render the supplementary calculation page for LPP1" when {
         "first late payment penalty supplementary charge exists for the penaltyId" in {
           stubAuthRequests(isAgent)
-          val supplementary1LPPCalcData = sampleFirstLPPCalcData()
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isEstimate = false)
           stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)))
           val result = get(LPP1SupplementaryPath, isAgent)
           result.status shouldBe OK
@@ -60,8 +64,13 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
           document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
+          document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+          document.getElementById("payPenaltyByDate").text() shouldBe s"Pay penalty by ${getDateString(supplementary1LPPCalcData.payPenaltyBy)}"
+          document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementById("penaltyOverdue") shouldBe null
+          document.getElementById("penaltyDue").text() shouldBe s"To avoid interest charges, you should pay this penalty by ${getDateString(supplementary1LPPCalcData.payPenaltyBy)}."
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
           document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
           document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
@@ -70,7 +79,7 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
         }
         "first late payment penalty supplementary charge exists for the penaltyId and is overdue" in {
           stubAuthRequests(isAgent)
-          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isOverdue = true)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isOverdue = true, isEstimate = false)
           stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)))
           val result = get(LPP1SupplementaryPath, isAgent)
           result.status shouldBe OK
@@ -79,9 +88,37 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
           document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
+          document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+          document.getElementById("payPenaltyByDate").text() shouldBe s"Pay penalty by ${getDateString(supplementary1LPPCalcData.payPenaltyBy)}"
+          document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
           document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
           document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
-          document.getElementById("penaltyStatusUnpaid").text() shouldBe "This penalty is overdue. We are charging interest."
+          document.getElementById("penaltyDue") shouldBe null
+          document.getElementById("penaltyOverdue").text() shouldBe "This penalty is overdue. We are charging interest."
+          document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
+          document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
+          document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
+          document.getElementById("PenaltyAmountDetailsPoint1").text() shouldBe "3% of the unpaid Income Tax after 15 days"
+          document.getElementById("PenaltyAmountDetailsPoint2").text() shouldBe "another 3% of the unpaid Income Tax after 30 days"
+        }
+        "first late payment penalty supplementary charge exists for the penaltyId and is paid" in {
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isPenaltyPaid = true, isEstimate = false)
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)))
+          val result = get(LPP1SupplementaryPath, isAgent)
+          result.status shouldBe OK
+
+          val document = Jsoup.parse(result.body)
+          document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
+          document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
+          document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
+          document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+          document.getElementById("penaltyPaid").text() shouldBe "Penalty paid"
+          document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
+          document.getElementById("supplementaryReason").text() shouldBe "We issued this additional penalty because the unpaid tax amount used to calculate the earlier penalty was too low."
+          document.getElementById("supplementaryAlert").text() shouldBe "You still need to pay the earlier penalty if you have not paid it."
+          document.getElementById("penaltyOverdue") shouldBe null
+          document.getElementById("penaltyDue") shouldBe null
           document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
           document.getElementById("PenaltyAmountDetailsP1").text() shouldBe "A first late payment penalty is made up of two parts."
           document.getElementById("PenaltyAmountDetailsP2").text() shouldBe "We charge:"
