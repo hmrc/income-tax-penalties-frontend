@@ -53,8 +53,11 @@
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.supplementary.second.h1")</h1>
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
-    <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyByDate">@messages("calculation.supplementary.second.pay.penalty.by", dateToString(calculationData.payPenaltyBy))<p>
-
+    @if(calculationData.isPenaltyPaid) {
+        <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaid">@messages("calculation.supplementary.penalty.paid")</p>
+    } else {
+        <p class="govuk-body govuk-!-font-weight-bold" id="payPenaltyByDate">@messages("calculation.supplementary.pay.penalty.by", dateToString(calculationData.payPenaltyBy))</p>
+    }
 
     @calculationData.penaltyChargeReference.map{chargeRef =>
         <p class="govuk-body" id="chargeReference">
@@ -71,12 +74,13 @@
     ))
 
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-6">@messages("calculation.supplementary.second.h2")</h2>
-
-    @if(calculationData.isPenaltyOverdue) {
-        <p class="govuk-body" id="penaltyStatusUnpaid">@messages("calculation.supplementary.second.penalty.overdue.text")</p>
-    } else {
-        <p class="govuk-body" id="penaltyStatusPaid">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
+    <h2 class="govuk-heading-m govuk-!-margin-top-6" id="yourPenaltyDetails">@messages("calculation.supplementary.second.h2")</h2>
+    @if(!calculationData.isPenaltyPaid) {
+        @if(calculationData.isPenaltyOverdue) {
+            <p class="govuk-body" id="penaltyOverdue">@messages("calculation.supplementary.second.penalty.overdue.text")</p>
+        } else {
+            <p class="govuk-body" id="penaltyDue">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
+        }
     }
 
     @govukSummaryList(SummaryList(
