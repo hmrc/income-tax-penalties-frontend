@@ -107,7 +107,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 2
           "is between 15 and 30 days and the tax is paid but not penalty" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true)
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isEstimate = false)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -143,7 +143,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 3
           "is between 15 and 30 days and the tax paid late and penalty is not paid" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true,
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isEstimate = false,
               isOverdue = true)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
@@ -184,7 +184,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 4
           "is over 30 days, tax has not been paid" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false)
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isEstimate = false)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -332,7 +332,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 9
           "is between 15 and 30 days and the tax paid late and penalty is not paid and isPFA" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true,
+            val firstLPPCalcData = sampleFirstLPPCalcData(isIncomeTaxPaid = true, isEstimate = false,
               isOverdue = true)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPagePFA(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
@@ -369,7 +369,6 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £90.00"
-            document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
@@ -462,7 +461,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 2
           "tax is paid" in {
             stubAuthRequests(isAgent)
-            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true)
+            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true, isEstimate = false)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
             val result = get(secondLPPPath, isAgent)
             result.status shouldBe OK
@@ -481,7 +480,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
             document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
             document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
-            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
             document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
 
           }
@@ -489,7 +488,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 3
           "tax is paid but penalty overdue accruing interest" in {
             stubAuthRequests(isAgent)
-            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true,
+            val secondLPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true, isEstimate = false,
               isOverdue = true)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
             val result = get(secondLPPPath, isAgent)
@@ -517,7 +516,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
             document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
             document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
-            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
             document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
 
           }
