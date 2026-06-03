@@ -70,7 +70,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     def ttpDate(activePaymentPlan: Boolean) = if (activePaymentPlan) Some(LocalDate.now().plusDays(10)) else None
 
     FirstLatePaymentPenaltyCalculationData(
-      penaltyAmount = if(is15to30Days) 60 else if(isPartiallyPaid) 100 else if(isIncomeTaxPaid && isPenaltyPaid) 120 else 90,
+      penaltyAmount = if(is15to30Days) 60 else if(isIncomeTaxPaid) 120 else 90,
       taxPeriodStartDate = penaltyChargeDueDate.minusDays(90),
       taxPeriodEndDate = penaltyChargeDueDate.minusDays(60),
       isPenaltyPaid = isPenaltyPaid,
@@ -141,12 +141,11 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeReference = principleChargeRef,
       penaltyCategory = LPPPenaltyCategoryEnum.LPP1,
       penaltyStatus = if (firstLPPCalData.isEstimate) LPPPenaltyStatusEnum.Accruing else LPPPenaltyStatusEnum.Posted,
-      penaltyAmountPaid = if (firstLPPCalData.isPenaltyPaid) Some(firstLPPCalData.penaltyAmount) else None,
+      penaltyAmountPaid = if (firstLPPCalData.isPartiallyPaid) firstLPPCalData.penaltyAmountPaid else if (firstLPPCalData.isPenaltyPaid) Some(firstLPPCalData.penaltyAmount) else None,
       penaltyAmountPosted = { 
         if (firstLPPCalData.isEstimate) 0 
         else if(firstLPPCalData.llpHRCharge.isEmpty) 60 
-        else if(firstLPPCalData.isPartiallyPaid) 100 
-        else if(firstLPPCalData.incomeTaxIsPaid && firstLPPCalData.isPenaltyPaid) 120 
+        else if(firstLPPCalData.incomeTaxIsPaid) 120 
         else 90
       },
       penaltyAmountAccruing = if (firstLPPCalData.isEstimate) firstLPPCalData.penaltyAmount else 0,
@@ -161,7 +160,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       else None,
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
-      lpp1HRPercentage = if(firstLPPCalData.isPartiallyPaid) Some(3)  else if(firstLPPCalData.llpHRCharge.isDefined) Some(BigDecimal(3.00).setScale(2)) else None,
+      lpp1HRPercentage = if(firstLPPCalData.llpHRCharge.isDefined) Some(BigDecimal(3.00).setScale(2)) else None,
       penaltyChargeCreationDate = Some(firstLPPCalData.payPenaltyBy.minusDays(30)),
       communicationsDate = Some(firstLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(firstLPPCalData.payPenaltyBy),
