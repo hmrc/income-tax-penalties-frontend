@@ -7,11 +7,11 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"    %% s"bootstrap-frontend-$playVersion" % bootstrapVersion,
-    "uk.gov.hmrc"    %% s"play-frontend-hmrc-$playVersion" % "13.5.0"
+    "uk.gov.hmrc"    %% s"play-frontend-hmrc-$playVersion" % "13.8.0"
   )
 
   val test: Seq[ModuleID] = Seq(
-    "org.jsoup"       %    "jsoup"                  % "1.22.1"          % Test,
+    "org.jsoup"       %    "jsoup"                  % "1.22.2"          % Test,
     "uk.gov.hmrc"     %%   "bootstrap-test-play-30" % bootstrapVersion  % Test,
     "org.scalamock"   %% "scalamock"                % "7.5.5"           % Test,
   )

@@ -104,10 +104,12 @@
         <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
     }
 
-    @calculationData.penaltyChargeReference.map{chargeRef =>
-        <p class="govuk-body" id="chargeReference">
-            @messages("calculation.charge.reference", chargeRef)
-        </p>
+    @if(!calculationData.isEstimate) {
+        @calculationData.penaltyChargeReference.map{chargeRef =>
+            <p class="govuk-body" id="chargeReference">
+                @messages("calculation.charge.reference", chargeRef)
+            </p>
+        }
     }
 
     @if(calculationData.isPFA) {
