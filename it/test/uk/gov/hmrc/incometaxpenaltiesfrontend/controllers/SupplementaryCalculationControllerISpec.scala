@@ -272,6 +272,33 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £300.00"
           document.getElementById("chargeReference").text() shouldBe s"Charge reference: $selectedPenaltyChargeReference"
         }
+
+        "render the paid LPP2 supplementary page when 1 non-supplement and 5 supplements all share the same principal charge reference" in {
+          stubAuthRequests(isAgent)
+          val paidPenaltyChargeReference = "XQ002616103368"
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isIncomeTaxPaid = true, isEstimate = false)
+          val penaltyDetails = getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)
+          val responseWithRealWorldData = penaltyDetails.copy(
+            penaltyDetails = penaltyDetails.penaltyDetails.map { details =>
+              val base = details.latePaymentPenalty.get.details.head
+              val nonSupplement  = base.copy(penaltyChargeReference = Some("XX002616096295"), supplement = Some(false), penaltyAmountPosted = 8.59, penaltyAmountOutstanding = Some(8.59), penaltyAmountPaid = None)
+              val supplement1    = base.copy(penaltyChargeReference = Some("XS002616103369"), penaltyAmountPosted = 8.61, penaltyAmountOutstanding = Some(8.61), penaltyAmountPaid = None)
+              val supplement2    = base.copy(penaltyChargeReference = Some("XV002616096337"), penaltyAmountPosted = 9.77, penaltyAmountOutstanding = Some(9.77), penaltyAmountPaid = None)
+              val supplement3    = base.copy(penaltyChargeReference = Some("XD002616103370"), penaltyAmountPosted = 8.59, penaltyAmountOutstanding = Some(8.59), penaltyAmountPaid = None)
+              val paidSupplement = base.copy(penaltyChargeReference = Some(paidPenaltyChargeReference), penaltyAmountPosted = 6.30, penaltyAmountPaid = Some(6.30), penaltyAmountOutstanding = None)
+              val supplement5    = base.copy(penaltyChargeReference = Some("XR002616096335"), penaltyAmountPosted = 26.95, penaltyAmountOutstanding = Some(26.95), penaltyAmountPaid = None)
+              details.copy(latePaymentPenalty = Some(LatePaymentPenalty(Some(Seq(nonSupplement, supplement1, supplement2, supplement3, paidSupplement, supplement5)))))
+            }
+          )
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(responseWithRealWorldData))
+
+          val result = get(addQueryParam(pathStart + "additional-second-lpp-calculation", paidPenaltyChargeReference), isAgent)
+
+          result.status shouldBe OK
+          val document = Jsoup.parse(result.body)
+          document.getElementById("chargeReference").text() shouldBe s"Charge reference: $paidPenaltyChargeReference"
+          document.getElementById("penaltyPaid").text() shouldBe "Penalty paid"
+        }
       }
     }
   }
