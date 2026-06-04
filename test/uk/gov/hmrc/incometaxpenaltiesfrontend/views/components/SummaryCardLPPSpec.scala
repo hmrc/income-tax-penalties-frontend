@@ -27,6 +27,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{CurrencyFormatter, DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.TagHelper
@@ -168,6 +169,41 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.estimate)
                       document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                       document.select("#lpp-appeal-link-1").size() shouldBe 0
+                    }
+
+                    "generate an Additional LPP2 calculation link with the penalty charge reference" in {
+                      val penalty = sampleLPP2.copy(
+                        supplement = Some(true),
+                        penaltyChargeReference = Some("PEN1234568")
+                      )
+                      val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
+
+                      val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
+                        index = 1,
+                        cardTitle = messagesForLanguage.cardTitleSupplementaryPenaltyLPP2(amount),
+                        cardRows = Seq.empty,
+                        status = getTagStatus(penalty, isBreathingSpace),
+                        penaltyChargeReference = penalty.penaltyChargeReference,
+                        principalChargeReference = penalty.principalChargeReference,
+                        isPenaltyPaid = penalty.isPaid,
+                        amountDue = penalty.penaltyAmountPosted,
+                        incomeTaxIsPaid = penalty.principalChargeLatestClearing.isDefined,
+                        penaltyCategory = LPPPenaltyCategoryEnum.LPP2,
+                        dueDate = dateToString(penalty.principalChargeDueDate),
+                        taxPeriodStartDate = dateToString(penalty.principalChargeBillingFrom),
+                        taxPeriodEndDate = dateToString(penalty.principalChargeBillingTo),
+                        incomeTaxOutstandingAmountInPence = penalty.incomeTaxOutstandingAmountInPence,
+                        isEstimate = true,
+                        supplement = Some(true)
+                      ), isAgent)
+
+                      val document = Jsoup.parse(summaryCardHtml.toString)
+                      val calculationLink = document.select("#lpp-view-calculation-link-1")
+
+                      calculationLink.text() shouldBe messagesForLanguage.cardLinksViewCalculation
+                      calculationLink.attr("href") shouldBe controllers.routes.SupplementaryCalculationController
+                        .supplementaryCalculationPageLPP2("PEN1234568", isAgent)
+                        .url
                     }
                   }
                 }

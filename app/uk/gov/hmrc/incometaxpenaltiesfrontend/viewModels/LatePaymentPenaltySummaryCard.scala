@@ -49,7 +49,7 @@ case class LatePaymentPenaltySummaryCard(
 
   def optCalculationDetailsLink(isAgent: Boolean): Option[String] = if (hasCalulcationDetailsLink && hasSupplementaryCharge){
     if(isLPP2){
-      Some(routes.SupplementaryCalculationController.supplementaryCalculationPageLPP2(principalChargeReference, isAgent).url)
+      Some(routes.SupplementaryCalculationController.supplementaryCalculationPageLPP2(penaltyChargeReference.getOrElse(principalChargeReference), isAgent).url)
     } else {
       Some(routes.SupplementaryCalculationController.supplementaryCalculationPage(principalChargeReference, isAgent).url)
     }

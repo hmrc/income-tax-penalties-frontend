@@ -70,7 +70,10 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
           .penaltyDetails
           .latePaymentPenalty
           .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 && lpp.supplement.contains(true) => lpp }
+            _.details.collectFirst {
+              case lpp if (lpp.penaltyChargeReference.contains(penaltyId) || lpp.principalChargeReference == penaltyId) &&
+                lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 && lpp.supplement.contains(true) => lpp
+            }
           }
 
         penaltyDetailsForId match {
