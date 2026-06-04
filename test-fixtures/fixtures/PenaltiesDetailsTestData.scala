@@ -64,13 +64,14 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
                              isPaymentPlanProposed: Boolean = false,
                              penaltyAmountOutstanding: Option[BigDecimal] = None,
                              penaltyAmountPaid: Option[BigDecimal] = None,
-                             isPartiallyPaid: Boolean = false) = {
+                             isPartiallyPaid: Boolean = false,
+                             isIncomeTaxPartiallyPaid: Boolean = false) = {
     val penaltyChargeDueDate = if (isOverdue) LocalDate.now().minusDays(5) else LocalDate.now().plusDays(5)
 
     def ttpDate(activePaymentPlan: Boolean) = if (activePaymentPlan) Some(LocalDate.now().plusDays(10)) else None
 
     FirstLatePaymentPenaltyCalculationData(
-      penaltyAmount = if(is15to30Days) 60 else if(isIncomeTaxPaid) 120 else 90,
+      penaltyAmount = if(is15to30Days) 60 else if(isIncomeTaxPartiallyPaid) 90 else 120,
       taxPeriodStartDate = penaltyChargeDueDate.minusDays(90),
       taxPeriodEndDate = penaltyChargeDueDate.minusDays(60),
       isPenaltyPaid = isPenaltyPaid,
@@ -97,6 +98,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       penaltyAmountOutstanding = penaltyAmountOutstanding,
       penaltyAmountPaid = penaltyAmountPaid,
       isPartiallyPaid = isPartiallyPaid,
+      isIncomeTaxPartiallyPaid = isIncomeTaxPartiallyPaid
     )
   }
 
@@ -145,8 +147,8 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       penaltyAmountPosted = { 
         if (firstLPPCalData.isEstimate) 0 
         else if(firstLPPCalData.llpHRCharge.isEmpty) 60 
-        else if(firstLPPCalData.incomeTaxIsPaid) 120 
-        else 90
+        else if(firstLPPCalData.isIncomeTaxPartiallyPaid) 90
+        else 120
       },
       penaltyAmountAccruing = if (firstLPPCalData.isEstimate) firstLPPCalData.penaltyAmount else 0,
       penaltyAmountOutstanding = if(firstLPPCalData.isPartiallyPaid) Some(firstLPPCalData.penaltyAmountOutstanding.getOrElse(BigDecimal(100)))
@@ -155,9 +157,9 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp1HRDays = Some("30"),
       lpp2Days = Some("31"),
       lpp1LRCalculationAmt = Some(2000.00),
-      lpp1HRCalculationAmt = if (firstLPPCalData.llpHRCharge.isDefined && firstLPPCalData.incomeTaxIsPaid) Some(2000.00) 
-      else if(firstLPPCalData.llpHRCharge.isDefined && !firstLPPCalData.incomeTaxIsPaid) Some(1000.00)
-      else None,
+      lpp1HRCalculationAmt = if (firstLPPCalData.llpHRCharge.isEmpty) None
+      else if(firstLPPCalData.isIncomeTaxPartiallyPaid) Some(1000.00)
+      else Some(2000.00),
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = if(firstLPPCalData.llpHRCharge.isDefined) Some(BigDecimal(3.00).setScale(2)) else None,

@@ -56,6 +56,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   penaltyAmountOutstanding: Option[BigDecimal],
                                                   penaltyAmountPaid: Option[BigDecimal],
                                                   isPartiallyPaid: Boolean,
+                                                  isIncomeTaxPartiallyPaid: Boolean = false
                                                  ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,

@@ -179,9 +179,9 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
 
           //scenario 4
-          "the tax is not paid but penalty is partially paid" in {
+          "is over 30 days, the tax is not paid but penalty is partially paid" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isPartiallyPaid = true, isEstimate = false, penaltyAmountOutstanding = Some(100), penaltyAmountPaid = Some(20))
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isPartiallyPaid = true, isEstimate = false, penaltyAmountOutstanding = Some(100), penaltyAmountPaid = Some(20))
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -261,9 +261,9 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           }
 
           //scenario 6
-          "is over 30 days, tax has been partially paid" in {
+          "is over 30 days, tax has been partially paid and penalty is not paid" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isEstimate = false)
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isEstimate = false, isIncomeTaxPartiallyPaid = true)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -304,7 +304,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
           //scenario 7
           "is over 30 days, the tax is paid but not penalty and is overdue" in {
             stubAuthRequests(isAgent)
-            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isEstimate = false)
+            val firstLPPCalcData = sampleFirstLPPCalcData(is15to30Days = false, isIncomeTaxPaid = true, isEstimate = false)
             stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
             val result = get(firstLPPPath, isAgent)
             result.status shouldBe OK
@@ -314,7 +314,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £90.00"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £120.00"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
@@ -332,12 +332,12 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-table__row").select("tr").get(1).select("td").get(1).text() shouldBe "15"
             document.getElementsByClass("govuk-table__row").select("tr").get(1).select("td").get(2).text() shouldBe "3%"
             document.getElementsByClass("govuk-table__row").select("tr").get(1).select("td").get(3).text() shouldBe "£60.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(0).text() shouldBe "£1,000.00"
+            document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(0).text() shouldBe "£2,000.00"
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(1).text() shouldBe "30"
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(2).text() shouldBe "3%"
-            document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(3).text() shouldBe "£30.00"
+            document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(3).text() shouldBe "£60.00"
             document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(0).text() shouldBe "Total penalty"
-            document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(3).text() shouldBe "£90.00"
+            document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(3).text() shouldBe "£120.00"
 
 
           }
@@ -485,7 +485,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £90.00"
+            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £120.00"
             document.getElementById("taxYearAmended").text() shouldBe s"Your tax return for the ${getTaxYearString(firstLPPCalcData)} tax year has been amended."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the extra amount was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a late payment penalty."
