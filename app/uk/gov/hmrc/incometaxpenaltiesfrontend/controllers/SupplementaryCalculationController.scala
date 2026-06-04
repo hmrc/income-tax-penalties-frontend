@@ -22,8 +22,9 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserCalculationInfoAuditModel
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyCategoryEnum
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{FirstLatePaymentPenaltyCalculationData, SecondLatePaymentPenaltyCalculationData}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.Lpp1Supplement
@@ -34,30 +35,40 @@ import javax.inject.Inject
 
 @Singleton
 class SupplementaryCalculationController @Inject()(override val controllerComponents: MessagesControllerComponents,
-                                                   lpp1SupplementView: Lpp1Supplement,
-                                                   lpp2Supplement: Lpp2Supplement,
+                                                    lpp1SupplementView: Lpp1Supplement,
+                                                    lpp2Supplement: Lpp2Supplement,
                                                    authActions: AuthActions,
                                                    auditService: AuditService)
-                                                  (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
+                                                   (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
 
+  private def matchesLPP2Supplement(lpp: LPPDetails, penaltyId: String): Boolean =
+    (lpp.penaltyChargeReference.contains(penaltyId) || lpp.principalChargeReference == penaltyId) &&
+      lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 &&
+      lpp.supplement.contains(true)
 
   def supplementaryCalculationPage(penaltyId: String,
-                                   isAgent: Boolean): Action[AnyContent] =
+                                    isAgent: Boolean): Action[AnyContent] =
     authActions.asMTDUserWithPenaltyData(isAgent) {
       implicit currentUserRequest =>
-        val penaltyDetailsForId = currentUserRequest
-          .penaltyDetails
-          .latePaymentPenalty
-          .flatMap {
-            _.details.collectFirst { case lpp if lpp.principalChargeReference == penaltyId && lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && lpp.supplement.contains(true) => lpp }
-          }
+        val allLpps = currentUserRequest.penaltyDetails.latePaymentPenalty.map(_.details).getOrElse(Seq.empty)
+        val penaltyDetailsForId = allLpps.find(lpp =>
+          lpp.principalChargeReference == penaltyId &&
+            lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 &&
+            lpp.supplement.contains(true)
+        )
 
         penaltyDetailsForId match {
           case Some(lppDetails) =>
+            logger.info(s"[SupplementaryCalculationController][supplementaryCalculationPage] Found LPP1 supplement for penaltyId=$penaltyId")
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             Ok(lpp1SupplementView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
           case _ =>
+            logger.warn(
+              s"[SupplementaryCalculationController][supplementaryCalculationPage] No LPP1 supplement found for penaltyId=$penaltyId. " +
+              s"LPP count=${allLpps.size}, " +
+              s"LPP1 supplements present=[${allLpps.filter(l => l.penaltyCategory == LPPPenaltyCategoryEnum.LPP1 && l.supplement.contains(true)).map(_.principalChargeReference).mkString(",")}]"
+            )
             Redirect(routes.IndexController.homePage(isAgent))
         }
     }
@@ -66,22 +77,21 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
                                    isAgent: Boolean): Action[AnyContent] =
     authActions.asMTDUserWithPenaltyData(isAgent) {
       implicit currentUserRequest =>
-        val penaltyDetailsForId = currentUserRequest
-          .penaltyDetails
-          .latePaymentPenalty
-          .flatMap {
-            _.details.collectFirst {
-              case lpp if (lpp.penaltyChargeReference.contains(penaltyId) || lpp.principalChargeReference == penaltyId) &&
-                lpp.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 && lpp.supplement.contains(true) => lpp
-            }
-          }
+        val allLpps = currentUserRequest.penaltyDetails.latePaymentPenalty.map(_.details).getOrElse(Seq.empty)
+        val penaltyDetailsForId = allLpps.find(matchesLPP2Supplement(_, penaltyId))
 
         penaltyDetailsForId match {
           case Some(lppDetails) =>
+            logger.info(s"[SupplementaryCalculationController][supplementaryCalculationPageLPP2] Found LPP2 supplement for penaltyId=$penaltyId penaltyChargeReference=${lppDetails.penaltyChargeReference}")
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
             Ok(lpp2Supplement(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
           case _ =>
+            logger.warn(
+              s"[SupplementaryCalculationController][supplementaryCalculationPageLPP2] No LPP2 supplement found for penaltyId=$penaltyId. " +
+              s"LPP count=${allLpps.size}, " +
+              s"LPP2 supplements present=[${allLpps.filter(l => l.penaltyCategory == LPPPenaltyCategoryEnum.LPP2 && l.supplement.contains(true)).map(l => s"pcr=${l.principalChargeReference} penRef=${l.penaltyChargeReference} supplement=${l.supplement}").mkString("; ")}]"
+            )
             Redirect(routes.IndexController.homePage(isAgent))
         }
     }
