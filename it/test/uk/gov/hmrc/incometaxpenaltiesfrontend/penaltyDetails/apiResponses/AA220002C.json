@@ -17,11 +17,11 @@
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
-            "principalChargeReference" : "XJ002616061003",
+            "principalChargeReference" : "XJ002616061086",
             "supplement" : false,
-            "penaltyStatus" : "A",
-            "penaltyAmountAccruing" : 2.19,
-            "penaltyAmountPosted" : 0,
+            "penaltyStatus" : "P",
+            "penaltyAmountAccruing" : 0,
+            "penaltyAmountPosted" : 30,
             "principalChargeBillingFrom" : "2026-04-06",
             "principalChargeBillingTo" : "2027-04-05",
             "principalChargeDueDate" : "2028-01-31",
@@ -29,19 +29,22 @@
             "principalChargeMainTr" : "4720",
             "principalChargeSubTr" : "SUB1",
             "penaltyCategory" : "LPP2",
-            "lpp1LRCalculationAmt" : 37,
+            "penaltyAmountPaid" : 15,
+            "penaltyAmountOutstanding" : 15,
+            "lpp1LRCalculationAmt" : 500,
             "lpp1LRDays" : "15",
             "lpp1LRPercentage" : 3,
-            "lpp1HRCalculationAmt" : 37,
+            "lpp1HRCalculationAmt" : 500,
             "lpp1HRDays" : "30",
             "lpp1HRPercentage" : 3,
             "lpp2Days" : "31",
             "lpp2Percentage" : 10,
             "penaltyChargeCreationDate" : "2028-03-02",
-            "penaltyChargeReference" : "XJ002616061003",
-            "penaltyChargeDueDate" : "2028-04-03"
+            "penaltyChargeReference" : "XJ002616061086",
+            "penaltyChargeDueDate" : "2028-04-17",
+            "principalChargeLatestClearing" : "2028-03-16"
           }, {
-            "principalChargeReference" : "XJ002616061003",
+            "principalChargeReference" : "XJ002616061086",
             "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
@@ -62,7 +65,7 @@
             "lpp1HRDays" : "30",
             "lpp1HRPercentage" : 3,
             "penaltyChargeCreationDate" : "2028-03-02",
-            "penaltyChargeReference" : "XJ002616061003",
+            "penaltyChargeReference" : "XJ002616061086",
             "penaltyChargeDueDate" : "2028-04-17",
             "principalChargeLatestClearing" : "2028-03-16"
           } ]
