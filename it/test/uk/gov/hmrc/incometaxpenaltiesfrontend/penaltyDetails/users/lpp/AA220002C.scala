@@ -26,13 +26,14 @@ object AA220002C extends UserDetailsData {
   override val expectedNumberOfLPPPenaltyCards: Int = 2
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
-    validateCardTag(card, expectedTag = "Estimate")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £30.00")
+    validateCardTag(card, expectedTag = "£15.00 due")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 3
-    validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
+    cardRows.size() shouldBe 4
+    validateSummary(cardRows.get(0), "Pay penalty by", "17 April 2028")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
+    validateSummary(cardRows.get(3), "Income Tax paid", "16 March 2028")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
