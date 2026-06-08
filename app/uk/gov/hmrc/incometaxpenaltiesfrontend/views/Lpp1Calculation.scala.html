@@ -93,13 +93,6 @@
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
-    @if(inBreathingSpace){
-        @govukInsetText(InsetText(
-            content = Text(messages("calculation.calc.breathing.space")),
-            id = Some("breathingSpaceMessage")
-        ))
-    }
-
     @calculationHelper.getPaymentDetails(calculationData).map{msg =>
         <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
     }
@@ -110,6 +103,13 @@
                 @messages("calculation.charge.reference", chargeRef)
             </p>
         }
+    }
+
+    @if(inBreathingSpace){
+        @govukInsetText(InsetText(
+            content = Text(messages("calculation.calc.breathing.space")),
+            id = Some("breathingSpaceMessage")
+        ))
     }
 
     @if(calculationData.isPFA) {
