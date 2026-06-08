@@ -62,7 +62,8 @@
             "lpp1HRPercentage" : 3,
             "penaltyChargeCreationDate" : "2028-03-02",
             "penaltyChargeReference" : "XJ002616061021",
-            "penaltyChargeDueDate" : "2028-04-03"
+            "penaltyChargeDueDate" : "2028-04-03",
+            "principalChargeLatestClearing" : "2028-02-20"
           } ]
         },
         "breathingSpace" : [ {
