@@ -26,7 +26,7 @@ object AA210002C extends UserDetailsData {
   override val expectedNumberOfLPPPenaltyCards: Int = 2
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £1.09")
     validateCardTag(card, expectedTag = "Estimate")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 3
