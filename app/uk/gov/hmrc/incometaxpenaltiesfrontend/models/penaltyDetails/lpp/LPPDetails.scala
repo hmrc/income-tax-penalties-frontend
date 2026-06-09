@@ -74,6 +74,7 @@ case class  LPPDetails(principalChargeReference: String,
 
   val isPaid: Boolean = !penaltyAmountPaid.contains(0) && penaltyAmountPaid.contains(penaltyAmountPosted)
   val isPartiallyPaid: Boolean = penaltyAmountPaid.exists(_ > 0) && penaltyAmountOutstanding.exists(_ > 0)
+  val incomeTaxIsPartiallyPaid: Boolean = principalChargeLatestClearing.isDefined && vatOutstandingAmount.exists(_ > 0)
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
   val is15To30Days: Boolean = lpp1HRCalculationAmt.isEmpty
 

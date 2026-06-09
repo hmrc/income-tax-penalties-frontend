@@ -56,7 +56,7 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
                                                   penaltyAmountOutstanding: Option[BigDecimal],
                                                   penaltyAmountPaid: Option[BigDecimal],
                                                   isPartiallyPaid: Boolean,
-                                                  isIncomeTaxPartiallyPaid: Boolean = false
+                                                  isIncomeTaxPartiallyPaid: Boolean
                                                  ) extends CalculationData {
   def this(lppDetails: LPPDetails)(implicit timeMachine: TimeMachine) = this(
     penaltyAmount = lppDetails.amountDue,
@@ -88,7 +88,8 @@ case class FirstLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
     paymentPlanProposed = lppDetails.ttpProposalDate,
     penaltyAmountOutstanding = lppDetails.penaltyAmountOutstanding,
     penaltyAmountPaid = lppDetails.penaltyAmountPaid,
-    isPartiallyPaid = lppDetails.isPartiallyPaid
+    isPartiallyPaid = lppDetails.isPartiallyPaid,
+    isIncomeTaxPartiallyPaid = lppDetails.incomeTaxIsPartiallyPaid
   )
 
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
