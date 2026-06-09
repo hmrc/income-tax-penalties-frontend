@@ -93,6 +93,12 @@
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
+    @calculationHelper.getPaymentPlanInset(calculationData).map{insetMsg =>
+        <div class="govuk-inset-text"  id="paymentPlanInset">
+            @insetMsg
+        </div>
+    }
+
     @calculationHelper.getPaymentDetails(calculationData).map{msg =>
         <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
     }
@@ -144,12 +150,7 @@
             @messages("calculation.breathingSpace.expired")
         </p>
     }
-
-    @calculationHelper.getPaymentPlanInset(calculationData).map{insetMsg =>
-        <div class="govuk-inset-text">
-            @insetMsg
-        </div>
-    }
+    
     @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
 
     @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
