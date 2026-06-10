@@ -99,12 +99,6 @@
         </div>
     }
 
-    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
-        <div class="govuk-inset-text" id="breathingSpaceExpired">
-            @messages("calculation.breathingSpace.expired")
-        </div>
-    }
-
     @calculationHelper.getPaymentDetails(calculationData).map{msg =>
         <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
     }
@@ -121,6 +115,13 @@
         @govukInsetText(InsetText(
             content = Text(messages("calculation.calc.breathing.space")),
             id = Some("breathingSpaceMessage")
+        ))
+    }
+
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
+        @govukInsetText(InsetText(
+            content = Text(messages("calculation.breathingSpace.expired")),
+            id = Some("breathingSpaceExpired")
         ))
     }
 
