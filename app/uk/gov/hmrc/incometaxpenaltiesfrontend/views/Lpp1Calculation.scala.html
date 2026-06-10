@@ -118,6 +118,13 @@
         ))
     }
 
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
+        @govukInsetText(InsetText(
+            content = Text(messages("calculation.breathingSpace.expired")),
+            id = Some("breathingSpaceExpired")
+        ))
+    }
+
     @if(calculationData.isPFA) {
         <p class="govuk-body" id="taxYearAmended">
         @messages("calculation.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
@@ -142,12 +149,6 @@
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
             @calculationHelper.getFinalUnpaidMsg(calculationData, if(calculationData.isPFA) ".pfa" else "")
-        </p>
-    }
-
-    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
-        <p class="govuk-body" id="breathingSpaceExpired">
-            @messages("calculation.breathingSpace.expired")
         </p>
     }
     
