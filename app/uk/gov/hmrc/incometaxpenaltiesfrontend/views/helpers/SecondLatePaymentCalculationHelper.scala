@@ -36,6 +36,16 @@ class SecondLatePaymentCalculationHelper {
       None
     }
   }
+  
+  def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): (String, String) = {
+    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
+      (messages("calculation.missedDeadline.lpp2.isEstimate"), messages("calculation.dailyIncrease.lpp2.isEstimate"))
+    } else if (calculationData.isPenaltyPaid) {
+      (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"))
+    } else {
+      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"))
+    }
+  }
 
 
   def getFinalUnpaidMsg(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {

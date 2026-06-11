@@ -41,15 +41,13 @@ class FirstLatePaymentCalculationHelper {
   }
 
   def getMissedDeadlineMsg(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
-    calculationData.llpHRCharge match {
-      case Some(_) => messages("calculation.payment.missed.reason.additional")
-      case None if !calculationData.incomeTaxIsPaid =>
-        messages("calculation.payment.15.30.missed.reason.taxUnpaid")
-      case None if calculationData.isPenaltyPaid =>
-        messages("calculation.payment.15.30.missed.reason.taxPaid")
-
-      case _ => messages("calculation.payment.15.30.missed.reason.taxDueOrOverdue") 
-    }
+    if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
+      messages("calculation.missedDeadline.lpp1.isEstimate")
+    } else if (calculationData.isPenaltyPaid) {
+          messages("calculation.missedDeadline.lpp1.isPaid")
+        } else {
+          messages("calculation.missedDeadline.lpp1.isDueOrOverdue")
+        }
   }
 
 
