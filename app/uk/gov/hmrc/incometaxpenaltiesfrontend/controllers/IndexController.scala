@@ -104,6 +104,12 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
         point.copy(penaltyOrder = Some(newPenaltyOrder))
     }
 
-    pointsWithOrder.sortWith((thisElement, nextElement) => thisElement.penaltyOrder.getOrElse("0").toInt >= nextElement.penaltyOrder.getOrElse("0").toInt)
+    pointsWithOrder.sortWith { (thisElement, nextElement) =>
+      if (thisElement.penaltyCreationDate.isEqual(nextElement.penaltyCreationDate)) {
+        thisElement.penaltyOrder.getOrElse("0").toInt > nextElement.penaltyOrder.getOrElse("0").toInt
+      } else {
+        thisElement.penaltyCreationDate.isAfter(nextElement.penaltyCreationDate)
+      }
+    }
   }
 }
