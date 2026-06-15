@@ -88,10 +88,10 @@
         @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
 
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">@messages("calculation.first.h1")</h1>
+    <h1 class="govuk-heading-xl">@messages("calculation.first.h1")</h1>
 
 
-    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
+    <h1 class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</h1>
 
     @calculationHelper.getPaymentPlanInset(calculationData).map{insetMsg =>
         <div class="govuk-inset-text"  id="paymentPlanInset">
