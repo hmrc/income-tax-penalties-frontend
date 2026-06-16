@@ -84,11 +84,11 @@
 
 @main(pageTitle = messages(s"calculation.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
-    <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-xl" id="captionSpan">
-        @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))</span>
-        @messages("calculation.first.h1")
-    </h1>
+    <span class="govuk-caption-xl" id="captionSpan">
+        @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+    </span>
+
+    <h1 class="govuk-heading-xl">@messages("calculation.first.h1")</h1>
 
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
