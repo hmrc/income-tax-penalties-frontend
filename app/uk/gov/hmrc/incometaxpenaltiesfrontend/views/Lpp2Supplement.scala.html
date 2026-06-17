@@ -29,8 +29,8 @@
         main: MainTemplate,
         link: Link,
         p: P,
-        govukSummaryList : GovukSummaryList,
         govukDetails : GovukDetails,
+        lpp2SupplementaryCalculationSummaryList: Lpp2SupplementaryCalculationSummaryList
 )
 
 @(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -46,7 +46,6 @@
     </ol>
 }
 
-@chargePeriodText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
 
 @main(pageTitle = messages("calculation.supplementary.second.title"), backLinkEnabled = true, isAgent = isAgent) {
     <span class="govuk-caption-l" id="captionSpan">@messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))</span>
@@ -82,38 +81,7 @@
             <p class="govuk-body" id="penaltyDue">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
         }
     }
-
-    @govukSummaryList(SummaryList(
-        rows = Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("calculation.supplementary.second.charge.period"))
-            ),
-            value = Value(
-              content = Text(messages(s"calculation.calc2.table.charge.period${chargePeriodText}",
-                  dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-                  dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
-                  calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-            )
-          ),
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("calculation.supplementary.second.annual.rate"))
-            ),
-            value = Value(
-              content = Text(calculationData.penaltyPercentage.toString() + "%")
-            )
-          ),
-            SummaryListRow(
-            key = Key(
-                content = Text(messages("calculation.supplementary.second.penalty.amount"))
-            ),
-            value = Value(
-                content = Text("£" + calculationData.formattedPenaltyAmount)
-            )
-        )
-      ))
-    )
+@lpp2SupplementaryCalculationSummaryList(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)
 
     <div class="govuk-!-margin-bottom-8">
         @link(
