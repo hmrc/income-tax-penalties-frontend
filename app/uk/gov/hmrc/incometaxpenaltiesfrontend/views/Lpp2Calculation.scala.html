@@ -99,24 +99,9 @@
     </p>
 
 
-    @if(!calculationData.incomeTaxIsPaid && calculationData.isEstimate){
-        <p class="govuk-body" id="missedDeadline">
-        @messages("calculation.calc2.missed.deadline.tax.unpaid")
-        </p>
-
-        <p class="govuk-body" id="penaltyIncrease">
-        @messages("calculation.calc2.penalty.increase.tax.unpaid")
-        </p>
-
-    } else {
-
-        <p class="govuk-body" id="missedDeadline">
-        @messages("calculation.calc2.missed.deadline.tax.paid")
-        </p>
-
-        <p class="govuk-body" id="penaltyIncrease">
-        @messages("calculation.calc2.penalty.increase.tax.paid")
-        </p>
+    @defining(calculationHelper.getMissedDeadlineAndDailyIncreaseMsgs(calculationData)) { msgs =>
+        <p class="govuk-body" id="missedDeadline">@msgs._1</p>
+        <p class="govuk-body" id="penaltyIncrease">@msgs._2</p>
     }
 
 

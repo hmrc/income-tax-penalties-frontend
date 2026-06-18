@@ -74,18 +74,11 @@ calculation.charge.reference = Cyfeirnod y gosb: {0}
 calculation.pay.penalty.by = Mae’n rhaid talu’r gosb erbyn {0}
 calculation.paid.penalty = Cosb wedi’i thalu
 calculation.payment.deadline = Y dyddiad cau ar gyfer talu ar gyfer blwyddyn dreth {0} i {1} oedd {2}.
-calculation.payment.15.30.missed.reason.taxUnpaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arnoch.
+calculation.missedDeadline.lpp1.isEstimate = Oherwydd eich bod wedi methu’r dyddiad cau hwn, bydd cosb am dalu’n hwyr yn cael ei chodi arnoch.
+calculation.missedDeadline.lpp1.isDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
+calculation.missedDeadline.lpp1.isPaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, roedd cosb am dalu’n hwyr wedi’i chodi arnoch..
 calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanegol oedd {0}.
 calculation.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
-
-calculation.payment.15.30.missed.reason.taxPaid = Oherwydd eich bod wedi methu’r dyddiad cau hwn, roedd cosb am dalu’n hwyr wedi’i chodi arnoch..
-calculation.payment.15.30.missed.reason.taxDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau hwn, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
-calculation.payment.missed.reason.additional = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae cosb am dalu’n hwyr wedi’i chodi arnoch.
-
-
-
-
-
 
 calculation.yourPenaltyDetails = Manylion eich cosb
 calculation.penaltyDueDate.due.p = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
@@ -112,11 +105,12 @@ calculation.penalty.payment.plan.agreed.p1 = Cytunoch i gynllun talu ar {0}.
 calculation.penalty.payment.plan.agreed.p2 = Ni fydd y gosb yn cynyddu os byddwch yn gwneud pob taliad mewn pryd.
 calculation.penalty.payment.plan.agreed.p3 = Os na wnewch hyn, bydd eich cynllun talu’n methu. Bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
 
-calculation.calc2.missed.deadline.tax.unpaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
-calculation.calc2.missed.deadline.tax.paid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
+calculation.missedDeadline.lpp2.isEstimate = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
+calculation.missedDeadline.lpp2.isDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
+calculation.missedDeadline.lpp2.isPaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, roedd ail gosb am dalu’n hwyr wedi’i chodi arnoch.
 
-calculation.calc2.penalty.increase.tax.unpaid = Bydd swm y gosb yn cynyddu’n ddyddiol ar gyfradd flynyddol o 10% o’r dreth sy’n ddyledus.
-calculation.calc2.penalty.increase.tax.paid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
+calculation.dailyIncrease.lpp2.isEstimate = Bydd swm y gosb yn cynyddu’n ddyddiol ar gyfradd flynyddol o 10% o’r dreth sy’n ddyledus.
+calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
 
 calculation.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
