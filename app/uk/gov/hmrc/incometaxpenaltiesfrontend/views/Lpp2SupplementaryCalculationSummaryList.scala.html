@@ -28,7 +28,7 @@
        govukSummaryList : GovukSummaryList
 )
 
-@(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages)
 @dayOrDaysText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
 
   @if(calculationData.isPartiallyPaid) {
@@ -113,5 +113,4 @@
       ))
     )
   }
-
 

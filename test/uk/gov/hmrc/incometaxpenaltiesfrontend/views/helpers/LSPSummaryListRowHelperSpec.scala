@@ -38,7 +38,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
     Seq(
       (LSPCardMessages.English, ExpiryReasonMessages.English),
       (LSPCardMessages.Welsh, ExpiryReasonMessages.Welsh)
-    ).foreach { case (messagesForLanguage, expiryMessages) =>
+    ).foreach { case (messagesForLanguage, _) =>
 
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang(messagesForLanguage.lang.code)))
 

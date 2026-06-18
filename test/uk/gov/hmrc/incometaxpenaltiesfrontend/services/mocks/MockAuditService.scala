@@ -27,6 +27,6 @@ trait MockAuditService extends MockFactory { this: TestSuite =>
   val mockAuditService: AuditService = mock[AuditService]
 
   def mockAudit(auditModel: AuditModel): Unit =
-    (mockAuditService.audit(_: AuditModel)(_: HeaderCarrier)).expects(*,*).returning(())
+    (mockAuditService.audit(_: AuditModel)(_: HeaderCarrier)).expects(auditModel, *).returning(())
 
 }

@@ -61,7 +61,7 @@ trait TagHelper {
       case (_, _) => showDueOrPartiallyPaidDueTag(penalty.penaltyAmountOutstanding.getOrElse(0), penalty.penaltyAmountPaid.getOrElse(BigDecimal(0)), penalty.penaltyChargeDueDate)
     }
 
-  private def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: BigDecimal, penaltyAmountPaid: BigDecimal, chargeDueDate: Option[LocalDate] = None)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
+  private def showDueOrPartiallyPaidDueTag(penaltyAmountOutstanding: BigDecimal, penaltyAmountPaid: BigDecimal, chargeDueDate: Option[LocalDate])(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     (penaltyAmountOutstanding, penaltyAmountPaid, chargeDueDate) match {
       case (outstanding, _, _) if outstanding == 0 =>
         Tag(Text(messages("status.paid")), "govuk-tag--green")

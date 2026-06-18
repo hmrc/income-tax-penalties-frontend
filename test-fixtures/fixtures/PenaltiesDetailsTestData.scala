@@ -92,7 +92,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
           )
         )
       } else None,
-      isPFA = false,
+      isPFA = isPFA,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
       paymentPlanProposed = ttpDate(isPaymentPlanProposed),
       penaltyAmountOutstanding = penaltyAmountOutstanding,

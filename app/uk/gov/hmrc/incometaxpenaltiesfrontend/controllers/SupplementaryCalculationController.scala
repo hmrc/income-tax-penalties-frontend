@@ -62,7 +62,7 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
             logger.info(s"[SupplementaryCalculationController][supplementaryCalculationPage] Found LPP1 supplement for penaltyId=$penaltyId")
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
-            Ok(lpp1SupplementView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine))
+            Ok(lpp1SupplementView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent))
           case _ =>
             logger.warn(
               s"[SupplementaryCalculationController][supplementaryCalculationPage] No LPP1 supplement found for penaltyId=$penaltyId. " +
