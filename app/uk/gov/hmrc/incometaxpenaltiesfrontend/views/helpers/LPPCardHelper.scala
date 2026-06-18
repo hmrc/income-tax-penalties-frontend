@@ -57,7 +57,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
       )
     }
 
-  private def lppCardBody(lpp: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Seq[SummaryListRow] =
+  private def lppCardBody(lpp: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       lppSummaryRow.payPenaltyByRow(lpp),
       Some(lppSummaryRow.incomeTaxPeriodRow(lpp)),

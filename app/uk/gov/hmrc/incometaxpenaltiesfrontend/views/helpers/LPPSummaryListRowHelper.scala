@@ -52,7 +52,7 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
       value = Html(dateToString(penalty.principalChargeDueDate))
     )
 
-  def incomeTaxPaymentDateRow(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): SummaryListRow =
+  def incomeTaxPaymentDateRow(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages): SummaryListRow =
     summaryListRow(
       messages(s"lpp.incomeTaxPaymentDate.key${penalty.pfaSuffix}"),
       Html(
@@ -60,8 +60,8 @@ class LPPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
           dateToString(penalty.principalChargeLatestClearing.get)
         } else {
           (penalty.ttpAgreementDate, penalty.ttpProposalDate) match {
-            case (Some(agreedDate), _) => messages("lpp.paymentPlanAgreed")
-            case (_, Some(proposedDate)) => messages("lpp.paymentPlanProposed")
+            case (Some(_), _) => messages("lpp.paymentPlanAgreed")
+            case (_, Some(_)) => messages("lpp.paymentPlanProposed")
             case _ => messages("lpp.paymentNotReceived")
           }
         }

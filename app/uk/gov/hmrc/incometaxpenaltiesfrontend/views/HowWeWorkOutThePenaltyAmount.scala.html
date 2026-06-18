@@ -30,7 +30,7 @@
 p: P,
 govukDetails : GovukDetails,
 )
-@(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit request: Request[_], messages: Messages)
+@(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages)
 
 
 @defining = {
@@ -52,6 +52,4 @@ govukDetails : GovukDetails,
 summary = Text(messages("howWeWorkOutPenaltyAmount.details")),
 content = HtmlContent(defining)
 ))
-
-
 

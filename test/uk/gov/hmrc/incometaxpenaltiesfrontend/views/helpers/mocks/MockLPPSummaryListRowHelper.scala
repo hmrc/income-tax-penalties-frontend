@@ -24,7 +24,6 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.{Key, Text, Value}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPDetails
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LPPSummaryListRowHelper
 
 trait MockLPPSummaryListRowHelper extends MockFactory {
@@ -56,8 +55,8 @@ trait MockLPPSummaryListRowHelper extends MockFactory {
       .returning(value)
 
   def mockIncomeTaxPaymentDateRow(penalty: LPPDetails)(value: SummaryListRow): CallHandler[SummaryListRow] =
-    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails, _:Boolean)(_:Messages, _:TimeMachine))
-      .expects(penalty, *, *, *)
+    (mockLPPSummaryListRowHelper.incomeTaxPaymentDateRow(_:LPPDetails, _:Boolean)(_:Messages))
+      .expects(penalty, *, *)
       .returning(value)
 
   def mockBreathingSpaceStatusRow()(value: SummaryListRow): CallHandler[SummaryListRow] =

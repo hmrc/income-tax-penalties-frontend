@@ -69,7 +69,7 @@ case class PenaltiesOverviewViewModel(overviewItems: Seq[PenaltiesOverviewItem],
 
 object PenaltiesOverviewViewModel {
 
-  def apply(penaltyDetails: PenaltyDetails)(implicit messages: Messages): PenaltiesOverviewViewModel = {
+  def apply(penaltyDetails: PenaltyDetails): PenaltiesOverviewViewModel = {
     import penaltyDetails.*
 
     val whatOverviewDetails = Seq(

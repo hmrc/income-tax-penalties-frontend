@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp
 import play.api.libs.json.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LPPPenaltyStatusEnum.Posted
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{JsonUtils, TimeMachine}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.JsonUtils
 
 import java.time.LocalDate
 
@@ -78,9 +78,9 @@ case class  LPPDetails(principalChargeReference: String,
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
   val is15To30Days: Boolean = lpp1HRCalculationAmt.isEmpty
 
-  def ttpProposalDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
+  def ttpProposalDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
 
-  def ttpAgreementDate(implicit timeMachine: TimeMachine): Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
+  def ttpAgreementDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
 
 
   override def compare(that: LPPDetails): Int = {
