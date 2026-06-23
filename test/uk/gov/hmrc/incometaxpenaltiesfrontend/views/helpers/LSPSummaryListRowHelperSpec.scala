@@ -54,11 +54,7 @@ class LSPSummaryListRowHelperSpec extends AnyWordSpec with Matchers with GuiceOn
               val res = lspSummaryListRowHelper.missingOrLateIncomeSourcesSummaryRow(lspDetails)
               val expectedResult = Some(summaryListRow(
                 label = messagesForLanguage.missingOrLateIncomeSources,
-                value = Html(
-                  s"""<ul class="govuk-list govuk-list--bullet">
-                     |  <li>Income Source 1</li>
-                     |</ul>""".stripMargin
-                )
+                value = Html("Income Source 1")
               ))
 
               res shouldBe expectedResult

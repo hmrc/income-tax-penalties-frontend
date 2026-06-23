@@ -30,14 +30,16 @@ class LSPSummaryListRowHelper extends SummaryListRowHelper with DateFormatter {
   def missingOrLateIncomeSourcesSummaryRow(penalty: LSPDetails)(implicit messages: Messages): Option[SummaryListRow] = {
     lazy val incomeSourcesList = penalty.lateSubmissions.fold[Seq[String]](Seq.empty)(_.flatMap(ls => ls.incomeSource))
     lazy val incomeSourcesListBullets = incomeSourcesList.map(incomeSource => s"<li>$incomeSource</li>").mkString("")
+    lazy val incomeSourceMessage = if (incomeSourcesList.size > 1)
+      Html(
+        s"""<ul class="govuk-list govuk-list--bullet">
+           |  $incomeSourcesListBullets
+           |</ul>""".stripMargin
+      ) else Html(incomeSourcesList.head)
     if (penalty.dueDate.exists(d => MonthDay.from(d) != MonthDay.of(1, 31)) && incomeSourcesList.nonEmpty) {
       Some(summaryListRow(
         label = messages("lsp.missingOrLateIncomeSources.key"),
-        value = Html(
-          s"""<ul class="govuk-list govuk-list--bullet">
-             |  $incomeSourcesListBullets
-             |</ul>""".stripMargin
-        )
+        value = incomeSourceMessage
       ))
     } else None
   }
