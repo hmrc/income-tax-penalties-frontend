@@ -27,7 +27,7 @@ class FirstLatePaymentCalculationHelper {
 
   def getPaymentDetails(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
 
-    if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
+    if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid || calculationData.isEstimate) {
       None
     } else {
       Some {
