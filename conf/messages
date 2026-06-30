@@ -226,7 +226,7 @@ status.amountDue = £{0} due
 status.amountOverdue = £{0} overdue
 status.late = Late
 status.cancelled = Cancelled
-status.breathing.space = Breathing Space
+status.breathing.space = Paused
 
 # Card Title Content
 # ==================
