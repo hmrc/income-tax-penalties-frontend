@@ -21,6 +21,8 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.helpers.ControllerISpe
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp.*
 
+import scala.annotation.unused
+
 trait LPPControllerHelper extends ControllerISpecHelper {
 
   val lppUsers: Map[String, UserDetailsData] = Map(
@@ -76,7 +78,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AA244440A-overdue" -> AA244440AOverdue,
   )
 
-  def validatePenaltyOverview(document: Document, expectedContent: String, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedContent: String, @unused isAgent: Boolean = false) = {
     if (expectedContent.equals("")) {
       document.getElementById("penaltiesOverview") shouldBe null
     } else {
@@ -88,7 +90,7 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     }
   }
 
-  def validateNoLSPPenalties(document: Document, isAgent: Boolean = false) = {
+  def validateNoLSPPenalties(document: Document, @unused isAgent: Boolean = false) = {
     val lspTabContent = getLSPTabContent(document)
     lspTabContent.getElementById("lspHeading").text() shouldBe "Late submission penalties"
     val expectedLSPContent = "You don’t have any active late submission penalties."
