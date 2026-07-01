@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
 import play.api.libs.ws.{WSCookie, WSResponse}
-import uk.gov.hmrc.crypto.{CompositeSymmetricCrypto, Crypted, SymmetricCryptoFactory}
+import uk.gov.hmrc.crypto.{Crypted, SymmetricCryptoFactory}
 
 object SessionCookieCrumbler {
   private val cookieKey = "gvBoGdgzqG1AarzF1LY0zQ=="
