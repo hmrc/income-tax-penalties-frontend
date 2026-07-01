@@ -48,7 +48,7 @@ object AB522240A extends UserDetailsData {
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Additional £200 penalty: Late tax return")
-    validateCardTag(card, expectedTag = "Breathing Space")
+    validateCardTag(card, expectedTag = "Paused")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 5
     validateSummary(cardRows.get(0), "Pay penalty by", "16 March 2028")
@@ -61,7 +61,7 @@ object AB522240A extends UserDetailsData {
 
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Penalty point 4: Late update - £200 penalty")
-    validateCardTag(card, expectedTag = "Breathing Space")
+    validateCardTag(card, expectedTag = "Paused")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 7
     validateSummary(cardRows.get(0), "Missing or late income sources", "JB Painting and Decorating UK property rental income")

@@ -27,7 +27,7 @@ object AA100000D extends UserDetailsData {
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
-    validateCardTag(card, expectedTag = "Breathing Space")
+    validateCardTag(card, expectedTag = "Paused")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2024 to 2025 tax year")

@@ -40,7 +40,7 @@ object LSPCardMessages {
     val expiryDateKey = "Point due to expire"
     val expiryReasonKey = "Removed reason"
     val payPenaltyBy = "Pay penalty by"
-    val breathingSpace = "Breathing Space"
+    val breathingSpace = "Paused"
     val missingOrLateIncomeSources = "Missing or late income sources"
     val lateUpdate = "Late update"
 
@@ -77,7 +77,7 @@ object LSPCardMessages {
     override val expiryDateKey = "Pwynt cosb yn dod i ben"
     override val expiryReasonKey = "Removed reason (Welsh)"
     override val payPenaltyBy = "Talu cosb erbyn"
-    override val breathingSpace = "Amser i gael eich gwynt atoch"
+    override val breathingSpace = "Wedi’i oedi"
     override val missingOrLateIncomeSources = "Ffynonellau incwm sy’n hwyr neu ar goll"
     override val lateUpdate = "Diweddariad hwyr"
 

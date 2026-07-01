@@ -226,7 +226,7 @@ status.amountDue = £{0} yn ddyledus
 status.amountOverdue = £{0} yn hwyr
 status.late = Hwyr
 status.cancelled = Wedi canslo
-status.breathing.space = Amser i gael eich gwynt atoch
+status.breathing.space = Wedi’i oedi
 
 # Card Title Content
 # ==================
