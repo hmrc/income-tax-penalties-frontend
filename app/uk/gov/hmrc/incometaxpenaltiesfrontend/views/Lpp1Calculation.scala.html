@@ -118,13 +118,6 @@
         ))
     }
 
-    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
-        @govukInsetText(InsetText(
-            content = Text(messages("calculation.breathingSpace.expired")),
-            id = Some("breathingSpaceExpired")
-        ))
-    }
-
     @if(calculationData.isPFA) {
         <p class="govuk-body" id="taxYearAmended">
         @messages("calculation.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
@@ -162,6 +155,10 @@
       } else if(calculationData.isPenaltyOverdue) {
         @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
       }
+    }
+
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
+        <p class="govuk-body" id="breathingSpaceExpired">@messages("calculation.breathingSpace.expired")</p>
     }
 
     @govukTable(Table(
