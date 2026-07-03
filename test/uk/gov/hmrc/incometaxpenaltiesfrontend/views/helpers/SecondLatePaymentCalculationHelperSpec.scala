@@ -67,9 +67,14 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
   }
 
   "SecondLatePaymentCalculationHelper.getMissedDeadlineAndDailyIncreaseMsgs" should {
+    val fixedNow: LocalDate = LocalDate.of(2027, 6, 10)
+    val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+      override def getCurrentDate(): LocalDate = fixedNow
+    }
+
     "return estimate messages when calculation is an estimate and income tax is unpaid" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData())
-      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data)
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
 
       result._1 shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
       result._2 shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
@@ -77,7 +82,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
 
     "return paid messages when the penalty has been paid" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData(isPenaltyPaid = true, isIncomeTaxPaid = true, isEstimate = false))
-      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data)
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
 
       result._1 shouldBe "Because you missed this deadline by more than 30 days, you were charged a second late payment penalty."
       result._2 shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
@@ -85,7 +90,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
 
     "return due/overdue messages for other cases - Due/Overdue" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData(isEstimate = false))
-      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data)
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
 
       result._1 shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
       result._2 shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
@@ -155,6 +160,45 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     "return empty list when not agreed" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData())
       helper.getPaymentPlanContent(data) shouldBe List.empty
+    }
+  }
+
+  "SecondLatePaymentCalculationHelper.LPP2CrystallisedMsg" should {
+    val fixedNow: LocalDate = LocalDate.of(2027, 6, 10)
+    val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+      override def getCurrentDate(): LocalDate = fixedNow
+    }
+
+    "return the crystallised message when paymentPlanAgreed is defined and more than 726 days have passed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanAgreed = Some(LocalDate.of(2025, 1, 15)),
+        principalChargeDueDate = fixedNow.minusDays(727)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe Some("By law, we must issue this penalty within 2 years of the end of the tax year.")
+    }
+
+    "return the crystallised message when exactly 726 days have passed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanAgreed = Some(LocalDate.of(2025, 1, 15)),
+        principalChargeDueDate = fixedNow.minusDays(726)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe Some("By law, we must issue this penalty within 2 years of the end of the tax year.")
+    }
+
+    "return None when fewer than 726 days have passed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanAgreed = Some(LocalDate.of(2025, 1, 15)),
+        principalChargeDueDate = fixedNow.minusDays(725)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe None
+    }
+
+    "return None when paymentPlanAgreed is not defined even if more than 726 days have passed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanAgreed = None,
+        principalChargeDueDate = fixedNow.minusDays(800)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe None
     }
   }
 

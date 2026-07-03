@@ -99,8 +99,15 @@
     </p>
 
 
-    @defining(calculationHelper.getMissedDeadlineAndDailyIncreaseMsgs(calculationData)) { msgs =>
-        <p class="govuk-body" id="missedDeadline">@msgs._1</p>
+    @defining(calculationHelper.getMissedDeadlineAndDailyIncreaseMsgs(calculationData, timeMachine)) { msgs =>
+        <p class="govuk-body" id="missedDeadline">@msgs._1
+            @msgs._3.map { crystallisedMsg =>
+                @crystallisedMsg
+            }
+        </p>
+
+
+
         <p class="govuk-body" id="penaltyIncrease">@msgs._2</p>
     }
 
