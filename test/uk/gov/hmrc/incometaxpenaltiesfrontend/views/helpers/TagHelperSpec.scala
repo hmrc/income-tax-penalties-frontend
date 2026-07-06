@@ -138,7 +138,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     (tm.getCurrentDate _).expects().returning(LocalDate.of(2021, 3, 7))
                     val tag = tagHelper.getTagStatus(sampleLateSubmissionPenaltyCharge, false, 2)
 
-                    tag.classes shouldBe "govuk-tag--red"
+                    tag.classes shouldBe "govuk-tag--yellow"
                     tag.content shouldBe Text(messagesForLanguage.due)
                   }
 
@@ -161,7 +161,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                       chargeOutstandingAmount = Some(BigDecimal(25.69))
                     ), false, 2)
 
-                    tag.classes shouldBe "govuk-tag--red"
+                    tag.classes shouldBe "govuk-tag--yellow"
                     tag.content shouldBe Text(messagesForLanguage.amountDue("25.69"))
                   }
 
@@ -172,7 +172,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                       chargeOutstandingAmount = Some(BigDecimal(25))
                     ), false, 2)
 
-                    tag.classes shouldBe "govuk-tag--red"
+                    tag.classes shouldBe "govuk-tag--yellow"
                     tag.content shouldBe Text(messagesForLanguage.amountDue("25.00"))
                   }
                 }
@@ -249,7 +249,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                   false
                 )
 
-                tag.classes shouldBe "govuk-tag--red"
+                tag.classes shouldBe "govuk-tag--yellow"
                 tag.content shouldBe Text(messagesForLanguage.due)
               }
             }
@@ -276,7 +276,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                   false
                 )
 
-                tag.classes shouldBe "govuk-tag--red"
+                tag.classes shouldBe "govuk-tag--yellow"
                 tag.content shouldBe Text(messagesForLanguage.amountDue("501.45"))
               }
             }
