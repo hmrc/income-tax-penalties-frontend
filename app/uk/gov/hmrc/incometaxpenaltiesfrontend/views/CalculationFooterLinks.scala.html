@@ -32,41 +32,39 @@
 )
  @(calculationData : CalculationData, isAgent: Boolean)(implicit messages: Messages, appConfig: AppConfig)
 
-     @calculationData match {
-         case _: FirstLatePaymentPenaltyCalculationData => {
-              <div class="govuk-!-margin-bottom-8">
+ @calculationData match {
+     case _: FirstLatePaymentPenaltyCalculationData => {
+          <div class="govuk-!-margin-bottom-8">
               @link(
-              link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-              messageKey = messages("calculation.return.link"),
-              id = Some("returnToIndex")
+                    link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+                    messageKey = messages("calculation.return.link"),
+                    id = Some("returnToIndex")
               )
-              @if(!calculationData.isEstimate) {
-               @link(
-              link = appConfig.checkWhatYouOweUrl(isAgent),
-               messageKey = messages("calculation.checkWhatYouOwe.link"),
-                 id = Some("checkWhatYouOweLink")
-               )
-              }
-              </div>
-              }
 
-         case _: SecondLatePaymentPenaltyCalculationData => {
-
-               <div class="govuk-!-margin-bottom-8">
                @link(
-               link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
-               messageKey = messages("calculation.return.link"),
-               id = Some("returnToIndex")
+                    link = appConfig.checkWhatYouOweUrl(isAgent),
+                    messageKey = messages("calculation.checkWhatYouOwe.link"),
+                    id = Some("checkWhatYouOweLink")
                )
-               @if(!calculationData.isEstimate) {
-               @link(
-               link = appConfig.checkWhatYouOweUrl(isAgent),
-               messageKey = messages("calculation.checkWhatYouOwe.link"),
-               id = Some("checkWhatYouOweLink")
-               )
-               }
-               </div>
-               }
+          </div>
      }
+
+     case _: SecondLatePaymentPenaltyCalculationData => {
+
+           <div class="govuk-!-margin-bottom-8">
+               @link(
+                   link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
+                   messageKey = messages("calculation.return.link"),
+                   id = Some("returnToIndex")
+               )
+
+               @link(
+                   link = appConfig.checkWhatYouOweUrl(isAgent),
+                   messageKey = messages("calculation.checkWhatYouOwe.link"),
+                   id = Some("checkWhatYouOweLink")
+               )
+           </div>
+     }
+}
 
 
