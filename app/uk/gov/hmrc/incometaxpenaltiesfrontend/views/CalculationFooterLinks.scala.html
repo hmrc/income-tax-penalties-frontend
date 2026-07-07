@@ -33,7 +33,7 @@
  @(calculationData : CalculationData, isAgent: Boolean)(implicit messages: Messages, appConfig: AppConfig)
 
      @calculationData match {
-         case _: FirstLatePaymentPenaltyCalculationData => {
+         case firstLPP: FirstLatePaymentPenaltyCalculationData => {
               <div class="govuk-!-margin-bottom-8">
               @link(
               link = uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.routes.IndexController.homePage(isAgent = isAgent).url,
@@ -47,6 +47,15 @@
                  id = Some("checkWhatYouOweLink")
                )
               }
+
+                  @if(firstLPP.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid && !calculationData.isPenaltyPaid) {
+                      @link(
+                          link = appConfig.checkWhatYouOweUrl(isAgent),
+                          messageKey = "individual.index.overview.checkWhatYouOwe.button",
+                          id = Some("checkWhatYouOweButton")
+                      )
+                  }
+
               </div>
               }
 
@@ -65,8 +74,16 @@
                id = Some("checkWhatYouOweLink")
                )
                }
+                   @if(!calculationData.incomeTaxIsPaid && !calculationData.isPenaltyPaid) {
+                       @link(
+                           link = appConfig.checkWhatYouOweUrl(isAgent),
+                           messageKey = "individual.index.overview.checkWhatYouOwe.button",
+                           id = Some("checkWhatYouOweButton")
+                       )
+                   }
                </div>
                }
      }
+
 
 
