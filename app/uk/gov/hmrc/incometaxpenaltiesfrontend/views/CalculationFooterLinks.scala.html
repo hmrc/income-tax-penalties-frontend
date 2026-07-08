@@ -40,7 +40,6 @@
                     messageKey = messages("calculation.return.link"),
                     id = Some("returnToIndex")
               )
-
               @if(hasFinancialCharge) {
                   @link(
                       link = appConfig.checkWhatYouOweUrl(isAgent),
@@ -59,7 +58,6 @@
                    messageKey = messages("calculation.return.link"),
                    id = Some("returnToIndex")
                )
-
                @if(hasFinancialCharge) {
                    @link(
                        link = appConfig.checkWhatYouOweUrl(isAgent),
