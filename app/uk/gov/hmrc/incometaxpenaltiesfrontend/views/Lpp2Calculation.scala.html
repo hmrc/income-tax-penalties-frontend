@@ -34,7 +34,7 @@
         calculationFooterLinks : CalculationFooterLinks,
         lpp2CalculationSummaryList : Lpp2CalculationSummaryList
 )
-@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]], hasFinancialCharge: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @penaltyAmountDetails = {
     @p("calculation.calc2.how.we.work.penalty.amount.p1", elmId = Some("penaltyAmountDetailsP1"))
@@ -144,6 +144,6 @@
         }
     </div>
 
-    @calculationFooterLinks(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean)
+    @calculationFooterLinks(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, hasFinancialCharge: Boolean)
 
 }

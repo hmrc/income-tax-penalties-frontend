@@ -68,10 +68,11 @@ class PenaltyCalculationController @Inject()(override val controllerComponents: 
           case Some(lppDetails) => {
             val auditEvent = new UserCalculationInfoAuditModel(lppDetails)
             auditService.audit(auditEvent)(implicitly)
+            val hasFinancialCharge = currentUserRequest.penaltyDetails.hasFinancialChargeToPay
             if (isLPP2) {
-              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
+              Ok(lpp2CalculationView(new SecondLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace, hasFinancialCharge))
             } else {
-              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace))
+              Ok(lpp1CalculationView(new FirstLatePaymentPenaltyCalculationData(lppDetails), isAgent, timeMachine, isInBreathingSpace, currentUserRequest.penaltyDetails.breathingSpace, hasFinancialCharge))
             }
           }
           case None =>
