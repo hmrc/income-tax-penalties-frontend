@@ -39,14 +39,13 @@ class CalculationFooterLinksSpec extends AnyWordSpec with Matchers with GuiceOne
 
         "rendering with FirstLatePaymentPenaltyCalculationData" when {
 
-          val calculationData = sampleFirstLPPCalcData()
-
-          "hasFinancialCharge is true" should {
+          "penalty is NOT paid" should {
 
             "render the 'Check what you owe' link" in {
               implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleFirstLPPCalcData(isPenaltyPaid = false)
 
-              val html = calculationFooterLinks(calculationData, isAgent, hasFinancialCharge = true)
+              val html = calculationFooterLinks(calculationData, isAgent)
               val document = Jsoup.parse(html.toString)
 
               document.select("#returnToIndex").text() shouldBe msgs("calculation.return.link")
@@ -58,12 +57,13 @@ class CalculationFooterLinksSpec extends AnyWordSpec with Matchers with GuiceOne
             }
           }
 
-          "hasFinancialCharge is false" should {
+          "penalty IS paid" should {
 
             "not render the 'Check what you owe' link" in {
               implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleFirstLPPCalcData(isPenaltyPaid = true)
 
-              val html = calculationFooterLinks(calculationData, isAgent, hasFinancialCharge = false)
+              val html = calculationFooterLinks(calculationData, isAgent)
               val document = Jsoup.parse(html.toString)
 
               document.select("#returnToIndex").text() shouldBe msgs("calculation.return.link")
@@ -77,14 +77,13 @@ class CalculationFooterLinksSpec extends AnyWordSpec with Matchers with GuiceOne
 
         "rendering with SecondLatePaymentPenaltyCalculationData" when {
 
-          val calculationData = sampleSecondLPPCalcData()
-
-          "hasFinancialCharge is true" should {
+          "penalty is NOT paid" should {
 
             "render the 'Check what you owe' link" in {
               implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleSecondLPPCalcData(isPenaltyPaid = false)
 
-              val html = calculationFooterLinks(calculationData, isAgent, hasFinancialCharge = true)
+              val html = calculationFooterLinks(calculationData, isAgent)
               val document = Jsoup.parse(html.toString)
 
               document.select("#returnToIndex").text() shouldBe msgs("calculation.return.link")
@@ -96,12 +95,13 @@ class CalculationFooterLinksSpec extends AnyWordSpec with Matchers with GuiceOne
             }
           }
 
-          "hasFinancialCharge is false" should {
+          "penalty IS paid" should {
 
             "not render the 'Check what you owe' link" in {
               implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleSecondLPPCalcData(isPenaltyPaid = true)
 
-              val html = calculationFooterLinks(calculationData, isAgent, hasFinancialCharge = false)
+              val html = calculationFooterLinks(calculationData, isAgent)
               val document = Jsoup.parse(html.toString)
 
               document.select("#returnToIndex").text() shouldBe msgs("calculation.return.link")
@@ -116,4 +116,3 @@ class CalculationFooterLinksSpec extends AnyWordSpec with Matchers with GuiceOne
     }
   }
 }
-

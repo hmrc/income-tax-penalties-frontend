@@ -30,7 +30,7 @@
 @this(
       link: Link
 )
- @(calculationData : CalculationData, isAgent: Boolean, hasFinancialCharge: Boolean)(implicit messages: Messages, appConfig: AppConfig)
+ @(calculationData : CalculationData, isAgent: Boolean)(implicit messages: Messages, appConfig: AppConfig)
 
  @calculationData match {
      case _: FirstLatePaymentPenaltyCalculationData => {
@@ -40,7 +40,7 @@
                     messageKey = messages("calculation.return.link"),
                     id = Some("returnToIndex")
               )
-              @if(hasFinancialCharge) {
+              @if(!calculationData.isPenaltyPaid) {
                   @link(
                       link = appConfig.checkWhatYouOweUrl(isAgent),
                       messageKey = messages("calculation.checkWhatYouOwe.link"),
@@ -58,7 +58,7 @@
                    messageKey = messages("calculation.return.link"),
                    id = Some("returnToIndex")
                )
-               @if(hasFinancialCharge) {
+               @if(!calculationData.isPenaltyPaid) {
                    @link(
                        link = appConfig.checkWhatYouOweUrl(isAgent),
                        messageKey = messages("calculation.checkWhatYouOwe.link"),

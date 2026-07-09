@@ -36,7 +36,7 @@
         calculationFooterLinks : CalculationFooterLinks
 )
 
-@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]], hasFinancialCharge: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
       @TotalTableRow = @{
             Seq(
                 TableRow(
@@ -228,5 +228,5 @@
         }
     </div>
 
-   @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, hasFinancialCharge: Boolean)
+   @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 }
