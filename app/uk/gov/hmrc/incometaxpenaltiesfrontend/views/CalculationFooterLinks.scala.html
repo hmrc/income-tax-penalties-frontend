@@ -40,12 +40,13 @@
                     messageKey = messages("calculation.return.link"),
                     id = Some("returnToIndex")
               )
-
-               @link(
-                    link = appConfig.checkWhatYouOweUrl(isAgent),
-                    messageKey = messages("calculation.checkWhatYouOwe.link"),
-                    id = Some("checkWhatYouOweLink")
-               )
+              @if(!calculationData.isPenaltyPaid) {
+                  @link(
+                      link = appConfig.checkWhatYouOweUrl(isAgent),
+                      messageKey = messages("calculation.checkWhatYouOwe.link"),
+                      id = Some("checkWhatYouOweLink")
+                  )
+              }
           </div>
      }
 
@@ -57,12 +58,13 @@
                    messageKey = messages("calculation.return.link"),
                    id = Some("returnToIndex")
                )
-
-               @link(
-                   link = appConfig.checkWhatYouOweUrl(isAgent),
-                   messageKey = messages("calculation.checkWhatYouOwe.link"),
-                   id = Some("checkWhatYouOweLink")
-               )
+               @if(!calculationData.isPenaltyPaid) {
+                   @link(
+                       link = appConfig.checkWhatYouOweUrl(isAgent),
+                       messageKey = messages("calculation.checkWhatYouOwe.link"),
+                       id = Some("checkWhatYouOweLink")
+                   )
+               }
            </div>
      }
 }
