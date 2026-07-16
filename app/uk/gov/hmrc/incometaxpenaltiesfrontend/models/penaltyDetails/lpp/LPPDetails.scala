@@ -78,9 +78,9 @@ case class  LPPDetails(principalChargeReference: String,
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
   val is15To30Days: Boolean = lpp1HRCalculationAmt.isEmpty
 
-  def ttpProposalDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
+  def ttpProposalDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.TTPProposalDate)
 
-  def ttpAgreementDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
+  def ttpAgreementDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.TTPAgreementDate)
 
 
   override def compare(that: LPPDetails): Int = {
@@ -225,8 +225,8 @@ object LPPDetailsMetadata {
 }
 
 case class TimeToPay(
-                      proposalDate: Option[LocalDate],
-                      agreementDate: Option[LocalDate]
+                      TTPProposalDate: Option[LocalDate],
+                      TTPAgreementDate: Option[LocalDate]
                     )
 
 object TimeToPay {

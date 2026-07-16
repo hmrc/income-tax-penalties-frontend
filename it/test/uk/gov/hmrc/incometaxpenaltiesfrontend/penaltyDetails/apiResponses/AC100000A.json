@@ -35,7 +35,7 @@
             "penaltyChargeReference" : "XJ002616061036",
             "penaltyChargeDueDate" : "2026-03-19",
             "timeToPay" : {
-              "agreementDate" : "2026-02-17"
+              "TTPAgreementDate" : "2026-02-17"
             }
           } ]
         }
