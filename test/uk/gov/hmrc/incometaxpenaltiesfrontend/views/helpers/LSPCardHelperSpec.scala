@@ -535,7 +535,7 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                 isBreathingSpace = false
               )(messages)
 
-              cards.head.status shouldBe Tag(Text(messages("status.due")), "govuk-tag--red")
+              cards.head.status shouldBe Tag(Text(messages("status.due")), "govuk-tag--yellow")
             }
           }
         }

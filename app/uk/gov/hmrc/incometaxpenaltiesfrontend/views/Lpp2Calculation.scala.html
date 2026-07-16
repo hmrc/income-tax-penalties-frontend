@@ -74,13 +74,6 @@
             ))
     }
 
-    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
-        @govukInsetText(InsetText(
-            content = Text(messages("calculation.calc2.breathingSpace.expired")),
-            id = Some("breathingSpaceExpired")
-        ))
-    }
-
     @if(calculationData.incomeTaxIsPaid || calculationData.isEstimate){
         <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@calculationHelper.getPaymentDetails(calculationData)</p>
     }
@@ -139,6 +132,12 @@
         @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
       }
     }
+
+
+    @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
+        <p class="govuk-body" id="breathingSpaceExpired">@messages("calculation.calc2.breathingSpace.expired")</p>
+    }
+
     @lpp2CalculationSummaryList(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
