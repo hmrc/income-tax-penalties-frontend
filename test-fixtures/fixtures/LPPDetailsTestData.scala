@@ -70,7 +70,7 @@ trait LPPDetailsTestData {
     sampleUnpaidLPP1Day15to30.copy(
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
-        timeToPay = Some(TimeToPay(proposalDate = Some(timeToPayProposedOrAgreed), None))
+        timeToPay = Some(TimeToPay(TTPProposalDate = Some(timeToPayProposedOrAgreed), TTPAgreementDate = None))
       )
     )
 
@@ -78,7 +78,7 @@ trait LPPDetailsTestData {
     sampleUnpaidLPP1Day15to30.copy(
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
-        timeToPay = Some(TimeToPay(None, agreementDate = Some(timeToPayProposedOrAgreed)))
+        timeToPay = Some(TimeToPay(TTPProposalDate = None, TTPAgreementDate = Some(timeToPayProposedOrAgreed)))
       )
     )
 
