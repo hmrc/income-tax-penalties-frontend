@@ -89,9 +89,9 @@
           ),
           value = Value(
             Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
-              dateToString(calculationData.principalChargeDueDate.plusDays(31)),
+              dateToString(calculationData.penaltyChargeCreationDate.get),
               dateToString(calculationData.payPenaltyBy.minusDays(32)),
-              calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
+              calculationData.chargePeriodDays(timeMachine.getCurrentDate(), isSupplementary = true)))
           )
         ),
         SummaryListRow(
