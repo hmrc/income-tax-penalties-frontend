@@ -36,11 +36,11 @@ object AA100001B extends UserDetailsData {
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £105.00")
+    validatePenaltyCardTitle(card, expectedTitle = "Additional first late payment penalty: £15.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2025")
+    validateSummary(cardRows.get(0), "Pay penalty by", "6 April 2025")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2023 to 2024 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2025")
     validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")
@@ -49,11 +49,11 @@ object AA100001B extends UserDetailsData {
   }
 
   def penaltyCard2ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Additional first late payment penalty: £15.00")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £105.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "6 April 2025")
+    validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2025")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2023 to 2024 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2025")
     validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")

@@ -26,6 +26,34 @@ import java.time.LocalDate
 class LPPDetailsSpec extends AnyWordSpec with Matchers {
 
   "LPPDetails" should {
+    "sort in the correct card order" when {
+      val base = TestLPPDetails.withAppealInfo(LPPPenaltyStatusEnum.Posted, Nil)
+
+      def lpp(category: LPPPenaltyCategoryEnum.Value, isSupp: Boolean): LPPDetails =
+        base.copy(penaltyCategory = category, supplement = Some(isSupp))
+
+      val lpp1 = lpp(LPPPenaltyCategoryEnum.LPP1, isSupp = false)
+      val lpp2 = lpp(LPPPenaltyCategoryEnum.LPP2, isSupp = false)
+      val suppLPP1 = lpp(LPPPenaltyCategoryEnum.LPP1, isSupp = true)
+      val suppLPP2 = lpp(LPPPenaltyCategoryEnum.LPP2, isSupp = true)
+
+      "there is a LPP1, LPP2, and supplementary LPP2" in {
+        Seq(lpp1, lpp2, suppLPP2).sorted shouldBe Seq(suppLPP2, lpp2, lpp1)
+      }
+
+      "there is a LPP1, LPP2, and supplementary LPP1" in {
+        Seq(lpp1, lpp2, suppLPP1).sorted shouldBe Seq(lpp2, suppLPP1, lpp1)
+      }
+
+      "there is only LPP1 and LPP2" in {
+        Seq(lpp1, lpp2).sorted shouldBe Seq(lpp2, lpp1)
+      }
+
+      "there is only a supplementary LPP2 and LPP2" in {
+        Seq(lpp2, suppLPP2).sorted shouldBe Seq(suppLPP2, lpp2)
+      }
+    }
+
     "obtain the correct appeal level" when {
       "the appeal information is ordered" in {
         val testAppealInfo = Seq(
