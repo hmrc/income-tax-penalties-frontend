@@ -627,6 +627,19 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     )))
   }
 
+  // A breathing space that starts after the LPP2 charge period begins and has already ended, so the
+  // charge period is split into a "before" and an "after" part (two charge period rows).
+  def getPenaltyDetailsForSecondCalculationPageWithSplitBreathingSpace(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
+    val base = getPenaltyDetailsForSecondCalculationPageWithExBreathingSpace(secondLPPCalData)
+    base.copy(penaltyDetails = base.penaltyDetails.map(_.copy(
+      breathingSpace = Some(Seq(
+        BreathingSpace(
+          bsStartDate = secondLPPCalData.principalChargeDueDate.plusDays(45),
+          bsEndDate = secondLPPCalData.principalChargeDueDate.plusDays(50)
+        )))
+    )))
+  }
+
   def getPenaltyDetailsWithLPP1BeforeLPP2Supplement(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
     val lpp1Details = LPPDetails(
       principalChargeReference = principleChargeRef,

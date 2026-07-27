@@ -752,6 +752,29 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
 
           }
 
+          //scenario 8
+          "the breathing space splits the charge period into two" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData()
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSplitBreathingSpace(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            // Two "Charge period" rows: one before and one after the breathing space
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__value").get(0).text() should include("(before Breathing Space)")
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__value").get(1).text() should include("(after Breathing Space)")
+            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Annual rate"
+            document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "10%"
+            document.getElementsByClass("govuk-summary-list__key").get(3).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(3).text() shouldBe "£1,001.45"
+
+          }
+
         }
       }
 
