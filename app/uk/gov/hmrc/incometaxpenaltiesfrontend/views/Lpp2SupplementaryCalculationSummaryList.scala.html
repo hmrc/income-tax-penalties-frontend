@@ -23,94 +23,73 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.SecondLatePaymentCalculationHelper
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
+@import java.time.temporal.ChronoUnit
 
 @this(
-       govukSummaryList : GovukSummaryList
+       govukSummaryList : GovukSummaryList,
+       calculationHelper : SecondLatePaymentCalculationHelper
 )
 
-@(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages)
-@dayOrDaysText = {@if(calculationData.chargePeriodDays(timeMachine.getCurrentDate())== 1){.day}else{.days}}
+@(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit messages: Messages)
 
-  @if(calculationData.isPartiallyPaid) {
-    @govukSummaryList(SummaryList(
-      rows = Seq(
+@chargePeriodRows(keyMessage: String) = @{
+    val periods = calculationHelper.chargePeriods(calculationData, breathingSpaceData, timeMachine)
+    val hasMultiplePeriods = periods.size > 1
+    periods.zipWithIndex.map { case ((startDate, endDate), index) =>
+        val days = ChronoUnit.DAYS.between(startDate, endDate).toInt + 1
+        val dayOrDays = if(days == 1) "day" else "days"
+        val periodText = messages(s"calculation.summaryList.LPP2.charge.period.$dayOrDays",
+            dateToString(startDate), dateToString(endDate), days)
+        val content =
+            if(hasMultiplePeriods && index == 0) {
+                HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace"))
+            } else if(hasMultiplePeriods && index == periods.size - 1) {
+                HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace"))
+            } else {
+                Text(periodText)
+            }
         SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.summaryList.LPP2.charge.period"))
-          ),
-          value = Value(
-            content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
-              dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-              dateToString(calculationData.payPenaltyBy.minusDays(32)),
-              calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
-          )
+            key = Key(content = Text(messages(keyMessage))),
+            value = Value(content = content)
         )
-      ) ++ Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.summaryList.LPP2.annual.rate"))
-          ),
-          value = Value(
-            content = Text(calculationData.penaltyPercentage.toString() + "%")
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.summaryList.LPP2.penaltyAmount"))
-          ),
-          value = Value(
-            content = Text("£" + calculationData.formattedPenaltyAmount)
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.summaryList.LPP2.amountPaid"))
-          ),
-          value = Value(
-            content = Text("£" + calculationData.formattedPenaltyAmountPaid)
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.summaryList.LPP2.stillToPay"))
-          ),
-          value = Value(
-            content = Text("£" + calculationData.formattedPenaltyAmountOutstanding)
-          )
-        ),
-      )
+    }
+}
+
+@if(calculationData.isPartiallyPaid) {
+    @govukSummaryList(SummaryList(
+        rows = chargePeriodRows("calculation.summaryList.LPP2.charge.period") ++ Seq(
+            SummaryListRow(
+                key = Key(content = Text(messages("calculation.summaryList.LPP2.annual.rate"))),
+                value = Value(content = Text(calculationData.penaltyPercentage.toString() + "%"))
+            ),
+            SummaryListRow(
+                key = Key(content = Text(messages("calculation.summaryList.LPP2.penaltyAmount"))),
+                value = Value(content = Text("£" + calculationData.formattedPenaltyAmount))
+            ),
+            SummaryListRow(
+                key = Key(content = Text(messages("calculation.summaryList.LPP2.amountPaid"))),
+                value = Value(content = Text("£" + calculationData.formattedPenaltyAmountPaid))
+            ),
+            SummaryListRow(
+                key = Key(content = Text(messages("calculation.summaryList.LPP2.stillToPay"))),
+                value = Value(content = Text("£" + calculationData.formattedPenaltyAmountOutstanding))
+            )
+        )
     ))
-  } else {
+} else {
     @govukSummaryList(SummaryList(
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.supplementary.second.charge.period"))
-          ),
-          value = Value(
-            Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
-              dateToString(calculationData.penaltyChargeCreationDate.get),
-              dateToString(calculationData.payPenaltyBy.minusDays(32)),
-              calculationData.chargePeriodDays(timeMachine.getCurrentDate(), isSupplementary = true)))
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.supplementary.second.annual.rate"))
-          ),
-          value = Value(
-            content = Text(calculationData.penaltyPercentage.toString() + "%")
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("calculation.supplementary.second.penalty.amount"))
-          ),
-          value = Value(
-            content = Text("£" + calculationData.formattedPenaltyAmount)
-          )
+        rows = chargePeriodRows("calculation.supplementary.second.charge.period") ++ Seq(
+            SummaryListRow(
+                key = Key(content = Text(messages("calculation.supplementary.second.annual.rate"))),
+                value = Value(content = Text(calculationData.penaltyPercentage.toString() + "%"))
+            ),
+            SummaryListRow(
+                key = Key(content = Text(messages("calculation.supplementary.second.penalty.amount"))),
+                value = Value(content = Text("£" + calculationData.formattedPenaltyAmount))
+            )
         )
-      ))
-    )
-  }
+    ))
+}
+
+
 

@@ -245,4 +245,102 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     }
   }
 
+  "SecondLatePaymentCalculationHelper.chargePeriods" should {
+    val fixedNow: LocalDate = LocalDate.of(2027, 6, 10)
+    val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+      override def getCurrentDate(): LocalDate = fixedNow
+    }
+
+    // principalChargeDueDate + 31 = LPP2 start date
+    val principalChargeDueDate: LocalDate = LocalDate.of(2027, 1, 1)
+    val lpp2Start: LocalDate = principalChargeDueDate.plusDays(31) // 01 Feb 2027
+
+    // Convenience builder: a Posted, unpaid LPP2 by default (calculation end date falls back to today).
+    def calcData(incomeTaxPaidDate: Option[LocalDate] = None): SecondLatePaymentPenaltyCalculationData =
+      sampleSecondLPPCalcData(isEstimate = false).copy(
+        penaltyStatus = LPPPenaltyStatusEnum.Posted,
+        principalChargeDueDate = principalChargeDueDate,
+        incomeTaxPaidDate = incomeTaxPaidDate,
+        penaltyChargeCreationDate = None
+      )
+
+    "return a single period from LPP2 start to today when there is no breathing space and tax is unpaid" in {
+      helper.chargePeriods(calcData(), None, fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
+    "return a single period from LPP2 start to the tax paid date when tax has been paid" in {
+      val taxPaid = LocalDate.of(2027, 4, 30)
+      helper.chargePeriods(calcData(Some(taxPaid)), None, fixedTimeMachine) shouldBe Seq(lpp2Start -> taxPaid)
+    }
+
+    "return Seq.empty when income tax was paid before LPP2 starts" in {
+      val taxPaidBeforeLpp2 = lpp2Start.minusDays(10)
+      helper.chargePeriods(calcData(Some(taxPaidBeforeLpp2)), None, fixedTimeMachine) shouldBe Seq.empty
+    }
+
+    "have no effect when a breathing space ended before LPP2 starts" in {
+      val bs = BreathingSpace(bsStartDate = lpp2Start.minusDays(20), bsEndDate = lpp2Start.minusDays(5))
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
+    "return two periods when LPP2 starts before a breathing space that has since ended" in {
+      val bsStart = lpp2Start.plusDays(10)
+      val bsEnd = lpp2Start.plusDays(20) // in the past relative to fixedNow
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> bsStart.minusDays(1),
+        bsEnd.plusDays(1) -> fixedNow
+      )
+    }
+
+    "return only the period before a breathing space that is still active today" in {
+      val bsStart = lpp2Start.plusDays(10)
+      val bsEnd = fixedNow.plusDays(5) // still active
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> bsStart.minusDays(1)
+      )
+    }
+
+    "return only the period after a breathing space when LPP2 starts within an ended breathing space" in {
+      val bsStart = lpp2Start.minusDays(5)
+      val bsEnd = lpp2Start.plusDays(20) // ended, and covers LPP2 start
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        bsEnd.plusDays(1) -> fixedNow
+      )
+    }
+
+    "not create a period after the breathing space when tax was paid during it" in {
+      val bsStart = lpp2Start.plusDays(10)
+      val bsEnd = lpp2Start.plusDays(30)
+      val taxPaidDuringBs = lpp2Start.plusDays(20)
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(Some(taxPaidDuringBs)), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> bsStart.minusDays(1)
+      )
+    }
+
+    "use penaltyChargeCreationDate as the end date for Posted penalties when the tax paid date is unavailable" in {
+      val creationDate = LocalDate.of(2027, 3, 15)
+      val data = calcData().copy(penaltyChargeCreationDate = Some(creationDate))
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> creationDate)
+    }
+
+    "process multiple breathing spaces, splitting the charge window around each ended one" in {
+      val bs1 = BreathingSpace(bsStartDate = lpp2Start.plusDays(10), bsEndDate = lpp2Start.plusDays(20))
+      val bs2 = BreathingSpace(bsStartDate = lpp2Start.plusDays(40), bsEndDate = lpp2Start.plusDays(50))
+
+      helper.chargePeriods(calcData(), Some(Seq(bs2, bs1)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> lpp2Start.plusDays(9),
+        lpp2Start.plusDays(21) -> lpp2Start.plusDays(39),
+        lpp2Start.plusDays(51) -> fixedNow
+      )
+    }
+  }
+
 }
