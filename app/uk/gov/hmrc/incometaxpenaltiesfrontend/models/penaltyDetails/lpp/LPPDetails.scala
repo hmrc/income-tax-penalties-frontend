@@ -105,8 +105,13 @@ case class  LPPDetails(principalChargeReference: String,
       case (_, _, _, _, _, _, categoryA, categoryB) if categoryA < categoryB => 1
       case (_, _, _, _, _, _, categoryA, categoryB) if categoryA > categoryB => -1
 
-      //No difference found between this and that (will use ETMP order)
-      case _ => 0
+      //Same category: supplementary assessment comes just before its base penalty
+      case _ =>
+        val thisIsSupp = this.supplement.contains(true)
+        val thatIsSupp = that.supplement.contains(true)
+        if (thisIsSupp && !thatIsSupp) -1       // supplement before non-supplement
+        else if (!thisIsSupp && thatIsSupp) 1   // non-supplement after supplement
+        else 0                                   // no difference (use ETMP order)
     }
   }
 

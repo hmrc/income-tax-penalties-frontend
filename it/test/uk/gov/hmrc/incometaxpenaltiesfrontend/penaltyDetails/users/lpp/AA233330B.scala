@@ -26,19 +26,6 @@ object AA233330B extends UserDetailsData {
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £19.17")
-    validateCardTag(card, expectedTag = "Due")
-    val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "17 April 2026")
-    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
-    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
-    validateSummary(cardRows.get(3), "Income Tax paid", "16 March 2026")
-    validateViewCalculationLink(card, 0, isSecondLPP = true)
-    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
-  }
-
-  def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Additional second late payment penalty: £1.64")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
@@ -47,6 +34,19 @@ object AA233330B extends UserDetailsData {
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
     validateSummary(cardRows.get(3), "Income Tax paid", "25 March 2026")
+    validateViewCalculationLink(card, 0, isSecondLPP = true)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
+  }
+
+  def penaltyCard1ExpectedContent(card: Element): Unit = {
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £19.17")
+    validateCardTag(card, expectedTag = "Due")
+    val cardRows = getCardsRows(card)
+    cardRows.size() shouldBe 4
+    validateSummary(cardRows.get(0), "Pay penalty by", "17 April 2026")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
+    validateSummary(cardRows.get(3), "Income Tax paid", "16 March 2026")
     validateViewCalculationLink(card, 1, isSecondLPP = true)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
