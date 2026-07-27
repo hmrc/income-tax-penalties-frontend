@@ -78,9 +78,9 @@ case class  LPPDetails(principalChargeReference: String,
   val incomeTaxIsPaid: Boolean = principalChargeLatestClearing.isDefined
   val is15To30Days: Boolean = lpp1HRCalculationAmt.isEmpty
 
-  def ttpProposalDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.proposalDate)
+  def ttpProposalDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.TTPProposalDate)
 
-  def ttpAgreementDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.agreementDate)
+  def ttpAgreementDate: Option[LocalDate] = metadata.timeToPay.flatMap(_.TTPAgreementDate)
 
 
   override def compare(that: LPPDetails): Int = {
@@ -105,8 +105,13 @@ case class  LPPDetails(principalChargeReference: String,
       case (_, _, _, _, _, _, categoryA, categoryB) if categoryA < categoryB => 1
       case (_, _, _, _, _, _, categoryA, categoryB) if categoryA > categoryB => -1
 
-      //No difference found between this and that (will use ETMP order)
-      case _ => 0
+      //Same category: supplementary assessment comes just before its base penalty
+      case _ =>
+        val thisIsSupp = this.supplement.contains(true)
+        val thatIsSupp = that.supplement.contains(true)
+        if (thisIsSupp && !thatIsSupp) -1       // supplement before non-supplement
+        else if (!thisIsSupp && thatIsSupp) 1   // non-supplement after supplement
+        else 0                                   // no difference (use ETMP order)
     }
   }
 
@@ -225,8 +230,8 @@ object LPPDetailsMetadata {
 }
 
 case class TimeToPay(
-                      proposalDate: Option[LocalDate],
-                      agreementDate: Option[LocalDate]
+                      TTPProposalDate: Option[LocalDate],
+                      TTPAgreementDate: Option[LocalDate]
                     )
 
 object TimeToPay {
