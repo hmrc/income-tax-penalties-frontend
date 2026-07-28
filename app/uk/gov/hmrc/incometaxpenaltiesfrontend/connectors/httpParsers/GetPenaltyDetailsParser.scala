@@ -56,8 +56,11 @@ object GetPenaltyDetailsParser {
               Right(model.penaltyDetails.getOrElse(PenaltyDetails(None, None, None, None)))
 
             case JsError(errors) =>
-              logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $errors")
-              logger.error("[GetPenaltyDetailsResponseReads][read]: Failed to parse to model")
+              val errorDetails = errors.map { case (path, validationErrors) =>
+                s"Path: $path, Errors: ${validationErrors.map(_.message).mkString(", ")}"
+              }.mkString("; ")
+              logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse HIP response to model - failures: $errors")
+              logger.error(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse HIP response to model - error details: $errorDetails")
               PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
               Left(GetPenaltyDetailsMalformed)
           }
@@ -69,8 +72,11 @@ object GetPenaltyDetailsParser {
             Right(model)
 
           case JsError(errors) =>
-            logger.info(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse to model - failures: $errors")
-            logger.error("[GetPenaltyDetailsResponseReads][read]: Failed to parse to model")
+            val errorDetails = errors.map { case (path, validationErrors) =>
+              s"Path: $path, Errors: ${validationErrors.map(_.message).mkString(", ")}"
+            }.mkString("; ")
+            logger.debug(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse IF response to model - failures: $errors")
+            logger.error(s"[GetPenaltyDetailsResponseReads][read]: Failed to parse IF response to model - error details: $errorDetails")
             PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", INVALID_JSON_RECEIVED_FROM_PENALTIES_BACKEND)
             Left(GetPenaltyDetailsMalformed)
         }
