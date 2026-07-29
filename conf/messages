@@ -99,7 +99,7 @@ calculation.penalty.isEstimate.pfa = This penalty is currently an estimate becau
 calculation.penalty.stopEstimateIncreasing = To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan.
 calculation.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty increasing further, please pay the outstanding amount immediately or set up a payment plan.
 
-calculation.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
+calculation.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. Your penalty will not increase while we review the payment plan.
 calculation.penalty.payment.plan.agreed.h1 = Your payment plan
 calculation.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
 calculation.penalty.payment.plan.agreed.p2 = You must keep up with your payments. If you do not, your payment plan will fail. This means:
