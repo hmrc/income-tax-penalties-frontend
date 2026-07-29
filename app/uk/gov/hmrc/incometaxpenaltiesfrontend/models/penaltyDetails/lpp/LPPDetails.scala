@@ -226,7 +226,22 @@ case class LPPDetailsMetadata(
                              )
 
 object LPPDetailsMetadata {
-  implicit val format: OFormat[LPPDetailsMetadata] = Json.format[LPPDetailsMetadata]
+  private val reads: Reads[LPPDetailsMetadata] = (json: JsValue) =>
+    for {
+      principalChargeMainTr  <- (json \ "principalChargeMainTr").validate[String]
+      timeToPay              <- (json \ "timeToPay").validateOpt[Seq[TimeToPay]](Reads.seq[TimeToPay](TimeToPay.format))
+      principalChargeDocNumber <- (json \ "principalChargeDocNumber").validateOpt[String]
+      principalChargeSubTr   <- (json \ "principalChargeSubTr").validateOpt[String]
+    } yield LPPDetailsMetadata(
+      principalChargeMainTr    = principalChargeMainTr,
+      timeToPay                = timeToPay.flatMap(_.headOption),
+      principalChargeDocNumber = principalChargeDocNumber,
+      principalChargeSubTr     = principalChargeSubTr
+    )
+
+  private val writes: OWrites[LPPDetailsMetadata] = Json.writes[LPPDetailsMetadata]
+
+  implicit val format: OFormat[LPPDetailsMetadata] = OFormat(reads, writes)
 }
 
 case class TimeToPay(
