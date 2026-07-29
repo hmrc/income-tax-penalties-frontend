@@ -62,10 +62,13 @@
             "penaltyChargeCreationDate" : "2028-03-02",
             "penaltyChargeReference" : "XJ002616061094",
             "penaltyChargeDueDate" : "2028-04-03",
-            "timeToPay" : {
+            "timeToPay" : [
+              {
               "TTPProposalDate" : "2026-02-16"
             }
-          } ]
+              ]
+          }
+          ]
         }
       }
     }
