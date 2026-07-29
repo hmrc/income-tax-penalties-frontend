@@ -159,9 +159,9 @@ class FirstLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers wi
       val agreedDate = LocalDate.of(2027, 6, 20)
       val agreed = withTaxYear2027(sampleFirstLPPCalcData().copy(paymentPlanAgreed = Some(agreedDate)))
       val content = helper.getPaymentPlanContent(agreed)
-      content.head shouldBe "You agreed to a payment plan on " + DateFormatter.dateToString(agreedDate) + "."
-      content(1) shouldBe "This penalty will not increase if you keep up with payments."
-      content(2) shouldBe "If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date."
+      content.head shouldBe TextBlock("You agreed to a payment plan on " + DateFormatter.dateToString(agreedDate) + ".")
+      content(1) shouldBe TextBlock("You must keep up with your payments. If you do not, your payment plan will fail. This means:")
+      content(2) shouldBe BulletList(List("we’ll recalculate your penalty to include the time you were in the plan", "your penalty may increase"))
     }
 
     "return empty list when not agreed" in {
