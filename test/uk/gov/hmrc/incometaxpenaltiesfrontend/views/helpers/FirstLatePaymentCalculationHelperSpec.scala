@@ -133,7 +133,7 @@ class FirstLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers wi
   "FirstLatePaymentCalculationHelper.getPaymentPlanInset" should {
     "return inset when payment plan proposed" in {
       val proposed = withTaxYear2027(sampleFirstLPPCalcData().copy(paymentPlanProposed = Some(LocalDate.of(2027, 6, 20))))
-      helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". If this payment plan is agreed your penalty will not increase.")
+      helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". Your penalty will not increase while we review the payment plan.")
     }
 
     "return None when no proposed payment plan" in {
