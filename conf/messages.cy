@@ -102,8 +102,9 @@ calculation.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu
 calculation.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig cynllun talu ar {0}. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
 calculation.penalty.payment.plan.agreed.h1 = Eich cynllun talu
 calculation.penalty.payment.plan.agreed.p1 = Cytunoch i gynllun talu ar {0}.
-calculation.penalty.payment.plan.agreed.p2 = Ni fydd y gosb yn cynyddu os byddwch yn gwneud pob taliad mewn pryd.
-calculation.penalty.payment.plan.agreed.p3 = Os na wnewch hyn, bydd eich cynllun talu’n methu. Bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
+calculation.penalty.payment.plan.agreed.p2 = Mae’n rhaid i chi sicrhau eich bod yn gwneud pob taliad mewn pryd. Os na wnewch hyn, bydd eich cynllun talu’n methu. Mae hyn yn golygu:
+calculation.penalty.payment.plan.agreed.bullet1 = byddwn yn ailgyfrifo’ch cosb i gynnwys yr amser yr oeddech yn y cynllun
+calculation.penalty.payment.plan.agreed.bullet2 = gallai’ch cosb gynyddu
 
 calculation.missedDeadline.lpp2.isEstimate = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.missedDeadline.lpp2.isDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
@@ -205,7 +206,7 @@ compliance.timeline.send.by = Anfonwch hwn erbyn {0}
 # How We Work Out Penalty Amount details
 # ===================
 howWeWorkOutPenaltyAmount.details = Sut yr ydym yn cyfrifo swm y gosb
-howWeWorkOutPenaltyAmount.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
+howWeWorkOutPenaltyAmount.lPP1.p1 = Caiff cosb gyntaf am dalu’n hwyr ei ffurfio o ddwy ran.
 howWeWorkOutPenaltyAmount.lPP1.p2 = Rydym yn codi’r cosbau canlynol:
 howWeWorkOutPenaltyAmount.bullet1 = 3% o swm y Dreth Incwm sydd heb ei dalu ar ôl 15 diwrnod
 howWeWorkOutPenaltyAmount.bullet2 = 3% arall o swm y Dreth Incwm sydd heb ei dalu ar ôl 30 diwrnod

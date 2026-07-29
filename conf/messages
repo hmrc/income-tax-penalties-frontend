@@ -102,8 +102,9 @@ calculation.penalty.stopEstimateIncreasing.pfa = To stop this estimated penalty 
 calculation.penalty.payment.plan.proposed.inset = You proposed a payment plan on {0}. If this payment plan is agreed your penalty will not increase.
 calculation.penalty.payment.plan.agreed.h1 = Your payment plan
 calculation.penalty.payment.plan.agreed.p1 = You agreed to a payment plan on {0}.
-calculation.penalty.payment.plan.agreed.p2 = This penalty will not increase if you keep up with payments.
-calculation.penalty.payment.plan.agreed.p3 = If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date.
+calculation.penalty.payment.plan.agreed.p2 = You must keep up with your payments. If you do not, your payment plan will fail. This means:
+calculation.penalty.payment.plan.agreed.bullet1 = we’ll recalculate your penalty to include the time you were in the plan
+calculation.penalty.payment.plan.agreed.bullet2 = your penalty may increase
 
 calculation.missedDeadline.lpp2.isEstimate = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
 calculation.missedDeadline.lpp2.isDueOrOverdue = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
