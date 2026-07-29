@@ -22,6 +22,11 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenaltyCalculationData
 
+
+sealed trait ContentBlock
+case class TextBlock(text: String) extends ContentBlock
+case class BulletList(items: List[String]) extends ContentBlock
+
 class FirstLatePaymentCalculationHelper {
 
 
@@ -83,13 +88,16 @@ class FirstLatePaymentCalculationHelper {
     }
   }
 
-  def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): List[String] = {
+  def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): List[ContentBlock] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
       case (Some(agreedDate), _) =>
         List(
-          messages("calculation.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
-          messages("calculation.penalty.payment.plan.agreed.p2"),
-          messages("calculation.penalty.payment.plan.agreed.p3")
+          TextBlock(messages("calculation.penalty.payment.plan.agreed.p1", dateToString(agreedDate))),
+          TextBlock(messages("calculation.penalty.payment.plan.agreed.p2")),
+          BulletList(List(
+            messages("calculation.penalty.payment.plan.agreed.bullet1"),
+            messages("calculation.penalty.payment.plan.agreed.bullet2")
+          ))
         )
       case _ => List.empty
     }

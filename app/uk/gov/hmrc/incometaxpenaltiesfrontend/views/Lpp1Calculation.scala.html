@@ -23,6 +23,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.FirstLatePaymentCalculationHelper
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{ContentBlock, TextBlock, BulletList}
 
 
 @this(
@@ -221,11 +222,9 @@
         <p class="govuk-heading-m">
             @calculationHelper.getPaymentPlanHeading(calculationData)
         </p>
-        @calculationHelper.getPaymentPlanContent(calculationData).map{ msg =>
-        <p class="govuk-body">
-            @msg
-        </p>
-        }
+        @calculationHelper.getPaymentPlanContent(calculationData).map{
+        case TextBlock(text)  => {<p class="govuk-body">@text</p>}
+        case BulletList(item) => {<ul class="govuk-list govuk-list--bullet">@item.map{i => <li>@i</li>}</ul>}}
     </div>
 
    @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
