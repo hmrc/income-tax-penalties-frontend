@@ -45,7 +45,7 @@ class SecondLatePaymentCalculationHelper {
   }
   
   def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, String, Option[String]) = {
-    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
+    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid || calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
       (messages("calculation.missedDeadline.lpp2.isEstimate"), messages("calculation.dailyIncrease.lpp2.isEstimate"), LPP2CrystallisedMsg(calculationData, timeMachine))
     } else if (calculationData.isPenaltyPaid) {
       (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
