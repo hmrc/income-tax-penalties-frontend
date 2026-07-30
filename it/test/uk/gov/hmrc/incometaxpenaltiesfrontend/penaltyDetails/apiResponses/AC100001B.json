@@ -1,6 +1,6 @@
 {
   "idType": "NINO",
-  "idNumber": "AC100001A",
+  "idNumber": "AC100001B",
   "payload": {
     "success": {
       "processingDate": "2025-04-05T10:15:10Z",
@@ -18,7 +18,7 @@
           "manualLPPIndicator": false,
           "lppDetails": [
             {
-              "principalChargeReference": "XJ002616061043",
+              "principalChargeReference": "XJ002616061063",
               "supplement": false,
               "penaltyStatus": "P",
               "penaltyAmountAccruing": 0,
@@ -36,11 +36,11 @@
               "lpp1LRDays": "15",
               "lpp1LRPercentage": 3,
               "penaltyChargeCreationDate": "2026-02-15",
-              "penaltyChargeReference": "XJ002616061043",
+              "penaltyChargeReference": "XJ002616061063",
               "penaltyChargeDueDate": "2026-03-19",
-              "timeToPay" : [
+              "timeToPay": [
                 {
-                  "TTPAgreementDate" : "2026-02-20"
+                  "TTPProposalDate" : "2026-02-17"
                 }
               ]
             }
