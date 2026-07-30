@@ -38,19 +38,20 @@ class SecondLatePaymentCalculationHelper {
   }
 
   def LPP2CrystallisedMsg(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): Option[String] = {
-    if(calculationData.paymentPlanAgreed.isDefined && java.time.temporal.ChronoUnit.DAYS.between(calculationData.principalChargeDueDate, timeMachine.getCurrentDate()) >= 726) {
+    if(calculationData.paymentPlanAgreed.isDefined && java.time.temporal.ChronoUnit.DAYS.between(calculationData.principalChargeDueDate, timeMachine.getCurrentDate()) >= 726 ||
+      calculationData.paymentPlanProposed.isDefined && java.time.temporal.ChronoUnit.DAYS.between(calculationData.principalChargeDueDate, timeMachine.getCurrentDate()) >= 726) {
       Some(messages("calculation.missedDeadline.lpp2.726.message"))
     } else
     None
   }
   
   def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, String, Option[String]) = {
-    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid || calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
+    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
       (messages("calculation.missedDeadline.lpp2.isEstimate"), messages("calculation.dailyIncrease.lpp2.isEstimate"), LPP2CrystallisedMsg(calculationData, timeMachine))
     } else if (calculationData.isPenaltyPaid) {
-      (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
+      (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), LPP2CrystallisedMsg(calculationData, timeMachine))
     } else {
-      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
+      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), LPP2CrystallisedMsg(calculationData, timeMachine))
     }
   }
 

@@ -177,7 +177,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe Some("By law, we must issue this penalty within 2 years of the end of the tax year.")
     }
 
-    "return the crystallised message when exactly 726 days have passed" in {
+    "return the crystallised message when exactly 726 days have passed for paymentPlanAgreed" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
         paymentPlanAgreed = Some(LocalDate.of(2025, 1, 15)),
         principalChargeDueDate = fixedNow.minusDays(726)
@@ -185,7 +185,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe Some("By law, we must issue this penalty within 2 years of the end of the tax year.")
     }
 
-    "return None when fewer than 726 days have passed" in {
+    "return None when fewer than 726 days have passed for paymentPlanAgreed" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
         paymentPlanAgreed = Some(LocalDate.of(2025, 1, 15)),
         principalChargeDueDate = fixedNow.minusDays(725)
@@ -196,6 +196,37 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     "return None when paymentPlanAgreed is not defined even if more than 726 days have passed" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
         paymentPlanAgreed = None,
+        principalChargeDueDate = fixedNow.minusDays(800)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe None
+    }
+    "return the crystallised message when paymentPlanProposed is defined and more than 726 days have passed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanProposed = Some(LocalDate.of(2025, 1, 15)),
+        principalChargeDueDate = fixedNow.minusDays(727)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe Some("By law, we must issue this penalty within 2 years of the end of the tax year.")
+    }
+
+    "return the crystallised message when exactly 726 days have passed for paymentPlanProposed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanProposed = Some(LocalDate.of(2025, 1, 15)),
+        principalChargeDueDate = fixedNow.minusDays(726)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe Some("By law, we must issue this penalty within 2 years of the end of the tax year.")
+    }
+
+    "return None when fewer than 726 days have passed for paymentPlanProposed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanProposed = Some(LocalDate.of(2025, 1, 15)),
+        principalChargeDueDate = fixedNow.minusDays(725)
+      )
+      helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe None
+    }
+
+    "return None when paymentPlanProposed is not defined even if more than 726 days have passed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData()).copy(
+        paymentPlanProposed = None,
         principalChargeDueDate = fixedNow.minusDays(800)
       )
       helper.LPP2CrystallisedMsg(data, fixedTimeMachine) shouldBe None
