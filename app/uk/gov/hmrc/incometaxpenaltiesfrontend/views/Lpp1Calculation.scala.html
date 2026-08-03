@@ -142,7 +142,7 @@
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
-            @calculationHelper.getFinalUnpaidMsg(calculationData, if(calculationData.isPFA) ".pfa" else "")
+            @calculationHelper.getFinalUnpaidMsg(calculationData, breathingSpaceData, timeMachine)
         </p>
     }
     

@@ -24,7 +24,9 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.FirstLatePaymentPenalty
 
 
 sealed trait ContentBlock
+
 case class TextBlock(text: String) extends ContentBlock
+
 case class BulletList(items: List[String]) extends ContentBlock
 
 class FirstLatePaymentCalculationHelper {
@@ -49,20 +51,18 @@ class FirstLatePaymentCalculationHelper {
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
       messages("calculation.missedDeadline.lpp1.isEstimate")
     } else if (calculationData.isPenaltyPaid) {
-          messages("calculation.missedDeadline.lpp1.isPaid")
-        } else {
-          messages("calculation.missedDeadline.lpp1.isDueOrOverdue")
-        }
+      messages("calculation.missedDeadline.lpp1.isPaid")
+    } else {
+      messages("calculation.missedDeadline.lpp1.isDueOrOverdue")
+    }
   }
 
 
-
-  def getFinalUnpaidMsg(calculationData: FirstLatePaymentPenaltyCalculationData,
-                        isPfa: String)(implicit messages: Messages): Option[String] = {
-    if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
-      val isEstimateMsg = messages(s"calculation.penalty.isEstimate$isPfa", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
-      val toStopEstimateIncMsg = messages(s"calculation.penalty.stopEstimateIncreasing$isPfa")
-      if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined) {
+  def getFinalUnpaidMsg(calculationData: FirstLatePaymentPenaltyCalculationData, breathingSpaceData: Option[Seq[BreathingSpace]], timeMachine: TimeMachine)(implicit messages: Messages): Option[String] = {
+    if (calculationData.isEstimate) {
+      val isEstimateMsg = messages(s"calculation.penalty.isEstimate", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+      val toStopEstimateIncMsg = messages(s"calculation.penalty.stopEstimateIncreasing")
+      if (calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined || (breathingSpaceData.isDefined && !isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine))) {
         Some(isEstimateMsg)
       } else {
         Some(isEstimateMsg + " " + toStopEstimateIncMsg)
@@ -102,7 +102,7 @@ class FirstLatePaymentCalculationHelper {
       case _ => List.empty
     }
   }
-  
+
   def isExpiredBreathingSpace(calculationData: FirstLatePaymentPenaltyCalculationData,
                               breathingSpaceData: Option[Seq[BreathingSpace]],
                               timeMachine: TimeMachine): Boolean = {
@@ -112,7 +112,7 @@ class FirstLatePaymentCalculationHelper {
           (bs.bsStartDate.isAfter(calculationData.principalChargeDueDate) && bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) ||
             (bs.bsEndDate.isAfter(calculationData.principalChargeDueDate) && bs.bsEndDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) ||
             (bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)))
-        )) > 0
+          )) > 0
       case None => false
     }
   }
