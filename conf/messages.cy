@@ -95,9 +95,7 @@ calculation.table.amountPaid = Swm a dalwyd
 calculation.table.stillToPay = I’w dalu o hyd
 
 calculation.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r dreth sy’n ddyledus ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
-calculation.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
-calculation.penalty.stopEstimateIncreasing.pfa = Dylech drefnu cynllun talu, neu dalu’r swm sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
 calculation.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig cynllun talu ar {0}. Ni fydd eich cosb yn cynyddu tra byddwn yn adolygu’r cynllun talu.
 calculation.penalty.payment.plan.agreed.h1 = Eich cynllun talu
