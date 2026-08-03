@@ -46,7 +46,7 @@ class FirstLatePaymentCalculationHelper {
   }
 
   def getMissedDeadlineMsg(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): String = {
-    if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid) {
+    if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
       messages("calculation.missedDeadline.lpp1.isEstimate")
     } else if (calculationData.isPenaltyPaid) {
           messages("calculation.missedDeadline.lpp1.isPaid")
