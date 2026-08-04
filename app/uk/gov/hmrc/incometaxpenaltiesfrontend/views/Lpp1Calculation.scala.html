@@ -94,23 +94,17 @@
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
-    @calculationHelper.getPaymentPlanInset(calculationData).map{insetMsg =>
-        <div class="govuk-inset-text"  id="paymentPlanInset">
-            @insetMsg
-        </div>
+    @calculationHelper.getPaymentDetails(calculationData).map { msg =>
+     <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
     }
-
-    @calculationHelper.getPaymentDetails(calculationData).map{msg =>
-        <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>
-    }
-
     @if(!calculationData.isEstimate) {
-        @calculationData.penaltyChargeReference.map{chargeRef =>
-            <p class="govuk-body" id="chargeReference">
-                @messages("calculation.charge.reference", chargeRef)
-            </p>
-        }
+     @calculationData.penaltyChargeReference.map{chargeRef =>
+     <p class="govuk-body" id="chargeReference">@messages("calculation.charge.reference", chargeRef)</p>
+     }
     }
+    @calculationHelper.getPaymentPlanInset(calculationData).map {insetMsg =>
+     <div class="govuk-inset-text" id="paymentPlanInset">@insetMsg</div>
+}
 
     @if(inBreathingSpace){
         @govukInsetText(InsetText(
