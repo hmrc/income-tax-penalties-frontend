@@ -1,0 +1,110 @@
+{
+  "idType": "NINO",
+  "idNumber": "AC100002A",
+  "payload": {
+    "success": {
+      "processingDate": "2025-04-05T10:15:10Z",
+      "penaltyData": {
+        "totalisations": {
+          "lspTotalValue": 0,
+          "penalisedPrincipalTotal": 0,
+          "lppPostedTotal": 0,
+          "lppEstimatedTotal": 120,
+          "totalAccountOverdue": 0,
+          "totalAccountPostedInterest": 0,
+          "totalAccountAccruingInterest": 0
+        },
+        "lpp": {
+          "manualLPPIndicator": false,
+          "lppDetails": [
+            {
+              "principalChargeReference": "XJ002616061034",
+              "supplement": false,
+              "penaltyStatus": "A",
+              "penaltyAmountAccruing": 1.64,
+              "penaltyAmountPosted": 0,
+              "principalChargeBillingFrom": "2023-04-06",
+              "principalChargeBillingTo": "2024-04-05",
+              "principalChargeDueDate": "2025-01-31",
+              "principalChargeDocNumber": "DOC1",
+              "principalChargeMainTr": "4720",
+              "principalChargeSubTr": "SUB1",
+              "penaltyCategory": "LPP2",
+              "lpp1LRCalculationAmt": 28,
+              "lpp1LRDays": "15",
+              "lpp1LRPercentage": 3,
+              "lpp1HRCalculationAmt": 28,
+              "lpp1HRDays": "30",
+              "lpp1HRPercentage": 3,
+              "lpp2Days": "31",
+              "lpp2Percentage": 10,
+              "penaltyChargeCreationDate": "2025-03-03",
+              "penaltyChargeReference": "XJ002616061034",
+              "penaltyChargeDueDate": "2025-04-04"
+            },
+            {
+              "principalChargeReference": "XJ002616061034",
+              "supplement" : false,
+              "penaltyStatus": "P",
+              "penaltyAmountAccruing": 0,
+              "penaltyAmountPosted": 105,
+              "principalChargeBillingFrom": "2023-04-06",
+              "principalChargeBillingTo": "2024-04-05",
+              "principalChargeDueDate": "2025-01-31",
+              "principalChargeDocNumber": "DOC1",
+              "principalChargeMainTr": "4720",
+              "principalChargeSubTr": "SUB1",
+              "penaltyCategory": "LPP1",
+              "penaltyAmountPaid": 0,
+              "penaltyAmountOutstanding": 105,
+              "lpp1LRCalculationAmt": 1750,
+              "lpp1LRDays": "15",
+              "lpp1LRPercentage": 3,
+              "lpp1HRCalculationAmt": 1750,
+              "lpp1HRDays": "30",
+              "lpp1HRPercentage": 3,
+              "penaltyChargeCreationDate": "2025-03-03",
+              "penaltyChargeReference": "XJ002616061034",
+              "penaltyChargeDueDate": "2025-04-04",
+              "timeToPay": [
+                {
+                  "TTPAgreementDate" : "2025-02-20"
+                }
+              ]
+            },
+            {
+              "principalChargeReference" : "XJ002616061098",
+              "supplement" : true,
+              "penaltyStatus" : "P",
+              "penaltyAmountAccruing" : 0,
+              "penaltyAmountPosted" : 15,
+              "principalChargeBillingFrom" : "2023-04-06",
+              "principalChargeBillingTo" : "2024-04-05",
+              "principalChargeDueDate" : "2025-01-31",
+              "principalChargeDocNumber" : "DOC1",
+              "principalChargeMainTr" : "4720",
+              "principalChargeSubTr" : "SUB1",
+              "penaltyCategory" : "LPP1",
+              "penaltyAmountPaid" : 0,
+              "penaltyAmountOutstanding" : 15,
+              "lpp1LRCalculationAmt" : 250,
+              "lpp1LRDays" : "15",
+              "lpp1LRPercentage" : 3,
+              "lpp1HRCalculationAmt" : 250,
+              "lpp1HRDays" : "30",
+              "lpp1HRPercentage" : 3,
+              "penaltyChargeCreationDate" : "2025-03-03",
+              "penaltyChargeReference" : "XJ002616061098",
+              "penaltyChargeDueDate" : "2025-04-04",
+              "timeToPay": [
+                {
+                  "TTPAgreementDate" : "2025-02-20"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
