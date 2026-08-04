@@ -108,7 +108,7 @@ calculation.penalty.payment.plan.agreed.p3 = Os na wnewch hyn, bydd eich cynllun
 calculation.missedDeadline.lpp2.isEstimate = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.missedDeadline.lpp2.isDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
 calculation.missedDeadline.lpp2.isPaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, roedd ail gosb am dalu’n hwyr wedi’i chodi arnoch.
-calculation.missedDeadline.lpp2.726.message = Yn gyfreithiol, mae'n rhaid i ni ddyrannu'r gosb hon o fewn 2 flynedd iddiwedd y flwyddyn dreth.
+calculation.missedDeadline.lpp2.726.message = Yn gyfreithiol, mae’n rhaid i ni ddyrannu’r gosb hon o fewn 2 flynedd iddiwedd y flwyddyn dreth.
 
 calculation.dailyIncrease.lpp2.isEstimate = Bydd swm y gosb yn cynyddu’n ddyddiol ar gyfradd flynyddol o 10% o’r dreth sy’n ddyledus.
 calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
@@ -117,11 +117,12 @@ calculation.calc2.penalty.isEstimate = Ar hyn o bryd, amcangyfrif yw’r gosb ho
 calculation.calc2.penalty.isEstimate.pfa = Ar hyn o bryd, amcangyfrif yw’r gosb hon oherwydd nad yw’r swm ychwanegol ar gyfer blwyddyn dreth {0} i {1} wedi’i thalu.
 calculation.calc2.penalty.stopEstimateIncreasing = Dylech drefnu cynllun talu, neu dalu’r dreth sy’n ddyledus ar unwaith er mwyn osgoi unrhyw gynnydd i’r gosb amcangyfrifedig.
 
-calculation.calc2.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig gynllun talu ar {0}. Os cytunir ar y cynllun talu hwn, ni fydd eich cosb yn cynyddu.
+calculation.calc2.penalty.payment.plan.proposed.inset = Gwnaethoch gynnig gynllun talu ar {0}. Ni fydd eich cosb yn cynyddu tra byddwn yn adolygu’r cynllun talu.
 calculation.calc2.penalty.payment.plan.agreed.h1 = Eich cynllun talu
 calculation.calc2.penalty.payment.plan.agreed.p1 = Cytunoch i gynllun talu ar {0}.
-calculation.calc2.penalty.payment.plan.agreed.p2 = Amcangyfrif yw’r cyfrifiad hwn hyd at yr adeg y cytunwyd ar eich cynllun talu. Bydd yn parhau i fod yn amcangyfrif nes bod eich cynllun talu yn talu’r dyledion treth.
-calculation.calc2.penalty.payment.plan.agreed.p3 = Mae’n rhaid i chi sicrhau eich bod yn gwneud taliadau mewn pryd. Os na wnewch hyn, bydd eich cynllun talu’n methu. Bydd unrhyw gosbau sydd arnoch yn cael eu cyfrifo ar sail eu dyddiad gwreiddiol.
+calculation.calc2.penalty.payment.plan.agreed.p2 = Mae’n rhaid i chi sicrhau eich bod yn gwneud pob taliad mewn pryd. Os na wnewch hyn, bydd eich cynllun talu’n methu. Mae hyn yn golygu:
+calculation.calc2.penalty.payment.plan.agreed.bullet1 = byddwn yn ailgyfrifo’ch cosb i gynnwys yr amser yr oeddech yn y cynllun
+calculation.calc2.penalty.payment.plan.agreed.bullet2 = gallai’ch cosb gynyddu
 
 calculation.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
 
@@ -353,11 +354,11 @@ calculation.breathingSpace.expired = Mae’ch cyfnod ‘amser i gael eich gwynt 
 calculation.calc2.breathingSpace.expired = Mae’ch cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi dod i ben. Nid yw’r amser yr oeddech chi yn y cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) wedi’i ychwanegu at eich cyfrifiad.
 
 # Unauthorised Error View
-unauthorised.page.h1 = Nid ydych wedi'ch awdurdodi i gael mynediad at y dudalen hon
-unauthorised.page.p = Rydych yn asiant ategol ar gyfer y cleient hyn. Y prif asiant yn unig sy'n gallu cael mynediad at gofnodion sy'n dangos:
+unauthorised.page.h1 = Nid ydych wedi’ch awdurdodi i gael mynediad at y dudalen hon
+unauthorised.page.p = Rydych yn asiant ategol ar gyfer y cleient hyn. Y prif asiant yn unig sy’n gallu cael mynediad at gofnodion sy’n dangos:
 unauthorised.page.bullet1 = taliadau, credydau ac ad-daliadau
 unauthorised.page.bullet2 = Ffurflenni Treth
-unauthorised.page.bullet3 = y ffioedd sy'n ddyledus nesaf
+unauthorised.page.bullet3 = y ffioedd sy’n ddyledus nesaf
 unauthorised.page.bullet4 = cosbau ac apeliadau
 unauthorised.page.read.more = Darllenwch ragor am y gwahaniaeth rhwng prif asiantau ac asiantau ategol ar
 unauthorised.page.link.text = GOV.UK

@@ -26,7 +26,7 @@ object AC200000A extends UserDetailsData {
   override val expectedNumberOfLSPPenaltyCards: Int = 0
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £10.41")
     validateCardTag(card, expectedTag = "Estimate")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 3
@@ -44,7 +44,7 @@ object AC200000A extends UserDetailsData {
     validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2028")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")
+    validateSummary(cardRows.get(3), "Income Tax paid", "Payment plan agreed")
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
