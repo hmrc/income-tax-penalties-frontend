@@ -107,6 +107,7 @@ calculation.penalty.payment.plan.agreed.bullet2 = your penalty may increase
 calculation.missedDeadline.lpp2.isEstimate = Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty.
 calculation.missedDeadline.lpp2.isDueOrOverdue = Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty.
 calculation.missedDeadline.lpp2.isPaid = Because you missed this deadline by more than 30 days, you were charged a second late payment penalty.
+calculation.missedDeadline.lpp2.726.message = By law, we must issue this penalty within 2 years of the end of the tax year.
 
 calculation.dailyIncrease.lpp2.isEstimate = This penalty will increase daily at an annual rate of 10% of the outstanding tax.
 calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid = This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.

@@ -107,6 +107,7 @@ calculation.penalty.payment.plan.agreed.bullet2 = gallai’ch cosb gynyddu
 calculation.missedDeadline.lpp2.isEstimate = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, bydd ail gosb am dalu’n hwyr yn cael ei chodi arnoch.
 calculation.missedDeadline.lpp2.isDueOrOverdue = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, mae ail gosb am dalu’n hwyr wedi’i chodi arnoch.
 calculation.missedDeadline.lpp2.isPaid = Oherwydd eich bod wedi methu’r dyddiad cau gan fwy na 30 diwrnod, roedd ail gosb am dalu’n hwyr wedi’i chodi arnoch.
+calculation.missedDeadline.lpp2.726.message = Yn gyfreithiol, mae'n rhaid i ni ddyrannu'r gosb hon o fewn 2 flynedd iddiwedd y flwyddyn dreth.
 
 calculation.dailyIncrease.lpp2.isEstimate = Bydd swm y gosb yn cynyddu’n ddyddiol ar gyfradd flynyddol o 10% o’r dreth sy’n ddyledus.
 calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid = Gwnaeth swm y gosb gynyddu’n ddyddiol ar gyfradd flynyddol o 10% hyd nes y cafodd y dreth ddyledus ei thalu.
