@@ -68,5 +68,5 @@ object AC100002AOverdue extends UserDetailsData {
 
   override val expectedOverviewText: String = AC100002A.expectedOverviewText
 
-  override val timeMachineDate: String = "05/03/2025"
+  override val timeMachineDate: String = "20/05/2025"
 }
