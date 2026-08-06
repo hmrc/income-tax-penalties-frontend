@@ -143,6 +143,15 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". Your penalty will not increase while we review the payment plan.")
     }
 
+    "return None when payment plan is both agreed and proposed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData().copy(
+        paymentPlanAgreed = Some(LocalDate.of(2026, 6, 10)),
+        paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
+      ))
+
+      helper.getPaymentPlanInset(data) shouldBe None
+    }
+
     "return None when no proposed payment plan" in {
       val data = withTaxYear2027(sampleSecondLPPCalcData())
       helper.getPaymentPlanInset(data) shouldBe None

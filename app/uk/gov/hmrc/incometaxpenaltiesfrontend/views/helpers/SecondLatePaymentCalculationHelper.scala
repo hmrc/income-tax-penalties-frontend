@@ -88,7 +88,7 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (_, Some(proposedDate)) =>
+      case (None, Some(proposedDate)) =>
         Some(messages("calculation.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
