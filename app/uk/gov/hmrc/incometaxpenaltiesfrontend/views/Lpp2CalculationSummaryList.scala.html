@@ -42,7 +42,7 @@
               value = Value(
                content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
                dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-               dateToString(if(calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+               dateToString(calculationData.chargePeriodEndDate(timeMachine.getCurrentDate())),
                calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
               )
             ),
@@ -74,7 +74,7 @@
               value = Value(
                content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
                dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-               dateToString(if (calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+               dateToString(calculationData.chargePeriodEndDate(timeMachine.getCurrentDate())),
                calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
               )
              )
@@ -123,7 +123,7 @@
               value = Value(
                content = Text(messages(s"calculation.summaryList.LPP2.charge.period${dayOrDaysText}",
                dateToString(calculationData.principalChargeDueDate.plusDays(31)),
-               dateToString(if (calculationData.isEstimate) timeMachine.getCurrentDate() else calculationData.payPenaltyBy.minusDays(32)),
+               dateToString(calculationData.chargePeriodEndDate(timeMachine.getCurrentDate())),
                calculationData.chargePeriodDays(timeMachine.getCurrentDate())))
               )
             )

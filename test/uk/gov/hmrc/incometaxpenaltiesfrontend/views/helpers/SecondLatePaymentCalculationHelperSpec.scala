@@ -320,4 +320,51 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     }
   }
 
+  "SecondLatePaymentPenaltyCalculationData charge period calculations" should {
+    "use the earliest TTP date for chargePeriodEndDate when both agreed and proposed dates are present" in {
+      val data = sampleSecondLPPCalcData().copy(
+        isEstimate = true,
+        paymentPlanAgreed = Some(LocalDate.of(2026, 6, 25)),
+        paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
+      )
+
+      data.chargePeriodEndDate(LocalDate.of(2026, 7, 1)) shouldBe LocalDate.of(2026, 6, 20)
+    }
+
+    "use the current date for chargePeriodEndDate when there is no TTP and the penalty is an estimate" in {
+      val data = sampleSecondLPPCalcData().copy(
+        isEstimate = true,
+        paymentPlanAgreed = None,
+        paymentPlanProposed = None,
+        principalChargeDueDate = LocalDate.of(2026, 5, 1),
+        payPenaltyBy = LocalDate.of(2026, 6, 30)
+      )
+
+      data.chargePeriodEndDate(LocalDate.of(2026, 7, 1)) shouldBe LocalDate.of(2026, 7, 1)
+    }
+
+    "calculate chargePeriodDays using the earliest TTP date" in {
+      val data = sampleSecondLPPCalcData().copy(
+        isEstimate = true,
+        principalChargeDueDate = LocalDate.of(2026, 5, 1),
+        paymentPlanAgreed = Some(LocalDate.of(2026, 6, 25)),
+        paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
+      )
+
+      data.chargePeriodDays(LocalDate.of(2026, 7, 1)) shouldBe 20
+    }
+
+    "calculate chargePeriodDays from payPenaltyBy.minusDays(32) when there is no TTP and the penalty is not an estimate" in {
+      val data = sampleSecondLPPCalcData().copy(
+        isEstimate = false,
+        principalChargeDueDate = LocalDate.of(2026, 5, 1),
+        payPenaltyBy = LocalDate.of(2026, 7, 31),
+        paymentPlanAgreed = None,
+        paymentPlanProposed = None
+      )
+
+      data.chargePeriodDays(LocalDate.of(2026, 7, 1)) shouldBe 29
+    }
+  }
+
 }
