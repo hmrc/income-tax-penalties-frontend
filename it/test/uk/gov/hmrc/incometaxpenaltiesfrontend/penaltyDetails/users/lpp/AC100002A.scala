@@ -32,7 +32,7 @@ object AC100002A extends UserDetailsData {
     cardRows.size() shouldBe 3
     validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2023 to 2024 tax year")
     validateSummary(cardRows.get(1), "Income Tax due", "31 January 2025")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
+    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan agreed")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
@@ -40,7 +40,7 @@ object AC100002A extends UserDetailsData {
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "4 April 2025")
+    validateSummary(cardRows.get(0), "Pay penalty by", "6 April 2025")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2023 to 2024 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2025")
     validateSummary(cardRows.get(3), "Income Tax paid", "Payment plan agreed")
@@ -53,7 +53,7 @@ object AC100002A extends UserDetailsData {
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "4 April 2025")
+    validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2025")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2023 to 2024 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2025")
     validateSummary(cardRows.get(3), "Income Tax paid", "Payment plan agreed")
