@@ -109,6 +109,16 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
 
       result._2 shouldBe None
     }
+
+    "hide the daily increase message when both Time To Pay agreed and proposed are present" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData().copy(
+        paymentPlanAgreed = Some(LocalDate.of(2026, 6, 10)),
+        paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
+      ))
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
+
+      result._2 shouldBe None
+    }
   }
 
   "SecondLatePaymentCalculationHelper.getFinalUnpaidMsg" should {
