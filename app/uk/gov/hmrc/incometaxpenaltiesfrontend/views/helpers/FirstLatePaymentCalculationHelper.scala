@@ -74,7 +74,7 @@ class FirstLatePaymentCalculationHelper {
 
   def getPaymentPlanInset(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (_, Some(proposedDate)) =>
+      case (None , Some(proposedDate)) =>
         Some(messages("calculation.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
@@ -90,7 +90,7 @@ class FirstLatePaymentCalculationHelper {
 
   def getPaymentPlanContent(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): List[ContentBlock] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (Some(agreedDate), _) =>
+      case (Some(agreedDate), None) =>
         List(
           TextBlock(messages("calculation.penalty.payment.plan.agreed.p1", dateToString(agreedDate))),
           TextBlock(messages("calculation.penalty.payment.plan.agreed.p2")),
