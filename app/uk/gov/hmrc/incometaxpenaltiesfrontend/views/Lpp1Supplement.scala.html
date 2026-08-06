@@ -23,12 +23,14 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.FirstLatePaymentCalculationHelper
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{ContentBlock, TextBlock, BulletList}
 
 
 @this(
         main: MainTemplate,
         howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount,
-        calculationFooterLinks : CalculationFooterLinks
+        calculationFooterLinks : CalculationFooterLinks,
+        calculationHelper: FirstLatePaymentCalculationHelper
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -51,8 +53,12 @@
         </p>
     }
 
-        <P class="govuk-body" id="supplementaryReason"> @messages("calculation.supplementary.reason")</P>
-        <p class="govuk-body" id="supplementaryAlert"> @messages("calculation.supplementary.p1")</p>
+    @calculationHelper.getPaymentPlanInset(calculationData).map {insetMsg =>
+       <div class="govuk-inset-text" id="paymentPlanInset">@insetMsg</div>
+    }
+
+    <P class="govuk-body" id="supplementaryReason"> @messages("calculation.supplementary.reason")</P>
+    <p class="govuk-body" id="supplementaryAlert"> @messages("calculation.supplementary.p1")</p>
 
     @if(!calculationData.isPenaltyPaid) {
         @if(calculationData.isPenaltyOverdue) {
@@ -63,6 +69,13 @@
     }
 
     @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
+
+    <div class="govuk-!-margin-top-7" id="paymentPlanContent">
+    <p class="govuk-heading-m">@calculationHelper.getPaymentPlanHeading(calculationData)</p>
+    @calculationHelper.getPaymentPlanContent(calculationData).map{
+    case TextBlock(text)  => {<p class="govuk-body">@text</p>}
+    case BulletList(item) => {<ul class="govuk-list govuk-list--bullet">@item.map{i => <li>@i</li>}</ul>}}
+    </div>
 
     @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
