@@ -77,7 +77,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
 
       result._1 shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
-      result._2 shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
+      result._2 shouldBe Some("This penalty will increase daily at an annual rate of 10% of the outstanding tax.")
     }
 
     "return paid messages when the penalty has been paid" in {
@@ -85,7 +85,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
 
       result._1 shouldBe "Because you missed this deadline by more than 30 days, you were charged a second late payment penalty."
-      result._2 shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+      result._2 shouldBe Some("This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.")
     }
 
     "return due/overdue messages for other cases - Due/Overdue" in {
@@ -93,7 +93,31 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
 
       result._1 shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
-      result._2 shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
+      result._2 shouldBe Some("This penalty increased daily at an annual rate of 10% until the outstanding tax was paid.")
+    }
+
+    "hide the daily increase message when a Time To Pay arrangement is agreed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData().copy(paymentPlanAgreed = Some(LocalDate.of(2026, 6, 20))))
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
+
+      result._2 shouldBe None
+    }
+
+    "hide the daily increase message when a Time To Pay arrangement is proposed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData().copy(paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))))
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
+
+      result._2 shouldBe None
+    }
+
+    "hide the daily increase message when both Time To Pay agreed and proposed are present" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData().copy(
+        paymentPlanAgreed = Some(LocalDate.of(2026, 6, 10)),
+        paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
+      ))
+      val result = helper.getMissedDeadlineAndDailyIncreaseMsgs(data, fixedTimeMachine)
+
+      result._2 shouldBe None
     }
   }
 
@@ -126,7 +150,16 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
   "SecondLatePaymentCalculationHelper.getPaymentPlanInset" should {
     "return inset when payment plan proposed" in {
       val proposed = withTaxYear2027(sampleSecondLPPCalcData().copy(paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))))
-      helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". If this payment plan is agreed your penalty will not increase.")
+      helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". Your penalty will not increase while we review the payment plan.")
+    }
+
+    "return None when payment plan is both agreed and proposed" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData().copy(
+        paymentPlanAgreed = Some(LocalDate.of(2026, 6, 10)),
+        paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
+      ))
+
+      helper.getPaymentPlanInset(data) shouldBe None
     }
 
     "return None when no proposed payment plan" in {
@@ -153,8 +186,9 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       val agreed = withTaxYear2027(sampleSecondLPPCalcData().copy(paymentPlanAgreed = Some(agreedDate)))
       val content = helper.getPaymentPlanContent(agreed)
       content.head shouldBe "You agreed to a payment plan on " + DateFormatter.dateToString(agreedDate) + "."
-      content(1) shouldBe "This calculation is an estimate up to when you agreed your payment plan. It will remain an estimate until your payment plan pays off the outstanding tax."
-      content(2) shouldBe "You must keep up with payments. If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date."
+      content(1) shouldBe "You must keep up with your payments. If you do not, your payment plan will fail. This means:"
+      content(2) shouldBe "we’ll recalculate your penalty to include the time you were in the plan"
+      content(3) shouldBe "your penalty may increase"
     }
 
     "return empty list when not agreed" in {

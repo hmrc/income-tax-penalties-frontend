@@ -30,7 +30,7 @@ class SecondLatePaymentCalculationHelper {
 
     if (calculationData.isPenaltyPaid && !calculationData.isPenaltyOverdue && !calculationData.isEstimate) {
       Some(messages("calculation.paid.penalty"))
-    } else if(!calculationData.isEstimate && calculationData.incomeTaxIsPaid) {
+    } else if(!calculationData.isEstimate && !calculationData.isPenaltyPaid) {
       Some(messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy)))
     } else {
       None
@@ -48,13 +48,24 @@ class SecondLatePaymentCalculationHelper {
     }
   }
   
-  def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, String, Option[String]) = {
+  def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, Option[String], Option[String]) = {
+    val hasTimeToPayArrangement = calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined
+    val dailyIncreaseMsg = if (hasTimeToPayArrangement) None else {
+      Some(
+        if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
+          messages("calculation.dailyIncrease.lpp2.isEstimate")
+        } else {
+          messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid")
+        }
+      )
+    }
+
     if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
-      (messages("calculation.missedDeadline.lpp2.isEstimate"), messages("calculation.dailyIncrease.lpp2.isEstimate"), LPP2CrystallisedMsg(calculationData, timeMachine))
+      (messages("calculation.missedDeadline.lpp2.isEstimate"), dailyIncreaseMsg, LPP2CrystallisedMsg(calculationData, timeMachine))
     } else if (calculationData.isPenaltyPaid) {
-      (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
+      (messages("calculation.missedDeadline.lpp2.isPaid"), dailyIncreaseMsg, None)
     } else {
-      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
+      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), dailyIncreaseMsg, None)
     }
   }
 
@@ -77,7 +88,7 @@ class SecondLatePaymentCalculationHelper {
 
   def getPaymentPlanInset(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (_, Some(proposedDate)) =>
+      case (None, Some(proposedDate)) =>
         Some(messages("calculation.calc2.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
@@ -97,7 +108,8 @@ class SecondLatePaymentCalculationHelper {
         List(
           messages("calculation.calc2.penalty.payment.plan.agreed.p1", dateToString(agreedDate)),
           messages("calculation.calc2.penalty.payment.plan.agreed.p2"),
-          messages("calculation.calc2.penalty.payment.plan.agreed.p3")
+          messages("calculation.calc2.penalty.payment.plan.agreed.bullet1"),
+          messages("calculation.calc2.penalty.payment.plan.agreed.bullet2")
         )
       case _ => List.empty
     }
