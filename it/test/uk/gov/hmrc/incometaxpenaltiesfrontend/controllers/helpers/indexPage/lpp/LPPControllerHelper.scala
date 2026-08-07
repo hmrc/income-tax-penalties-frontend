@@ -59,6 +59,8 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AC100002B" -> AC100002B,
     "AC200000A" -> AC200000A,
     "AC200000B" -> AC200000B,
+    "AC200000C" -> AC200000C,
+    "AC200000D" -> AC200000D,
     "AL200001A" -> AL200001A,
     "AL300001A" -> AL300001A,
     "AL300002A" -> AL300002A,
@@ -82,6 +84,8 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AC100002B-overdue" -> AC100002BOverdue,
     "AL200001A-overdue" -> AL200001AOverdue,
     "AA244440A-overdue" -> AA244440AOverdue,
+    "AC200000C-overdue" -> AC200000COverdue,
+    "AC200000D-overdue" -> AC200000DOverdue,
   )
 
   def validatePenaltyOverview(document: Document, expectedContent: String, isAgent: Boolean = false) = {

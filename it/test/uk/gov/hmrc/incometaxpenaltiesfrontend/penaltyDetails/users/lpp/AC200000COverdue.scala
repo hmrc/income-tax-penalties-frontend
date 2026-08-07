@@ -19,43 +19,46 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
-object AC200000B extends UserDetailsData {
+object AC200000COverdue extends UserDetailsData {
 
-  override val nino: String = "AC200000B"
-  override val expectedNumberOfLPPPenaltyCards: Int = 2
-  override val expectedNumberOfLSPPenaltyCards: Int = 0
+  override val nino: String = AC200000C.nino
+  override val expectedNumberOfLSPPenaltyCards: Int = AC200000C.expectedNumberOfLSPPenaltyCards
+  override val expectedNumberOfLPPPenaltyCards: Int = AC200000C.expectedNumberOfLPPPenaltyCards
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £10.41")
-    validateCardTag(card, expectedTag = "Estimate")
-    val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 3
-    validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment plan proposed")
-    validateViewCalculationLink(card, 0, isSecondLPP = true)
-  }
-
-  def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £120.00")
-    validateCardTag(card, expectedTag = "Due")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2028")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(3), "Income Tax paid", "Payment plan proposed")
+    validateSummary(cardRows.get(3), "Income Tax paid", "Payment plan agreed")
+    validateViewCalculationLink(card, 0, isSecondLPP = true)
+    validateAppealLink(card.getElementsByClass("govuk-link").get(1))
+  }
+
+  def penaltyCard1ExpectedContent(card: Element): Unit = {
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £120.00")
+    validateCardTag(card, expectedTag = "Overdue")
+    val cardRows = getCardsRows(card)
+    cardRows.size() shouldBe 4
+    validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2028")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
+    validateSummary(cardRows.get(3), "Income Tax paid", "Payment plan agreed")
     validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
-  
+
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
     0 -> penaltyCard0ExpectedContent,
     1 -> penaltyCard1ExpectedContent
   )
 
-  override val expectedOverviewText: String =
-    s"Overview Your account has late payment penalties Check what you owe"
+  override val expectedOverviewText: String = AC200000C.expectedOverviewText
 
-  override val timeMachineDate: String = "04/03/2028"
+  // timeMachine date set after penaltyChargeDueDate (2028-04-03) to produce Overdue tag
+  override val timeMachineDate: String = "05/04/2028"
 }
+

@@ -50,8 +50,6 @@
 
 @main(pageTitle = messages(s"calculation.second.title"), backLinkEnabled = true, isAgent = isAgent) {
 
-
-
     <span class="govuk-caption-l" id="captionSpan">
     @messages("caption.date", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
     </span>
@@ -61,23 +59,15 @@
 
     <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
 
-    @calculationHelper.getPaymentPlanInset(calculationData).map{ insetMsg =>
-        <div class="govuk-inset-text">
-            @insetMsg
-        </div>
-    }
-
     @if(inBreathingSpace){
-            @govukInsetText(InsetText(
-                content = Text(messages("calculation.calc.breathing.space")),
-                id = Some("breathingSpaceMessage")
-            ))
+       @govukInsetText(InsetText(
+           content = Text(messages("calculation.calc.breathing.space")),
+           id = Some("breathingSpaceMessage")
+       ))
     }
-
-    @if(calculationData.incomeTaxIsPaid || calculationData.isEstimate){
-        <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@calculationHelper.getPaymentDetails(calculationData)</p>
-    }
-
+    
+    <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@calculationHelper.getPaymentDetails(calculationData)</p>
+    
     @if(!calculationData.isEstimate) {
         @calculationData.penaltyChargeReference.map{chargeRef =>
             <p class="govuk-body" id="chargeReference">
@@ -86,6 +76,11 @@
         }
     }
 
+    @calculationHelper.getPaymentPlanInset(calculationData).map { insetMsg =>
+        <div class="govuk-inset-text">
+            @insetMsg
+        </div>
+    }
 
     <p class="govuk-body" id="paymentDeadline">
     @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
@@ -99,11 +94,10 @@
             }
         </p>
 
-
-
-        <p class="govuk-body" id="penaltyIncrease">@msgs._2</p>
+        @msgs._2.map { dailyIncreaseMsg =>
+            <p class="govuk-body" id="penaltyIncrease">@dailyIncreaseMsg</p>
+        }
     }
-
 
     @if(!calculationData.isPenaltyPaid) {
         <p class="govuk-body" id="penaltyStatus">
@@ -111,28 +105,19 @@
         </p>
     }
 
-    <div id="paymentPlanContent">
-        @calculationHelper.getPaymentPlanContent(calculationData).map{ msg =>
-            <p class="govuk-body">
-                @msg
-            </p>
-        }
-    </div>
-
     @govukDetails(Details(
         summary = Text(messages("calculation.calc2.how.we.work.penalty.amount")),
         content = HtmlContent(penaltyAmountDetails)
     ))
 
-    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes = Some("govuk-heading-m"))
     @if(!calculationData.isEstimate && !calculationData.isPenaltyPaid) {
-      @if(!calculationData.isPenaltyOverdue){
-        @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
-      } else if(calculationData.isPenaltyOverdue) {
+        @if(!calculationData.isPenaltyOverdue) {
+            @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+        } else if(calculationData.isPenaltyOverdue) {
         @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
-      }
+        }
     }
-
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         <p class="govuk-body" id="breathingSpaceExpired">@messages("calculation.calc2.breathingSpace.expired")</p>
@@ -142,12 +127,17 @@
 
     <div class="govuk-!-margin-top-7" id="paymentPlanContent">
         <p class="govuk-heading-m">
-            @calculationHelper.getPaymentPlanHeading(calculationData)
+        @calculationHelper.getPaymentPlanHeading(calculationData)
         </p>
-        @calculationHelper.getPaymentPlanContent(calculationData).map{ msg =>
-        <p class="govuk-body">
-            @msg
-        </p>
+
+        @defining(calculationHelper.getPaymentPlanContent(calculationData)) { content =>
+            @content.take(2).map { msg => <p class="govuk-body">@msg</p> }
+
+            @if(content.size > 2) {
+                <ul class="govuk-list govuk-list--bullet">
+                @content.drop(2).map { msg => <li>@msg</li> }
+                </ul>
+            }
         }
     </div>
 
