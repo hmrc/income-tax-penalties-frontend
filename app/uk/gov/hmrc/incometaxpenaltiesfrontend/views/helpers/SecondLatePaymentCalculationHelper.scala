@@ -48,8 +48,16 @@ class SecondLatePaymentCalculationHelper {
     val today: LocalDate = timeMachine.getCurrentDate()
     val lpp2Start: LocalDate = calculationData.principalChargeDueDate.plusDays(31)
 
+    val earliestTtpDateOpt: Option[LocalDate] = (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
+      case (Some(a), Some(b)) => Some(if (a.isBefore(b)) a else b)
+      case (Some(a), None)    => Some(a)
+      case (None, Some(b))    => Some(b)
+      case _                  => None
+    }
+
     val calculationEndDate: LocalDate =
       calculationData.incomeTaxPaidDate
+        .orElse(earliestTtpDateOpt)
         .orElse(if (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted) calculationData.penaltyChargeCreationDate else None)
         .getOrElse(today)
 
@@ -93,14 +101,25 @@ class SecondLatePaymentCalculationHelper {
       None
     }
   }
-  
-  def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): (String, String) = {
-    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
-      (messages("calculation.missedDeadline.lpp2.isEstimate"), messages("calculation.dailyIncrease.lpp2.isEstimate"))
-    } else if (calculationData.isPenaltyPaid) {
-      (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"))
+
+  def LPP2CrystallisedMsg(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): Option[String] = {
+    val daysSinceDue = java.time.temporal.ChronoUnit.DAYS.between(calculationData.principalChargeDueDate, timeMachine.getCurrentDate())
+    val hasPaymentPlan = calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined
+
+    if (calculationData.isEstimate && hasPaymentPlan && daysSinceDue >= 726) {
+      Some(messages("calculation.missedDeadline.lpp2.726.message"))
     } else {
-      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"))
+      None
+    }
+  }
+  
+  def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, String, Option[String]) = {
+    if (calculationData.isEstimate && !calculationData.incomeTaxIsPaid) {
+      (messages("calculation.missedDeadline.lpp2.isEstimate"), messages("calculation.dailyIncrease.lpp2.isEstimate"), LPP2CrystallisedMsg(calculationData, timeMachine))
+    } else if (calculationData.isPenaltyPaid) {
+      (messages("calculation.missedDeadline.lpp2.isPaid"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
+    } else {
+      (messages("calculation.missedDeadline.lpp2.isDueOrOverdue"), messages("calculation.dailyIncrease.lpp2.isDueOrOverdueOrPaid"), None)
     }
   }
 

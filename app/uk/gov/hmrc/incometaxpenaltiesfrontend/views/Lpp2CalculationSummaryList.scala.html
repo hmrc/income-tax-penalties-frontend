@@ -40,23 +40,17 @@
         val dayOrDays = if(days == 1) "day" else "days"
         val periodText = messages(s"calculation.summaryList.LPP2.charge.period.$dayOrDays",
             dateToString(startDate), dateToString(endDate), days)
-        val content = {
-                Text(periodText)
-        }
-
         val chargePeriodText = messages("calculation.summaryList.LPP2.charge.period")
-        val keyForContent = {
-            if(hasMultiplePeriods && index == 0) {
-                HtmlContent(chargePeriodText + "<span class='govuk-!-display-block govuk-!-font-weight-regular'>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace") + "</span>")
-            } else if(hasMultiplePeriods && index == periods.size - 1) {
-                HtmlContent(chargePeriodText + "<span class='govuk-!-display-block govuk-!-font-weight-regular'>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace") + "</span>")
-            } else {
-                Text(chargePeriodText)
-            }
+        val keyForContent = if(hasMultiplePeriods && index == 0) {
+            HtmlContent(chargePeriodText + "<span class='govuk-!-display-block govuk-!-font-weight-regular'>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace") + "</span>")
+        } else if(hasMultiplePeriods && index == periods.size - 1) {
+            HtmlContent(chargePeriodText + "<span class='govuk-!-display-block govuk-!-font-weight-regular'>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace") + "</span>")
+        } else {
+            Text(chargePeriodText)
         }
         SummaryListRow(
             key = Key(content = keyForContent),
-            value = Value(content = content)
+            value = Value(content = Text(periodText))
         )
     }
 }

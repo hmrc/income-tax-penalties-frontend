@@ -150,9 +150,20 @@ case class SecondLatePaymentPenaltyCalculationData(penaltyAmount: BigDecimal,
   val formattedPenaltyAmount: String = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penaltyAmount)
   val formattedPenaltyAmountOutstanding : String = penaltyAmountOutstanding.map(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces).getOrElse("")
   val formattedPenaltyAmountPaid : String =  penaltyAmountPaid.map(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces).getOrElse("")
-  
+
+  def chargePeriodEndDate(currentDate: LocalDate): LocalDate = {
+    val earliestTtpDateOpt: Option[LocalDate] = (paymentPlanAgreed, paymentPlanProposed) match {
+      case (Some(a), Some(b)) => Some(if (a.isBefore(b)) a else b)
+      case (Some(a), None)    => Some(a)
+      case (None, Some(b))    => Some(b)
+      case _                  => None
+    }
+
+    earliestTtpDateOpt.getOrElse(if (isEstimate) currentDate else payPenaltyBy.minusDays(32))
+  }
+
   def chargePeriodDays(currentDate: LocalDate, isSupplementary: Boolean = false) : Int = {
-    val endDate = if(isEstimate) currentDate else payPenaltyBy.minusDays(32)
+    val endDate = chargePeriodEndDate(currentDate)
     val startDate = if (isSupplementary) penaltyChargeCreationDate.getOrElse(principalChargeDueDate.plusDays(31))
     else principalChargeDueDate.plusDays(31)
     ChronoUnit.DAYS.between(startDate, endDate).toInt + 1

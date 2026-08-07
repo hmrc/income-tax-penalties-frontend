@@ -103,8 +103,9 @@ class FirstLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers wi
 
   "FirstLatePaymentCalculationHelper.getFinalUnpaidMsg" should {
     "return estimate + stop message when unpaid estimate and no payment plan (non-PFA)" in {
+      val timeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig])
       val data = withTaxYear2027(sampleFirstLPPCalcData().copy(llpHRCharge = None, incomeTaxIsPaid = false))
-      val result = helper.getFinalUnpaidMsg(data, "")
+      val result = helper.getFinalUnpaidMsg(data, None, timeMachine)
 
       val isEstimateMsg = "This penalty is currently an estimate because the outstanding tax for the " + DateFormatter.dateToYearString(data.taxPeriodStartDate) + " to " + DateFormatter.dateToYearString(data.taxPeriodEndDate) + " tax year has not been paid."
       val stopMsg = "To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
@@ -112,28 +113,26 @@ class FirstLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers wi
     }
 
     "return only estimate message when payment plan proposed" in {
+      val timeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig])
       val data = withTaxYear2027(sampleFirstLPPCalcData().copy(llpHRCharge = None, incomeTaxIsPaid = false, paymentPlanProposed = Some(LocalDate.of(2027, 6, 20))))
-      val result = helper.getFinalUnpaidMsg(data, "")
+      val result = helper.getFinalUnpaidMsg(data, None, timeMachine)
 
       val isEstimateMsg = "This penalty is currently an estimate because the outstanding tax for the " + DateFormatter.dateToYearString(data.taxPeriodStartDate) + " to " + DateFormatter.dateToYearString(data.taxPeriodEndDate) + " tax year has not been paid."
       result shouldBe Some(isEstimateMsg)
     }
 
     "return None when income tax paid" in {
-      val a = withTaxYear2027(sampleFirstLPPCalcData().copy(incomeTaxIsPaid = true))
-      helper.getFinalUnpaidMsg(a, "") shouldBe None
+      val timeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig])
+      val a = withTaxYear2027(sampleFirstLPPCalcData().copy(isEstimate = false))
+      helper.getFinalUnpaidMsg(a, None, timeMachine) shouldBe None
     }
 
-    "return None when llpHRCharge is present" in {
-      val b = withTaxYear2027(sampleFirstLPPCalcData().copy(llpHRCharge = Some(LLPCharge(2000.00, "30", 3.00)), incomeTaxIsPaid = false))
-      helper.getFinalUnpaidMsg(b, "") shouldBe None
-    }
   }
 
   "FirstLatePaymentCalculationHelper.getPaymentPlanInset" should {
     "return inset when payment plan proposed" in {
       val proposed = withTaxYear2027(sampleFirstLPPCalcData().copy(paymentPlanProposed = Some(LocalDate.of(2027, 6, 20))))
-      helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". If this payment plan is agreed your penalty will not increase.")
+      helper.getPaymentPlanInset(proposed) shouldBe Some("You proposed a payment plan on " + DateFormatter.dateToString(proposed.paymentPlanProposed.get) + ". Your penalty will not increase while we review the payment plan.")
     }
 
     "return None when no proposed payment plan" in {
@@ -159,9 +158,9 @@ class FirstLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers wi
       val agreedDate = LocalDate.of(2027, 6, 20)
       val agreed = withTaxYear2027(sampleFirstLPPCalcData().copy(paymentPlanAgreed = Some(agreedDate)))
       val content = helper.getPaymentPlanContent(agreed)
-      content.head shouldBe "You agreed to a payment plan on " + DateFormatter.dateToString(agreedDate) + "."
-      content(1) shouldBe "This penalty will not increase if you keep up with payments."
-      content(2) shouldBe "If you do not, your payment plan will fail. Any penalties you owe will be calculated from their original date."
+      content.head shouldBe TextBlock("You agreed to a payment plan on " + DateFormatter.dateToString(agreedDate) + ".")
+      content(1) shouldBe TextBlock("You must keep up with your payments. If you do not, your payment plan will fail. This means:")
+      content(2) shouldBe BulletList(List("we’ll recalculate your penalty to include the time you were in the plan", "your penalty may increase"))
     }
 
     "return empty list when not agreed" in {

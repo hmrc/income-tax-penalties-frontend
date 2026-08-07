@@ -1,6 +1,6 @@
 {
   "idType": "NINO",
-  "idNumber": "AA100001B",
+  "idNumber": "AC100002A",
   "payload": {
     "success": {
       "processingDate": "2025-04-05T10:15:10Z",
@@ -18,7 +18,7 @@
           "manualLPPIndicator": false,
           "lppDetails": [
             {
-              "principalChargeReference": "XJ002616061022",
+              "principalChargeReference": "XJ002616061017",
               "supplement": false,
               "penaltyStatus": "A",
               "penaltyAmountAccruing": 1.64,
@@ -39,11 +39,16 @@
               "lpp2Days": "31",
               "lpp2Percentage": 10,
               "penaltyChargeCreationDate": "2025-03-02",
-              "penaltyChargeReference": "XJ002616061022",
-              "penaltyChargeDueDate": "2025-04-03"
+              "penaltyChargeReference": "XJ002616061017",
+              "penaltyChargeDueDate": "2025-04-03",
+              "timeToPay": [
+                {
+                  "TTPAgreementDate": "2025-03-03"
+                }
+              ]
             },
             {
-              "principalChargeReference": "XJ002616061022",
+              "principalChargeReference": "XJ002616061017",
               "supplement": false,
               "penaltyStatus": "P",
               "penaltyAmountAccruing": 0,
@@ -64,8 +69,13 @@
               "lpp1HRDays": "30",
               "lpp1HRPercentage": 3,
               "penaltyChargeCreationDate": "2025-03-02",
-              "penaltyChargeReference": "XJ002616061022",
-              "penaltyChargeDueDate": "2025-04-03"
+              "penaltyChargeReference": "XJ002616061017",
+              "penaltyChargeDueDate": "2025-04-03",
+              "timeToPay": [
+                {
+                  "TTPAgreementDate": "2025-03-03"
+                }
+              ]
             },
             {
               "principalChargeReference": "XJ002616061090",
@@ -90,7 +100,12 @@
               "lpp1HRPercentage": 3,
               "penaltyChargeCreationDate": "2025-05-02",
               "penaltyChargeReference": "XJ002616061090",
-              "penaltyChargeDueDate": "2025-04-06"
+              "penaltyChargeDueDate": "2025-04-06",
+              "timeToPay": [
+                {
+                  "TTPAgreementDate": "2025-03-03"
+                }
+              ]
             }
           ]
         }

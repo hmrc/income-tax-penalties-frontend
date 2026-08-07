@@ -1,6 +1,6 @@
 {
   "idType": "NINO",
-  "idNumber": "AC100000A",
+  "idNumber": "AC100001B",
   "payload": {
     "success": {
       "processingDate": "2025-04-05T10:15:10Z",
@@ -8,8 +8,8 @@
         "totalisations": {
           "lspTotalValue": 0,
           "penalisedPrincipalTotal": 0,
-          "lppPostedTotal": 0,
-          "lppEstimatedTotal": 60,
+          "lppPostedTotal": 60,
+          "lppEstimatedTotal": 0,
           "totalAccountOverdue": 0,
           "totalAccountPostedInterest": 0,
           "totalAccountAccruingInterest": 0
@@ -18,10 +18,11 @@
           "manualLPPIndicator": false,
           "lppDetails": [
             {
-              "principalChargeReference": "XJ002616061036",
-              "penaltyStatus": "A",
-              "penaltyAmountAccruing": 60,
-              "penaltyAmountPosted": 0,
+              "principalChargeReference": "XJ002616061063",
+              "supplement": false,
+              "penaltyStatus": "P",
+              "penaltyAmountAccruing": 0,
+              "penaltyAmountPosted": 60,
               "principalChargeBillingFrom": "2024-04-06",
               "principalChargeBillingTo": "2025-04-05",
               "principalChargeDueDate": "2026-01-31",
@@ -29,15 +30,17 @@
               "principalChargeMainTr": "4720",
               "principalChargeSubTr": "SUB1",
               "penaltyCategory": "LPP1",
+              "penaltyAmountPaid": 0,
+              "penaltyAmountOutstanding": 60,
               "lpp1LRCalculationAmt": 2000,
               "lpp1LRDays": "15",
               "lpp1LRPercentage": 3,
               "penaltyChargeCreationDate": "2026-02-15",
-              "penaltyChargeReference": "XJ002616061036",
+              "penaltyChargeReference": "XJ002616061063",
               "penaltyChargeDueDate": "2026-03-19",
               "timeToPay": [
                 {
-                  "TTPAgreementDate": "2026-02-17"
+                  "TTPProposalDate" : "2026-02-17"
                 }
               ]
             }

@@ -40,14 +40,13 @@
         val dayOrDays = if(days == 1) "day" else "days"
         val periodText = messages(s"calculation.summaryList.LPP2.charge.period.$dayOrDays",
             dateToString(startDate), dateToString(endDate), days)
-        val content =
-            if(hasMultiplePeriods && index == 0) {
-                HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace"))
-            } else if(hasMultiplePeriods && index == periods.size - 1) {
-                HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace"))
-            } else {
-                Text(periodText)
-            }
+        val content = if(hasMultiplePeriods && index == 0) {
+            HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace"))
+        } else if(hasMultiplePeriods && index == periods.size - 1) {
+            HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace"))
+        } else {
+            Text(periodText)
+        }
         SummaryListRow(
             key = Key(content = Text(messages(keyMessage))),
             value = Value(content = content)
