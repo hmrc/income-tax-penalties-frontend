@@ -37,23 +37,23 @@ individual.index.overview.checkWhatYouOwe.button = Check what you owe
 # --- LSP Tab Content
 index.lsp.tab.h2 = Late submission penalties
 index.lsp.tab.overview.penalty.warningPointTotal = Penalty points total:
-individual.index.lsp.tab.overview.pointsAccruing.p1.singular = You have 1 penalty point for sending a late submission. You should send this missing submission as soon as possible if you haven’t already.
-individual.index.lsp.tab.overview.pointsAccruing.p1.plural = You have {0} penalty points for sending late submissions. You should send any missing submissions as soon as possible if you haven’t already.
-individual.index.lsp.tab.overview.pointsAccruing.p2 = You’ll get another point if you send another submission after a deadline has passed.
-individual.index.lsp.tab.overview.pointsAccruing.p3 = Points usually expire after 24 months, but it can be longer if you keep sending late submissions. If you reach {0} points, you’ll have to pay a £200 penalty.
+individual.index.lsp.tab.overview.pointsAccruing.p1.singular = You have 1 penalty point for missing a submission deadline. You must send the missing submission as soon as possible if you have not already.
+individual.index.lsp.tab.overview.pointsAccruing.p1.plural = You have {0} penalty points for missing submission deadlines. You must send the missing submissions as soon as possible if you have not already.
+individual.index.lsp.tab.overview.pointsAccruing.p2 = You’ll get another point if you miss a submission deadline again.
+individual.index.lsp.tab.overview.pointsAccruing.p3 = Points usually last for 24 months. They can last longer if you keep missing submission deadlines. If you get {0} points, you’ll have to pay a £200 penalty.
 individual.index.lsp.tab.overview.pointsAccruing.warning = You’ll get a £200 penalty if you send another late submission.
 individual.index.lsp.tab.overview.penalty.warning = You have been given a £200 penalty for reaching the penalty threshold.
 individual.index.lsp.tab.overview.penalty.p1 = You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already.
 individual.index.lsp.tab.overview.additionalPenalty.warning = You have been given an additional £200 penalty.
 individual.index.lsp.tab.overview.additionalPenalty.p1 = You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already.
-index.lsp.tab.overview.pointsGuidanceLink = Read the guidance about late submission penalties
+index.lsp.tab.overview.pointsGuidanceLink = Find out more about late submission penalties
 index.lsp.tab.overview.addedPointsGuidanceLink = Read the guidance about adjustment points
 individual.index.lsp.tab.overview.actionsToRemoveLink = Actions you must take to get your points removed by {0}
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Late payment penalties
-index.lpp.tab.guidanceOnLatePayments = Read the guidance about how late payment penalties are calculated
-individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the lower your penalties and interest will be.
+index.lpp.tab.guidanceOnLatePayments = Find out more about late payment penalties
+individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the less you’ll pay in penalties and interest.
 
 session.expired.h1 = For your security, this service has been reset
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
@@ -338,7 +338,7 @@ month.11 = November
 month.12 = December
 
 individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your penalties are no longer estimated and can be paid for immediately.
-individual.lpp.noPenalties = You have no late payment penalties that are currently due.
+individual.lpp.noPenalties = You do not have any late payment penalties.
 
 # Agent Error View
 agentErrorView.h1 = Your organisation has not given you access to this client
