@@ -102,8 +102,11 @@
      <p class="govuk-body" id="chargeReference">@messages("calculation.charge.reference", chargeRef)</p>
      }
     }
-    @calculationHelper.getPaymentPlanInset(calculationData).map {insetMsg =>
-     <div class="govuk-inset-text" id="paymentPlanInset">@insetMsg</div>
+
+    @if(!calculationData.incomeTaxIsPaid) {
+        @calculationHelper.getPaymentPlanInset(calculationData).map { insetMsg =>
+            <div class="govuk-inset-text" id="paymentPlanInset">@insetMsg</div>
+        }
     }
 
     @if(inBreathingSpace){
@@ -212,14 +215,21 @@
 
     ))
 
-    <div class="govuk-!-margin-top-7" id="paymentPlanContent">
-        <p class="govuk-heading-m">
+    @if(!calculationData.incomeTaxIsPaid) {
+        <div class="govuk-!-margin-top-7" id="paymentPlanContent">
+            <p class="govuk-heading-m">
             @calculationHelper.getPaymentPlanHeading(calculationData)
-        </p>
-        @calculationHelper.getPaymentPlanContent(calculationData).map{
-        case TextBlock(text)  => {<p class="govuk-body">@text</p>}
-        case BulletList(item) => {<ul class="govuk-list govuk-list--bullet">@item.map{i => <li>@i</li>}</ul>}}
-    </div>
+            </p>
+            @calculationHelper.getPaymentPlanContent(calculationData).map {
+                case TextBlock(text) => {
+                    <p class="govuk-body">@text</p>
+                }
+                case BulletList(item) => {
+                    <ul class="govuk-list govuk-list--bullet">@item.map { i => <li>@i</li>}</ul>
+                }
+            }
+        </div>
+    }
 
    @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 }
