@@ -53,8 +53,10 @@
         </p>
     }
 
-    @calculationHelper.getPaymentPlanInset(calculationData).map {insetMsg =>
-       <div class="govuk-inset-text" id="paymentPlanInset">@insetMsg</div>
+    @if(!calculationData.incomeTaxIsPaid) {
+        @calculationHelper.getPaymentPlanInset(calculationData).map { insetMsg =>
+            <div class="govuk-inset-text" id="paymentPlanInset">@insetMsg</div>
+        }
     }
 
     <P class="govuk-body" id="supplementaryReason"> @messages("calculation.supplementary.reason")</P>
@@ -70,12 +72,19 @@
 
     @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
 
-    <div class="govuk-!-margin-top-7" id="paymentPlanContent">
-    <p class="govuk-heading-m">@calculationHelper.getPaymentPlanHeading(calculationData)</p>
-    @calculationHelper.getPaymentPlanContent(calculationData).map{
-    case TextBlock(text)  => {<p class="govuk-body">@text</p>}
-    case BulletList(item) => {<ul class="govuk-list govuk-list--bullet">@item.map{i => <li>@i</li>}</ul>}}
-    </div>
+    @if(!calculationData.incomeTaxIsPaid) {
+        <div class="govuk-!-margin-top-7" id="paymentPlanContent">
+            <p class="govuk-heading-m">@calculationHelper.getPaymentPlanHeading(calculationData)</p>
+            @calculationHelper.getPaymentPlanContent(calculationData).map {
+                case TextBlock(text) => {
+                    <p class="govuk-body">@text</p>
+                }
+                case BulletList(item) => {
+                    <ul class="govuk-list govuk-list--bullet">@item.map { i => <li>@i</li>}</ul>
+                }
+            }
+        </div>
+    }
 
     @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
