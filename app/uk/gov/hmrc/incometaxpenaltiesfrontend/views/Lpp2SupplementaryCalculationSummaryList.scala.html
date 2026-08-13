@@ -35,15 +35,18 @@
 @chargePeriodRows(keyMessage: String) = @{
     val periods = calculationHelper.chargePeriods(calculationData, breathingSpaceData, timeMachine)
     val hasMultiplePeriods = periods.size > 1
+    val earliestBreathingSpaceStartOpt = breathingSpaceData.flatMap(_.map(_.bsStartDate).minOption)
+
     periods.zipWithIndex.map { case ((startDate, endDate), index) =>
         val days = ChronoUnit.DAYS.between(startDate, endDate).toInt + 1
         val dayOrDays = if(days == 1) "day" else "days"
+        val isBeforeBreathingSpace = earliestBreathingSpaceStartOpt.exists(endDate.isBefore)
         val periodText = messages(s"calculation.summaryList.LPP2.charge.period.$dayOrDays",
             dateToString(startDate), dateToString(endDate), days)
-        val content = if(hasMultiplePeriods && index == 0) {
-            HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace"))
+        val content = if(index == 0 && isBeforeBreathingSpace) {
+            HtmlContent(periodText + "<span class='govuk-!-display-block govuk-!-font-weight-regular'>" + messages("calculation.summaryList.LPP2.charge.period.beforeBreathingSpace"))
         } else if(hasMultiplePeriods && index == periods.size - 1) {
-            HtmlContent(periodText + "<br>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace"))
+            HtmlContent(periodText + "<span class='govuk-!-display-block govuk-!-font-weight-regular'>" + messages("calculation.summaryList.LPP2.charge.period.afterBreathingSpace"))
         } else {
             Text(periodText)
         }

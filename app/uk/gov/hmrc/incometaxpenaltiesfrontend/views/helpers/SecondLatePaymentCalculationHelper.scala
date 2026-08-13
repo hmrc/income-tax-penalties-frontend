@@ -185,14 +185,14 @@ class SecondLatePaymentCalculationHelper {
                               timeMachine: TimeMachine): Boolean = {
     breathingSpaceData match {
       case Some(breathingSpace) => breathingSpace.count(bs =>
+
         (bs.bsEndDate.isBefore(timeMachine.getCurrentDate()) && !bs.bsEndDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) &&
           (
             (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Accruing && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))) ||
               (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted &&
                 (
-                  (bs.bsStartDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)) && bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1))) ||
-                    (bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)) && bs.bsEndDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1))) ||
-                    (bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(31)) && bs.bsEndDate.isAfter(calculationData.penaltyChargeCreationDate.get))
+                    // This condition checks the breathing space intersects the LPP2 charging window
+                    bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))
                   )
                 )
             )

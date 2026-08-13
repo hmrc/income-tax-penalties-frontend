@@ -401,6 +401,12 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
     }
 
+    "return a single period before breathing space when the breathing space starts after the charge window ends" in {
+      val bs = BreathingSpace(bsStartDate = fixedNow.plusDays(10), bsEndDate = fixedNow.plusDays(20))
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
     "return two periods when LPP2 starts before a breathing space that has since ended" in {
       val bsStart = lpp2Start.plusDays(10)
       val bsEnd = lpp2Start.plusDays(20) // in the past relative to fixedNow
