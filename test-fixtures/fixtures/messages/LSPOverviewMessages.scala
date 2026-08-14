@@ -43,7 +43,7 @@ object LSPOverviewMessages {
     //Messages when points == threshold (more than one financial penalty triggered)
     val additionalPenaltyP1: String = "You will get another £200 penalty every time you send a late submission in the future, until your points are removed. You should send any missing submissions as soon as possible if you haven’t already."
     val additionalPenaltyWarning: String = "! Warning You have been given an additional £200 penalty."
-    val pointsGuidanceLink = "Find out more about late payment penalties"
+    val pointsGuidanceLink = "Read the guidance about late submission penalties"
     val addedPointsGuidanceLink = "Read the guidance about adjustment points"
     val actionsLink: String = "Actions you must take to get your points removed by April 2028"
   }
@@ -74,7 +74,7 @@ object LSPOverviewMessages {
     //Messages when points == threshold (more than one financial penalty triggered)
     override val additionalPenaltyP1: String = "Codir cosb ychwanegol o £200 arnoch bob tro y byddwch yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’ch pwyntiau wedi’u dileu. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny."
     override val additionalPenaltyWarning: String = "! Warning Codwyd cosb ychwanegol o £200 arnoch."
-    override val pointsGuidanceLink = "Nid oes gennych unrhyw gosbau am dalu’n hwyr."
+    override val pointsGuidanceLink = "Darllenwch yr arweiniad am gosbau am dalu’n hwyr"
     override val addedPointsGuidanceLink = "Darllenwch yr arweiniad ynghylch pwyntiau addasu"
     override val actionsLink: String = "Y camau i’w cymryd i gael eich pwyntiau wedi’u dileu erbyn mis Ebrill 2028"
   }

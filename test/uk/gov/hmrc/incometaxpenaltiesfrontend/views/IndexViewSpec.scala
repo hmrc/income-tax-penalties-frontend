@@ -176,7 +176,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
               "render the 'penalty is paid' message in the LPP tab" which {
                 behave like pageWithExpectedElementsAndMessages(
-                  Selectors.lppTabParagraph(1) -> messagesForLanguage.penaltyIsPaid
+                  Selectors.lppTabParagraph(1) -> messagesForLanguage.noLPPIndividual
                 )
               }
             }
@@ -215,7 +215,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               implicit lazy val document: Document = asDocument(html)
 
               "not render the 'penalty is paid' message in the LPP tab" in {
-                document.select(Selectors.lppTabParagraph(1)).text() should not include messagesForLanguage.penaltyIsPaid
+                document.select(Selectors.lppTabParagraph(1)).text() should not include messagesForLanguage.noLPPIndividual
               }
 
               "not render the 'tax paid but penalty not paid' message in the LPP tab" in {
