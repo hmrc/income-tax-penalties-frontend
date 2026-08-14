@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.viewmodels
+package uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels
 
 import fixtures.PenaltiesDetailsTestData
 import fixtures.messages.IndexViewMessages

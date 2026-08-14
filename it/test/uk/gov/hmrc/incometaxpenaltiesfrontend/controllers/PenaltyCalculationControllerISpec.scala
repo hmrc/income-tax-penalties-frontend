@@ -140,6 +140,26 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(3).text() shouldBe "£60.00"
           }
 
+          "tax is paid and an active TTP arrangement exists" in {
+            stubAuthRequests(isAgent)
+            val firstLPPCalcData = sampleFirstLPPCalcData(
+              isIncomeTaxPaid = true,
+              isEstimate = false,
+              isPaymentPlanAgreed = true
+            )
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForCalculationPage(firstLPPCalcData)))
+            val result = get(firstLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getElementById("penaltyPaymentStatus").text() shouldBe s"Pay penalty by ${getDateString(firstLPPCalcData.payPenaltyBy)}"
+            document.select("#paymentPlanInset").isEmpty shouldBe true
+            document.select("#paymentPlanContent").isEmpty shouldBe true
+            document.text() should not include "You agreed to a payment plan"
+            document.text() should not include "payment plan on"
+          }
+
           //scenario 3
           "is between 15 and 30 days and the tax paid late and penalty is not paid" in {
             stubAuthRequests(isAgent)
@@ -600,6 +620,26 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Penalty amount"
             document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
 
+          }
+
+          "tax is paid and an active TTP arrangement exists" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData(
+              isIncomeTaxPaid = true,
+              isEstimate = false,
+              isPaymentPlanProposed = true
+            )
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPage(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+
+            document.getElementById("penaltyPaymentStatus").text() shouldBe "Pay penalty by " + getDateString(secondLPPCalcData.payPenaltyBy)
+            document.select("#paymentPlanInset").isEmpty shouldBe true
+            document.select("#paymentPlanContent").isEmpty shouldBe true
+            document.text() should not include "You proposed a payment plan"
+            document.text() should not include "payment plan on"
           }
 
           //scenario 3
