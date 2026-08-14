@@ -337,8 +337,10 @@ month.10 = Hydref
 month.11 = Tachwedd
 month.12 = Rhagfyr
 
-individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
-individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr.
+individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu'r dreth yr oedd yn ddyledus, nid yw'r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
+individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu'n hwyr.
+individual.lpp.pay.penalties.now = Gallwch dalu'r cosbau nawr.
+individual.lpp.penalties.no.longer.estimate = Nid amcangyfrifon yw'ch cosbau mwyach oherwydd eich bod wedi talu'ch treth sy'n ddyledus.
 
 # Agent Error View
 agentErrorView.h1 = Nid yw’ch sefydliad wedi rhoi’r caniatâd i chi gael mynediad at y cleient hwn

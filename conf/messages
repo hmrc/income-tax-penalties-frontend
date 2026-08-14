@@ -339,6 +339,8 @@ month.12 = December
 
 individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your penalties are no longer estimated and can be paid for immediately.
 individual.lpp.noPenalties = You do not have any late payment penalties.
+individual.lpp.pay.penalties.now = You can pay your penalties now.
+individual.lpp.penalties.no.longer.estimate = Your penalties are no longer estimates because you've paid your outstanding tax.
 
 # Agent Error View
 agentErrorView.h1 = Your organisation has not given you access to this client
