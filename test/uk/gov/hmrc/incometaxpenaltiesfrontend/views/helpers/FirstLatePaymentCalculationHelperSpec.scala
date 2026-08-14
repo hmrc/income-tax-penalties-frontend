@@ -127,6 +127,17 @@ class FirstLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers wi
       helper.getFinalUnpaidMsg(a, None, timeMachine) shouldBe None
     }
 
+    "return None when income tax is paid and a payment plan is active" in {
+      val timeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig])
+      val data = withTaxYear2027(sampleFirstLPPCalcData().copy(
+        isEstimate = false,
+        incomeTaxIsPaid = true,
+        paymentPlanAgreed = Some(LocalDate.of(2027, 6, 20))
+      ))
+
+      helper.getFinalUnpaidMsg(data, None, timeMachine) shouldBe None
+    }
+
   }
 
   "FirstLatePaymentCalculationHelper.getPaymentPlanInset" should {

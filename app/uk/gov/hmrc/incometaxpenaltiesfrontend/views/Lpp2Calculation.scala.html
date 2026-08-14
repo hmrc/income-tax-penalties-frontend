@@ -76,10 +76,12 @@
         }
     }
 
-    @calculationHelper.getPaymentPlanInset(calculationData).map { insetMsg =>
-        <div class="govuk-inset-text">
-            @insetMsg
-        </div>
+    @if(!calculationData.incomeTaxIsPaid) {
+        @calculationHelper.getPaymentPlanInset(calculationData).map { insetMsg =>
+            <div class="govuk-inset-text">
+                @insetMsg
+            </div>
+        }
     }
 
     <p class="govuk-body" id="paymentDeadline">
@@ -125,21 +127,23 @@
 
     @lpp2CalculationSummaryList(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine, breathingSpaceData)
 
-    <div class="govuk-!-margin-top-7" id="paymentPlanContent">
-        <p class="govuk-heading-m">
-        @calculationHelper.getPaymentPlanHeading(calculationData)
-        </p>
+    @if(!calculationData.incomeTaxIsPaid) {
+        <div class="govuk-!-margin-top-7" id="paymentPlanContent">
+            <p class="govuk-heading-m">
+            @calculationHelper.getPaymentPlanHeading(calculationData)
+            </p>
 
-        @defining(calculationHelper.getPaymentPlanContent(calculationData)) { content =>
-            @content.take(2).map { msg => <p class="govuk-body">@msg</p> }
+            @defining(calculationHelper.getPaymentPlanContent(calculationData)) { content =>
+                @content.take(2).map { msg => <p class="govuk-body">@msg</p> }
 
-            @if(content.size > 2) {
-                <ul class="govuk-list govuk-list--bullet">
-                @content.drop(2).map { msg => <li>@msg</li> }
-                </ul>
+                @if(content.size > 2) {
+                    <ul class="govuk-list govuk-list--bullet">
+                    @content.drop(2).map { msg => <li>@msg</li> }
+                    </ul>
+                }
             }
-        }
-    </div>
+        </div>
+    }
 
     @calculationFooterLinks(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean)
 
