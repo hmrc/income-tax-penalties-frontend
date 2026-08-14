@@ -401,6 +401,34 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> LocalDate.of(2027, 4, 10))
     }
 
+    "prioritize TTP dates over income tax paid date when both exist" in {
+      val taxPaidDate = LocalDate.of(2027, 4, 5)
+      val ttpProposalDate = LocalDate.of(2027, 4, 12)
+      val data = calcData(Some(taxPaidDate)).copy(
+        paymentPlanProposed = Some(ttpProposalDate)
+      )
+
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> ttpProposalDate)
+    }
+
+    "still use the earliest TTP date as the end date for supplementary calculations" in {
+      val creationDate = LocalDate.of(2027, 2, 10)
+      val data = calcData().copy(
+        penaltyChargeCreationDate = Some(creationDate),
+        paymentPlanAgreed = Some(LocalDate.of(2027, 4, 15)),
+        paymentPlanProposed = Some(LocalDate.of(2027, 4, 10))
+      )
+
+      helper.chargePeriods(data, None, fixedTimeMachine, isSupplementary = true) shouldBe Seq(creationDate -> LocalDate.of(2027, 4, 10))
+    }
+
+    "use penaltyChargeCreationDate as the supplementary start date when it is available" in {
+      val creationDate = LocalDate.of(2027, 3, 15)
+      val data = calcData().copy(penaltyChargeCreationDate = Some(creationDate))
+
+      helper.chargePeriods(data, None, fixedTimeMachine, isSupplementary = true) shouldBe Seq(creationDate -> creationDate)
+    }
+
     "return Seq.empty when income tax was paid before LPP2 starts" in {
       val taxPaidBeforeLpp2 = lpp2Start.minusDays(10)
       helper.chargePeriods(calcData(Some(taxPaidBeforeLpp2)), None, fixedTimeMachine) shouldBe Seq.empty

@@ -33,7 +33,7 @@
 @(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit messages: Messages)
 
 @chargePeriodRows(keyMessage: String) = @{
-    val periods = calculationHelper.chargePeriods(calculationData, breathingSpaceData, timeMachine)
+    val periods = calculationHelper.chargePeriods(calculationData, breathingSpaceData, timeMachine, isSupplementary = true)
     val hasMultiplePeriods = periods.size > 1
     val earliestBreathingSpaceStartOpt = breathingSpaceData.flatMap(_.map(_.bsStartDate).minOption)
 

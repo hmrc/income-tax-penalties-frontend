@@ -756,7 +756,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
-            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period(before Breathing Space)"
             document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
             document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
             document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Estimated penalty"

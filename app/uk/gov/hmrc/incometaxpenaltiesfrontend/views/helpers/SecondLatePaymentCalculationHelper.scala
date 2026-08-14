@@ -27,6 +27,19 @@ import java.time.LocalDate
 
 class SecondLatePaymentCalculationHelper {
 
+  private def earliestTtpDateOpt(calculationData: SecondLatePaymentPenaltyCalculationData): Option[LocalDate] =
+    (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
+      case (Some(a), Some(b)) => Some(if (a.isBefore(b)) a else b)
+      case (Some(a), None)    => Some(a)
+      case (None, Some(b))    => Some(b)
+      case _                  => None
+    }
+
+  private def chargePeriodStartDate(calculationData: SecondLatePaymentPenaltyCalculationData,
+                                    isSupplementary: Boolean): LocalDate =
+    if (isSupplementary) calculationData.penaltyChargeCreationDate.getOrElse(calculationData.principalChargeDueDate.plusDays(31))
+    else calculationData.principalChargeDueDate.plusDays(31)
+
   /**
    * Works out the charge period(s) over which the LPP2 penalty accrues, splitting the period around any
    * breathing space window(s).
@@ -40,24 +53,21 @@ class SecondLatePaymentCalculationHelper {
    * space that is still active today truncates the window at the day before it starts (there is no
    * "after" part yet). Only chronologically valid periods (start on or before end) are returned, so an
    * empty result means there is nothing to charge (e.g. income tax was paid before LPP2 even started).
+   *
+   * For supplementary calculations, the start of the window can be the actual penalty charge creation
+   * date when that is available.
    */
   def chargePeriods(calculationData: SecondLatePaymentPenaltyCalculationData,
                     breathingSpaceData: Option[Seq[BreathingSpace]],
-                    timeMachine: TimeMachine): Seq[(LocalDate, LocalDate)] = {
+                    timeMachine: TimeMachine,
+                    isSupplementary: Boolean = false): Seq[(LocalDate, LocalDate)] = {
 
     val today: LocalDate = timeMachine.getCurrentDate()
-    val lpp2Start: LocalDate = calculationData.principalChargeDueDate.plusDays(31)
-
-    val earliestTtpDateOpt: Option[LocalDate] = (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (Some(a), Some(b)) => Some(if (a.isBefore(b)) a else b)
-      case (Some(a), None)    => Some(a)
-      case (None, Some(b))    => Some(b)
-      case _                  => None
-    }
+    val lpp2Start: LocalDate = chargePeriodStartDate(calculationData, isSupplementary)
 
     val calculationEndDate: LocalDate =
-      calculationData.incomeTaxPaidDate
-        .orElse(earliestTtpDateOpt)
+      earliestTtpDateOpt(calculationData)
+        .orElse(calculationData.incomeTaxPaidDate)
         .orElse(if (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted) calculationData.penaltyChargeCreationDate else None)
         .getOrElse(today)
 
@@ -112,7 +122,7 @@ class SecondLatePaymentCalculationHelper {
       None
     }
   }
-  
+
   def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, Option[String], Option[String]) = {
     val hasTimeToPayArrangement = calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined
     val dailyIncreaseMsg = if (hasTimeToPayArrangement) None else {
@@ -191,8 +201,8 @@ class SecondLatePaymentCalculationHelper {
             (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Accruing && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))) ||
               (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted &&
                 (
-                    // This condition checks the breathing space intersects the LPP2 charging window
-                    bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))
+                  // This condition checks the breathing space intersects the LPP2 charging window
+                  bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))
                   )
                 )
             )
