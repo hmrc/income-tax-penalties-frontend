@@ -37,18 +37,22 @@ individual.index.overview.checkWhatYouOwe.button = Gwirio’r hyn sydd arnoch
 # --- LSP Tab Content
 index.lsp.tab.h2 = Cosbau am gyflwyno’n hwyr
 index.lsp.tab.overview.penalty.warningPointTotal = Cyfanswm pwyntiau cosb:
-individual.index.lsp.tab.overview.pointsAccruing.p1.singular = Mae gennych 1 pwynt cosb am gyflwyno’n hwyr. Dylech anfon y cyflwyniad sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny.
-individual.index.lsp.tab.overview.pointsAccruing.p1.plural = Mae gennych {0} o bwyntiau cosb am gyflwyno’n hwyr. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny.
-individual.index.lsp.tab.overview.pointsAccruing.p2 = Byddwch yn cael pwynt arall os byddwch yn anfon cyflwyniad arall ar ôl i’r dyddiad cau fynd heibio.
-individual.index.lsp.tab.overview.pointsAccruing.p3 = Mae pwyntiau fel arfer yn cael eu dileu ar ôl 24 mis, ond gall fod yn hirach os ydych yn parhau i anfon cyflwyniadau’n hwyr. Os ydych yn cyrraedd {0} o bwyntiau, bydd angen i chi dalu cosb o £200.
-individual.index.lsp.tab.overview.pointsAccruing.warning = Bydd cosb o £200 yn cael ei chodi arnoch os byddwch yn anfon cyflwyniad arall yn hwyr.
-individual.index.lsp.tab.overview.penalty.warning = Codwyd cosb o £200 arnoch oherwydd eich bod wedi cyrraedd y trothwy ar gyfer pwyntiau.
-individual.index.lsp.tab.overview.penalty.p1 =  Codir cosb ychwanegol o £200 arnoch bob tro y byddwch yn anfon cyflwyniad hwyr yn y dyfodol, hyd nes y bydd pob un o’ch pwyntiau wedi’u dileu. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny.
-individual.index.lsp.tab.overview.additionalPenalty.warning = Codwyd cosb ychwanegol o £200 arnoch.
-individual.index.lsp.tab.overview.additionalPenalty.p1 = Codir cosb ychwanegol o £200 arnoch bob tro y byddwch yn anfon cyflwyniad yn hwyr yn y dyfodol, hyd nes y bydd pob un o’ch pwyntiau wedi’u dileu. Dylech anfon unrhyw gyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych eisoes wedi gwneud hynny.
-index.lsp.tab.overview.pointsGuidanceLink = Darllenwch yr arweiniad am gosbau am dalu’n hwyr
+individual.index.lsp.tab.overview.pointsAccruing.p1.singular = Mae gennych 1 pwynt cosb am fethu terfyn amser cyflwyno. Mae’n rhaid i chi anfon y cyflwyniad sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
+individual.index.lsp.tab.overview.pointsAccruing.p1.plural = "Mae gennych {0} bwynt cosb am fethu terfynau amser cyflwyno. Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
+individual.index.lsp.tab.overview.pointsAccruing.p2 = Byddwch yn cael pwynt arall os byddwch yn methu terfyn amser cyflwyno eto.
+individual.index.lsp.tab.overview.pointsAccruing.p3 = Mae pwyntiau fel arfer yn para am 24 mis. Gallant barhau’n hirach os byddwch yn parhau i fethu terfynau amser cyflwyno. Os byddwch yn cael 4 pwynt, bydd angen i chi dalu cosb o £200.
+individual.index.lsp.tab.overview.pointsAccruing.p3.point3 = Mae pwyntiau fel arfer yn para am 24 mis. Gallant barhau’n hirach os byddwch yn parhau i fethu terfynau amser cyflwyno.
+individual.index.lsp.tab.overview.pointsAccruing.warning.point3 = Os byddwch yn cael 4 pwynt, bydd angen i chi dalu cosb o £200.
+individual.index.lsp.tab.overview.pointsAccruing.warning.point4 = Mae gennych gosb o £200 i’w thalu oherwydd fod gennych 4 pwynt cosb.
+individual.index.lsp.tab.overview.penalty.warning = Mae gennych gosb o £200 i’w thalu oherwydd fod gennych 2 pwynt cosb.
+individual.index.lsp.tab.overview.penalty.p1 = Byddwch yn cael cosb arall o £200 bob tro y byddwch yn methu terfyn amser cyflwyno nes bod eich pwyntiau cosb yn cael eu dileu.
+individual.index.lsp.tab.overview.penalty.p2 = Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
+individual.index.lsp.tab.overview.additionalPenalty.warning = Mae gennych gosb arall o £200 i’w thalu
+individual.index.lsp.tab.overview.additionalPenalty.p1 = Byddwch yn cael cosb arall o £200 bob tro y byddwch yn methu terfyn amser cyflwyno nes bod eich pwyntiau cosb yn cael eu dileu.
+individual.index.lsp.tab.overview.additionalPenalty.p2 = Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
+index.lsp.tab.overview.pointsGuidanceLink = Dysgwch ragor am gosbau am dalu’n hwyr (yn agor mewn tab newydd)
 index.lsp.tab.overview.addedPointsGuidanceLink = Darllenwch yr arweiniad ynghylch pwyntiau addasu
-individual.index.lsp.tab.overview.actionsToRemoveLink = Y camau i’w cymryd i gael eich pwyntiau wedi’u dileu erbyn mis {0}
+individual.index.lsp.tab.overview.actionsToRemoveLink = Dysgwch sut i gael gwared ar eich pwyntiau cosb.
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Cosbau am dalu’n hwyr
@@ -258,10 +262,10 @@ lsp.updateSubmitted.key = Diweddariad wedi’i gyflwyno
 lsp.returnSubmitted.key = Ffurflen Dreth wedi’i chyflwyno
 lsp.updateSubmitted.notReceived = Heb ddod i law eto
 lsp.expiry.key = Pwynt cosb yn dod i ben
-lsp.noPenalties = Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd
+lsp.noPenalties = Nid oes gennych unrhyw gyflwyno’n hwyr.
 lsp.pointExpiredOn.key = Pwynt cosb wedi dod i ben ar
 lsp.pay.penalty.by = Talu cosb erbyn
-lsp.compliance.remove.by = Bydd eich pwyntiau yn cael eu dileu ym mis {0} {1} am y rhesymau canlynol:
+lsp.compliance.remove.by = Bydd eich pwyntiau cosb yn cael eu dileu ym mis {0} {1} Mae hyn oherwydd na wnaethoch fethu unrhyw derfynau amser yn ystod y {2} mis diwethaf.
 lsp.compliance.history = mae eich cofnod cyflwyno yn gyfredol
 lsp.compliance.submitted =  rydych wedi cyflwyno mewn pryd am y {0} mis diwethaf
 
