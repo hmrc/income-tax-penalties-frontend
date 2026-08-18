@@ -98,7 +98,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            validatePenaltyOverview(document, userdetails.expectedOverviewText, true)
+            validatePenaltyOverview(document, userdetails.expectedOverviewText)
             validatePenaltyTabs(document)
             if (userdetails.numberOfLSPPenalties == 0) {
               validateNoLSPPenalties(document, true)

@@ -24,6 +24,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
 @import java.time.LocalDate
 
+
 @this(
         main: MainTemplate,
         h1: H1,
@@ -31,6 +32,7 @@
         h3: H3,
         p: P,
         link: Link,
+        govukNotificationBanner: GovukNotificationBanner,
         govukTabs : GovukTabs,
         summaryCardLSP: SummaryCardLSP,
         summaryCardLPP: SummaryCardLPP,
@@ -86,8 +88,21 @@
         }
     }
 }
-    
+    @bsContent = {
+        <p class="govuk-notification-banner__heading" id="breathingSpaceBanner">
+            @messages("calculation.banner.breathing.space.your.in")
+            <a href="@appConfig.breathingSpaceGuidanceUrl" class="govuk-link" id="breathingSpaceGuidanceLink" target="_blank" rel="noopener noreferrer">@messages("calculation.banner.breathing.space") @messages("common.opensInNewTab").</a>
+            @messages("calculation.banner.breathing.space.paused")
+        </p>
+    }
+
     @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent, wrapperClass = Some("landing-page")) {
+
+        @if(penaltiesOverviewViewModel.isInBreathingSpace) {
+            @govukNotificationBanner(NotificationBanner(
+                content = HtmlContent(bsContent),
+            ))
+        }
 
         @h1("index.h1")
 

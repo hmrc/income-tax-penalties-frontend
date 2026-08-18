@@ -22,11 +22,14 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.breathingSpace.BreathingSpace
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.Totalisations
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPPenaltyStatusEnum
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
+
+import java.time.LocalDate
 
 class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with PenaltiesDetailsTestData {
 
@@ -41,6 +44,33 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
       s"when language is set to '${messagesForLanguage.lang.name}'" when {
 
         "calling .apply()" when {
+
+          "the user is in Breathing Space on the current date" should {
+
+            "return true when the current date is inside an active breathing-space period" in {
+              val currentDate = LocalDate.of(2026, 8, 18)
+              val penaltyDetails = samplePenaltyDetailsModel.copy(
+                breathingSpace = Some(Seq(BreathingSpace(
+                  bsStartDate = currentDate.minusDays(1),
+                  bsEndDate = currentDate.plusDays(1)
+                )))
+              )
+
+              PenaltiesOverviewViewModel.isUserInBreathingSpace(penaltyDetails, currentDate) shouldBe true
+            }
+
+            "return false when the current date is outside the breathing-space period" in {
+              val currentDate = LocalDate.of(2026, 8, 18)
+              val penaltyDetails = samplePenaltyDetailsModel.copy(
+                breathingSpace = Some(Seq(BreathingSpace(
+                  bsStartDate = currentDate.plusDays(1),
+                  bsEndDate = currentDate.plusDays(5)
+                )))
+              )
+
+              PenaltiesOverviewViewModel.isUserInBreathingSpace(penaltyDetails, currentDate) shouldBe false
+            }
+          }
 
           "there are no penalties" should {
 

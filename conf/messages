@@ -124,6 +124,10 @@ calculation.calc2.penalty.payment.plan.agreed.bullet1 = we’ll recalculate your
 calculation.calc2.penalty.payment.plan.agreed.bullet2 = your penalty may increase
 
 calculation.calc.breathing.space = You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation.
+calculation.banner.breathing.space.your.in = You’re in
+calculation.banner.breathing.space = Breathing Space
+calculation.banner.breathing.space.paused = Penalties are paused and will not increase.
+
 
 calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount
 calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.

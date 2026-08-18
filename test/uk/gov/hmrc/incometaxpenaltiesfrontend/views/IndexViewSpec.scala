@@ -49,6 +49,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
     val lspTab = "#lspTab"
     val lppTab = "#lppTab"
     val penaltiesOverview = "#penaltiesOverview"
+    val breathingSpaceWarning = "#breathingSpaceBanner"
     val overviewH2: String = s"$penaltiesOverview ${h2(1)}"
     val overviewP1: String = s"$penaltiesOverview ${p(1)}"
     val overviewBullet: Int => String = i => s"$penaltiesOverview ${bullet(i)}"
@@ -77,15 +78,19 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = Seq(),
-                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false, isInBreathingSpace = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
               behave like pageWithExpectedElementsAndMessages(
-                Selectors.lspTab -> (messagesForLanguage.noLSP),
-                Selectors.lppTab -> (messagesForLanguage.noLPPIndividual)
+                Selectors.lspTab -> messagesForLanguage.noLSP,
+                Selectors.lppTab -> messagesForLanguage.noLPPIndividual,
+                Selectors.breathingSpaceWarning -> (messagesForLanguage match {
+                  case IndexViewMessages.English => "You’re in Breathing Space (opens in new tab). Penalties are paused and will not increase."
+                  case IndexViewMessages.Welsh => "Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) (yn agor tab newydd). Mae cosbau wedi’u gohirio ac ni fyddant yn cynyddu."
+                })
               )
             }
 
@@ -195,8 +200,10 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               implicit lazy val document: Document = asDocument(html)
 
               "render the 'tax paid but penalty not paid' message in the LPP tab" which {
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
                 behave like pageWithExpectedElementsAndMessages(
-                  Selectors.lppTabParagraph(1) -> messagesForLanguage.taxPaidButPenaltyNotPaid
+                  Selectors.lppTabParagraph(1) -> taxPaidButPenaltyNotPaidMessage
                 )
               }
             }
@@ -219,7 +226,9 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               }
 
               "not render the 'tax paid but penalty not paid' message in the LPP tab" in {
-                document.select(Selectors.lppTabParagraph(1)).text() should not include messagesForLanguage.taxPaidButPenaltyNotPaid
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
+                document.select(Selectors.lppTabParagraph(1)).text() should not include taxPaidButPenaltyNotPaidMessage
               }
             }
           }

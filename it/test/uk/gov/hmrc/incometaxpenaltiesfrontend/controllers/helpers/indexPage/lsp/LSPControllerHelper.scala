@@ -110,7 +110,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       val overview = document.getElementById("penaltiesOverview")
       overview.getElementById("overviewHeading").text() shouldBe "Overview"
       overview.text() shouldBe expectedOverview
-      document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
+      document.getElementById("appealDetailsHeading").text() shouldBe "Penalty and appeal details"
       if (hasUnpaidPenalty) {
         document.getSubmitButton.text() shouldBe "Check what you owe"
       }

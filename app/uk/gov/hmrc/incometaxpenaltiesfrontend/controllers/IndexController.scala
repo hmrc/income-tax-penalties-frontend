@@ -48,10 +48,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
     val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(date))
     
-    val isInBreathingSpace = penaltyData.breathingSpace.fold(false)(_.count(bs =>
-      (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
-        (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
-    ) > 0)
+    val isInBreathingSpace = PenaltiesOverviewViewModel.isUserInBreathingSpace(penaltyData, date)
 
     val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(
       penalties = sortPointsInDescendingOrder(lsp),
@@ -70,7 +67,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
           lspOverviewData = penaltyData.lateSubmissionPenalty.map(LSPOverviewViewModel.apply),
           lspCardData = lspSummaryCards,
           lppCardData = lppSummaryCards,
-          penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
+          penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData, isInBreathingSpace),
           isAgent = penaltyDataUserRequest.isAgent,
           actionsToRemoveLinkDate = penaltyData.lspPeriodOfComplianceDate
         ))

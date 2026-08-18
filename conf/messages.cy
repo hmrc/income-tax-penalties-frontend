@@ -124,6 +124,9 @@ calculation.calc2.penalty.payment.plan.agreed.bullet1 = byddwn yn ailgyfrifo’c
 calculation.calc2.penalty.payment.plan.agreed.bullet2 = gallai’ch cosb gynyddu
 
 calculation.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
+calculation.banner.breathing.space.your.in = Rydych mewn cyfnod
+calculation.banner.breathing.space = ‘amser i gael eich gwynt atoch’ (Breathing Space)
+calculation.banner.breathing.space.paused = Mae cosbau wedi’u gohirio ac ni fyddant yn cynyddu.
 
 calculation.calc2.how.we.work.penalty.amount = Sut yr ydym yn cyfrifo swm y gosb
 calculation.calc2.how.we.work.penalty.amount.p1 = Rydym yn defnyddio cyfradd flynyddol o 10%. Mae hyn yn golygu bod y swm yn cynyddu ychydig bob dydd.
