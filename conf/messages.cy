@@ -40,8 +40,9 @@ index.lsp.tab.overview.penalty.warningPointTotal = Cyfanswm pwyntiau cosb:
 individual.index.lsp.tab.overview.pointsAccruing.p1.singular = Mae gennych 1 pwynt cosb am fethu terfyn amser cyflwyno. Mae’n rhaid i chi anfon y cyflwyniad sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
 individual.index.lsp.tab.overview.pointsAccruing.p1.plural = "Mae gennych {0} bwynt cosb am fethu terfynau amser cyflwyno. Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
 individual.index.lsp.tab.overview.pointsAccruing.p2 = Byddwch yn cael pwynt arall os byddwch yn methu terfyn amser cyflwyno eto.
-individual.index.lsp.tab.overview.pointsAccruing.p3 = Mae pwyntiau fel arfer yn para am 24 mis. Gallant barhau’n hirach os byddwch yn parhau i fethu terfynau amser cyflwyno. Os byddwch yn cael 4 pwynt, bydd angen i chi dalu cosb o £200.
-individual.index.lsp.tab.overview.pointsAccruing.p3.point3 = Mae pwyntiau fel arfer yn para am 24 mis. Gallant barhau’n hirach os byddwch yn parhau i fethu terfynau amser cyflwyno.
+individual.index.lsp.tab.overview.pointsAccruing.p3 = Mae pwyntiau fel arfer yn para am 24 mis. Gallant barhau’n hirach os byddwch yn parhau i fethu terfynau amser cyflwyno. Os byddwch yn cael {0} pwynt, bydd angen i chi dalu cosb o £200.
+individual.index.lsp.tab.overview.pointsAccruing.p3Special = Mae pwyntiau fel arfer yn para am 24 mis. Gallant barhau’n hirach os byddwch yn parhau i fethu terfynau amser cyflwyno.
+individual.index.lsp.tab.overview.pointsAccruing.warning.point1 = Os byddwch yn cael 2 pwynt, bydd angen i chi dalu cosb o £200.
 individual.index.lsp.tab.overview.pointsAccruing.warning.point3 = Os byddwch yn cael 4 pwynt, bydd angen i chi dalu cosb o £200.
 individual.index.lsp.tab.overview.pointsAccruing.warning.point4 = Mae gennych gosb o £200 i’w thalu oherwydd fod gennych 4 pwynt cosb.
 individual.index.lsp.tab.overview.penalty.warning = Mae gennych gosb o £200 i’w thalu oherwydd fod gennych 2 pwynt cosb.
@@ -52,7 +53,7 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = Byddwch yn cael cosb ar
 individual.index.lsp.tab.overview.additionalPenalty.p2 = Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
 index.lsp.tab.overview.pointsGuidanceLink = Dysgwch ragor am gosbau am dalu’n hwyr (yn agor mewn tab newydd)
 index.lsp.tab.overview.addedPointsGuidanceLink = Darllenwch yr arweiniad ynghylch pwyntiau addasu
-individual.index.lsp.tab.overview.actionsToRemoveLink = Dysgwch sut i gael gwared ar eich pwyntiau cosb.
+individual.index.lsp.tab.overview.actionsToRemoveLink = Dysgwch sut i gael gwared ar eich pwyntiau cosb
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Cosbau am dalu’n hwyr
