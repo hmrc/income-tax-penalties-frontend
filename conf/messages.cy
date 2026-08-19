@@ -342,6 +342,7 @@ month.12 = Rhagfyr
 
 individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
 individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr.
+individual.lpp.pay.penalty.now = You can pay your penalty now (Welsh).
 individual.lpp.pay.penalties.now = Gallwch dalu’r cosbau nawr.
 individual.lpp.penalties.no.longer.estimate = Nid amcangyfrifon yw’ch cosbau mwyach oherwydd eich bod wedi talu’ch treth sy’n ddyledus.
 

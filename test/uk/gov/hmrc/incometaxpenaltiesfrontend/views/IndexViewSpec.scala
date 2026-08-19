@@ -199,11 +199,36 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               )
               implicit lazy val document: Document = asDocument(html)
 
-              "render the 'tax paid but penalty not paid' message in the LPP tab" which {
-                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+              "render the 'tax paid but penalty not paid' message (singular) in the LPP tab" which {
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "You can pay your penalty now (Welsh)." else "You can pay your penalty now."
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.lppTabParagraph(1) -> taxPaidButPenaltyNotPaidMessage
+                )
+              }
+            }
+
+            "there are multiple Late Payment Penalties where tax is paid but penalties are not paid" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq(
+                (sampleTaxPaidLPP1Day15to30, 1),
+                (sampleTaxPaidLPP1Day15to30.copy(principalChargeReference = "XJ002616061063"), 2)
+              ), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(2)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "render the ’tax paid but penalties not paid' message (plural) in the LPP tab" which {
+                val taxPaidButPenaltiesNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
+                behave like pageWithExpectedElementsAndMessages(
+                  Selectors.lppTabParagraph(1) -> taxPaidButPenaltiesNotPaidMessage
                 )
               }
             }
@@ -229,6 +254,28 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
 
                 document.select(Selectors.lppTabParagraph(1)).text() should not include taxPaidButPenaltyNotPaidMessage
+              }
+            }
+
+            "there are multiple Late Payment Penalties with mixed status (some paid, some not paid)" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq(
+                (sampleLPP2, 1),
+                (samplePaidLPP1, 2),
+                (samplePaidLPP1.copy(principalChargeReference = "XJ002616061063"), 3)
+              ), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "not render the 'penalty is paid' message when at least one penalty is still unpaid" in {
+                document.select(Selectors.lppTabParagraph(1)).text() should not include messagesForLanguage.noLPPIndividual
               }
             }
           }

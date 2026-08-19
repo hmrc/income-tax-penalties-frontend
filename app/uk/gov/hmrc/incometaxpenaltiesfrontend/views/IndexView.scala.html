@@ -67,10 +67,16 @@
     } else {
 
         @if(!penaltiesOverviewViewModel.isInBreathingSpace) {
-            @if(lppCardData.exists(_.isPenaltyPaid)) {
+            @if(lppCardData.nonEmpty && lppCardData.forall(_.isPenaltyPaid)) {
                 @p("individual.lpp.noPenalties")
             } else if(lppCardData.exists(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) {
-                @p("individual.lpp.pay.penalties.now")
+                @defining(lppCardData.count(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) { unpaidPenaltyCount =>
+                    @if(unpaidPenaltyCount == 1) {
+                        @p("individual.lpp.pay.penalty.now")
+                    } else {
+                        @p("individual.lpp.pay.penalties.now")
+                    }
+                }
                 @p("individual.lpp.penalties.no.longer.estimate")
             } else {
                 @p("individual.index.lpp.tab.payEarlyInfo")
