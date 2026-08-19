@@ -140,7 +140,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
         val lppTab = getLPPTabContent(document)
         val lppBodies = lppTab.getElementsByClass("govuk-body")
 
-        lppBodies.get(0).text() shouldBe "You can pay your penalties now."
+        lppBodies.get(0).text() shouldBe "You can pay your penalty now."
         lppBodies.get(1).text().replace("'", "").replace("’", "") shouldBe "Your penalties are no longer estimates because you've paid your outstanding tax.".replace("'", "").replace("’", "")
       }
 
