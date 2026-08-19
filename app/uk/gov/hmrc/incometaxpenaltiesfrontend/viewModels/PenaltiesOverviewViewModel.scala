@@ -58,7 +58,7 @@ case class LSPPointsActive(count: Int) extends CountOverviewItem("lsp.points", c
 case class PenaltiesOverviewViewModel(
   overviewItems: Seq[PenaltiesOverviewItem],
   hasFinancialCharge: Boolean,
-  isInBreathingSpace: Boolean = false
+  isInBreathingSpace: Boolean
 ) {
 
   def content()(implicit messages: Messages): Seq[String] =
@@ -77,13 +77,19 @@ object PenaltiesOverviewViewModel {
   def apply(
     overviewItems: Seq[PenaltiesOverviewItem],
     hasFinancialCharge: Boolean,
-    isInBreathingSpace: Boolean = false
+    isInBreathingSpace: Boolean
   ): PenaltiesOverviewViewModel =
     new PenaltiesOverviewViewModel(overviewItems, hasFinancialCharge, isInBreathingSpace)
 
+  def apply(
+    overviewItems: Seq[PenaltiesOverviewItem],
+    hasFinancialCharge: Boolean
+  ): PenaltiesOverviewViewModel =
+    new PenaltiesOverviewViewModel(overviewItems, hasFinancialCharge, isInBreathingSpace = false)
+  
   def apply(penaltyDetails: PenaltyDetails): PenaltiesOverviewViewModel =
-    buildFromPenaltyDetails(penaltyDetails, isInBreathingSpace = false)
-
+    buildFromPenaltyDetails(penaltyDetails, isUserInBreathingSpace(penaltyDetails, LocalDate.now()))  
+    
   def apply(penaltyDetails: PenaltyDetails, isInBreathingSpace: Boolean): PenaltiesOverviewViewModel =
     buildFromPenaltyDetails(penaltyDetails, isInBreathingSpace)
 
