@@ -66,15 +66,16 @@
         @p("individual.lpp.noPenalties")
     } else {
 
-        @if(lppCardData.exists(_.isPenaltyPaid)) {
-            @p("individual.lpp.noPenalties")
-        } else if(lppCardData.exists(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) {
-            @p("individual.lpp.pay.penalties.now")
-            @p("individual.lpp.penalties.no.longer.estimate")
-        } else {
-            @p("individual.index.lpp.tab.payEarlyInfo")
+        @if(!penaltiesOverviewViewModel.isInBreathingSpace) {
+            @if(lppCardData.exists(_.isPenaltyPaid)) {
+                @p("individual.lpp.noPenalties")
+            } else if(lppCardData.exists(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) {
+                @p("individual.lpp.pay.penalties.now")
+                @p("individual.lpp.penalties.no.longer.estimate")
+            } else {
+                @p("individual.index.lpp.tab.payEarlyInfo")
+            }
         }
-
 
         @link(
             link = appConfig.guidanceOnLPPUrl,
