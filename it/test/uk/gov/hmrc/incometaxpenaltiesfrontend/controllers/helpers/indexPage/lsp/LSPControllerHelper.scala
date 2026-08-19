@@ -126,23 +126,22 @@ trait LSPControllerHelper extends ControllerISpecHelper {
 
   def expectedLSPTabBody(userDetailsData: UserDetailsData): String = {
     if (userDetailsData.numberOfLSPPenalties == 0) {
-      "You don’t have any active late submission penalties."
+      "You do not have any late submission penalties."
     } else if (userDetailsData.hasFinancialLSP) {
-      if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1) {
-        "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed." +
-          " You should send any missing submissions as soon as possible if you haven’t already."
+      if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1 ) {
+        "You’ll get another £200 penalty every time you miss a submission deadline until your penalty points are removed."
+
       } else {
-        "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
-          " You should send any missing submissions as soon as possible if you haven’t already."
+        "You’ll get another £200 penalty every time you miss a submission deadline until your penalty points are removed."
       }
     } else if (userDetailsData.numberOfLSPPenalties == 1) {
-      s"You have 1 penalty point for sending a late submission." +
-        s" You should send this missing submission as soon as possible if you haven’t already."
+      "You have 1 penalty point for missing a submission deadline. You must send the missing submission as soon as possible if you have not already."
 
     } else {
       val numPenPoints = userDetailsData.numberOfLSPPenalties.toString
-      s"You have $numPenPoints penalty points for sending late submissions." +
-        s" You should send any missing submissions as soon as possible if you haven’t already."
+      s"You have $numPenPoints penalty points for missing submission deadlines." +
+        s" You must send the missing submissions as soon as possible if you have not already."
+
 
     }
   }
