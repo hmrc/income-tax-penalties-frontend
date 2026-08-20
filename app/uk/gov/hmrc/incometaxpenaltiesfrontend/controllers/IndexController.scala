@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActio
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{IncomeTaxSessionKeys, TimeMachine}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LPPTabViewModel, LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -48,10 +48,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
     val lspActivePoints = penaltyData.lateSubmissionPenalty.map(_.summary.activePenaltyPoints).getOrElse(0)
     val pocAchieved = penaltyData.lspPeriodOfComplianceDate.fold(false)(_.isBefore(date))
     
-    val isInBreathingSpace = penaltyData.breathingSpace.fold(false)(_.count(bs =>
-      (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
-        (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
-    ) > 0)
+    val isInBreathingSpace = PenaltiesOverviewViewModel.isUserInBreathingSpace(penaltyData, date)
 
     val lspSummaryCards = lspCardHelper.createLateSubmissionPenaltyCards(
       penalties = sortPointsInDescendingOrder(lsp),
@@ -63,6 +60,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
 
     val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
     val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex, isInBreathingSpace)
+    val lppTabViewModel = LPPTabViewModel(lppSummaryCards, isInBreathingSpace)
 
     Future(
       updateSessionCookie(penaltyData) {
@@ -70,7 +68,8 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
           lspOverviewData = penaltyData.lateSubmissionPenalty.map(LSPOverviewViewModel.apply),
           lspCardData = lspSummaryCards,
           lppCardData = lppSummaryCards,
-          penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData),
+          lppTabViewModel = lppTabViewModel,
+          penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData, isInBreathingSpace),
           isAgent = penaltyDataUserRequest.isAgent,
           actionsToRemoveLinkDate = penaltyData.lspPeriodOfComplianceDate
         ))

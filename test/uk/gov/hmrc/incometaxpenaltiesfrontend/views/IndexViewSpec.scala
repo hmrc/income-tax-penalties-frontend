@@ -28,8 +28,11 @@ import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
+import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LPPCardHelper
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 
 import java.time.LocalDate
 
@@ -37,18 +40,22 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
   lazy val indexView: IndexView = app.injector.instanceOf[IndexView]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  lazy val lppCardHelper: LPPCardHelper = app.injector.instanceOf[LPPCardHelper]
   implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit lazy val timeMachine: TimeMachine = app.injector.instanceOf[TimeMachine]
   private val somePocDate: Option[LocalDate] = Some(LocalDate.of(2028, 4, 1))
 
   object Selectors extends BaseSelectors {
     val lspTab = "#lspTab"
     val lppTab = "#lppTab"
     val penaltiesOverview = "#penaltiesOverview"
+    val breathingSpaceWarning = "#breathingSpaceBanner"
     val overviewH2: String = s"$penaltiesOverview ${h2(1)}"
     val overviewP1: String = s"$penaltiesOverview ${p(1)}"
     val overviewBullet: Int => String = i => s"$penaltiesOverview ${bullet(i)}"
     val overviewButton: String = s"$penaltiesOverview $button"
+    val lppTabParagraph: Int => String = i => s"$lppTab ${p(i)}"
   }
 
   "indexView" when {
@@ -72,15 +79,20 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = Seq(),
-                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false),
+                lppTabViewModel = LPPTabViewModel(Seq(), isInBreathingSpace = true),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false, isInBreathingSpace = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
               )
               implicit lazy val document: Document = asDocument(html)
 
               behave like pageWithExpectedElementsAndMessages(
-                Selectors.lspTab -> (messagesForLanguage.noLSP),
-                Selectors.lppTab -> (messagesForLanguage.noLPPIndividual)
+                Selectors.lspTab -> messagesForLanguage.noLSP,
+                Selectors.lppTab -> messagesForLanguage.noLPPIndividual,
+                Selectors.breathingSpaceWarning -> (messagesForLanguage match {
+                  case IndexViewMessages.English => "You’re in Breathing Space (opens in new tab). Penalties are paused and will not increase."
+                  case IndexViewMessages.Welsh => "Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) (yn agor tab newydd). Mae cosbau wedi’u gohirio ac ni fyddant yn cynyddu."
+                })
               )
             }
 
@@ -90,6 +102,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = Some(LSPOverviewViewModel(lateSubmissionPenalty)),
                 lspCardData = Seq(),
                 lppCardData = Seq(),
+                lppTabViewModel = LPPTabViewModel(Seq(), isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LSPPointsActive(1)), hasFinancialCharge = false),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -131,6 +144,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 ))),
                 lspCardData = Seq(),
                 lppCardData = Seq(),
+                lppTabViewModel = LPPTabViewModel(Seq(), isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(
                   LSPNotPaidOrAppealed(1),
                   LSPMaxItem
@@ -153,6 +167,150 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                   concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.penaltyP1,
                   concat(Selectors.lspTab, Selectors.link(1)) -> lspMessages.actionsLink
                 )
+              }
+            }
+
+            "there is a Late Payment Penalty that is paid" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq((samplePaidLPP1, 1)), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "render the 'penalty is paid' message in the LPP tab" which {
+                behave like pageWithExpectedElementsAndMessages(
+                  Selectors.lppTabParagraph(1) -> messagesForLanguage.noLPPIndividual
+                )
+              }
+            }
+
+            "there is a Late Payment Penalty where tax is paid but penalty is not paid" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq((sampleTaxPaidLPP1Day15to30, 1)), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "render the 'tax paid but penalty not paid' message (singular) in the LPP tab" which {
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "You can pay your penalty now. (Welsh)" else "You can pay your penalty now."
+
+                behave like pageWithExpectedElementsAndMessages(
+                  Selectors.lppTabParagraph(1) -> taxPaidButPenaltyNotPaidMessage
+                )
+              }
+            }
+
+            "there is a Late Payment Penalty where the appeal is upheld" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq(
+                (sampleTaxPaidLPP1Day15to30.copy(appealInformation = Some(Seq(AppealInformationType(
+                  appealStatus = Some(AppealStatusEnum.Upheld),
+                  appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
+                )))), 1)
+              ), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "not render the pay-now text when the appeal is upheld" in {
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
+                document.select(Selectors.lppTabParagraph(1)).text() should not include taxPaidButPenaltyNotPaidMessage
+              }
+            }
+
+            "there are multiple Late Payment Penalties where tax is paid but penalties are not paid" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq(
+                (sampleTaxPaidLPP1Day15to30, 1),
+                (sampleTaxPaidLPP1Day15to30.copy(principalChargeReference = "XJ002616061063"), 2)
+              ), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(2)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "render the ’tax paid but penalties not paid' message (plural) in the LPP tab" which {
+                val taxPaidButPenaltiesNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
+                behave like pageWithExpectedElementsAndMessages(
+                  Selectors.lppTabParagraph(1) -> taxPaidButPenaltiesNotPaidMessage
+                )
+              }
+            }
+
+            "there is a Late Payment Penalty that is unpaid and tax is also unpaid" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq((sampleUnpaidLPP1, 1)), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "not render the 'penalty is paid' message in the LPP tab" in {
+                document.select(Selectors.lppTabParagraph(1)).text() should not include messagesForLanguage.noLPPIndividual
+              }
+
+              "not render the 'tax paid but penalty not paid' message in the LPP tab" in {
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
+                document.select(Selectors.lppTabParagraph(1)).text() should not include taxPaidButPenaltyNotPaidMessage
+              }
+            }
+
+            "there are multiple Late Payment Penalties with mixed status (some paid, some not paid)" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq(
+                (sampleLPP2, 1),
+                (samplePaidLPP1, 2),
+                (samplePaidLPP1.copy(principalChargeReference = "XJ002616061063"), 3)
+              ), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "not render the 'penalty is paid' message when at least one penalty is still unpaid" in {
+                document.select(Selectors.lppTabParagraph(1)).text() should not include messagesForLanguage.noLPPIndividual
               }
             }
           }
