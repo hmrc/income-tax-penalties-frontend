@@ -79,6 +79,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = Seq(),
+                lppTabViewModel = LPPTabViewModel(Seq(), isInBreathingSpace = true),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(), hasFinancialCharge = false, isInBreathingSpace = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -101,6 +102,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = Some(LSPOverviewViewModel(lateSubmissionPenalty)),
                 lspCardData = Seq(),
                 lppCardData = Seq(),
+                lppTabViewModel = LPPTabViewModel(Seq(), isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LSPPointsActive(1)), hasFinancialCharge = false),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -142,6 +144,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 ))),
                 lspCardData = Seq(),
                 lppCardData = Seq(),
+                lppTabViewModel = LPPTabViewModel(Seq(), isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(
                   LSPNotPaidOrAppealed(1),
                   LSPMaxItem
@@ -174,6 +177,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -194,6 +198,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -221,6 +226,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -244,6 +250,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(2)), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -266,6 +273,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate
@@ -294,6 +302,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 lspOverviewData = None,
                 lspCardData = Seq(),
                 lppCardData = lppCards,
+                lppTabViewModel = LPPTabViewModel(lppCards, isInBreathingSpace = false),
                 penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
                 isAgent = isAgent,
                 actionsToRemoveLinkDate = somePocDate

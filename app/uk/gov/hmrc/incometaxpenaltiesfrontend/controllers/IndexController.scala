@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActio
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lsp.LSPDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{IncomeTaxSessionKeys, TimeMachine}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LSPOverviewViewModel, PenaltiesOverviewViewModel}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{LPPTabViewModel, LSPOverviewViewModel, PenaltiesOverviewViewModel}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{LPPCardHelper, LSPCardHelper}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -60,6 +60,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
 
     val lpp = penaltyData.latePaymentPenalty.map(_.details).map(_.sorted).getOrElse(Seq.empty)
     val lppSummaryCards = lppCardHelper.createLatePaymentPenaltyCards(lpp.zipWithIndex, isInBreathingSpace)
+    val lppTabViewModel = LPPTabViewModel(lppSummaryCards, isInBreathingSpace)
 
     Future(
       updateSessionCookie(penaltyData) {
@@ -67,6 +68,7 @@ class IndexController @Inject()(override val controllerComponents: MessagesContr
           lspOverviewData = penaltyData.lateSubmissionPenalty.map(LSPOverviewViewModel.apply),
           lspCardData = lspSummaryCards,
           lppCardData = lppSummaryCards,
+          lppTabViewModel = lppTabViewModel,
           penaltiesOverviewViewModel = PenaltiesOverviewViewModel(penaltyData, isInBreathingSpace),
           isAgent = penaltyDataUserRequest.isAgent,
           actionsToRemoveLinkDate = penaltyData.lspPeriodOfComplianceDate

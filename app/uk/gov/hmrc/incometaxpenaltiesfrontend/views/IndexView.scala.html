@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
-@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LPPTabViewModel
 @import java.time.LocalDate
 
 
@@ -44,6 +44,7 @@
         lspOverviewData: Option[LSPOverviewViewModel],
         lspCardData: Seq[LateSubmissionPenaltySummaryCard],
         lppCardData: Seq[LatePaymentPenaltySummaryCard],
+        lppTabViewModel: LPPTabViewModel,
         penaltiesOverviewViewModel: PenaltiesOverviewViewModel,
         isAgent: Boolean,
         actionsToRemoveLinkDate: Option[LocalDate]
@@ -67,22 +68,8 @@
         @p("individual.lpp.noPenalties")
     } else {
 
-        @if(!penaltiesOverviewViewModel.isInBreathingSpace && lppCardData.exists(lpp => !lpp.appealStatus.contains(AppealStatusEnum.Upheld))) {
-            @if(lppCardData.nonEmpty && lppCardData.forall(_.isPenaltyPaid)) {
-                @p("individual.lpp.noPenalties")
-            } else if(lppCardData.exists(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) {
-                @defining(lppCardData.count(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) { unpaidPenaltyCount =>
-                    @if(unpaidPenaltyCount == 1) {
-                        @p("individual.lpp.pay.penalty.now")
-                        @p("individual.lpp.penalty.no.longer.estimate")
-                    } else {
-                        @p("individual.lpp.pay.penalties.now")
-                        @p("individual.lpp.penalties.no.longer.estimate")
-                    }
-                }
-            } else {
-                @p("individual.index.lpp.tab.payEarlyInfo")
-            }
+        @lppTabViewModel.messageKeys.map { key =>
+            @p(key)
         }
 
         @link(
