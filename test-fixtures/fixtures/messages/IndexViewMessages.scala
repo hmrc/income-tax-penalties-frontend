@@ -20,7 +20,8 @@ object IndexViewMessages {
 
   sealed trait Messages { this: i18n =>
     val noLSP = "You don’t have any active late submission penalties"
-    val noLPPIndividual = "You have no late payment penalties that are currently due"
+    val noLPPIndividual = "You do not have any late payment penalties."
+    val taxPaidButPenaltyNotPaid = "You can pay your penalties now."
     val overviewH2 = "Overview"
     val overviewP1: String = "Your account has:"
 
@@ -64,8 +65,9 @@ object IndexViewMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val noLPPIndividual = "Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd."
+    override val noLPPIndividual = "Nid oes gennych unrhyw gosbau am dalu’n hwyr."
     override val noLSP = "Cosbau am gyflwyno’n hwyr Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd"
+    override val taxPaidButPenaltyNotPaid = "Gallwch dalu’r cosbau nawr."
     override val overviewH2 = "Trosolwg"
     override val overviewP1: String = "Mae gan eich cyfrif y canlynol:"
 

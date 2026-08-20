@@ -52,8 +52,8 @@ individual.index.lsp.tab.overview.actionsToRemoveLink = Y camau i’w cymryd i g
 
 # --- LPP Tab Content
 index.lpp.tab.h2 = Cosbau am dalu’n hwyr
-index.lpp.tab.guidanceOnLatePayments = Darllenwch yr arweiniad am sut y cyfrifir cosbau am dalu’n hwyr
-individual.index.lpp.tab.payEarlyInfo = Gorau i gyd po gyntaf y byddwch yn talu eich Treth Incwm, oherwydd y bydd hyn yn lleihau swm eich cosbau a llog.
+index.lpp.tab.guidanceOnLatePayments = Dysgwch ragor am gosbau am dalu’n hwyr
+individual.index.lpp.tab.payEarlyInfo = Po gyntaf y byddwch yn talu’ch Treth Incwm, y lleiaf y byddwch yn ei dalu mewn cosbau a llog.
 
 session.expired.h1 = Er eich diogelwch, mae’r gwasanaeth hwn wedi’i ailosod
 session.expired.p = Mae’r manylion a roddwyd gennych wedi’u dileu gan nad ydych wedi mynd yn eich blaen â’r gwasanaeth ers 15 munud.
@@ -124,6 +124,9 @@ calculation.calc2.penalty.payment.plan.agreed.bullet1 = byddwn yn ailgyfrifo’c
 calculation.calc2.penalty.payment.plan.agreed.bullet2 = gallai’ch cosb gynyddu
 
 calculation.calc.breathing.space = Rydych mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space). Mae’r gosb hon wedi’i hoedi ac ni fydd yn cynyddu. Ni fydd yr amser rydych chi mewn cyfnod ‘amser i gael eich gwynt atoch’ (Breathing Space) yn cael ei ychwanegu at eich cyfrifiad.
+calculation.banner.breathing.space.your.in = Rydych mewn cyfnod
+calculation.banner.breathing.space = ‘amser i gael eich gwynt atoch’ (Breathing Space)
+calculation.banner.breathing.space.paused = Mae cosbau wedi’u gohirio ac ni fyddant yn cynyddu.
 
 calculation.calc2.how.we.work.penalty.amount = Sut yr ydym yn cyfrifo swm y gosb
 calculation.calc2.how.we.work.penalty.amount.p1 = Rydym yn defnyddio cyfradd flynyddol o 10%. Mae hyn yn golygu bod y swm yn cynyddu ychydig bob dydd.
@@ -340,7 +343,11 @@ month.11 = Tachwedd
 month.12 = Rhagfyr
 
 individual.lpp.tab.overdueTax = Oherwydd eich bod wedi talu’r dreth yr oedd yn ddyledus, nid yw’r cosbau sydd gennych bellach yn rhai amcangyfrifedig, a gellir eu talu ar unwaith.
-individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr ar hyn o bryd.
+individual.lpp.noPenalties = Nid oes gennych unrhyw gosbau am dalu’n hwyr.
+individual.lpp.pay.penalty.now = You can pay your penalty now. (Welsh)
+individual.lpp.pay.penalties.now = Gallwch dalu’r cosbau nawr.
+individual.lpp.penalty.no.longer.estimate = Your penalty is no longer estimate because you’ve paid your outstanding tax. (Welsh)
+individual.lpp.penalties.no.longer.estimate = Nid amcangyfrifon yw’ch cosbau mwyach oherwydd eich bod wedi talu’ch treth sy’n ddyledus.
 
 # Agent Error View
 agentErrorView.h1 = Nid yw’ch sefydliad wedi rhoi’r caniatâd i chi gael mynediad at y cleient hwn

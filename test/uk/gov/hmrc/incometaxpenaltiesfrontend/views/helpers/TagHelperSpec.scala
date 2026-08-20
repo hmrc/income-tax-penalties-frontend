@@ -224,7 +224,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
 
                 val tag = tagHelper.getTagStatus(sampleLPP1AppealPaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal), false)
 
-                tag.classes shouldBe ""
+                tag.classes shouldBe "govuk-tag--grey"
                 tag.content shouldBe Text(messagesForLanguage.cancelled)
               }
             }

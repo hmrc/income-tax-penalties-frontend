@@ -71,8 +71,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             }
             val lppTab = getLPPTabContent(document)
             lppTab.getElementById("lppHeading").text() shouldBe "Late payment penalties"
-            lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
-            lppTab.getElementById("guidanceLatePaymentLink").text() shouldBe "Read the guidance about how late payment penalties are calculated (opens in new tab)"
+            lppTab.getElementById("guidanceLatePaymentLink").text() shouldBe "Find out more about late payment penalties (opens in new tab)"
             lppTab.getElementById("guidanceLatePaymentLink").attr("href") shouldBe "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#late-paymentpenalties"
 
             val lppCards: Elements = lppTab.getElementsByClass("govuk-summary-card")
@@ -99,19 +98,63 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Self Assessment penalties and appeals - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Self Assessment penalties and appeals"
-            validatePenaltyOverview(document, userdetails.expectedOverviewText, true)
+            validatePenaltyOverview(document, userdetails.expectedOverviewText)
             validatePenaltyTabs(document)
             if (userdetails.numberOfLSPPenalties == 0) {
               validateNoLSPPenalties(document, true)
             }
             val lppTab = getLPPTabContent(document)
             lppTab.getElementById("lppHeading").text() shouldBe "Late payment penalties"
-            lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier you pay your Income Tax, the lower your penalties and interest will be."
             val lppCards: Elements = lppTab.getElementsByClass("govuk-summary-card")
             lppCards.size() shouldBe userdetails.expectedNumberOfLPPPenaltyCards
             userdetails.validatePenaltyCardsContent(lppCards)
           }
         }
+      }
+    }
+  }
+
+  "GET /view-penalty/self-assessment" when {
+    "the call to penalties backend returns data" should {
+      "show the paid penalty intro text for a paid LPP" in {
+        val userdetails = lppUsers("AA100000C")
+        val date = LocalDate.parse(userdetails.timeMachineDate.replace("/", "-"), timeMachineDateFormatter)
+        setFeatureDate(Some(date))
+        stubAuthRequests(false, userdetails.nino)
+        stubGetPenalties(userdetails.nino, None)(OK, userdetails.getApiResponseJson(userdetails.nino))
+
+        val document = Jsoup.parse(get("/").body)
+        val lppTab = getLPPTabContent(document)
+
+        lppTab.getElementsByClass("govuk-body").first().text() shouldBe "You do not have any late payment penalties."
+      }
+
+      "show the tax paid but penalty not paid text for a due LPP" in {
+        val userdetails = lppUsers("AA100000B")
+        val date = LocalDate.parse(userdetails.timeMachineDate.replace("/", "-"), timeMachineDateFormatter)
+        setFeatureDate(Some(date))
+        stubAuthRequests(false, userdetails.nino)
+        stubGetPenalties(userdetails.nino, None)(OK, userdetails.getApiResponseJson(userdetails.nino))
+
+        val document = Jsoup.parse(get("/").body)
+        val lppTab = getLPPTabContent(document)
+        val lppBodies = lppTab.getElementsByClass("govuk-body")
+
+        lppBodies.get(0).text() shouldBe "You can pay your penalty now."
+        lppBodies.get(1).text().replace("'", "").replace("’", "") shouldBe "Your penalty is no longer estimate because you've paid your outstanding tax.".replace("'", "").replace("’", "")
+      }
+
+      "show the default pay-early info text when the penalty is unpaid and the tax is unpaid" in {
+        val userdetails = lppUsers("AA100000A")
+        val date = LocalDate.parse(userdetails.timeMachineDate.replace("/", "-"), timeMachineDateFormatter)
+        setFeatureDate(Some(date))
+        stubAuthRequests(false, userdetails.nino)
+        stubGetPenalties(userdetails.nino, None)(OK, userdetails.getApiResponseJson(userdetails.nino))
+
+        val document = Jsoup.parse(get("/").body)
+        val lppTab = getLPPTabContent(document)
+
+        lppTab.getElementsByClass("govuk-body").first().text() shouldBe "The earlier you pay your Income Tax, the less you’ll pay in penalties and interest."
       }
     }
   }

@@ -22,7 +22,9 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LPPTabViewModel
 @import java.time.LocalDate
+
 
 @this(
         main: MainTemplate,
@@ -31,6 +33,7 @@
         h3: H3,
         p: P,
         link: Link,
+        govukNotificationBanner: GovukNotificationBanner,
         govukTabs : GovukTabs,
         summaryCardLSP: SummaryCardLSP,
         summaryCardLPP: SummaryCardLPP,
@@ -41,6 +44,7 @@
         lspOverviewData: Option[LSPOverviewViewModel],
         lspCardData: Seq[LateSubmissionPenaltySummaryCard],
         lppCardData: Seq[LatePaymentPenaltySummaryCard],
+        lppTabViewModel: LPPTabViewModel,
         penaltiesOverviewViewModel: PenaltiesOverviewViewModel,
         isAgent: Boolean,
         actionsToRemoveLinkDate: Option[LocalDate]
@@ -61,10 +65,12 @@
     @h3(msg = "index.lpp.tab.h2", elmId = "lppHeading", classes=Some("govuk-heading-m"))
 
     @if(lppCardData.isEmpty) {
-    @p("individual.lpp.noPenalties")
+        @p("individual.lpp.noPenalties")
     } else {
 
-        @p("individual.index.lpp.tab.payEarlyInfo")
+        @lppTabViewModel.messageKeys.map { key =>
+            @p(key)
+        }
 
         @link(
             link = appConfig.guidanceOnLPPUrl,
@@ -78,8 +84,21 @@
         }
     }
 }
-    
+    @bsContent = {
+        <p class="govuk-notification-banner__heading" id="breathingSpaceBanner">
+            @messages("calculation.banner.breathing.space.your.in")
+            <a href="@appConfig.breathingSpaceGuidanceUrl" class="govuk-link" id="breathingSpaceGuidanceLink" target="_blank" rel="noopener noreferrer">@messages("calculation.banner.breathing.space") @messages("common.opensInNewTab").</a>
+            @messages("calculation.banner.breathing.space.paused")
+        </p>
+    }
+
     @main(pageTitle = messages("index.h1"), backLinkEnabled = false, isAgent = isAgent, wrapperClass = Some("landing-page")) {
+
+        @if(penaltiesOverviewViewModel.isInBreathingSpace) {
+            @govukNotificationBanner(NotificationBanner(
+                content = HtmlContent(bsContent),
+            ))
+        }
 
         @h1("index.h1")
 
