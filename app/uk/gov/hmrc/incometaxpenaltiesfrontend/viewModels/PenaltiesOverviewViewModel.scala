@@ -20,12 +20,12 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.PenaltyDetails
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.ViewUtils.pluralOrSingular
 
+import java.time.LocalDate
 
 sealed trait PenaltiesOverviewItem {
   val name: String
 
   def messageKey(hasBullets: Boolean): String = {
-
     val key = s"index.overview.$name"
 
     if (hasBullets) s"$key.bullet"
@@ -44,7 +44,6 @@ val UnpaidReturnChargesOverviewItem: PenaltiesOverviewItem = SimpleOverviewItem(
 val UnpaidInterestItem: PenaltiesOverviewItem = SimpleOverviewItem("unpaidInterest")
 val LSPMaxItem: PenaltiesOverviewItem = SimpleOverviewItem("lsp.points.max")
 
-
 abstract class CountOverviewItem(override val name: String, count: Int) extends PenaltiesOverviewItem {
   override def content(hasMultipleBullets: Boolean)(implicit messages: Messages): String =
     messages(pluralOrSingular(messageKey(hasMultipleBullets), count), count)
@@ -56,47 +55,63 @@ case class LSPNotPaidOrAppealed(count: Int) extends CountOverviewItem("lsp.penal
 
 case class LSPPointsActive(count: Int) extends CountOverviewItem("lsp.points", count)
 
-case class PenaltiesOverviewViewModel(overviewItems: Seq[PenaltiesOverviewItem], hasFinancialCharge: Boolean) {
+case class PenaltiesOverviewViewModel(
+  overviewItems: Seq[PenaltiesOverviewItem],
+  hasFinancialCharge: Boolean,
+  isInBreathingSpace: Boolean
+) {
 
-  def content()(implicit messages: Messages): Seq[String] = {
-    if (overviewItems.size > 1) {
-      overviewItems.map(_.content(hasMultipleBullets = true))
-    } else {
-      overviewItems.map(_.content(hasMultipleBullets = false))
-    }
-  }
+  def content()(implicit messages: Messages): Seq[String] =
+    if (overviewItems.size > 1) overviewItems.map(_.content(hasMultipleBullets = true))
+    else overviewItems.map(_.content(hasMultipleBullets = false))
 }
 
 object PenaltiesOverviewViewModel {
 
-  def apply(penaltyDetails: PenaltyDetails): PenaltiesOverviewViewModel = {
+  def isUserInBreathingSpace(penaltyDetails: PenaltyDetails, date: LocalDate): Boolean =
+    penaltyDetails.breathingSpace.fold(false)(_.exists(bs =>
+      (bs.bsStartDate.isEqual(date) || bs.bsStartDate.isBefore(date)) &&
+        (bs.bsEndDate.isEqual(date) || bs.bsEndDate.isAfter(date))
+    ))
+
+  def apply(
+    overviewItems: Seq[PenaltiesOverviewItem],
+    hasFinancialCharge: Boolean,
+    isInBreathingSpace: Boolean
+  ): PenaltiesOverviewViewModel =
+    new PenaltiesOverviewViewModel(overviewItems, hasFinancialCharge, isInBreathingSpace)
+
+  def apply(
+    overviewItems: Seq[PenaltiesOverviewItem],
+    hasFinancialCharge: Boolean
+  ): PenaltiesOverviewViewModel =
+    new PenaltiesOverviewViewModel(overviewItems, hasFinancialCharge, isInBreathingSpace = false)
+  
+  def apply(penaltyDetails: PenaltyDetails): PenaltiesOverviewViewModel =
+    buildFromPenaltyDetails(penaltyDetails, isUserInBreathingSpace(penaltyDetails, LocalDate.now()))  
+    
+  def apply(penaltyDetails: PenaltyDetails, isInBreathingSpace: Boolean): PenaltiesOverviewViewModel =
+    buildFromPenaltyDetails(penaltyDetails, isInBreathingSpace)
+
+  private def buildFromPenaltyDetails(penaltyDetails: PenaltyDetails, isInBreathingSpace: Boolean): PenaltiesOverviewViewModel = {
     import penaltyDetails.*
 
     val whatOverviewDetails = Seq(
-
-      Option.when(unpaidIncomeTax > 0)(
-        UnpaidReturnChargesOverviewItem
-      ),
-      Option.when(totalInterest > 0)(
-        UnpaidInterestItem
-      ),
-      Option.when(countLPPNotPaidOrAppealed > 0)(
-        LPPNotPaidOrAppealed(countLPPNotPaidOrAppealed)
-      ),
-      Option.when(countLSPNotPaidOrAppealed > 0)(
-        LSPNotPaidOrAppealed(countLSPNotPaidOrAppealed)
-      ),
+      Option.when(unpaidIncomeTax > 0)(UnpaidReturnChargesOverviewItem),
+      Option.when(totalInterest > 0)(UnpaidInterestItem),
+      Option.when(countLPPNotPaidOrAppealed > 0)(LPPNotPaidOrAppealed(countLPPNotPaidOrAppealed)),
+      Option.when(countLSPNotPaidOrAppealed > 0)(LSPNotPaidOrAppealed(countLSPNotPaidOrAppealed)),
       Option.when(lspPointsActive > 0)(
-        if (lspPointsActive < lspThreshold) {
-          LSPPointsActive(lspPointsActive)
-        } else {
-          LSPMaxItem
-        }
+        if (lspPointsActive < lspThreshold) LSPPointsActive(lspPointsActive)
+        else LSPMaxItem
       )
     ).flatten
+
     PenaltiesOverviewViewModel(
       overviewItems = whatOverviewDetails,
-      hasFinancialCharge = hasFinancialChargeToPay
+      hasFinancialCharge = hasFinancialChargeToPay,
+      isInBreathingSpace = isInBreathingSpace
     )
   }
 }
+

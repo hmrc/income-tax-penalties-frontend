@@ -89,19 +89,23 @@ trait LPPControllerHelper extends ControllerISpecHelper {
     "AC200000D-overdue" -> AC200000DOverdue,
   )
 
-  def validatePenaltyOverview(document: Document, expectedContent: String, isAgent: Boolean = false) = {
+  def validatePenaltyOverview(document: Document, expectedContent: String, isAgent: Boolean = false): Unit = {
     if (expectedContent.equals("")) {
       document.getElementById("penaltiesOverview") shouldBe null
     } else {
       val overview = document.getElementById("penaltiesOverview")
-      document.getH2Elements.get(0).text() shouldBe "Overview"
+      document.getElementById("overviewHeading").text() shouldBe "Overview"
       overview.text() shouldBe expectedContent
-      document.getH2Elements.get(1).text() shouldBe "Penalty and appeal details"
-      document.getSubmitButton.text() shouldBe "Check what you owe"
+      document.getElementById("appealDetailsHeading").text() shouldBe "Penalty and appeal details"
+      if (isAgent) {
+        document.getSubmitButton.text() shouldBe "Check what your client owes"
+      } else {
+        document.getSubmitButton.text() shouldBe "Check what you owe"
+      }
     }
   }
 
-  def validateNoLSPPenalties(document: Document, isAgent: Boolean = false) = {
+  def validateNoLSPPenalties(document: Document, isAgent: Boolean = false): Unit = {
     val lspTabContent = getLSPTabContent(document)
     lspTabContent.getElementById("lspHeading").text() shouldBe "Late submission penalties"
     val expectedLSPContent = "You don’t have any active late submission penalties."

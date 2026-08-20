@@ -119,6 +119,8 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
 
   val addedPointsGuidanceLinkUrl: String = "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax#if-you-already-have-penalty-points"
 
+  val breathingSpaceGuidanceUrl: String = "https://www.gov.uk/options-for-dealing-with-your-debts/breathing-space"
+
   // Service Navigation Links
   lazy val ptaFrontendBase: String = servicesConfig.getString("urls.personalTaxAccountBaseUrl")
   lazy val btaFrontendBase: String = servicesConfig.getString("urls.businessTaxAccountBaseUrl")
