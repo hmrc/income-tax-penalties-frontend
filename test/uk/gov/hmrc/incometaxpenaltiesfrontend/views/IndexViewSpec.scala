@@ -200,7 +200,7 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
               implicit lazy val document: Document = asDocument(html)
 
               "render the 'tax paid but penalty not paid' message (singular) in the LPP tab" which {
-                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "You can pay your penalty now (Welsh)." else "You can pay your penalty now."
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "You can pay your penalty now. (Welsh)" else "You can pay your penalty now."
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.lppTabParagraph(1) -> taxPaidButPenaltyNotPaidMessage

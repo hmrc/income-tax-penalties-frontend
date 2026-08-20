@@ -141,7 +141,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
         val lppBodies = lppTab.getElementsByClass("govuk-body")
 
         lppBodies.get(0).text() shouldBe "You can pay your penalty now."
-        lppBodies.get(1).text().replace("'", "").replace("’", "") shouldBe "Your penalties are no longer estimates because you've paid your outstanding tax.".replace("'", "").replace("’", "")
+        lppBodies.get(1).text().replace("'", "").replace("’", "") shouldBe "Your penalty is no longer estimate because you've paid your outstanding tax.".replace("'", "").replace("’", "")
       }
 
       "show the default pay-early info text when the penalty is unpaid and the tax is unpaid" in {

@@ -345,6 +345,7 @@ individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your
 individual.lpp.noPenalties = You do not have any late payment penalties.
 individual.lpp.pay.penalty.now = You can pay your penalty now.
 individual.lpp.pay.penalties.now = You can pay your penalties now.
+individual.lpp.penalty.no.longer.estimate = Your penalty is no longer estimate because you’ve paid your outstanding tax.
 individual.lpp.penalties.no.longer.estimate = Your penalties are no longer estimates because you’ve paid your outstanding tax.
 
 # Agent Error View

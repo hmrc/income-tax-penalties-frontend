@@ -73,11 +73,12 @@
                 @defining(lppCardData.count(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) { unpaidPenaltyCount =>
                     @if(unpaidPenaltyCount == 1) {
                         @p("individual.lpp.pay.penalty.now")
+                        @p("individual.lpp.penalty.no.longer.estimate")
                     } else {
                         @p("individual.lpp.pay.penalties.now")
+                        @p("individual.lpp.penalties.no.longer.estimate")
                     }
                 }
-                @p("individual.lpp.penalties.no.longer.estimate")
             } else {
                 @p("individual.index.lpp.tab.payEarlyInfo")
             }
