@@ -145,6 +145,16 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       val data = withTaxYear2027(sampleSecondLPPCalcData(isEstimate = false, isIncomeTaxPaid = true))
       helper.getFinalUnpaidMsg(data) shouldBe None
     }
+
+    "return None when income tax is paid and a payment plan is active" in {
+      val data = withTaxYear2027(sampleSecondLPPCalcData(
+        isEstimate = false,
+        isIncomeTaxPaid = true,
+        isPaymentPlanAgreed = true
+      ))
+
+      helper.getFinalUnpaidMsg(data) shouldBe None
+    }
   }
 
   "SecondLatePaymentCalculationHelper.getPaymentPlanInset" should {

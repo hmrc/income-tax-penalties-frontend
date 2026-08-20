@@ -54,7 +54,7 @@ trait TagHelper {
 
   def getTagStatus(penalty: LPPDetails, isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Tag =
     (penalty.appealStatus, penalty.penaltyStatus) match {
-      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")))
+      case (Some(AppealStatusEnum.Upheld), _) => Tag(Text(messages("status.cancelled")), "govuk-tag--grey")
       case _ if isBreathingSpace => Tag(Text(messages("status.breathing.space")), "govuk-tag--purple")
       case (_, LPPPenaltyStatusEnum.Accruing) => Tag(Text(messages("status.estimate")))
       case (_, LPPPenaltyStatusEnum.Posted) if penalty.isPaid => Tag(Text(messages("status.paid")), "govuk-tag--green")
