@@ -28,6 +28,7 @@ import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.{AppealInformationType, AppealLevelEnum, AppealStatusEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.IndexView
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.LPPCardHelper
@@ -205,6 +206,31 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.lppTabParagraph(1) -> taxPaidButPenaltyNotPaidMessage
                 )
+              }
+            }
+
+            "there is a Late Payment Penalty where the appeal is upheld" should {
+
+              lazy val lppCards = lppCardHelper.createLatePaymentPenaltyCards(Seq(
+                (sampleTaxPaidLPP1Day15to30.copy(appealInformation = Some(Seq(AppealInformationType(
+                  appealStatus = Some(AppealStatusEnum.Upheld),
+                  appealLevel = Some(AppealLevelEnum.FirstStageAppeal)
+                )))), 1)
+              ), isBreathingSpace = false)
+              lazy val html = indexView(
+                lspOverviewData = None,
+                lspCardData = Seq(),
+                lppCardData = lppCards,
+                penaltiesOverviewViewModel = PenaltiesOverviewViewModel(Seq(LPPNotPaidOrAppealed(1)), hasFinancialCharge = true),
+                isAgent = isAgent,
+                actionsToRemoveLinkDate = somePocDate
+              )
+              implicit lazy val document: Document = asDocument(html)
+
+              "not render the pay-now text when the appeal is upheld" in {
+                val taxPaidButPenaltyNotPaidMessage = if (messagesForLanguage.lang.code == "cy") "Gallwch dalu’r cosbau nawr." else "You can pay your penalties now."
+
+                document.select(Selectors.lppTabParagraph(1)).text() should not include taxPaidButPenaltyNotPaidMessage
               }
             }
 

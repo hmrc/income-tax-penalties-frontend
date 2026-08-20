@@ -22,6 +22,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LatePaymentPenaltySummaryCard
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.PenaltiesOverviewViewModel
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.LSPOverviewViewModel
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.appealInfo.AppealStatusEnum
 @import java.time.LocalDate
 
 
@@ -66,7 +67,7 @@
         @p("individual.lpp.noPenalties")
     } else {
 
-        @if(!penaltiesOverviewViewModel.isInBreathingSpace) {
+        @if(!penaltiesOverviewViewModel.isInBreathingSpace && lppCardData.exists(lpp => !lpp.appealStatus.contains(AppealStatusEnum.Upheld))) {
             @if(lppCardData.nonEmpty && lppCardData.forall(_.isPenaltyPaid)) {
                 @p("individual.lpp.noPenalties")
             } else if(lppCardData.exists(lpp => lpp.incomeTaxIsPaid && !lpp.isPenaltyPaid)) {
