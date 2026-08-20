@@ -505,18 +505,28 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     }
   }
 
-  "SecondLatePaymentPenaltyCalculationData charge period calculations" should {
-    "use the earliest TTP date for chargePeriodEndDate when both agreed and proposed dates are present" in {
+  "SecondLatePaymentPenaltyCalculationData charge period calculations using helper" should {
+    "use the earliest TTP date for charge period end date when both agreed and proposed dates are present" in {
+      val fixedNow = LocalDate.of(2026, 7, 1)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = true,
+        principalChargeDueDate = LocalDate.of(2026, 5, 1),
         paymentPlanAgreed = Some(LocalDate.of(2026, 6, 25)),
         paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
       )
 
-      data.chargePeriodEndDate(LocalDate.of(2026, 7, 1)) shouldBe LocalDate.of(2026, 6, 20)
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      periods.last._2 shouldBe LocalDate.of(2026, 6, 20)
     }
 
-    "use the current date for chargePeriodEndDate when there is no TTP and the penalty is an estimate" in {
+    "use the current date for charge period end date when there is no TTP and the penalty is an estimate" in {
+      val fixedNow = LocalDate.of(2026, 7, 26)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = true,
         paymentPlanAgreed = None,
@@ -525,10 +535,15 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
         payPenaltyBy = LocalDate.of(2026, 6, 30)
       )
 
-      data.chargePeriodEndDate(LocalDate.of(2026, 7, 1)) shouldBe LocalDate.of(2026, 7, 1)
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      periods.last._2 shouldBe fixedNow
     }
 
-    "calculate chargePeriodDays using the earliest TTP date" in {
+    "calculate charge period days using the earliest TTP date" in {
+      val fixedNow = LocalDate.of(2026, 7, 1)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = true,
         principalChargeDueDate = LocalDate.of(2026, 5, 1),
@@ -536,19 +551,33 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
         paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
       )
 
-      data.chargePeriodDays(LocalDate.of(2026, 7, 1)) shouldBe 20
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      val totalDays = periods.map { case (start, end) =>
+        java.time.temporal.ChronoUnit.DAYS.between(start, end).toInt + 1
+      }.sum
+      totalDays shouldBe 20
     }
 
-    "calculate chargePeriodDays from payPenaltyBy.minusDays(32) when there is no TTP and the penalty is not an estimate" in {
+    "calculate charge period days from payPenaltyBy.minusDays(32) when there is no TTP and the penalty is not an estimate" in {
+      val fixedNow = LocalDate.of(2026, 7, 1)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = false,
+        penaltyStatus = LPPPenaltyStatusEnum.Posted,
         principalChargeDueDate = LocalDate.of(2026, 5, 1),
         payPenaltyBy = LocalDate.of(2026, 7, 31),
         paymentPlanAgreed = None,
-        paymentPlanProposed = None
+        paymentPlanProposed = None,
+        penaltyChargeCreationDate = Some(LocalDate.of(2026, 6, 29))
       )
 
-      data.chargePeriodDays(LocalDate.of(2026, 7, 1)) shouldBe 29
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      val totalDays = periods.map { case (start, end) =>
+        java.time.temporal.ChronoUnit.DAYS.between(start, end).toInt + 1
+      }.sum
+      totalDays shouldBe 29
     }
   }
 
