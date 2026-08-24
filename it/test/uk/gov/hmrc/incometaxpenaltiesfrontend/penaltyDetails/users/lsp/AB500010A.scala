@@ -99,7 +99,7 @@ object AB500010A extends UserDetailsData {
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has the maximum number of late submission penalty points"
+    "Overview Your account has: the maximum number of late submission penalty points"
 
   override val timeMachineDate: String = "30/06/2028"
 }

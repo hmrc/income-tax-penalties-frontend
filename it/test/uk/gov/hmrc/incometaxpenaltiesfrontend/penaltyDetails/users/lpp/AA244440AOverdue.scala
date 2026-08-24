@@ -46,7 +46,7 @@ object AA244440AOverdue extends UserDetailsData {
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has a late payment penalty Check what you owe"
+    "Overview Your account has: a late payment penalty Check what you owe"
 
   override val timeMachineDate: String = "20/04/2028"
 }

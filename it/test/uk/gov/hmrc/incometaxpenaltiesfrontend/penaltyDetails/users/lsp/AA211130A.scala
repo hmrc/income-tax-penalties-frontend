@@ -75,7 +75,7 @@ object AA211130A extends UserDetailsData {
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has 2 late submission penalty points"
+    "Overview Your account has: 2 late submission penalty points"
 
   override val timeMachineDate: String = "30/12/2027"
 }

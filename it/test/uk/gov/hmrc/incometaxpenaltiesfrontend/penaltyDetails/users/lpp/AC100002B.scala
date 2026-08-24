@@ -67,7 +67,7 @@ object AC100002B extends UserDetailsData {
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has late payment penalties Check what you owe"
+    "Overview Your account has: late payment penalties Check what you owe"
 
   override val timeMachineDate: String = "05/03/2025"
 }
