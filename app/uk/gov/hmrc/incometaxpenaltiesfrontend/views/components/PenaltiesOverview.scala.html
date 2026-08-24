@@ -33,12 +33,8 @@
         <div id="penaltiesOverview">
             @h2(msg = "index.overview.h2", elmId = "overviewHeading")
 
-            @if(penaltiesOverviewViewModel.overviewItems.size > 1) {
                 @p("individual.index.overview.p1")
                 @list(penaltiesOverviewViewModel.content())
-            } else {
-                @p(messages(penaltiesOverviewViewModel.content()))
-            }
 
             @if(penaltiesOverviewViewModel.hasFinancialCharge) {
                 @link(
