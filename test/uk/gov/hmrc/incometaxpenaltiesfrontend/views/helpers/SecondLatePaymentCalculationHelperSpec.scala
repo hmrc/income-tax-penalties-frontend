@@ -523,7 +523,7 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     }
 
     "use the current date for charge period end date when there is no TTP and the penalty is an estimate" in {
-      val fixedNow = LocalDate.of(2026, 7, 26)
+      val fixedNow = LocalDate.of(2026, 7, 27)
       val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
         override def getCurrentDate(): LocalDate = fixedNow
       }
