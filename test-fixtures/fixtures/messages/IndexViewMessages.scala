@@ -25,20 +25,9 @@ object IndexViewMessages {
     val overviewH2 = "Overview"
     val overviewP1: String = "Your account has:"
 
-    val overviewP1NoBullets: String => String = {
-        message =>
-           s"Your account has $message"
-    }
     val overviewLSPPoints: Int => String = {
       case 1 => "1 late submission penalty point"
       case n => s"$n late submission penalty points"
-    }
-
-    def overviewLSPPointsNoBullets(num: Int): String = {
-      num match {
-        case 1 => "Your account has 1 late submission penalty point"
-        case n => s"Your account has $n late submission penalty points"
-      }
     }
 
     val overviewLSPFinancial: Int => String = {
@@ -52,8 +41,8 @@ object IndexViewMessages {
     }
 
     val overviewLPPNoBullets: Int => String = {
-      case 1 => "Your account has a late payment penalty"
-      case _ => s"Your account has late payment penalties"
+      case 1 => "a late payment penalty"
+      case _ => "late payment penalties"
     }
 
     val overviewLSPPointsMax: String = "the maximum number of late submission penalty points"
@@ -71,20 +60,9 @@ object IndexViewMessages {
     override val overviewH2 = "Trosolwg"
     override val overviewP1: String = "Mae gan eich cyfrif y canlynol:"
 
-    override val overviewP1NoBullets: String => String = {
-        message =>
-          s"Mae gan eich cyfrif y canlynol $message"
-    }
     override val overviewLSPPoints: Int => String = {
       case 1 => "1 pwynt cosb am gyflwyno’n hwyr"
       case n => s"$n o bwyntiau cosb am gyflwyno’n hwyr"
-    }
-
-    override def overviewLSPPointsNoBullets(num: Int): String = {
-      num match {
-        case 1 => "Mae gan eich cyfrif 1 pwynt cosb am gyflwyno’n hwyr"
-        case n => s"Mae gan eich cyfrif $n bwynt cosb am gyflwyno’n hwyr"
-      }
     }
 
     override val overviewLSPFinancial: Int => String = {
@@ -98,8 +76,8 @@ object IndexViewMessages {
     }
 
     override val overviewLPPNoBullets: Int => String = {
-      case 1 => "Mae gan eich cyfrif gosb am dalu’n hwyr"
-      case _ => "Mae gan eich cyfrif gosbau am dalu’n hwyr"
+      case 1 => "cosb am dalu’n hwyr"
+      case _ => "cosbau am dalu’n hwyr"
     }
 
     override val overviewLSPPointsMax: String = "uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr"
