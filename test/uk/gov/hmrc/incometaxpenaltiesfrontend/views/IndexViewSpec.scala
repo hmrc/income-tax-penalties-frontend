@@ -114,7 +114,8 @@ class IndexViewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite w
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1),
+                  Selectors.overviewP1 -> messagesForLanguage.overviewP1,
+                  Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPPoints(1),
                   concat(Selectors.lspTab, Selectors.p(1)) -> lspMessages.pointsTotal(1),
                   concat(Selectors.lspTab, Selectors.p(2)) -> lspMessages.pointsAccruingP1(1),
                   concat(Selectors.lspTab, Selectors.p(3)) -> lspMessages.pointsAccruingP2,

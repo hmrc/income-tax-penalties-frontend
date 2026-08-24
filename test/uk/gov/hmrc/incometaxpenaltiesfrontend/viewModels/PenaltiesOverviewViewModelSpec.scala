@@ -116,7 +116,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                 val result = PenaltiesOverviewViewModel(penaltyDetails)
 
                 result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 1), 1)) shouldBe Seq(
-                  messagesForLanguage.overviewLSPPointsNoBullets(1)
+                  messagesForLanguage.overviewLSPPoints(1)
                 )
                 result.hasFinancialCharge shouldBe false
               }
@@ -141,7 +141,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
                   )
                 val result = PenaltiesOverviewViewModel(penaltyDetails)
                 result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
-                  messagesForLanguage.overviewLSPPointsNoBullets(2)
+                  messagesForLanguage.overviewLSPPoints(2)
                 )
                 result.hasFinancialCharge shouldBe false
                 
@@ -173,7 +173,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
               result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
-                messagesForLanguage.overviewLSPPointsNoBullets(2)
+                messagesForLanguage.overviewLSPPoints(2)
               )
 
               result.hasFinancialCharge shouldBe false
@@ -205,7 +205,7 @@ class PenaltiesOverviewViewModelSpec extends AnyWordSpec with Matchers with Guic
               val result = PenaltiesOverviewViewModel(penaltyDetails)
 
               result.overviewItems.map(oi => Messages(pluralOrSingular(oi.messageKey(hasBullets = false), 2), 2)) shouldBe Seq(
-                messagesForLanguage.overviewLSPPointsNoBullets(2)
+                messagesForLanguage.overviewLSPPoints(2)
               )
 
               result.hasFinancialCharge shouldBe false

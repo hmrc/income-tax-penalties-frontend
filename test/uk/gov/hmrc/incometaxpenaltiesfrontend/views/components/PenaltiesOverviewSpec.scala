@@ -56,7 +56,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
 
             "a single piece of overview content exists AND no financial charge either" should {
 
-              "output a paragraph without bullet points AND no check and pay button" which {
+              "output a paragraph without check and pay button" which {
 
                 val penaltiesOverviewHtml = penaltiesOverview(
                   PenaltiesOverviewViewModel(Seq(LSPPointsActive(1)), hasFinancialCharge = false),
@@ -67,7 +67,8 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
 
                 behave like pageWithExpectedElementsAndMessages(
                   Selectors.overviewH2 -> messagesForLanguage.overviewH2,
-                  Selectors.overviewP1 -> messagesForLanguage.overviewLSPPointsNoBullets(1)
+                  Selectors.overviewP1 -> messagesForLanguage.overviewP1,
+                  Selectors.overviewBullet(1) -> messagesForLanguage.overviewLSPPoints(1)
                 )
 
                 behave like pageWithoutElementsRendered(
