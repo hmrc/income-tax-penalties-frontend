@@ -532,7 +532,10 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
         paymentPlanAgreed = None,
         paymentPlanProposed = None,
         principalChargeDueDate = LocalDate.of(2026, 5, 1),
-        payPenaltyBy = LocalDate.of(2026, 6, 30)
+        payPenaltyBy = LocalDate.of(2026, 6, 30),
+        penaltyChargeCreationDate = None, // Ensure it doesn't fall back to creation date
+        incomeTaxPaidDate = None, // Ensure it falls back to timeMachine's "today"
+        penaltyStatus = LPPPenaltyStatusEnum.Accruing // Ensure it doesn't use creation date for Posted penalties
       )
 
       val periods = helper.chargePeriods(data, None, fixedTimeMachine)
