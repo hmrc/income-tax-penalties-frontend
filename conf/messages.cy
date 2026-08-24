@@ -22,15 +22,15 @@ index.overview.lsp.points.bullet.singular = 1 pwynt cosb am gyflwyno’n hwyr
 index.overview.lsp.points.bullet.plural = {0} o bwyntiau cosb am gyflwyno’n hwyr
 index.overview.lsp.points.max.bullet = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
 
-individual.index.overview.unpaidReturnCharges = Mae gan eich cyfrif daliadau Treth Incwm gorddyledus
-individual.index.overview.unpaidInterest = Mae llog sydd heb ei dalu ar eich cyfrif
-individual.index.overview.lpp.penalties.singular = Mae gan eich cyfrif gosb am dalu’n hwyr
-individual.index.overview.lpp.penalties.plural = Mae gan eich cyfrif gosbau am dalu’n hwyr
-individual.index.overview.lsp.penalties.singular= Mae gan eich cyfrif gosb am gyflwyno’n hwyr
-individual.index.overview.lsp.penalties.plural = Mae gan eich cyfrif gosbau am gyflwyno’n hwyr
-individual.index.overview.lsp.points.singular = Mae gan eich cyfrif 1 pwynt cosb am gyflwyno’n hwyr
-individual.index.overview.lsp.points.plural =  Mae gan eich cyfrif {0} bwynt cosb am gyflwyno’n hwyr
-individual.index.overview.lsp.points.max = Mae gan eich cyfrif y nifer uchaf o bwyntiau cosb am gyflwyno’n hwyr
+individual.index.overview.unpaidReturnCharges = taliadau Treth Incwm gorddyledus
+individual.index.overview.unpaidInterest = llog sydd heb ei dalu
+individual.index.overview.lpp.penalties.singular = cosb am dalu’n hwyr
+individual.index.overview.lpp.penalties.plural = cosbau am dalu’n hwyr
+individual.index.overview.lsp.penalties.singular= cosb am gyflwyno’n hwyr
+individual.index.overview.lsp.penalties.plural = cosbau am gyflwyno’n hwyr
+individual.index.overview.lsp.points.singular = 1 pwynt cosb am gyflwyno’n hwyr
+individual.index.overview.lsp.points.plural =  {0} o bwyntiau cosb am gyflwyno’n hwyr
+individual.index.overview.lsp.points.max = uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr
 
 individual.index.overview.checkWhatYouOwe.button = Gwirio’r hyn sydd arnoch
 
