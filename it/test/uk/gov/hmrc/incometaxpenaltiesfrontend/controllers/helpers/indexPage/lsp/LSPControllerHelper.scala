@@ -124,26 +124,12 @@ trait LSPControllerHelper extends ControllerISpecHelper {
     lppTabContent.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPContent
   }
 
-  def expectedLSPTabBody(userDetailsData: UserDetailsData): String = {
-    if (userDetailsData.numberOfLSPPenalties == 0) {
-      "You don’t have any active late submission penalties."
-    } else if (userDetailsData.hasFinancialLSP) {
-      if ((userDetailsData.numberOfUnpaidFinancialPenalties + userDetailsData.numberOfPaidFinancialPenalties) == 1) {
-        "You will get an additional £200 penalty every time you send a late submission in the future, until your points are removed." +
-          " You should send any missing submissions as soon as possible if you haven’t already."
-      } else {
-        "You will get another £200 penalty every time you send a late submission in the future, until your points are removed." +
-          " You should send any missing submissions as soon as possible if you haven’t already."
-      }
-    } else if (userDetailsData.numberOfLSPPenalties == 1) {
-      s"You have 1 penalty point for sending a late submission." +
-        s" You should send this missing submission as soon as possible if you haven’t already."
+  def expectedLSPTabBody(userDetailsData: UserDetailsData): String = userDetailsData.numberOfLSPPenalties match {
+    case 0 => "You do not have any late submission penalties."
+    case _ if userDetailsData.hasFinancialLSP => "You’ll get another £200 penalty every time you miss a submission deadline until your penalty points are removed."
+    case 1 => "You have 1 penalty point for missing a submission deadline. You must send the missing submission as soon as possible if you have not already."
+    case n => s"You have $n penalty points for missing submission deadlines." + s" You must send the missing submissions as soon as possible if you have not already."
 
-    } else {
-      val numPenPoints = userDetailsData.numberOfLSPPenalties.toString
-      s"You have $numPenPoints penalty points for sending late submissions." +
-        s" You should send any missing submissions as soon as possible if you haven’t already."
-
-    }
   }
+
 }

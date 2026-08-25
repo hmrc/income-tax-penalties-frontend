@@ -19,7 +19,7 @@ package fixtures.messages
 object IndexViewMessages {
 
   sealed trait Messages { this: i18n =>
-    val noLSP = "You don’t have any active late submission penalties"
+    val noLSP = "You do not have any late submission penalties"
     val noLPPIndividual = "You do not have any late payment penalties."
     val taxPaidButPenaltyNotPaid = "You can pay your penalties now."
     val overviewH2 = "Overview"
@@ -66,7 +66,7 @@ object IndexViewMessages {
 
   object Welsh extends Messages with Cy {
     override val noLPPIndividual = "Nid oes gennych unrhyw gosbau am dalu’n hwyr."
-    override val noLSP = "Cosbau am gyflwyno’n hwyr Nid oes unrhyw gosbau am gyflwyno’n hwyr ar waith gennych ar hyn o bryd"
+    override val noLSP = "Nid oes gennych unrhyw gyflwyno’n hwyr."
     override val taxPaidButPenaltyNotPaid = "Gallwch dalu’r cosbau nawr."
     override val overviewH2 = "Trosolwg"
     override val overviewP1: String = "Mae gan eich cyfrif y canlynol:"

@@ -117,10 +117,10 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
               behave like pageWithExpectedElementsAndMessages(
                 Selectors.p(1) -> messagesForLanguage.pointsTotal(data.pointsTotal),
-                Selectors.warning -> messagesForLanguage.pointsAccruingWarning,
+                Selectors.warning -> messagesForLanguage.pointsAccruingWarning(data.threshold),
                 Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(data.activePoints),
                 Selectors.p(3) -> messagesForLanguage.pointsAccruingP2,
-                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(data.threshold),
+                Selectors.p(4) -> messagesForLanguage.pointsAccruingP3Special,
                 Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink
               )
 

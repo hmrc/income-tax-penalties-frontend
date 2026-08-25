@@ -44,12 +44,25 @@
 
             @if(lsp.activePoints < lsp.threshold) {
                 @if(lsp.activePoints == lsp.threshold - 1) {
-                    @warning(msg = "individual.index.lsp.tab.overview.pointsAccruing.warning", elmId = "penaltyNextTime")
-                }
+                    @warning(
+                        msg = if(lsp.threshold == 4)
+                               "individual.index.lsp.tab.overview.pointsAccruing.warning.point3"
+                              else
+                               "individual.index.lsp.tab.overview.pointsAccruing.warning.point1"
+                        ,
+                        elmId = "penaltyNextTime"
+                    )
+
+
+        }
                 @p("individual" + pluralOrSingular(".index.lsp.tab.overview.pointsAccruing.p1", lsp.activePoints), Seq(lsp.activePoints))
                 @p("individual.index.lsp.tab.overview.pointsAccruing.p2")
-                @p("individual.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
 
+                @if(lsp.activePoints == lsp.threshold - 1){
+                 @p("individual.index.lsp.tab.overview.pointsAccruing.p3Special")
+                }else{
+                 @p("individual.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
+                }
                 @link(
                     link = appConfig.guidanceOnLSPUrl,
                     messageKey = messages("index.lsp.tab.overview.pointsGuidanceLink") + " " + messages("common.opensInNewTab"),
@@ -67,13 +80,25 @@
                 }
 
             } else {
-                @if(lsp.numberOfFinancialPenalties == 1) {
+                @if(lsp.numberOfFinancialPenalties == 1 && !(lsp.activePoints == 4)) {
                     @warning(msg = "individual.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")
                     @p("individual.index.lsp.tab.overview.penalty.p1")
-                } else {
+                    @p("individual.index.lsp.tab.overview.penalty.p2")
+                } else if (lsp.activePoints == lsp.threshold && lsp.numberOfFinancialPenalties == 1){
+                    @warning(
+                        msg = if(lsp.threshold == 4)
+                               "individual.index.lsp.tab.overview.pointsAccruing.warning.point4"
+                              else
+                               "individual.index.lsp.tab.overview.additionalPenalty.warning"
+                        ,
+                        elmId = "penaltyNextTime")
+                    @p("individual.index.lsp.tab.overview.penalty.p1")
+                    @p("individual.index.lsp.tab.overview.penalty.p2")
+               } else {
                     @warning(msg = "individual.index.lsp.tab.overview.additionalPenalty.warning", elmId = "additionalPenalty")
                     @p("individual.index.lsp.tab.overview.additionalPenalty.p1")
-                }
+                    @p("individual.index.lsp.tab.overview.additionalPenalty.p2")
+               }
 
                 @actionsToRemoveLinkDate.map(removeLinkDate => {link(
                     link = controllers.routes.ComplianceTimelineController.complianceTimelinePage(isAgent).url,
