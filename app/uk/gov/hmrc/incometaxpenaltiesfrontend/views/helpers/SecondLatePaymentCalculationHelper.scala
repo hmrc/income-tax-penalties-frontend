@@ -23,7 +23,82 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.{dateToString, dateToYearString}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.SecondLatePaymentPenaltyCalculationData
 
+import java.time.LocalDate
+
 class SecondLatePaymentCalculationHelper {
+
+  private def earliestTtpDateOpt(calculationData: SecondLatePaymentPenaltyCalculationData): Option[LocalDate] =
+    (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
+      case (Some(a), Some(b)) => Some(if (a.isBefore(b)) a else b)
+      case (Some(a), None)    => Some(a)
+      case (None, Some(b))    => Some(b)
+      case _                  => None
+    }
+
+  private def chargePeriodStartDate(calculationData: SecondLatePaymentPenaltyCalculationData,
+                                    isSupplementary: Boolean): LocalDate =
+    if (isSupplementary) calculationData.penaltyChargeCreationDate.getOrElse(calculationData.principalChargeDueDate.plusDays(31))
+    else calculationData.principalChargeDueDate.plusDays(31)
+
+  /**
+   * Works out the charge period(s) over which the LPP2 penalty accrues, splitting the period around any
+   * breathing space window(s).
+   *
+   * LPP2_START          = principal charge due date + 31 days
+   * CalculationEndDate  = the date income tax was paid; otherwise (for Posted penalties) the penalty
+   *                       charge creation date; otherwise today.
+   *
+   * The charge window `[LPP2_START, CalculationEndDate]` is suspended for the duration of each breathing
+   * space. An ended breathing space splits the window into a "before" and an "after" part; a breathing
+   * space that is still active today truncates the window at the day before it starts (there is no
+   * "after" part yet). Only chronologically valid periods (start on or before end) are returned, so an
+   * empty result means there is nothing to charge (e.g. income tax was paid before LPP2 even started).
+   *
+   * For supplementary calculations, the start of the window can be the actual penalty charge creation
+   * date when that is available.
+   */
+  def chargePeriods(calculationData: SecondLatePaymentPenaltyCalculationData,
+                    breathingSpaceData: Option[Seq[BreathingSpace]],
+                    timeMachine: TimeMachine,
+                    isSupplementary: Boolean = false): Seq[(LocalDate, LocalDate)] = {
+
+    val today: LocalDate = timeMachine.getCurrentDate()
+    val lpp2Start: LocalDate = chargePeriodStartDate(calculationData, isSupplementary)
+
+    val calculationEndDate: LocalDate =
+      earliestTtpDateOpt(calculationData)
+        .orElse(calculationData.incomeTaxPaidDate)
+        .orElse(if (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted) calculationData.penaltyChargeCreationDate else None)
+        .getOrElse(today)
+
+    def earlier(a: LocalDate, b: LocalDate): LocalDate = if (a.isBefore(b)) a else b
+    def later(a: LocalDate, b: LocalDate): LocalDate = if (a.isAfter(b)) a else b
+
+    // Only return a period when it is chronologically valid (start on or before end).
+    def validPeriod(start: LocalDate, end: LocalDate): Seq[(LocalDate, LocalDate)] =
+      if (!start.isAfter(end)) Seq(start -> end) else Seq.empty
+
+    // Suspends charging for a single breathing space, potentially splitting the period into a
+    // "before" part and an "after" part. While a breathing space is still active today there is no
+    // "after" part, so charging is suspended all the way to the end of the window.
+    def removeBreathingSpace(period: (LocalDate, LocalDate), bs: BreathingSpace): Seq[(LocalDate, LocalDate)] = {
+      val (start, end) = period
+      val suspendedUntil = if (bs.bsEndDate.isBefore(today)) bs.bsEndDate else end
+      validPeriod(start, earlier(bs.bsStartDate.minusDays(1), end)) ++
+        validPeriod(later(suspendedUntil.plusDays(1), start), end)
+    }
+
+    // Nothing to charge if the window is invalid (e.g. income tax was paid before LPP2 started).
+    if (lpp2Start.isAfter(calculationEndDate)) {
+      Seq.empty
+    } else {
+      // The model allows multiple breathing spaces, so each one is removed from the charge window in turn.
+      breathingSpaceData.getOrElse(Seq.empty).sortBy(_.bsStartDate)
+        .foldLeft(Seq(lpp2Start -> calculationEndDate)) { (periods, bs) =>
+          periods.flatMap(removeBreathingSpace(_, bs))
+        }
+    }
+  }
 
 
   def getPaymentDetails(calculationData: SecondLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
@@ -47,7 +122,7 @@ class SecondLatePaymentCalculationHelper {
       None
     }
   }
-  
+
   def getMissedDeadlineAndDailyIncreaseMsgs(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)(implicit messages: Messages): (String, Option[String], Option[String]) = {
     val hasTimeToPayArrangement = calculationData.paymentPlanAgreed.isDefined || calculationData.paymentPlanProposed.isDefined
     val dailyIncreaseMsg = if (hasTimeToPayArrangement) None else {
@@ -120,14 +195,14 @@ class SecondLatePaymentCalculationHelper {
                               timeMachine: TimeMachine): Boolean = {
     breathingSpaceData match {
       case Some(breathingSpace) => breathingSpace.count(bs =>
+
         (bs.bsEndDate.isBefore(timeMachine.getCurrentDate()) && !bs.bsEndDate.isBefore(calculationData.principalChargeDueDate.plusDays(31))) &&
           (
             (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Accruing && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))) ||
               (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted &&
                 (
-                  (bs.bsStartDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)) && bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1))) ||
-                    (bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30)) && bs.bsEndDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1))) ||
-                    (bs.bsStartDate.isBefore(calculationData.principalChargeDueDate.plusDays(31)) && bs.bsEndDate.isAfter(calculationData.penaltyChargeCreationDate.get))
+                  // This condition checks the breathing space intersects the LPP2 charging window
+                  bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))
                   )
                 )
             )

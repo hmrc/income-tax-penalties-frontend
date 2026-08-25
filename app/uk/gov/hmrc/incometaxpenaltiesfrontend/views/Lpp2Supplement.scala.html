@@ -33,7 +33,7 @@
         lpp2SupplementaryCalculationSummaryList: Lpp2SupplementaryCalculationSummaryList
 )
 
-@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @SupplementaryPenaltyAmountDetails = {
     <p class="govuk-body" id="SupplementaryPenaltyAmountDetailsP1">@messages("calculation.supplementary.details.p1", calculationData.penaltyPercentage.toString())</p>
@@ -81,7 +81,7 @@
             <p class="govuk-body" id="penaltyDue">@messages("calculation.supplementary.second.avoid.interest.text", dateToString(calculationData.payPenaltyBy))</p>
         }
     }
-@lpp2SupplementaryCalculationSummaryList(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine)
+@lpp2SupplementaryCalculationSummaryList(calculationData: SecondLatePaymentPenaltyCalculationData, timeMachine: TimeMachine, breathingSpaceData)
 
     <div class="govuk-!-margin-bottom-8">
         @link(

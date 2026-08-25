@@ -364,30 +364,189 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
     }
   }
 
-  "SecondLatePaymentPenaltyCalculationData charge period calculations" should {
-    "use the earliest TTP date for chargePeriodEndDate when both agreed and proposed dates are present" in {
+  "SecondLatePaymentCalculationHelper.chargePeriods" should {
+    val fixedNow: LocalDate = LocalDate.of(2027, 6, 10)
+    val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+      override def getCurrentDate(): LocalDate = fixedNow
+    }
+
+    // principalChargeDueDate + 31 = LPP2 start date
+    val principalChargeDueDate: LocalDate = LocalDate.of(2027, 1, 1)
+    val lpp2Start: LocalDate = principalChargeDueDate.plusDays(31) // 01 Feb 2027
+
+    // Convenience builder: a Posted, unpaid LPP2 by default (calculation end date falls back to today).
+    def calcData(incomeTaxPaidDate: Option[LocalDate] = None): SecondLatePaymentPenaltyCalculationData =
+      sampleSecondLPPCalcData(isEstimate = false).copy(
+        penaltyStatus = LPPPenaltyStatusEnum.Posted,
+        principalChargeDueDate = principalChargeDueDate,
+        incomeTaxPaidDate = incomeTaxPaidDate,
+        penaltyChargeCreationDate = None
+      )
+
+    "return a single period from LPP2 start to today when there is no breathing space and tax is unpaid" in {
+      helper.chargePeriods(calcData(), None, fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
+    "return a single period from LPP2 start to the tax paid date when tax has been paid" in {
+      val taxPaid = LocalDate.of(2027, 4, 30)
+      helper.chargePeriods(calcData(Some(taxPaid)), None, fixedTimeMachine) shouldBe Seq(lpp2Start -> taxPaid)
+    }
+
+    "return a single period from LPP2 start to the earliest TTP date when a payment plan exists and tax is unpaid" in {
+      val data = calcData().copy(
+        paymentPlanAgreed = Some(LocalDate.of(2027, 4, 15)),
+        paymentPlanProposed = Some(LocalDate.of(2027, 4, 10))
+      )
+
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> LocalDate.of(2027, 4, 10))
+    }
+
+    "prioritize TTP dates over income tax paid date when both exist" in {
+      val taxPaidDate = LocalDate.of(2027, 4, 5)
+      val ttpProposalDate = LocalDate.of(2027, 4, 12)
+      val data = calcData(Some(taxPaidDate)).copy(
+        paymentPlanProposed = Some(ttpProposalDate)
+      )
+
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> ttpProposalDate)
+    }
+
+    "still use the earliest TTP date as the end date for supplementary calculations" in {
+      val creationDate = LocalDate.of(2027, 2, 10)
+      val data = calcData().copy(
+        penaltyChargeCreationDate = Some(creationDate),
+        paymentPlanAgreed = Some(LocalDate.of(2027, 4, 15)),
+        paymentPlanProposed = Some(LocalDate.of(2027, 4, 10))
+      )
+
+      helper.chargePeriods(data, None, fixedTimeMachine, isSupplementary = true) shouldBe Seq(creationDate -> LocalDate.of(2027, 4, 10))
+    }
+
+    "use penaltyChargeCreationDate as the supplementary start date when it is available" in {
+      val creationDate = LocalDate.of(2027, 3, 15)
+      val data = calcData().copy(penaltyChargeCreationDate = Some(creationDate))
+
+      helper.chargePeriods(data, None, fixedTimeMachine, isSupplementary = true) shouldBe Seq(creationDate -> creationDate)
+    }
+
+    "return Seq.empty when income tax was paid before LPP2 starts" in {
+      val taxPaidBeforeLpp2 = lpp2Start.minusDays(10)
+      helper.chargePeriods(calcData(Some(taxPaidBeforeLpp2)), None, fixedTimeMachine) shouldBe Seq.empty
+    }
+
+    "have no effect when a breathing space ended before LPP2 starts" in {
+      val bs = BreathingSpace(bsStartDate = lpp2Start.minusDays(20), bsEndDate = lpp2Start.minusDays(5))
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
+    "return a single period before breathing space when the breathing space starts after the charge window ends" in {
+      val bs = BreathingSpace(bsStartDate = fixedNow.plusDays(10), bsEndDate = fixedNow.plusDays(20))
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
+    "return two periods when LPP2 starts before a breathing space that has since ended" in {
+      val bsStart = lpp2Start.plusDays(10)
+      val bsEnd = lpp2Start.plusDays(20) // in the past relative to fixedNow
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> bsStart.minusDays(1),
+        bsEnd.plusDays(1) -> fixedNow
+      )
+    }
+
+    "return only the period before a breathing space that is still active today" in {
+      val bsStart = lpp2Start.plusDays(10)
+      val bsEnd = fixedNow.plusDays(5) // still active
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> bsStart.minusDays(1)
+      )
+    }
+
+    "return only the period after a breathing space when LPP2 starts within an ended breathing space" in {
+      val bsStart = lpp2Start.minusDays(5)
+      val bsEnd = lpp2Start.plusDays(20) // ended, and covers LPP2 start
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        bsEnd.plusDays(1) -> fixedNow
+      )
+    }
+
+    "not create a period after the breathing space when tax was paid during it" in {
+      val bsStart = lpp2Start.plusDays(10)
+      val bsEnd = lpp2Start.plusDays(30)
+      val taxPaidDuringBs = lpp2Start.plusDays(20)
+      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+
+      helper.chargePeriods(calcData(Some(taxPaidDuringBs)), Some(Seq(bs)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> bsStart.minusDays(1)
+      )
+    }
+
+    "use penaltyChargeCreationDate as the end date for Posted penalties when the tax paid date is unavailable" in {
+      val creationDate = LocalDate.of(2027, 3, 15)
+      val data = calcData().copy(penaltyChargeCreationDate = Some(creationDate))
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> creationDate)
+    }
+
+    "process multiple breathing spaces, splitting the charge window around each ended one" in {
+      val bs1 = BreathingSpace(bsStartDate = lpp2Start.plusDays(10), bsEndDate = lpp2Start.plusDays(20))
+      val bs2 = BreathingSpace(bsStartDate = lpp2Start.plusDays(40), bsEndDate = lpp2Start.plusDays(50))
+
+      helper.chargePeriods(calcData(), Some(Seq(bs2, bs1)), fixedTimeMachine) shouldBe Seq(
+        lpp2Start -> lpp2Start.plusDays(9),
+        lpp2Start.plusDays(21) -> lpp2Start.plusDays(39),
+        lpp2Start.plusDays(51) -> fixedNow
+      )
+    }
+  }
+
+  "SecondLatePaymentPenaltyCalculationData charge period calculations using helper" should {
+    "use the earliest TTP date for charge period end date when both agreed and proposed dates are present" in {
+      val fixedNow = LocalDate.of(2026, 7, 1)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = true,
+        principalChargeDueDate = LocalDate.of(2026, 5, 1),
         paymentPlanAgreed = Some(LocalDate.of(2026, 6, 25)),
         paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
       )
 
-      data.chargePeriodEndDate(LocalDate.of(2026, 7, 1)) shouldBe LocalDate.of(2026, 6, 20)
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      periods.last._2 shouldBe LocalDate.of(2026, 6, 20)
     }
 
-    "use the current date for chargePeriodEndDate when there is no TTP and the penalty is an estimate" in {
+    "use the current date for charge period end date when there is no TTP and the penalty is an estimate" in {
+      val fixedNow = LocalDate.of(2026, 7, 27)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = true,
         paymentPlanAgreed = None,
         paymentPlanProposed = None,
         principalChargeDueDate = LocalDate.of(2026, 5, 1),
-        payPenaltyBy = LocalDate.of(2026, 6, 30)
+        payPenaltyBy = LocalDate.of(2026, 6, 30),
+        penaltyChargeCreationDate = None, // Ensure it doesn't fall back to creation date
+        incomeTaxPaidDate = None, // Ensure it falls back to timeMachine's "today"
+        penaltyStatus = LPPPenaltyStatusEnum.Accruing // Ensure it doesn't use creation date for Posted penalties
       )
 
-      data.chargePeriodEndDate(LocalDate.of(2026, 7, 1)) shouldBe LocalDate.of(2026, 7, 1)
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      periods.last._2 shouldBe fixedNow
     }
 
-    "calculate chargePeriodDays using the earliest TTP date" in {
+    "calculate charge period days using the earliest TTP date" in {
+      val fixedNow = LocalDate.of(2026, 7, 1)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = true,
         principalChargeDueDate = LocalDate.of(2026, 5, 1),
@@ -395,19 +554,33 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
         paymentPlanProposed = Some(LocalDate.of(2026, 6, 20))
       )
 
-      data.chargePeriodDays(LocalDate.of(2026, 7, 1)) shouldBe 20
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      val totalDays = periods.map { case (start, end) =>
+        java.time.temporal.ChronoUnit.DAYS.between(start, end).toInt + 1
+      }.sum
+      totalDays shouldBe 20
     }
 
-    "calculate chargePeriodDays from payPenaltyBy.minusDays(32) when there is no TTP and the penalty is not an estimate" in {
+    "calculate charge period days from payPenaltyBy.minusDays(32) when there is no TTP and the penalty is not an estimate" in {
+      val fixedNow = LocalDate.of(2026, 7, 1)
+      val fixedTimeMachine: TimeMachine = new TimeMachine(app.injector.instanceOf[AppConfig]) {
+        override def getCurrentDate(): LocalDate = fixedNow
+      }
       val data = sampleSecondLPPCalcData().copy(
         isEstimate = false,
+        penaltyStatus = LPPPenaltyStatusEnum.Posted,
         principalChargeDueDate = LocalDate.of(2026, 5, 1),
         payPenaltyBy = LocalDate.of(2026, 7, 31),
         paymentPlanAgreed = None,
-        paymentPlanProposed = None
+        paymentPlanProposed = None,
+        penaltyChargeCreationDate = Some(LocalDate.of(2026, 6, 29))
       )
 
-      data.chargePeriodDays(LocalDate.of(2026, 7, 1)) shouldBe 29
+      val periods = helper.chargePeriods(data, None, fixedTimeMachine)
+      val totalDays = periods.map { case (start, end) =>
+        java.time.temporal.ChronoUnit.DAYS.between(start, end).toInt + 1
+      }.sum
+      totalDays shouldBe 29
     }
   }
 
