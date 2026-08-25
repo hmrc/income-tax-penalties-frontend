@@ -129,6 +129,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       chargeEndDate = LocalDate.now(),
       penaltyChargeCreationDate = Some(penaltyChargeDueDate.minusDays(30)),
       principalChargeDueDate = penaltyChargeDueDate.minusDays(60),
+      incomeTaxPaidDate = if (isIncomeTaxPaid) Some(LocalDate.now()) else None,
       isPFA = false,
       paymentPlanAgreed = ttpDate(isPaymentPlanAgreed),
       paymentPlanProposed = ttpDate(isPaymentPlanProposed),
@@ -427,13 +428,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
@@ -479,13 +480,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
@@ -531,13 +532,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
@@ -564,7 +565,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       latePaymentPenalty = Some(lpp),
       breathingSpace = Some(Seq(
         BreathingSpace(
-          bsStartDate = LocalDate.now().minusDays(30),
+          bsStartDate = LocalDate.now().minusDays(20),
           bsEndDate = LocalDate.now().plusDays(30)
         )))
     )))
@@ -626,6 +627,19 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
     )))
   }
 
+  // A breathing space that starts after the LPP2 charge period begins and has already ended, so the
+  // charge period is split into a "before" and an "after" part (two charge period rows).
+  def getPenaltyDetailsForSecondCalculationPageWithSplitBreathingSpace(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
+    val base = getPenaltyDetailsForSecondCalculationPageWithExBreathingSpace(secondLPPCalData)
+    base.copy(penaltyDetails = base.penaltyDetails.map(_.copy(
+      breathingSpace = Some(Seq(
+        BreathingSpace(
+          bsStartDate = secondLPPCalData.principalChargeDueDate.plusDays(45),
+          bsEndDate = secondLPPCalData.principalChargeDueDate.plusDays(50)
+        )))
+    )))
+  }
+
   def getPenaltyDetailsWithLPP1BeforeLPP2Supplement(secondLPPCalData: SecondLatePaymentPenaltyCalculationData): PenaltySuccessResponse = {
     val lpp1Details = LPPDetails(
       principalChargeReference = principleChargeRef,
@@ -643,13 +657,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
@@ -672,13 +686,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234568"),
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
@@ -795,13 +809,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234567"),
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
@@ -824,13 +838,13 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       lpp2Percentage = None,
       lpp1LRPercentage = Some(3.00),
       lpp1HRPercentage = Some(BigDecimal(3.00).setScale(2)),
-      penaltyChargeCreationDate = Some(secondLPPCalData.payPenaltyBy.minusDays(30)),
+      penaltyChargeCreationDate = Some(secondLPPCalData.principalChargeDueDate.plusDays(40)),
       communicationsDate = Some(secondLPPCalData.payPenaltyBy),
       penaltyChargeDueDate = Some(secondLPPCalData.payPenaltyBy),
       appealInformation = None,
       principalChargeBillingFrom = secondLPPCalData.taxPeriodStartDate,
       principalChargeBillingTo = secondLPPCalData.taxPeriodEndDate,
-      principalChargeDueDate = secondLPPCalData.payPenaltyBy,
+      principalChargeDueDate = secondLPPCalData.principalChargeDueDate,
       penaltyChargeReference = Some("PEN1234568"),
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,

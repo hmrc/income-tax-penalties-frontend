@@ -582,7 +582,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
@@ -610,7 +610,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
@@ -659,7 +659,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
@@ -694,7 +694,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("penaltyPaymentStatus").text() shouldBe "Penalty paid"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you were charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
@@ -721,7 +721,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty increased daily at an annual rate of 10% until the outstanding tax was paid."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
@@ -751,12 +751,12 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
             document.getElementById("breathingSpaceMessage").text() shouldBe "You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation."
-            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.payPenaltyBy)}."
+            document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you will be charged a second late payment penalty."
             document.getElementById("penaltyIncrease").text() shouldBe "This penalty will increase daily at an annual rate of 10% of the outstanding tax."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(secondLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
             document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
-            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period"
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period(before Breathing Space)"
             document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Annual rate"
             document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
             document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Estimated penalty"
@@ -789,6 +789,27 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-summary-list__value").get(1).text() shouldBe "10%"
             document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Estimated penalty"
             document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "£1,001.45"
+
+          }
+
+          //scenario 8
+          "the breathing space splits the charge period into two" in {
+            stubAuthRequests(isAgent)
+            val secondLPPCalcData = sampleSecondLPPCalcData()
+            stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSplitBreathingSpace(secondLPPCalcData)))
+            val result = get(secondLPPPath, isAgent)
+            result.status shouldBe OK
+
+            val document = Jsoup.parse(result.body)
+            document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
+            document.getElementById("penaltyDetailsHeading").text() shouldBe "Your penalty details"
+            // Two "Charge period" rows: one before and one after the breathing space
+            document.getElementsByClass("govuk-summary-list__key").get(0).text() shouldBe "Charge period(before Breathing Space)"
+            document.getElementsByClass("govuk-summary-list__key").get(1).text() shouldBe "Charge period(after Breathing Space)"
+            document.getElementsByClass("govuk-summary-list__key").get(2).text() shouldBe "Annual rate"
+            document.getElementsByClass("govuk-summary-list__value").get(2).text() shouldBe "10%"
+            document.getElementsByClass("govuk-summary-list__key").get(3).text() shouldBe "Estimated penalty"
+            document.getElementsByClass("govuk-summary-list__value").get(3).text() shouldBe "£1,001.45"
 
           }
 
