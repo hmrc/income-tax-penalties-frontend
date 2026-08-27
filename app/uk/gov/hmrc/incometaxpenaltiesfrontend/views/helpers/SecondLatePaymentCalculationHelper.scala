@@ -202,7 +202,7 @@ class SecondLatePaymentCalculationHelper {
               (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted &&
                 (
                   // This condition checks the breathing space intersects the LPP2 charging window
-                  bs.bsStartDate.isBefore(calculationData.penaltyChargeCreationDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.principalChargeDueDate.plusDays(30))
+                  bs.bsStartDate.isBefore(calculationData.incomeTaxPaidDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.penaltyChargeCreationDate.get.minusDays(1))
                   )
                 )
             )
