@@ -40,8 +40,10 @@ class FirstLatePaymentCalculationHelper {
       Some {
         if (calculationData.isPenaltyPaid) {
           messages("calculation.paid.penalty")
-        } else {
+        } else if(!calculationData.isEstimate && !calculationData.isPenaltyPaid){
           messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
+        } else {
+          null
         }
       }
     }
