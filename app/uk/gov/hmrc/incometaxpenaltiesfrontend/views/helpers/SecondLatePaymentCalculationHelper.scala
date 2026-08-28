@@ -68,7 +68,7 @@ class SecondLatePaymentCalculationHelper {
     val calculationEndDate: LocalDate =
       earliestTtpDateOpt(calculationData)
         .orElse(calculationData.incomeTaxPaidDate)
-        .orElse(if (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted) calculationData.penaltyChargeCreationDate else None)
+        .orElse(if (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted) calculationData.incomeTaxPaidDate else None)
         .getOrElse(today)
 
     def earlier(a: LocalDate, b: LocalDate): LocalDate = if (a.isBefore(b)) a else b
@@ -202,7 +202,7 @@ class SecondLatePaymentCalculationHelper {
               (calculationData.penaltyStatus == LPPPenaltyStatusEnum.Posted &&
                 (
                   // This condition checks the breathing space intersects the LPP2 charging window
-                  bs.bsStartDate.isBefore(calculationData.incomeTaxPaidDate.get.plusDays(1)) && bs.bsEndDate.isAfter(calculationData.penaltyChargeCreationDate.get.minusDays(1))
+                  bs.bsStartDate.isBefore(calculationData.incomeTaxPaidDate.getOrElse(calculationData.principalChargeDueDate.plusDays(726)).plusDays(1)) && bs.bsEndDate.isAfter(calculationData.penaltyChargeCreationDate.getOrElse(calculationData.principalChargeDueDate.plusDays(31)).minusDays(1))
                   )
                 )
             )
