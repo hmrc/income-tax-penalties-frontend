@@ -283,6 +283,16 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       override def getCurrentDate(): LocalDate = fixedNow
     }
 
+    def postedData(principalDueDate: LocalDate,
+                   chargeCreationDate: LocalDate,
+                   incomeTaxPaidDate: LocalDate): SecondLatePaymentPenaltyCalculationData =
+      sampleSecondLPPCalcData().copy(
+        principalChargeDueDate = principalDueDate,
+        penaltyChargeCreationDate = Some(chargeCreationDate),
+        incomeTaxPaidDate = Some(incomeTaxPaidDate),
+        penaltyStatus = LPPPenaltyStatusEnum.Posted
+      )
+
     "return false when no breathing space data" in {
       val data = sampleSecondLPPCalcData().copy(
         principalChargeDueDate = fixedNow.minusDays(60),
@@ -290,20 +300,6 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       )
 
       helper.isExpiredBreathingSpace(data, None, fixedTimeMachine) shouldBe false
-    }
-
-    "detect expired breathing space (generic case)" in {
-      val base = sampleSecondLPPCalcData()
-      val data = base.copy(
-        principalChargeDueDate = fixedNow.minusDays(60),
-        penaltyChargeCreationDate = Some(fixedNow.minusDays(30))
-      )
-
-      val bsStart = fixedNow.minusDays(30)
-      val bsEnd = fixedNow.minusDays(23)
-      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
-
-      helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe true
     }
 
     "breathing space: accruing branch true when end date after principal+30 and before now" in {
@@ -321,16 +317,38 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
       helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe true
     }
 
-    "breathing space: posted branch case3 true when spans penalty creation date" in {
-      val base = sampleSecondLPPCalcData()
-      val data = base.copy(
-        principalChargeDueDate = fixedNow.minusDays(50),
-        penaltyChargeCreationDate = Some(fixedNow.minusDays(10))
+    "breathing space: posted branch true when it starts before charge creation and ends before income tax is paid" in {
+      val data = postedData(
+        principalDueDate = fixedNow.minusDays(50),
+        chargeCreationDate = fixedNow.minusDays(10),
+        incomeTaxPaidDate = fixedNow.minusDays(2)
       )
 
-      val bsStart = data.principalChargeDueDate.plusDays(1)
-      val bsEnd = data.penaltyChargeCreationDate.get.plusDays(5)
-      val bs = BreathingSpace(bsStartDate = bsStart, bsEndDate = bsEnd)
+      val bs = BreathingSpace(bsStartDate = data.penaltyChargeCreationDate.get.minusDays(5), bsEndDate = data.incomeTaxPaidDate.get.minusDays(1))
+
+      helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe true
+    }
+
+    "breathing space: posted branch true when it starts after charge creation and ends before income tax is paid" in {
+      val data = postedData(
+        principalDueDate = fixedNow.minusDays(50),
+        chargeCreationDate = fixedNow.minusDays(10),
+        incomeTaxPaidDate = fixedNow.minusDays(2)
+      )
+
+      val bs = BreathingSpace(bsStartDate = data.penaltyChargeCreationDate.get.plusDays(1), bsEndDate = data.incomeTaxPaidDate.get.minusDays(1))
+
+      helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe true
+    }
+
+    "breathing space: posted branch true when it starts after charge creation and ends after income tax is paid" in {
+      val data = postedData(
+        principalDueDate = fixedNow.minusDays(50),
+        chargeCreationDate = fixedNow.minusDays(20),
+        incomeTaxPaidDate = fixedNow.minusDays(10)
+      )
+
+      val bs = BreathingSpace(bsStartDate = data.penaltyChargeCreationDate.get.plusDays(1), bsEndDate = data.incomeTaxPaidDate.get.plusDays(5))
 
       helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe true
     }
