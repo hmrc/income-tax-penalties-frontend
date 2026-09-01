@@ -36,16 +36,12 @@ class FirstLatePaymentCalculationHelper {
 
     if (calculationData.llpHRCharge.isEmpty && !calculationData.incomeTaxIsPaid && calculationData.isEstimate) {
       None
+    } else if (calculationData.isPenaltyPaid) {
+      Some(messages("calculation.paid.penalty"))
+    } else if (!calculationData.isEstimate && !calculationData.isPenaltyPaid) {
+      Some(messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy)))
     } else {
-      Some {
-        if (calculationData.isPenaltyPaid) {
-          messages("calculation.paid.penalty")
-        } else if(!calculationData.isEstimate && !calculationData.isPenaltyPaid){
-          messages("calculation.pay.penalty.by", DateFormatter.dateToString(calculationData.payPenaltyBy))
-        } else {
-          null
-        }
-      }
+      None
     }
   }
 
@@ -76,7 +72,7 @@ class FirstLatePaymentCalculationHelper {
 
   def getPaymentPlanInset(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages): Option[String] = {
     (calculationData.paymentPlanAgreed, calculationData.paymentPlanProposed) match {
-      case (None , Some(proposedDate)) =>
+      case (None, Some(proposedDate)) =>
         Some(messages("calculation.penalty.payment.plan.proposed.inset", dateToString(proposedDate)))
       case _ => None
     }
