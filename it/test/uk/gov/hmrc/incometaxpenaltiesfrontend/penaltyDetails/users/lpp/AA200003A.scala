@@ -19,29 +19,29 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.lpp
 import org.jsoup.nodes.Element
 import uk.gov.hmrc.incometaxpenaltiesfrontend.penaltyDetails.users.UserDetailsData
 
-object AA200000B extends UserDetailsData {
+object AA200003A extends UserDetailsData {
 
-  override val nino: String = "AA200000B"
+  override val nino: String = "AA200003A"
   override val expectedNumberOfLSPPenaltyCards: Int = 0
   override val expectedNumberOfLPPPenaltyCards: Int = 2
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £15.89")
-    validateCardTag(card, expectedTag = "Paused")
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £13.15")
+    validateCardTag(card, expectedTag = "£8.15 overdue")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
-    validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
-    validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
-    validateSummary(cardRows.get(3), "Status", "Paused due to Breathing Space")
+    validateSummary(cardRows.get(0), "Pay penalty by", "26 June 2028")
+    validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
+    validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
+    validateSummary(cardRows.get(3), "Income Tax paid", "25 May 2028")
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £120.00")
-    validateCardTag(card, expectedTag = "Paused")
+    validateCardTag(card, expectedTag = "Overdue")
     val cardRows = getCardsRows(card)
-    cardRows.size() shouldBe 5
-    validateSummary(cardRows.get(0), "Pay penalty by", "3 May 2028")
+    cardRows.size() shouldBe 4
+    validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2028")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
     validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")
@@ -54,7 +54,7 @@ object AA200000B extends UserDetailsData {
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has late payment penalties Check what you owe"
+    "Overview Your account has: overdue Income Tax charges late payment penalties Check what you owe"
 
-  override val timeMachineDate: String = "10/03/2028"
+  override val timeMachineDate: String = "05/03/2029"
 }

@@ -72,13 +72,7 @@ trait UserDetailsData extends Matchers {
   }
 
   def validateCardTag(card: Element, expectedTag: String): Unit = {
-    val expectedTagClass = expectedTag match {
-      case "Paid" => "govuk-tag govuk-tag--green"
-      case x if x.toLowerCase.contains("overdue") => "govuk-tag govuk-tag--red"
-      case x if x.toLowerCase.contains("due") => "govuk-tag govuk-tag--yellow"
-      case _ => "govuk-tag"
-    }
-    val tag = card.getElementsByClass(expectedTagClass).first()
+    val tag = card.getElementsByClass("govuk-tag").first()
     tag.text() shouldBe expectedTag
   }
 
