@@ -83,6 +83,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+            document.getElementById("penaltyPaymentStatus") shouldBe null
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
@@ -457,6 +458,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+            document.getElementById("penaltyPaymentStatus") shouldBe null
             document.getElementById("breathingSpaceMessage").text() shouldBe "You are in Breathing Space. This penalty is paused and will not increase. The time you are in Breathing Space will not be added to your calculation."
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
@@ -528,6 +530,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
             document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+            document.getElementById("penaltyPaymentStatus") shouldBe null
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline, you will be charged a late payment penalty."
             document.getElementById("penaltyStatus").text() shouldBe s"This penalty is currently an estimate because the outstanding tax for the ${getTaxYearString(firstLPPCalcData)} tax year has not been paid. To stop this estimated penalty increasing further, please pay the outstanding tax immediately or set up a payment plan."
