@@ -26,8 +26,28 @@ object AA200000BOverdue extends UserDetailsData {
   override val expectedNumberOfLPPPenaltyCards: Int = AA200000B.expectedNumberOfLPPPenaltyCards
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
-    0 -> AA200000B.penaltyCard0ExpectedContent,
-    1 -> AA200000B.penaltyCard1ExpectedContent
+    0 -> ((card: Element) => {
+      validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £15.89")
+      validateCardTag(card, expectedTag = "Estimate")
+      val cardRows = getCardsRows(card)
+      cardRows.size() shouldBe 3
+      validateSummary(cardRows.get(0), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
+      validateSummary(cardRows.get(1), "Income Tax due", "31 January 2028")
+      validateSummary(cardRows.get(2), "Income Tax paid", "Payment not yet received")
+      validateViewCalculationLink(card, 0, isSecondLPP = true)
+    }),
+    1 -> ((card: Element) => {
+      validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £120.00")
+      validateCardTag(card, expectedTag = "Overdue")
+      val cardRows = getCardsRows(card)
+      cardRows.size() shouldBe 4
+      validateSummary(cardRows.get(0), "Pay penalty by", "3 May 2028")
+      validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2026 to 2027 tax year")
+      validateSummary(cardRows.get(2), "Income Tax due", "31 January 2028")
+      validateSummary(cardRows.get(3), "Income Tax paid", "Payment not yet received")
+      validateViewCalculationLink(card, 1)
+      validateAppealLink(card.getElementsByClass("govuk-link").get(1))
+    })
   )
 
   override val expectedOverviewText: String = AA200000B.expectedOverviewText
