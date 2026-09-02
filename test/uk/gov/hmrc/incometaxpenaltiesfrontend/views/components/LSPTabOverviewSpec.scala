@@ -186,7 +186,8 @@ class LSPTabOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                 Selectors.p(2) -> messagesForLanguage.pointsAccruingP1(data.activePoints),
                 Selectors.p(3) -> messagesForLanguage.pointsAccruingP2,
                 Selectors.p(4) -> messagesForLanguage.pointsAccruingP3(data.threshold),
-                Selectors.link(1) -> messagesForLanguage.pointsGuidanceLink,
+                Selectors.p(5) -> messagesForLanguage.findOutMoreWhenAdjusted,
+                Selectors.link(1) -> messagesForLanguage.lateSubmissionPenaltiesLink,
                 Selectors.linkWithId("addedPointsGuidanceLink") -> messagesForLanguage.addedPointsGuidanceLink
               )
 
