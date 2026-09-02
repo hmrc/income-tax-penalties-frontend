@@ -52,7 +52,9 @@ individual.index.lsp.tab.overview.additionalPenalty.warning = You have another �
 individual.index.lsp.tab.overview.additionalPenalty.p1 = You’ll get another £200 penalty every time you miss a submission deadline until your penalty points are removed.
 individual.index.lsp.tab.overview.additionalPenalty.p2 = You must send the missing submissions as soon as possible if you have not already.
 index.lsp.tab.overview.pointsGuidanceLink = Find out more about late submission penalties
-index.lsp.tab.overview.addedPointsGuidanceLink = Read the guidance about adjustment points
+index.lsp.tab.overview.findOutMore = Find out more about:
+index.lsp.tab.overview.addedPointsGuidanceLink = adjustment points
+index.lsp.tab.overview.lateSubmissionPenaltiesLink = late submission penalties
 individual.index.lsp.tab.overview.actionsToRemoveLink = Find out how to get your penalty points removed
 
 # --- LPP Tab Content
