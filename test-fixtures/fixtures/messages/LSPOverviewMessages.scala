@@ -42,7 +42,9 @@ object LSPOverviewMessages {
     val additionalPenaltyP1: String = "You’ll get another £200 penalty every time you miss a submission deadline until your penalty points are removed."
     val additionalPenaltyWarning: String = "! Warning You have another £200 penalty to pay"
     val pointsGuidanceLink = "Find out more about late submission penalties"
-    val addedPointsGuidanceLink = "Read the guidance about adjustment points"
+    val findOutMoreWhenAdjusted = "Find out more about:"
+    val lateSubmissionPenaltiesLink = "late submission penalties"
+    val addedPointsGuidanceLink = "adjustment points"
     val actionsLink: String = "Find out how to get your penalty points removed"
   }
   
@@ -73,7 +75,9 @@ object LSPOverviewMessages {
     override val additionalPenaltyP1: String = "Byddwch yn cael cosb arall o £200 bob tro y byddwch yn methu terfyn amser cyflwyno nes bod eich pwyntiau cosb yn cael eu dileu."
     override val additionalPenaltyWarning: String = "! Warning Mae gennych gosb arall o £200 i’w thalu"
     override val pointsGuidanceLink = "Dysgwch ragor am gosbau am dalu’n hwyr"
-    override val addedPointsGuidanceLink = "Darllenwch yr arweiniad ynghylch pwyntiau addasu"
+    override  val findOutMoreWhenAdjusted = "Darganfyddwch fwy am:"
+    override val lateSubmissionPenaltiesLink = "cosbau am gyflwyno’n hwyr"
+    override val addedPointsGuidanceLink = "adjustment points(WELSH)"
     override val actionsLink: String = "Dysgwch sut i gael gwared ar eich pwyntiau cosb"
   }
 }

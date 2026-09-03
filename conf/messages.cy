@@ -51,8 +51,10 @@ individual.index.lsp.tab.overview.penalty.p2 = Mae’n rhaid i chi anfon y cyflw
 individual.index.lsp.tab.overview.additionalPenalty.warning = Mae gennych gosb arall o £200 i’w thalu
 individual.index.lsp.tab.overview.additionalPenalty.p1 = Byddwch yn cael cosb arall o £200 bob tro y byddwch yn methu terfyn amser cyflwyno nes bod eich pwyntiau cosb yn cael eu dileu.
 individual.index.lsp.tab.overview.additionalPenalty.p2 = Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
-index.lsp.tab.overview.pointsGuidanceLink = Dysgwch ragor am gosbau am dalu’n hwyr (yn agor mewn tab newydd)
-index.lsp.tab.overview.addedPointsGuidanceLink = Darllenwch yr arweiniad ynghylch pwyntiau addasu
+index.lsp.tab.overview.pointsGuidanceLink = Dysgwch ragor am gosbau am dalu’n hwyr
+index.lsp.tab.overview.findOutMore = Darganfyddwch fwy am:
+index.lsp.tab.overview.addedPointsGuidanceLink = adjustment points(WELSH)
+index.lsp.tab.overview.lateSubmissionPenaltiesLink = cosbau am gyflwyno’n hwyr
 individual.index.lsp.tab.overview.actionsToRemoveLink = Dysgwch sut i gael gwared ar eich pwyntiau cosb
 
 # --- LPP Tab Content

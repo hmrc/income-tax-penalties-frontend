@@ -21,12 +21,14 @@
 @import java.time.LocalDate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter.dateToMonthYearString
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.partials.LSPenaltiesLink
 
 @this(
         p: components.P,
         warning: components.Warning,
         link: components.Link,
-        appConfig: AppConfig
+        appConfig: AppConfig,
+        lSPenaltiesLink: LSPenaltiesLink
 )
 
 
@@ -63,22 +65,7 @@
                 }else{
                  @p("individual.index.lsp.tab.overview.pointsAccruing.p3", Seq(lsp.threshold))
                 }
-                @link(
-                    link = appConfig.guidanceOnLSPUrl,
-                    messageKey = messages("index.lsp.tab.overview.pointsGuidanceLink") + " " + messages("common.opensInNewTab"),
-                    attrTarget = true,
-                    id = Some("pointsGuidanceLink")
-                )
-
-                @if(lsp.addedPoint){
-                    @link(
-                        link = appConfig.addedPointsGuidanceLinkUrl,
-                        messageKey = messages("index.lsp.tab.overview.addedPointsGuidanceLink") + " " + messages("common.opensInNewTab"),
-                        attrTarget = true,
-                        id = Some("addedPointsGuidanceLink")
-                    )
-                }
-
+                @lSPenaltiesLink(lsp, appConfig)
             } else {
                 @if(lsp.numberOfFinancialPenalties == 1 && !(lsp.activePoints == 4)) {
                     @warning(msg = "individual.index.lsp.tab.overview.penalty.warning", elmId = "penaltyNow")
