@@ -18,6 +18,7 @@
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
             "principalChargeReference" : "XJ002616061035",
+            "supplement" : false,
             "penaltyStatus" : "A",
             "penaltyAmountAccruing" : 60,
             "penaltyAmountPosted" : 0,
