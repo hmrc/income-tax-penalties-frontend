@@ -142,7 +142,7 @@ class LSPCardHelper @Inject()(summaryRow: LSPSummaryListRowHelper)(implicit time
     val expiredPointStatusTags: Set[Tag] = Set(
       Tag(Text(messages("status.expired"))),
       Tag(Text(messages("status.removed"))),
-      Tag(Text(messages("status.cancelled"))),
+      Tag(Text(messages("status.cancelled")), "govuk-tag--grey"),
     )
 
     val currencyFormat = CurrencyFormatter.parseBigDecimalNoPaddedZeroToFriendlyValue(penalty.originalAmount)

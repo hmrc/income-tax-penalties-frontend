@@ -33,13 +33,11 @@ trait TagHelper {
       case LSPPenaltyStatusEnum.Inactive =>
         val isAppealStatusUpheld: Boolean = penalty.appealStatus.contains(AppealStatusEnum.Upheld)
         val isRemovedAfterPoc: Boolean = pointsRemovedAfterPoc.contains(true)
-        val tagStatusMessage: String =
-          (isAppealStatusUpheld, isRemovedAfterPoc) match {
-            case (true, _) => messages("status.cancelled")
-            case (_, true) => messages("status.removed")
-            case _ => messages("status.expired")
-          }
-        Tag(Text(messages(tagStatusMessage)))
+        (isAppealStatusUpheld, isRemovedAfterPoc) match {
+          case (true, _) => Tag(Text(messages("status.cancelled")), "govuk-tag--grey")
+          case (_, true) => Tag(Text(messages("status.removed")))
+          case _ => Tag(Text(messages("status.expired")))
+        }
       case _ if isBreathingSpace && isLsp4OrAdditional(penalty, threshold) => Tag(Text(messages("status.breathing.space")), "govuk-tag--purple")
       case LSPPenaltyStatusEnum.Active if penalty.originalAmount > BigDecimal(0) =>
         showDueOrPartiallyPaidDueTag(penalty.outstandingAmount, penalty.amountPaid, penalty.chargeDueDate)
