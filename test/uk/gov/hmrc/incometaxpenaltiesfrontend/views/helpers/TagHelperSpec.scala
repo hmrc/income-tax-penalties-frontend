@@ -83,7 +83,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                       2
                     )
 
-                    tag.classes shouldBe ""
+                    tag.classes shouldBe "govuk-tag--grey"
                     tag.content shouldBe Text(messagesForLanguage.cancelled)
                   }
                 }
@@ -194,7 +194,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                       ))
                     ), false, 2)
 
-                    tag.classes shouldBe ""
+                    tag.classes shouldBe "govuk-tag--grey"
                     tag.content shouldBe Text(messagesForLanguage.cancelled)
                   }
                 }
