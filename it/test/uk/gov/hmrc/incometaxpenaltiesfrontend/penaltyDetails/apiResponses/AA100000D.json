@@ -9,15 +9,16 @@
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
           "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 0,
-          "totalAccountOverdue" : 60,
+          "lppEstimatedTotal" : 60,
+          "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
-          "totalAccountAccruingInterest" : 0.81
+          "totalAccountAccruingInterest" : 0
         },
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
-            "principalChargeReference" : "XJ002616061032",
+            "principalChargeReference" : "XJ002616061048",
+            "supplement" : false,
             "penaltyStatus" : "A",
             "penaltyAmountAccruing" : 60,
             "penaltyAmountPosted" : 0,
@@ -32,14 +33,13 @@
             "lpp1LRDays" : "15",
             "lpp1LRPercentage" : 3,
             "penaltyChargeCreationDate" : "2026-02-15",
-            "penaltyChargeReference" : "XJ002616061032",
-            "penaltyChargeDueDate" : "2026-03-19",
-            "principalChargeLatestClearing" : "2026-02-20"
+            "penaltyChargeReference" : "XJ002616061048",
+            "penaltyChargeDueDate" : "2026-03-19"
           } ]
         },
         "breathingSpace" : [ {
           "bsStartDate" : "2026-02-02",
-          "bsEndDate" : "2027-02-02"
+          "bsEndDate" : "2026-04-03"
         } ]
       }
     }
