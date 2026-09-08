@@ -41,7 +41,7 @@ object AA100001D extends UserDetailsData {
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has: overdue Income Tax charges unpaid interest a late payment penalty Check what you owe"
+    "Overview Your account has a late payment penalty Check what you owe"
 
   override val timeMachineDate: String = "20/02/2026"
 }
