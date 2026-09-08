@@ -9,15 +9,16 @@
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
           "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 0,
-          "totalAccountOverdue" : 60,
+          "lppEstimatedTotal" : 60,
+          "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
-          "totalAccountAccruingInterest" : 0.81
+          "totalAccountAccruingInterest" : 0
         },
         "lpp" : {
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
             "principalChargeReference" : "XJ002616061073",
+            "supplement" : false,
             "penaltyStatus" : "A",
             "penaltyAmountAccruing" : 60,
             "penaltyAmountPosted" : 0,
