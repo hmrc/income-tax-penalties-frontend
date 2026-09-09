@@ -45,6 +45,7 @@
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
             "principalChargeReference" : "PE888881102202",
+            "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 92.04,
@@ -68,6 +69,7 @@
             "principalChargeLatestClearing" : "2029-03-17"
           }, {
             "principalChargeReference" : "PE888881102201",
+            "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 92.04,
