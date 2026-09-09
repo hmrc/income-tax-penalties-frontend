@@ -30,7 +30,7 @@ object AA100002C extends UserDetailsData {
     validateCardTag(card, expectedTag = "£40.00 due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
-    validateSummary(cardRows.get(0), "Pay penalty by", "24 March 2026")
+    validateSummary(cardRows.get(0), "Pay penalty by", "19 March 2026")
     validateSummary(cardRows.get(1), "Overdue charge", "Income Tax for 2024 to 2025 tax year")
     validateSummary(cardRows.get(2), "Income Tax due", "31 January 2026")
     validateSummary(cardRows.get(3), "Income Tax paid", "20 February 2026")
@@ -45,5 +45,5 @@ object AA100002C extends UserDetailsData {
   override val expectedOverviewText: String =
     "Overview Your account has a late payment penalty Check what you owe"
 
-  override val timeMachineDate: String = "22/03/2026"
+  override val timeMachineDate: String = "19/03/2026"
 }

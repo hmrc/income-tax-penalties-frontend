@@ -18,6 +18,7 @@
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
             "principalChargeReference" : "XJ002616061044",
+            "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 115,
@@ -39,10 +40,11 @@
             "penaltyChargeCreationDate" : "2025-03-03",
             "communicationsDate" : "2025-03-22",
             "penaltyChargeReference" : "XJ002616061044",
-            "penaltyChargeDueDate" : "2025-04-18",
+            "penaltyChargeDueDate" : "2025-04-04",
             "principalChargeLatestClearing" : "2025-03-17"
           }, {
             "principalChargeReference" : "XJ002616061044",
+            "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 8.21,
@@ -66,7 +68,7 @@
             "penaltyChargeCreationDate" : "2025-03-03",
             "communicationsDate" : "2025-03-22",
             "penaltyChargeReference" : "XJ002616061044",
-            "penaltyChargeDueDate" : "2025-04-18",
+            "penaltyChargeDueDate" : "2025-04-04",
             "principalChargeLatestClearing" : "2025-03-17"
           }, {
             "principalChargeReference" : "XJ002616061044",
@@ -86,10 +88,10 @@
             "lpp1LRCalculationAmt" : 500,
             "lpp1LRDays" : "15",
             "lpp1LRPercentage" : 3,
-            "penaltyChargeCreationDate" : "2025-03-03",
+            "penaltyChargeCreationDate" : "2025-03-15",
             "communicationsDate" : "2025-03-22",
             "penaltyChargeReference" : "XJ002616061044",
-            "penaltyChargeDueDate" : "2025-04-18",
+            "penaltyChargeDueDate" : "2025-04-16",
             "principalChargeLatestClearing" : "2025-03-17"
           } ]
         }
