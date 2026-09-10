@@ -104,7 +104,7 @@ class PenaltiesOverviewSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
                 "has a link to the check and pay page" in {
                   val expectedPath: String =
                     if (isAgent) "/manage-self-assessment/financials/agents/what-you-owe"
-                    else "/report-quarterly/income-and-expenses/view/what-you-owe"
+                    else "/manage-self-assessment/financials/what-you-owe"
 
                   document.select(Selectors.overviewButton).attr("href") shouldBe appConfig.viewAndChangeBaseUrl + expectedPath
                 }
