@@ -9,6 +9,7 @@
           "manualLPPIndicator" : false,
           "lppDetails" : [ {
             "principalChargeReference" : "XJ002616061044",
+            "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
             "penaltyAmountPosted" : 120,
@@ -34,9 +35,10 @@
             "principalChargeLatestClearing" : "2025-03-17"
           }, {
             "principalChargeReference" : "XJ002616061044",
+            "supplement" : false,
             "penaltyStatus" : "P",
             "penaltyAmountAccruing" : 0,
-            "penaltyAmountPosted" : 120,
+            "penaltyAmountPosted" : 8.21,
             "principalChargeBillingFrom" : "2023-04-06",
             "principalChargeBillingTo" : "2024-04-05",
             "principalChargeDueDate" : "2025-01-31",
@@ -44,7 +46,7 @@
             "principalChargeMainTr" : "4720",
             "principalChargeSubTr" : "SUB1",
             "penaltyCategory" : "LPP2",
-            "penaltyAmountPaid" : 120,
+            "penaltyAmountPaid" : 8.21,
             "penaltyAmountOutstanding" : 0,
             "lpp1LRCalculationAmt" : 2000,
             "lpp1LRDays" : "15",
