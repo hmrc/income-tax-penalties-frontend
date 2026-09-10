@@ -24,6 +24,7 @@
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.FirstLatePaymentCalculationHelper
 @import uk.gov.hmrc.incometaxpenaltiesfrontend.views.helpers.{ContentBlock, TextBlock, BulletList}
+@import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.partials.Lpp1CalculationTable
 
 
 @this(
@@ -32,56 +33,12 @@
         p: P,
         govukInsetText : GovukInsetText,
         calculationHelper: FirstLatePaymentCalculationHelper,
-        govukTable : GovukTable,
         howWeWorkOutThePenaltyAmount : HowWeWorkOutThePenaltyAmount,
-        calculationFooterLinks : CalculationFooterLinks
+        calculationFooterLinks : CalculationFooterLinks,
+        lpp1CalculationTable: Lpp1CalculationTable
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
-      @TotalTableRow = @{
-            Seq(
-                TableRow(
-                         content = Text(messages("calculation.table.caption.total.penalty")),
-                         classes ="govuk-table__header"
-                ),
-                TableRow(),
-                TableRow(),
-                TableRow(
-                         content = Text(s"£${calculationData.formattedPenaltyAmount}"),
-                         format = Some("numeric"),
-                )
-            )
-     }
-     @AmountPaidRow = @{
-            Seq(
-                TableRow(
-                         content = Text(messages("calculation.table.amountPaid")),
-                         classes ="govuk-table__header"
-               ),
-               TableRow(),
-               TableRow(),
-               TableRow(
-                        content = Text(s"£${calculationData.formattedPenaltyAmountPaid}"),
-                        format = Some("numeric"),
-
-               )
-           )
-     }
-     @StillToPayRow = @{
-           Seq(
-               TableRow(
-                        content = Text(messages("calculation.table.stillToPay")),
-                        classes ="govuk-table__header"
-               ),
-               TableRow(),
-               TableRow(),
-               TableRow(
-                        content = Text(s"£${calculationData.formattedPenaltyAmountOutstanding}"),
-                        format = Some("numeric"),
-                        classes = "govuk-table__header"
-               )
-           )
-     }
 
 @main(pageTitle = messages(s"calculation.first.title"), backLinkEnabled = true, isAgent = isAgent) {
 
@@ -159,61 +116,7 @@
         <p class="govuk-body" id="breathingSpaceExpired">@messages("calculation.breathingSpace.expired")</p>
     }
 
-    @govukTable(Table(
-        rows = Seq(
-          Seq(
-            TableRow(
-              content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
-            ),
-            TableRow(
-              content = Text(s"${calculationData.llpLRCharge.daysOverdue}")
-            ),
-            TableRow(
-              content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
-              format = Some("numeric")
-            ),
-            TableRow(
-              content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
-              format = Some("numeric")
-            )
-          ),
-        ) ++ calculationData.llpHRCharge.map {lppHRCharge =>
-         Seq(
-            TableRow(
-              content = Text(s"£${lppHRCharge.formattedChargeAmount}")
-            ),
-            TableRow(
-              content = Text(s"${lppHRCharge.daysOverdue}")
-            ),
-            TableRow(
-              content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
-              format = Some("numeric")
-            ),
-            TableRow(
-              content = Text(s"£${lppHRCharge.formattedPenaltyAmount}"),
-              format = Some("numeric")
-            )
-        )
-        } ++
-        (if(calculationData.isPartiallyPaid) Seq(TotalTableRow, AmountPaidRow, StillToPayRow) else Seq(TotalTableRow)),
-         head = Some(Seq(
-          HeadCell(
-            content = Text(messages("calculation.table.caption.amountApplied"))
-          ),
-          HeadCell(
-            content = Text(messages("calculation.table.caption.days.payment"))
-          ),
-          HeadCell(
-            content = Text(messages("calculation.table.caption.rate")),
-            format = Some("numeric")
-          ),
-          HeadCell(
-            content = Text(messages(messages("calculation.table.caption.amount"))),
-            format = Some("numeric")
-          )
-        )),
-
-    ))
+    @lpp1CalculationTable(calculationData: FirstLatePaymentPenaltyCalculationData)
 
     @if(!calculationData.incomeTaxIsPaid) {
         <div class="govuk-!-margin-top-7" id="paymentPlanContent">
