@@ -125,7 +125,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   }
 
   def expectedLSPTabBody(userDetailsData: UserDetailsData): String = userDetailsData.numberOfLSPPenalties match {
-    case 0 => "You do not have any late submission penalties."
+    case 0 => "You do not have any active late submission penalties."
     case _ if userDetailsData.hasFinancialLSP => "You’ll get another £200 penalty every time you miss a submission deadline until your penalty points are removed."
     case 1 => "You have 1 penalty point for missing a submission deadline. You must send the missing submission as soon as possible if you have not already."
     case n => s"You have $n penalty points for missing submission deadlines." + s" You must send the missing submissions as soon as possible if you have not already."
