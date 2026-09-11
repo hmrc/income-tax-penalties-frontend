@@ -77,7 +77,7 @@ object LSPOverviewMessages {
     override val pointsGuidanceLink = "Dysgwch ragor am gosbau am gyflwyno’n hwyr"
     override  val findOutMoreWhenAdjusted = "Dysgwch ragor am y canlynol:"
     override val lateSubmissionPenaltiesLink = "cosbau am gyflwyno’n hwyr"
-    override val addedPointsGuidanceLink = "adjustment points(WELSH)"
+    override val addedPointsGuidanceLink = "pwyntiau addasu"
     override val actionsLink: String = "Dysgwch sut i gael gwared ar eich pwyntiau cosb"
   }
 }

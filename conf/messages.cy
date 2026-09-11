@@ -53,7 +53,7 @@ individual.index.lsp.tab.overview.additionalPenalty.p1 = Byddwch yn cael cosb ar
 individual.index.lsp.tab.overview.additionalPenalty.p2 = Mae’n rhaid i chi anfon y cyflwyniadau sydd ar goll cyn gynted â phosibl os nad ydych wedi gwneud hynny eisoes.
 index.lsp.tab.overview.pointsGuidanceLink = Dysgwch ragor am gosbau am gyflwyno’n hwyr
 index.lsp.tab.overview.findOutMore = Dysgwch ragor am y canlynol:
-index.lsp.tab.overview.addedPointsGuidanceLink = adjustment points(WELSH)
+index.lsp.tab.overview.addedPointsGuidanceLink = pwyntiau addasu
 index.lsp.tab.overview.lateSubmissionPenaltiesLink = cosbau am gyflwyno’n hwyr
 individual.index.lsp.tab.overview.actionsToRemoveLink = Dysgwch sut i gael gwared ar eich pwyntiau cosb
 
