@@ -74,7 +74,7 @@ object LSPOverviewMessages {
     //Messages when points == threshold (more than one financial penalty triggered)
     override val additionalPenaltyP1: String = "Byddwch yn cael cosb arall o £200 bob tro y byddwch yn methu terfyn amser cyflwyno nes bod eich pwyntiau cosb yn cael eu dileu."
     override val additionalPenaltyWarning: String = "! Warning Mae gennych gosb arall o £200 i’w thalu"
-    override val pointsGuidanceLink = "Dysgwch ragor am gosbau am dalu’n hwyr"
+    override val pointsGuidanceLink = "Dysgwch ragor am gosbau am gyflwyno’n hwyr"
     override  val findOutMoreWhenAdjusted = "Darganfyddwch fwy am:"
     override val lateSubmissionPenaltiesLink = "cosbau am gyflwyno’n hwyr"
     override val addedPointsGuidanceLink = "adjustment points(WELSH)"
