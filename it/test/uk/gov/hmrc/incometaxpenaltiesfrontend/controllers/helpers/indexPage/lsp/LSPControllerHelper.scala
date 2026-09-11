@@ -120,7 +120,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
   def validateNoLPPPenalties(document: Document): Unit = {
     val lppTabContent = getLPPTabContent(document)
     lppTabContent.getElementById("lppHeading").text() shouldBe "Late payment penalties"
-    val expectedLSPContent = "You do not have any late payment penalties."
+    val expectedLSPContent = "You do not have any active late payment penalties."
     lppTabContent.getElementsByClass("govuk-body").first().text() shouldBe expectedLSPContent
   }
 
