@@ -126,7 +126,7 @@ class IndexControllerLPPOnlyISpec extends LPPControllerHelper with FeatureSwitch
         val document = Jsoup.parse(get("/").body)
         val lppTab = getLPPTabContent(document)
 
-        lppTab.getElementsByClass("govuk-body").first().text() shouldBe "You do not have any late payment penalties."
+        lppTab.getElementsByClass("govuk-body").first().text() shouldBe "You do not have any active late payment penalties."
       }
 
       "show the tax paid but penalty not paid text for a due LPP" in {

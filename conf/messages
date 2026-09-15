@@ -271,7 +271,7 @@ lsp.updateSubmitted.key = Update submitted
 lsp.returnSubmitted.key = Return submitted
 lsp.updateSubmitted.notReceived = Not yet received
 lsp.expiry.key = Point due to expire
-lsp.noPenalties = You do not have any late submission penalties.
+lsp.noPenalties = You do not have any active late submission penalties.
 lsp.pointExpiredOn.key = Point expired on
 lsp.pay.penalty.by = Pay penalty by
 lsp.compliance.remove.by = Your penalty points will be removed in {0} {1}. This is because you did not miss any deadlines in the last {2} months.
@@ -351,7 +351,7 @@ month.11 = November
 month.12 = December
 
 individual.lpp.tab.overdueTax = Because you have paid your outstanding tax, your penalties are no longer estimated and can be paid for immediately.
-individual.lpp.noPenalties = You do not have any late payment penalties.
+individual.lpp.noPenalties = You do not have any active late payment penalties.
 individual.lpp.pay.penalty.now = You can pay your penalty now.
 individual.lpp.pay.penalties.now = You can pay your penalties now.
 individual.lpp.penalty.no.longer.estimate = Your penalty is no longer estimate because you’ve paid your outstanding tax.
