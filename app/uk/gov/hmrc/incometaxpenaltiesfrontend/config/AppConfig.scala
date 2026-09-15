@@ -80,8 +80,8 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
   lazy val viewAndChangeBaseUrl: String = config.get[String]("urls.viewAndChangeBaseUrl")
 
   def checkWhatYouOweUrl(isAgent: Boolean): String = viewAndChangeBaseUrl + {
-    if(isAgent) "/report-quarterly/income-and-expenses/view/agents/what-your-client-owes"
-    else "/report-quarterly/income-and-expenses/view/what-you-owe"
+    if(isAgent) "/manage-self-assessment/financials/agents/what-you-owe"
+    else "/manage-self-assessment/financials/what-you-owe"
   }
 
   lazy val enterClientUTRVandCUrl: String = config.get[String]("income-tax-view-change.enterClientUTR.url")
