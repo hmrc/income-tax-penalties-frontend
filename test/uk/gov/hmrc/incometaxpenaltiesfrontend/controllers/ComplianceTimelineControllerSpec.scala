@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
 import play.api.mvc.{AnyContentAsEmpty, Result}
-import play.api.i18n.{Messages, MessagesApi}
+import play.api.i18n.MessagesApi
 import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -29,8 +29,7 @@ import org.mockito.Mockito.verify
 import play.api.test.Helpers.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.{AuthMocks, IncomeTaxSessionMocks}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{ComplianceService, TimelineBuilderService}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.services.mocks.MockAuditService
+import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{AuditService, ComplianceService, TimelineBuilderService}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.ErrorHandler
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
@@ -40,19 +39,21 @@ import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserComplianceInfoAuditModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ObligationDetail
+import org.scalatestplus.mockito.MockitoSugar.{mock => mockitoMock}
 
 
-class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite with AuthMocks with IncomeTaxSessionMocks with MockAuditService with BeforeAndAfterEach {
+class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite with AuthMocks with IncomeTaxSessionMocks with BeforeAndAfterEach {
 
   implicit val ec: ExecutionContext = ExecutionContext.global
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
-  val mockComplianceService: ComplianceService = mock[ComplianceService]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
-  val mockTimelineBuilder: TimelineBuilderService = mock[TimelineBuilderService]
-  val mockAuthActions: AuthActions = mock[AuthActions]
+  val mockComplianceService: ComplianceService = mockitoMock[ComplianceService]
+  val mockTimelineBuilder: TimelineBuilderService = mockitoMock[TimelineBuilderService]
+  val mockAuthActions: AuthActions = mockitoMock[AuthActions]
+  val mockErrorHandler: ErrorHandler = mockitoMock[ErrorHandler]
+  val mockAuditService: AuditService = mockitoMock[AuditService]
   val complianceTimelineView: ComplianceTimeline = app.injector.instanceOf[ComplianceTimeline]
-  val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
   val fromDate: LocalDate = LocalDate.of(2023, 1, 1)
   val toDate: LocalDate = LocalDate.of(2023, 4, 5)
   override val testNino: String = "AA123456A"
@@ -64,13 +65,13 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
     authActions = mockAuthActions,
     timelineBuilder = mockTimelineBuilder,
     complianceService = mockComplianceService,
-    mockAuditService,
-    errorHandler = errorHandler
+    auditService = mockAuditService,
+    errorHandler = mockErrorHandler,
   )(appConfig, ec)
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockComplianceService, mockTimelineBuilder, mockAuditService, errorHandler)
+    reset(mockComplianceService, mockTimelineBuilder, mockAuditService, mockErrorHandler)
   }
 
   "complianceTimeLinePage" when {
@@ -79,15 +80,14 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
       "return OK and render the timeline view" when {
         "DES compliance data is returned and the user is mandated" in {
           implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession("mandation_status" -> "on")
-          implicit val messages: Messages = messagesApi.preferred(request)
-          val obligationDetails = Seq(mock[ObligationDetail])
+          val obligationDetails = Seq(mockitoMock[ObligationDetail])
           val optComplianceData = Some(mockComplianceDataWith(obligationDetails))
 
           when(mockComplianceService.calculateComplianceWindow())
             .thenReturn(Some((fromDate, toDate)))
-          when(mockComplianceService.getDESComplianceData(meq(testNino), meq(fromDate), meq(toDate))(any()))
+          when(mockComplianceService.getDESComplianceData(any(), any(), any())(any()))
             .thenReturn(Future.successful(optComplianceData))
-          when(mockTimelineBuilder.buildTimeline(meq(optComplianceData)))
+          when(mockTimelineBuilder.buildTimeline(meq(optComplianceData))(any()))
             .thenReturn(Seq.empty)
 
           val result: Future[Result] = controller().complianceTimelinePage(isAgent = false)(request)
@@ -98,13 +98,12 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
         "DES compliance data is empty and the user is not mandated" in {
 
           implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession("mandation_status" -> "off")
-          implicit val messages: Messages = messagesApi.preferred(request)
 
           when(mockComplianceService.calculateComplianceWindow())
             .thenReturn(Some((fromDate, toDate)))
           when(mockComplianceService.getDESComplianceData(meq(testNino), meq(fromDate), meq(toDate))(any()))
             .thenReturn(Future.successful(None))
-          when(mockTimelineBuilder.buildTimeline(meq(None)))
+          when(mockTimelineBuilder.buildTimeline(meq(None))(any()))
             .thenReturn(Seq.empty)
 
           val result: Future[Result] = controller().complianceTimelinePage(isAgent = false)(request)
@@ -114,13 +113,12 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
         "the mandation status session key is absent (defaults to not mandated)" in {
 
           implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-          implicit val messages: Messages = messagesApi.preferred(request)
 
           when(mockComplianceService.calculateComplianceWindow())
             .thenReturn(Some((fromDate, toDate)))
           when(mockComplianceService.getDESComplianceData(meq(testNino), meq(fromDate), meq(toDate))(any()))
             .thenReturn(Future.successful(None))
-          when(mockTimelineBuilder.buildTimeline(any()))
+          when(mockTimelineBuilder.buildTimeline(any())(any()))
             .thenReturn(Seq.empty)
           val result: Future[Result] = controller().complianceTimelinePage(isAgent = false)(request)
           status(result) shouldBe OK
@@ -129,13 +127,12 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
         "audit an empty obligations sequence when no compliance data is returned" in {
 
           implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-          implicit val messages: Messages = messagesApi.preferred(request)
 
           when(mockComplianceService.calculateComplianceWindow())
             .thenReturn(Some((fromDate, toDate)))
           when(mockComplianceService.getDESComplianceData(meq(testNino), meq(fromDate), meq(toDate))(any()))
             .thenReturn(Future.successful(None))
-          when(mockTimelineBuilder.buildTimeline(any()))
+          when(mockTimelineBuilder.buildTimeline(any())(any()))
             .thenReturn(Seq.empty)
 
           val result: Future[Result] = controller().complianceTimelinePage(isAgent = false)(request)
@@ -167,11 +164,11 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
 
           when(mockComplianceService.calculateComplianceWindow())
             .thenReturn(None)
-          when(errorHandler.showInternalServerError()(any()))
-            .thenReturn(INTERNAL_SERVER_ERROR)
+          when(mockErrorHandler.showInternalServerError()(any()))
+            .thenReturn(Future.successful(INTERNAL_SERVER_ERROR))
           val results: Future[Result] = controller().complianceTimelinePage(isAgent = false)(request)
           status(results) shouldBe INTERNAL_SERVER_ERROR
-          verify(errorHandler, times(1)).showInternalServerError()(any())
+          verify(mockErrorHandler, times(1)).showInternalServerError()(any())
           verifyNoInteractions(mockComplianceService)
           verifyNoInteractions(mockAuditService)
         }
@@ -180,13 +177,12 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
         "authenticate via the agent path and still return OK" in {
 
           implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-          implicit val messages: Messages = messagesApi.preferred(request)
 
           when(mockComplianceService.calculateComplianceWindow())
             .thenReturn(Some((fromDate, toDate)))
           when(mockComplianceService.getDESComplianceData(meq(testNino), meq(fromDate), meq(toDate))(any()))
             .thenReturn(Future.successful(None))
-          when(mockTimelineBuilder.buildTimeline(any()))
+          when(mockTimelineBuilder.buildTimeline(any())(any()))
             .thenReturn(Seq.empty)
           val result: Future[Result] = controller().complianceTimelinePage(isAgent = true)(request)
           status(result) shouldBe OK
@@ -196,7 +192,7 @@ class ComplianceTimelineControllerSpec extends AnyWordSpec with should.Matchers 
   }
 
   private def mockComplianceDataWith(obligations: Seq[ObligationDetail]) = {
-    val data = mock[ComplianceData]
+    val data = mockitoMock[ComplianceData]
     when(data.obligationDetails)
       .thenReturn(obligations)
     data
