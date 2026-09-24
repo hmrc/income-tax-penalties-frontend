@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth
+package uk.gov.hmrc.incometaxpenaltiesfrontend.controllers
 
+import org.mockito.ArgumentMatchers.eq as meq
+import org.mockito.Mockito.when
 import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.*
 import play.api.test.FakeRequest
-import play.api.test.Helpers.stubMessagesControllerComponents
+import play.api.test.Helpers.*
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.mocks.AuthMocks
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.AppealsController
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthorisedAndEnrolledAgent, AuthorisedAndEnrolledIndividual, CurrentUserRequest, SessionData}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.DateFormatter
-import org.mockito.ArgumentMatchers.{eq => meq}
-import play.api.mvc.{ActionBuilder, AnyContent, BodyParser, Request, Result}
-import play.api.test.Helpers._
+
 import scala.concurrent.{ExecutionContext, Future}
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.when
 
 class AppealsControllerSpec extends AnyWordSpec with should.Matchers with GuiceOneAppPerSuite with AuthMocks with MockitoSugar {
 
