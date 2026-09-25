@@ -147,6 +147,16 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           result.status shouldBe SEE_OTHER
           result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
         }
+        "there is no late payment penalty data at all LPP1S" in{
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isEstimate = false)
+          val fixture = getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)
+          val noLppFixture = fixture.copy(penaltyDetails = fixture.penaltyDetails.map(_.copy(latePaymentPenalty = None)))
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(noLppFixture))
+          val result = get(LPP1SupplementaryPath, isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
       }
     }
 
@@ -316,6 +326,16 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           val supplementary2LPPCalcData = sampleSecondLPPCalcData(isEstimate = false)
           stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
           val result = get(addQueryParam(pathStart + "additional-second-lpp-calculation", "NOT-A-REAL-PENALTY-ID"), isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
+        "there is no late payment penalty data at all LPP2S" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isEstimate = false)
+          val fixture = getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)
+          val noLppFixture = fixture.copy(penaltyDetails = fixture.penaltyDetails.map(_.copy(latePaymentPenalty = None)))
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(noLppFixture))
+          val result = get(LPP2SupplementaryPath, isAgent)
           result.status shouldBe SEE_OTHER
           result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
         }
