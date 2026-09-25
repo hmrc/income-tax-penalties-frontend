@@ -21,6 +21,7 @@ object LSPCardMessages {
   sealed trait Messages { this: i18n =>
     //Card Title Messages
     val cardTitleAdjustmentPoint: Int => String = point => s"Penalty point $point: Adjustment point"
+    val cardTitleAdditional: String => String = amount => s"Additional £$amount penalty"
     val cardTitleRemovedPoint = "Penalty point"
     def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
       s"Penalty point $point$reason - £$amount penalty"
@@ -57,6 +58,7 @@ object LSPCardMessages {
   object Welsh extends Messages with Cy {
     //Card Title Messages
     override val cardTitleAdjustmentPoint: Int => String = point => s"Pwynt cosb $point: pwynt addasu"
+     override val cardTitleAdditional: String => String = amount => s"Cosb ychwanegol o £$amount"
     override val cardTitleRemovedPoint = "Pwynt cosb"
     override def cardTitleFinancialPoint(point: Int, reason: String, amount: String): String =
       s"Pwynt cosb $point$reason - Cosb o £$amount"
