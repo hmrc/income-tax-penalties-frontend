@@ -8,9 +8,9 @@
         "totalisations" : {
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
-          "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 0,
-          "totalAccountOverdue" : 82.19,
+          "lppPostedTotal" : 120,
+          "lppEstimatedTotal" : 2.19,
+          "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
           "totalAccountAccruingInterest" : 0
         },
