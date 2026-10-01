@@ -44,6 +44,7 @@ trait LSPControllerHelper extends ControllerISpecHelper {
       //LSP1
       "AA111110A" -> AA111110A,
       "AA111110B" -> AA111110B,
+      "AA111111A" -> AA111111A,
       "AA111120A" -> AA111120A,
       "AA111121A" -> AA111121A,
       "AA111122A" -> AA111122A,
