@@ -118,6 +118,21 @@ class NavBarRetrievalActionSpec extends AnyWordSpec with should.Matchers with Gu
           val enrichedRequest = refinedRequest.toOption.get.asInstanceOf[AuthorisedAndEnrolledIndividual[?]]
           enrichedRequest.serviceNavigationPartial shouldBe Some(expectedPtaServiceNavigation)
         }
+        "the message count connector fails" should {
+          "return the CurrentUserRequest with PTA server navigation added, continuing gracefully" in {
+            implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession((IncomeTaxSessionKeys.origin, "PTA"))
+            implicit val messages: Messages = messagesApi.preferred(request)
+            val userRequest = AuthorisedAndEnrolledIndividual(testMtdItId, testNino, None, None)
+            mockGetMessageCount()(Future.failed(new Exception("message service unavailable")))
+
+            val result = testAction.refine(userRequest)
+            val refinedRequest = await(result)
+
+            refinedRequest.isRight shouldBe true
+            val enrichedRequest = refinedRequest.toOption.get.asInstanceOf[AuthorisedAndEnrolledIndividual[?]]
+            enrichedRequest.serviceNavigationPartial shouldBe Some(expectedPtaServiceNavigation)
+          }
+        }
       }
 
       "the origin is BTA" should {
