@@ -380,6 +380,13 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
 
       helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe false
     }
+    "breathing space: posted branch falls back to  principal+31 when there is no charge creation or incomeTaxPaidDate" in {
+      val data = postedData(
+        principalDueDate = fixedNow.minusDays(60), chargeCreationDate = fixedNow.minusDays(30), incomeTaxPaidDate = fixedNow.minusDays(20)
+      ).copy(penaltyChargeCreationDate = None, incomeTaxPaidDate = None)
+      val bs = BreathingSpace(bsStartDate = fixedNow.minusDays(35), bsEndDate = fixedNow.minusDays(25))
+      helper.isExpiredBreathingSpace(data, Some(Seq(bs)), fixedTimeMachine) shouldBe true
+    }
   }
 
   "SecondLatePaymentCalculationHelper.chargePeriods" should {
@@ -446,6 +453,24 @@ class SecondLatePaymentCalculationHelperSpec extends AnyWordSpec with Matchers w
 
       helper.chargePeriods(data, None, fixedTimeMachine, isSupplementary = true) shouldBe Seq(creationDate -> creationDate)
     }
+
+    "use the agreed TTP date when only paymentPalnAgreed is set" in {
+      val ttp = LocalDate.of(2027, 4, 15)
+      val data = calcData().copy(paymentPlanAgreed = Some(ttp))
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> ttp)
+    }
+
+    "use agreed date when it is earlier than the  proposed TTP" in {
+      val data = calcData().copy(paymentPlanAgreed = Some(LocalDate.of(2027, 4, 10)), paymentPlanProposed = Some(LocalDate.of(2027, 4, 15)))
+      helper.chargePeriods(data, None, fixedTimeMachine) shouldBe Seq(lpp2Start -> LocalDate.of(2027, 4, 10))
+    }
+
+    "fall back to LPP2 start for supplementary calcs without a charge creation date" in {
+      val data = calcData().copy(penaltyChargeCreationDate = None)
+      helper.chargePeriods(data, None, fixedTimeMachine, isSupplementary = true) shouldBe Seq(lpp2Start -> fixedNow)
+    }
+
+
 
     "return Seq.empty when income tax was paid before LPP2 starts" in {
       val taxPaidBeforeLpp2 = lpp2Start.minusDays(10)
