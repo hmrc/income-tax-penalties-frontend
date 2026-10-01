@@ -32,9 +32,9 @@ object AppealStatusEnum extends Enumeration {
     override def reads(json: JsValue): JsResult[AppealStatusEnum.Value] = json.as[String].toUpperCase match {
       case "A" => JsSuccess(Under_Appeal)
       case "B" => JsSuccess(Upheld)
+      case "C" => JsSuccess(Rejected)
       case "92" => JsSuccess(Upheld)
       case "93" => JsSuccess(Upheld)
-      case "C" => JsSuccess(Rejected)
       case "91" => JsSuccess(Rejected)
       case "94" => JsSuccess(Rejected)
       case "99" => JsSuccess(Unappealable)
