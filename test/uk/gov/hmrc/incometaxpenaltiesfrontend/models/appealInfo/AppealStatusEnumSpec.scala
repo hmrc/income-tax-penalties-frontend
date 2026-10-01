@@ -29,6 +29,10 @@ class AppealStatusEnumSpec extends AnyWordSpec with Matchers {
       JsString("A").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Under_Appeal
       JsString("B").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Upheld
       JsString("C").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Rejected
+      JsString("91").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Rejected
+      JsString("92").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Upheld
+      JsString("93").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Upheld
+      JsString("94").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Rejected
       JsString("99").as[AppealStatusEnum.Value] shouldBe AppealStatusEnum.Unappealable
     }
 
