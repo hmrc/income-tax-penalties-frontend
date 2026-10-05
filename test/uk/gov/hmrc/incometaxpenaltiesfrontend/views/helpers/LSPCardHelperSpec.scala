@@ -130,6 +130,20 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }
+              "use the additionalFinancialPoint title when the penalty is inactive and not upheld" in {
+                val penalty = sampleLateSubmissionPenaltyCharge.copy(penaltyStatus = LSPPenaltyStatusEnum.Inactive, penaltyOrder = Some("3"), appealInformation = None)
+                mockPayPenaltyByRow(penalty, 2)(None)
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty)(None)
+                mockTaxPeriodSummaryRow(penalty)(Some(testTaxPeriodRow))
+                mockTaxYearSummaryRow(penalty)(Some(testTaxYearRow))
+                mockDueDateSummaryRow(penalty)(Some(testDueDateRow))
+                mockReceivedDateSummaryRow(penalty)(testReceivedDateRow)
+                mockAppealStatusSummaryRow(penalty.appealStatus, penalty.appealLevel, penalty.previousRejection)(None)
+                val cards = lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
+                  Seq(penalty), 2, 1, false
+                )
+                cards.head.cardTitle shouldBe messagesForLanguage.cardTitleAdditional("200")
+              }
             }
 
             "Threshold has been met" should {
@@ -162,7 +176,27 @@ class LSPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                     dueDate = penalty1.dueDate.map(dateToString(_))
                   ))
               }
+              "use the thresholdMetPenalty title and include the pay by row" in {
+                val penalty = sampleLateSubmissionPoint.copy(penaltyOrder = Some("04"), chargeAmount = Some(200))
+                val penalty1 = penalty.copy(penaltyOrder = Some("1"))
+                mockPayPenaltyByRow(penalty1, 4)(None)
+                mockMissingOrLateIncomeSourcesSummaryRow(penalty1)(None)
+                mockTaxYearSummaryRow(penalty1)(None)
+                mockTaxPeriodSummaryRow(penalty1)(None)
+                mockDueDateSummaryRow(penalty1)(None)
+                mockReceivedDateSummaryRow(penalty1)(testReceivedDateRow)
+                mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel, penalty1.previousRejection)(None)
+                val cards = lspSummaryListRowHelper.createLateSubmissionPenaltyCards(
+                  penalties = Seq(penalty),
+                  threshold = 4,
+                  activePoints = 4,
+                  isBreathingSpace = false
+                )
+                cards.head.cardTitle shouldBe messagesForLanguage.cardTitleFinancialPoint(1, s": ${messagesForLanguage.lateUpdate}", "200")
+
+              }
             }
+
 
             "The point is an adjustment point FAP" when {
 
