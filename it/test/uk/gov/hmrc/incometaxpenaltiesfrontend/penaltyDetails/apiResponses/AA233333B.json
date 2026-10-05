@@ -83,7 +83,7 @@
             "principalChargeMainTr" : "4720",
             "principalChargeSubTr" : "SUB1",
             "penaltyCategory" : "LPP2",
-            "penaltyAmountPaid" : 1.00,
+            "penaltyAmountPaid" : 1,
             "penaltyAmountOutstanding" : 0.64,
             "lpp1LRCalculationAmt" : 5000,
             "lpp1LRDays" : "15",
