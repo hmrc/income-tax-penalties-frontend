@@ -8,8 +8,8 @@
         "totalisations" : {
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
-          "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 320.81,
+          "lppPostedTotal" : 320.81,
+          "lppEstimatedTotal" : 0,
           "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
           "totalAccountAccruingInterest" : 0
@@ -68,7 +68,7 @@
             "penaltyChargeReference" : "XJ002616061062",
             "penaltyChargeDueDate" : "2026-04-04",
             "principalChargeLatestClearing" : "2026-03-16"
-          },{
+          }, {
             "principalChargeReference" : "XJ002616061062",
             "supplement" : true,
             "penaltyStatus" : "P",

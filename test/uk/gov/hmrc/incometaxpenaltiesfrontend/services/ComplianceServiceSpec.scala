@@ -21,10 +21,13 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.test.Helpers._
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
+import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.ComplianceDataUnexpectedFailure
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
 
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -55,6 +58,17 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
       result.isDefined shouldBe true
       result.get shouldBe sampleCompliancePayload
     }
+    s"return None when the connector call a Left" in new Setup {
+      (mockPenaltiesConnector.getComplianceData(_: String, _: LocalDate, _: LocalDate)(_: HeaderCarrier))
+        .expects(*, LocalDate.of(2020, 1, 1), LocalDate.of(2022, 1, 1), *)
+        .returning(Future.successful(Left(ComplianceDataUnexpectedFailure(INTERNAL_SERVER_ERROR))))
+      val result: Option[ComplianceData] = await(service.getDESComplianceData(  nino = nino,
+        startDate = LocalDate.of(2020, 1, 1),
+        endDate = LocalDate.of(2022, 1, 1)
+      )(HeaderCarrier()))
+      result shouldBe None
+        
+    }
 
     s"return an exception and pass the result back to the controller" in new Setup {
       (mockPenaltiesConnector.getComplianceData(_: String, _: LocalDate, _: LocalDate)(_: HeaderCarrier))
@@ -68,6 +82,14 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
       )(HeaderCarrier())))
 
       result.getMessage shouldBe "Upstream error"
+    }
+  }
+  "calculateComplianceWindow" should {
+    s"return None when the PoC achievement date in session has year 9999" in new Setup {
+      implicit val request: FakeRequest[_] = FakeRequest().withSession(
+        IncomeTaxSessionKeys.pocAchievementDate -> LocalDate.of(9999,1,1).toString
+      )
+      service.calculateComplianceWindow() shouldBe None
     }
   }
 }

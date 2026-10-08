@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.PenaltiesStub
 import play.api.http.Status.OK
 import play.api.libs.json.Json
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.LatePaymentPenalty
-
+import play.api.http.Status.SEE_OTHER
 import java.time.LocalDate
 
 class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
@@ -136,6 +136,26 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           val document = Jsoup.parse(result.body)
           document.title() shouldBe "Additional first late payment penalty calculation - Manage your Self Assessment - GOV.UK"
           document.getH1Elements.text() shouldBe "Additional first late payment penalty calculation"
+        }
+      }
+      "redirect to the index page" when {
+        "no first late payment penalty supplementary charge exists for the penaltyId" in {
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isEstimate = false)
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)))
+          val result = get(addQueryParam(pathStart + "additional-first-lpp-calculation", "NOT-A-REAL-PENALTY-ID"), isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
+        "there is no late payment penalty data at all LPP1S" in{
+          stubAuthRequests(isAgent)
+          val supplementary1LPPCalcData = sampleFirstLPPCalcData(isEstimate = false)
+          val fixture = getPenaltyDetailsForSupplementaryCalculationPagePage(supplementary1LPPCalcData)
+          val noLppFixture = fixture.copy(penaltyDetails = fixture.penaltyDetails.map(_.copy(latePaymentPenalty = None)))
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(noLppFixture))
+          val result = get(LPP1SupplementaryPath, isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
         }
       }
     }
@@ -298,6 +318,26 @@ class SupplementaryCalculationControllerISpec extends ControllerISpecHelper
           val document = Jsoup.parse(result.body)
           document.getElementById("chargeReference").text() shouldBe s"Charge reference: $paidPenaltyChargeReference"
           document.getElementById("penaltyPaid").text() shouldBe "Penalty paid"
+        }
+      }
+      "redirect to the index page" when {
+        "no second late payment penalty supplementary charge exists for the penaltyId" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isEstimate = false)
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)))
+          val result = get(addQueryParam(pathStart + "additional-second-lpp-calculation", "NOT-A-REAL-PENALTY-ID"), isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
+        }
+        "there is no late payment penalty data at all LPP2S" in {
+          stubAuthRequests(isAgent)
+          val supplementary2LPPCalcData = sampleSecondLPPCalcData(isEstimate = false)
+          val fixture = getPenaltyDetailsForSecondCalculationPageWithSupplement(supplementary2LPPCalcData)
+          val noLppFixture = fixture.copy(penaltyDetails = fixture.penaltyDetails.map(_.copy(latePaymentPenalty = None)))
+          stubGetPenalties(defaultNino, optArn)(OK, Json.toJson(noLppFixture))
+          val result = get(LPP2SupplementaryPath, isAgent)
+          result.status shouldBe SEE_OTHER
+          result.header("Location") shouldBe Some(routes.IndexController.homePage(isAgent).url)
         }
       }
     }

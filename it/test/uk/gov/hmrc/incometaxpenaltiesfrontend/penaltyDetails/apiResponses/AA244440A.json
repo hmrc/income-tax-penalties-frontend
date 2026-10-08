@@ -8,8 +8,8 @@
         "totalisations" : {
           "lspTotalValue" : 0,
           "penalisedPrincipalTotal" : 0,
-          "lppPostedTotal" : 0,
-          "lppEstimatedTotal" : 24,
+          "lppPostedTotal" : 204,
+          "lppEstimatedTotal" : 0,
           "totalAccountOverdue" : 0,
           "totalAccountPostedInterest" : 0,
           "totalAccountAccruingInterest" : 0
