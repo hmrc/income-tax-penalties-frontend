@@ -101,7 +101,7 @@ trait UserDetailsData extends Matchers {
     } else {
       s"first-lpp-calculation?penaltyId="
     }
-    link.text() shouldBe "View calculation"
+    link.text() shouldBe "View details"
     link.attr("href") should include(expectedHref)
   }
   

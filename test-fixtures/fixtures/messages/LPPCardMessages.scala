@@ -50,7 +50,7 @@ object LPPCardMessages {
     val extraAmountPaid = "Extra amount paid"
 
     //Card Footer Links
-    val cardLinksViewCalculation = "View calculation"
+    val cardLinksViewCalculation = "View details"
     val cardLinksReviewAppeal = "Ask for review"
     val cardLinksCheckIfCanAppeal = "Appeal this penalty"
     val cannotAppeal = "You cannot appeal this point"
@@ -85,7 +85,7 @@ object LPPCardMessages {
     override val extraAmountPaid = "Swm ychwanegol a dalwyd"
 
     //Card Footer Links
-    override val cardLinksViewCalculation = "Gweld y cyfrifiad"
+    override val cardLinksViewCalculation = "Gweld y manylion"
     override val cardLinksCheckIfCanAppeal = "Apelio yn erbyn y gosb hon"
     override val cardLinksReviewAppeal = "Gofyn am adolygiad"
     override val cannotAppeal = "Ni allwch apelio yn erbyn y pwynt hwn"

@@ -368,7 +368,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                         }
                         "penalty cancelled after successful appeal " should {
 
-                          "not display view calculation link when appeal status under appeal" in {
+                          "not display View details link when appeal status under appeal" in {
 
                             val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Upheld, AppealLevelEnum.FirstStageAppeal)
 
