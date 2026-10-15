@@ -65,7 +65,7 @@ individual.index.lpp.tab.payEarlyInfo = Po gyntaf y byddwch yn talu’ch Treth I
 session.expired.h1 = Er eich diogelwch, mae’r gwasanaeth hwn wedi’i ailosod
 session.expired.p = Mae’r manylion a roddwyd gennych wedi’u dileu gan nad ydych wedi mynd yn eich blaen â’r gwasanaeth ers 15 munud.
 
-calculations.view.calculations = Gweld y cyfrifiad
+calculations.view.calculations = Gweld y manylion
 calculation.first.title = Cyfrifiad y gosb gyntaf am dalu’n hwyr
 calculation.second.title = Cyfrifiad yr ail gosb am dalu’n hwyr
 calculation.first.h1 = Cyfrifiad y gosb gyntaf am dalu’n hwyr
@@ -331,7 +331,7 @@ expiryReason.RES = Reset (Welsh)
 cardLinks.cannotAppeal = Ni allwch apelio yn erbyn y pwynt hwn
 cardLinks.checkIfYouCanAppealThisPenalty = Apelio yn erbyn y gosb hon
 cardLinks.appeal = Gwirio a allwch apelio yn erbyn y gosb hon
-cardLinks.viewCalculation = Gweld y cyfrifiad
+cardLinks.viewCalculation = Gweld y manylion
 cardLinks.reviewAppeal = Gofyn am adolygiad
 
 # Months

@@ -65,7 +65,7 @@ individual.index.lpp.tab.payEarlyInfo = The earlier you pay your Income Tax, the
 session.expired.h1 = For your security, this service has been reset
 session.expired.p = The details you have given have been deleted because you did not continue the service for 15 minutes.
 
-calculations.view.calculations = View calculation
+calculations.view.calculations = View details
 calculation.first.title = First late payment penalty calculation
 calculation.second.title = Second late payment penalty calculation
 calculation.first.h1 = First late payment penalty calculation
@@ -332,7 +332,7 @@ expiryReason.RES = Reset
 cardLinks.cannotAppeal = You cannot appeal this point
 cardLinks.checkIfYouCanAppealThisPenalty = Appeal this penalty
 cardLinks.appeal = Check if you can appeal this penalty
-cardLinks.viewCalculation = View calculation
+cardLinks.viewCalculation = View details
 cardLinks.reviewAppeal = Ask for review
 
 # Months
