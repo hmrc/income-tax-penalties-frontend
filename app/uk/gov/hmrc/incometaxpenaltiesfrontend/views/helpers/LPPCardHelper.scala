@@ -28,6 +28,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
   def createLatePaymentPenaltyCards(lpps: Seq[(LPPDetails, Int)], isBreathingSpace: Boolean)(implicit messages: Messages, timeMachine: TimeMachine): Seq[LatePaymentPenaltySummaryCard] =
     lpps.map { case (lpp, index) =>
+      val cardAmount = if (lpp.isPartiallyPaid) lpp.penaltyAmountOutstanding.getOrElse(lpp.amountDue) else lpp.amountDue
 
       val cardRows: Seq[SummaryListRow] =
         lpp.penaltyCategory match {
@@ -37,7 +38,7 @@ class LPPCardHelper @Inject()(lppSummaryRow: LPPSummaryListRowHelper) extends Da
 
       LatePaymentPenaltySummaryCard(
         index,
-        cardTitle = if (lpp.supplement.contains(true)) messages(s"lpp.penaltyType.supplementary.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)) else messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(lpp.amountDue)),
+        cardTitle = if (lpp.supplement.contains(true)) messages(s"lpp.penaltyType.supplementary.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(cardAmount)) else messages(s"lpp.penaltyType.${lpp.penaltyCategory}", CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(cardAmount)),
         cardRows = cardRows,
         status = getTagStatus(lpp, isBreathingSpace),
         penaltyChargeReference = lpp.penaltyChargeReference,

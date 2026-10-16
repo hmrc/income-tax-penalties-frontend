@@ -88,6 +88,8 @@ calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanego
 calculation.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
 
 calculation.yourPenaltyDetails = Manylion eich cosb
+calculation.yourPaymentDetails = Manylion eich taliad
+calculation.youOwe = Rydych yn ddyledus:
 calculation.penaltyDueDate.due.p = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.penaltyDueDate.overDue.p = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
 calculation.table.caption.amountApplied = Swm y mae’r gosb yn berthnasol iddo
@@ -235,8 +237,6 @@ status.overdue = Yn hwyr
 status.due = Yn ddyledus
 status.paid = Wedi’i dalu
 status.estimate = Amcangyfrif
-status.amountDue = £{0} yn ddyledus
-status.amountOverdue = £{0} yn hwyr
 status.late = Hwyr
 status.cancelled = Wedi canslo
 status.breathing.space = Wedi’i oedi
