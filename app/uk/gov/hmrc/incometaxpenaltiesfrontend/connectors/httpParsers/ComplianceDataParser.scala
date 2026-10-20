@@ -45,7 +45,6 @@ object ComplianceDataParser extends Logging {
     override def read(method: String, url: String, response: HttpResponse): ComplianceDataResponse = {
       response.status match {
         case OK =>
-          // NOTE: do not log response.json here - it contains the user's NINO (PII) via ObligationIdentification.referenceNumber
           logger.debug(s"[ComplianceDataReads][read]: Successful call to retrieve Compliance Data")
           response.json.validate[ComplianceData](ComplianceData.format) match {
             case JsSuccess(compliancePayload, _) =>

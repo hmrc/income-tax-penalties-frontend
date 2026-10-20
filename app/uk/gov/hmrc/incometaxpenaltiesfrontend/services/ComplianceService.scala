@@ -47,7 +47,6 @@ class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: Ex
                            endDate: LocalDate)(implicit hc: HeaderCarrier): Future[Option[ComplianceData]] =
     connector.getComplianceData(nino, startDate, endDate).map {
       case Right(obligationData) =>
-        // NOTE: do not log obligationData - it contains the user's NINO (PII) via ObligationIdentification.referenceNumber
         logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")
         Some(obligationData)
       case Left(failure) =>

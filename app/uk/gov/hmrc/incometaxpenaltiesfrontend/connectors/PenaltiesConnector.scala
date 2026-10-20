@@ -34,7 +34,6 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
   def getPenaltyDetails(nino: String, optArn: Option[String] = None)
                        (implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
-    // NOTE: NINO is PII and must never be logged - do not add it to this message.
     logger.info("[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend")
 
     httpClient
@@ -44,7 +43,6 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
   def getComplianceData(nino: String, fromDate: LocalDate, toDate: LocalDate)
                        (implicit hc: HeaderCarrier): Future[ComplianceDataResponse] = {
-    // NOTE: NINO is PII and must never be logged - do not add it to this message.
     logger.info(s"[PenaltiesConnector][getComplianceData] - Requesting compliance data from backend for period $fromDate to $toDate")
 
     httpClient

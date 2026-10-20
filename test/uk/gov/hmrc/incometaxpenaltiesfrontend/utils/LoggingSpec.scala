@@ -44,7 +44,6 @@ class LoggingSpec extends AnyWordSpec with Matchers with LogCapturing {
       first.testLogger.logger.getName should include("FirstLoggingClass")
       second.testLogger.logger.getName should include("SecondLoggingClass")
 
-      // Critically, the two loggers must NOT share the same (old universal) name
       first.testLogger.logger.getName should not be second.testLogger.logger.getName
     }
 

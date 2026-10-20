@@ -16,16 +16,6 @@
 
 package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
-/**
- * Mix this trait into a class/trait that needs to log, rather than importing a single
- * universal `Logger` instance. Each class gets its own [[play.api.Logger]] named after
- * the class it is mixed into, which makes it far easier to trace where a log line came
- * from and to tune log levels per-class if required.
- *
- * IMPORTANT: Never log Personal Identifiable Information (PII) - e.g. NINO, UTR, name,
- * email, address etc. Only log identifiers that are safe for support teams to see
- * (e.g. exception types, correlation ids, feature switch names).
- */
 trait Logging {
 
   protected lazy val logger: play.api.Logger = play.api.Logger(getClass)
