@@ -74,7 +74,8 @@ calculation.p1 = Mae’r gosb hon yn berthnasol os nad yw Treth Incwm wedi’i t
 calculation.p2 = Mae’n cynnwys dwy ran:
 calculation.return.link = Bwrw golwg dros gosbau ac apeliadau
 calculation.penalty.amount = Swm y gosb:
-calculation.amount.received = Yr hyn sydd arnoch
+calculation.youOwe = Rydych yn ddyledus:
+calculation.amount.received = Y swm a gafwyd
 calculation.left.to.pay = Yn weddill i’w dalu
 caption.date = Blwyddyn dreth {0} i {1}
 calculation.charge.reference = Cyfeirnod y gosb: {0}
@@ -89,7 +90,6 @@ calculation.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y f
 
 calculation.yourPenaltyDetails = Manylion eich cosb
 calculation.yourPaymentDetails = Eich manylion talu
-calculation.youOwe = Rydych yn ddyledus:
 calculation.penaltyDueDate.due.p = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
 calculation.penaltyDueDate.overDue.p = Mae’r gosb hon yn hwyr. Rydym yn codi llog.
 calculation.table.caption.amountApplied = Swm y mae’r gosb yn berthnasol iddo
