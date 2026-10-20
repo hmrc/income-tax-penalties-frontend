@@ -105,8 +105,6 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
 
                       val penalty = sampleLPP1AppealUnpaid(AppealStatusEnum.Under_Appeal, AppealLevelEnum.FirstStageAppeal)
                       val amount = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountPosted)
-                      val amountOutstanding = CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty.penaltyAmountOutstanding.get)
-
                       val summaryCardHtml = summaryCard(LatePaymentPenaltySummaryCard(
                         index = 1,
                         cardTitle = messagesForLanguage.cardTitlePenalty(amount),
@@ -131,7 +129,7 @@ class SummaryCardLPPSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
                       val document = Jsoup.parse(summaryCardHtml.toString)
 
                       document.select("h4").text() shouldBe messagesForLanguage.cardTitlePenalty(amount)
-                      document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.amountDue(amountOutstanding))
+                      document.select("#lpp-status-1").text() shouldBe (if (isBreathingSpace) penaltyStatusMessages.breathingSpace else penaltyStatusMessages.due)
                       document.select("#lpp-view-calculation-link-1").text() shouldBe messagesForLanguage.cardLinksViewCalculation
                       document.select("#lpp-appeal-link-1").isEmpty shouldBe true
                     }

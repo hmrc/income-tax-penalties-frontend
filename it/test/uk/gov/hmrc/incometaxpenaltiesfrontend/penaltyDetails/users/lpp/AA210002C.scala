@@ -36,8 +36,8 @@ object AA210002C extends UserDetailsData {
     validateViewCalculationLink(card, 0, isSecondLPP = true)
   }
   def penaltyCard1ExpectedContent(card: Element): Unit = {
-    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
-    validateCardTag(card, expectedTag = "£40.00 due")
+    validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £40.00")
+    validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
     cardRows.size() shouldBe 4
     validateSummary(cardRows.get(0), "Pay penalty by", "3 April 2028")
