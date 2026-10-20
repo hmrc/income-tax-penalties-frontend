@@ -20,11 +20,11 @@ import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import PagerDutyHelper.PagerDutyKeys._
 
-object ComplianceDataParser {
+object ComplianceDataParser extends Logging {
 
   sealed trait GetComplianceDataFailure {
     val message: String
@@ -45,7 +45,8 @@ object ComplianceDataParser {
     override def read(method: String, url: String, response: HttpResponse): ComplianceDataResponse = {
       response.status match {
         case OK =>
-          logger.debug(s"[ComplianceDataReads][read]: Successful call to retrieve Compliance Data${response.json}")
+          // NOTE: do not log response.json here - it contains the user's NINO (PII) via ObligationIdentification.referenceNumber
+          logger.debug(s"[ComplianceDataReads][read]: Successful call to retrieve Compliance Data")
           response.json.validate[ComplianceData](ComplianceData.format) match {
             case JsSuccess(compliancePayload, _) =>
               Right(compliancePayload)

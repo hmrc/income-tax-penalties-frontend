@@ -21,13 +21,13 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.MessageCountHttpParser.{GetMessageCountResponse, MessagesCountUnexpectedFailure}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class MessageCountConnector @Inject()(httpClient: HttpClientV2,
-                                      val appConfig: AppConfig) {
+                                      val appConfig: AppConfig) extends Logging {
 
   def getMessageCount()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[GetMessageCountResponse] = {
     implicit val hcwc: HeaderCarrier = hc.copy(extraHeaders = hc.headers(Seq(play.api.http.HeaderNames.COOKIE)))

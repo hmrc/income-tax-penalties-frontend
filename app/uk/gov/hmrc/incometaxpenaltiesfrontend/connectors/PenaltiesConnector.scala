@@ -23,7 +23,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.ComplianceDataResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyDetailsParser.GetPenaltyDetailsResponse
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -35,7 +34,8 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
   def getPenaltyDetails(nino: String, optArn: Option[String] = None)
                        (implicit hc: HeaderCarrier): Future[GetPenaltyDetailsResponse] = {
-    logger.info(s"[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend for NINO: $nino")
+    // NOTE: NINO is PII and must never be logged - do not add it to this message.
+    logger.info("[PenaltiesConnector][getPenaltyDetails] - Requesting penalties details from backend")
 
     httpClient
       .get(url"${appConfig.penaltiesUrl + s"/ITSA/etmp/penalties/NINO/$nino${optArn.fold("")("?arn=" + _)}"}")
@@ -44,7 +44,8 @@ class PenaltiesConnector @Inject()(httpClient: HttpClientV2,
 
   def getComplianceData(nino: String, fromDate: LocalDate, toDate: LocalDate)
                        (implicit hc: HeaderCarrier): Future[ComplianceDataResponse] = {
-    logger.info(s"[PenaltiesConnector][getComplianceData] - Requesting compliance data from backend for NINO $nino")
+    // NOTE: NINO is PII and must never be logged - do not add it to this message.
+    logger.info(s"[PenaltiesConnector][getComplianceData] - Requesting compliance data from backend for period $fromDate to $toDate")
 
     httpClient
       .get(url"${appConfig.penaltiesUrl + s"/ITSA/compliance/data/NINO/$nino?fromDate=$fromDate&toDate=$toDate"}")

@@ -22,7 +22,6 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.services.FeatureSwitchRetrievalService
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.frontend.views.html.feature_switch
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import java.time.LocalDate

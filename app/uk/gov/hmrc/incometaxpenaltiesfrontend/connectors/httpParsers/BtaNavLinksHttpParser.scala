@@ -20,11 +20,11 @@ import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.btaNavBar.NavContent
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
 
-trait BtaNavLinksHttpParser {
+trait BtaNavLinksHttpParser extends Logging {
 
   implicit object BtaNavLinksReads extends HttpReads[Option[NavContent]] {
     override def read(method: String, url: String, response: HttpResponse): Option[NavContent] =

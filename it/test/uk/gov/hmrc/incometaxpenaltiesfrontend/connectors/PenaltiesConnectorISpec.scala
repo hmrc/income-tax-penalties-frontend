@@ -27,13 +27,19 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.GetPenaltyD
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForBackend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.ComplianceStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods
   with PenaltiesFixture with ComplianceDataTestData with ComplianceStub with FeatureSwitching {
+
+  // Capture logs from PagerDutyHelper, which is where the PagerDuty log lines are emitted from
+  val pagerDutyLogger: play.api.Logger = play.api.Logger(PagerDutyHelper.getClass)
+
+  // Capture logs from PenaltiesConnector itself, to assert on the request log lines it emits
+  val penaltiesConnectorLogger: play.api.Logger = play.api.Logger(classOf[PenaltiesConnector])
 
   val connector: PenaltiesConnector = app.injector.instanceOf[PenaltiesConnector]
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
@@ -188,7 +194,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       "an exception with status 4xx occurs upstream" in {
         when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = BAD_REQUEST, body = Json.obj())
 
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -208,7 +214,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       "an exception with status 5xx occurs upstream is returned" in {
         when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
 
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result = await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
@@ -269,7 +275,7 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       "the call returns a UpstreamErrorResponse(4xx) exception" in {
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(BAD_REQUEST, Json.toJson(Json.obj()))
 
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
@@ -282,13 +288,43 @@ class PenaltiesConnectorISpec extends ComponentSpecHelper with LogCapturing with
       "the call returns a UpstreamErrorResponse(5xx) exception" in {
         stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(INTERNAL_SERVER_ERROR, Json.toJson(Json.obj()))
 
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result: ComplianceDataResponse = await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
 
             result shouldBe Left(ComplianceDataUnexpectedFailure(INTERNAL_SERVER_ERROR))
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_PENALTIES_BACKEND.toString)) shouldBe true
           }
+        }
+      }
+    }
+  }
+
+  "logging" should {
+    "not log the user's NINO (PII) when requesting penalty details" in {
+      when(GET, uri = s"/penalties/ITSA/etmp/penalties/NINO/$testNino").thenReturn(status = OK, body = PenaltySuccessResponse("22/01/2023", Some(samplePenaltyDetailsModel)))
+
+      withCaptureOfLoggingFrom(penaltiesConnectorLogger) {
+        logs => {
+          await(connector.getPenaltyDetails(testNino)(HeaderCarrier()))
+
+          // The request should still be logged at INFO level...
+          logs.exists(_.getLevel.toString == "INFO") shouldBe true
+          // ...but the NINO must never appear in any log message
+          logs.exists(_.getMessage.contains(testNino)) shouldBe false
+        }
+      }
+    }
+
+    "not log the user's NINO (PII) when requesting compliance data" in {
+      stubGetComplianceData(testNino, testFromDate, testPoCAchievementDate)(OK, Json.toJson(sampleCompliancePayload))
+
+      withCaptureOfLoggingFrom(penaltiesConnectorLogger) {
+        logs => {
+          await(connector.getComplianceData(testNino, testFromDate, testPoCAchievementDate)(HeaderCarrier()))
+
+          logs.exists(_.getLevel.toString == "INFO") shouldBe true
+          logs.exists(_.getMessage.contains(testNino)) shouldBe false
         }
       }
     }

@@ -19,13 +19,13 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import PagerDutyHelper.PagerDutyKeys._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.IF.IFToHIPPenaltyDetailsConverter
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 
-object GetPenaltyDetailsParser {
+object GetPenaltyDetailsParser extends Logging {
 
   sealed trait GetPenaltyDetailsFailure {
     val message: String
