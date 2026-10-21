@@ -59,11 +59,11 @@ object MessageCountHttpParser extends Logging {
               Left(MessagesCountResponseMalformed)
           }
         case BAD_REQUEST =>
-          logger.error(s"[GetMessageCount][read]: Bad request returned with reason: ${response.body}")
+          logger.error(s"[GetMessageCount][read]: Bad request returned")
           PagerDutyHelper.log("MessageCountHttpParser", "GetMessageCount", RECEIVED_4XX_FROM_MESSAGE_FRONTEND)
           Left(MessagesCountResponseBadRequest)
         case status =>
-          logger.error(s"[GetMessageCount][read]: Unexpected response, status $status returned with reason: ${response.body}")
+          logger.error(s"[GetMessageCount][read]: Unexpected response, status $status returned")
           PagerDutyHelper.logStatusCode("MessageCountHttpParser", "GetMessageCount", status)(RECEIVED_4XX_FROM_MESSAGE_FRONTEND, RECEIVED_5XX_FROM_MESSAGE_FRONTEND)
           Left(MessagesCountUnexpectedFailure(status))
       }

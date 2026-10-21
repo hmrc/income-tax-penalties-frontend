@@ -86,12 +86,12 @@ object GetPenaltyDetailsParser extends Logging {
           Right(PenaltyDetails(None, None, None, None))
 
         case BAD_REQUEST =>
-          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Bad request returned with reason: ${response.body}")
+          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Bad request returned")
           PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
           Left(GetPenaltyDetailsBadRequest)
 
         case status =>
-          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned with reason: ${response.body}")
+          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned")
           PagerDutyHelper.logStatusCode("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", status)(
             RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
           Left(GetPenaltyDetailsUnexpectedFailure(status))

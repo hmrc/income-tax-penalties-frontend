@@ -49,7 +49,7 @@ object IncomeTaxSessionDataHttpParser extends Logging {
           PagerDutyHelper.log("GetSessionData", "read", RECEIVED_4XX_FROM_INCOME_TAX_SESSION_DATA)
           Left(BadRequest)
         case status =>
-          logger.error(s"[GetSessionData][read]: Unexpected response, status $status returned with reason: ${response.body}")
+          logger.error(s"[GetSessionData][read]: Unexpected response, status $status returned")
           PagerDutyHelper.logStatusCode("GetSessionData", "read", status)(RECEIVED_4XX_FROM_INCOME_TAX_SESSION_DATA, RECEIVED_5XX_FROM_INCOME_TAX_SESSION_DATA)
           Left(UnexpectedFailure(status, response.body))
       }

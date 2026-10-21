@@ -30,7 +30,7 @@ trait BtaNavLinksHttpParser extends Logging {
     override def read(method: String, url: String, response: HttpResponse): Option[NavContent] =
       response.status match {
         case OK =>
-          logger.debug(s"[BtaNavLinksReads][read] Successful call to retrieve BTA Nav Links. Response: \n\n ${response.json}")
+          logger.debug(s"[BtaNavLinksReads][read] Successful call to retrieve BTA Nav Links.")
           response.json.validateOpt[NavContent] match {
             case JsSuccess(navLinks, _) =>
               navLinks
@@ -43,7 +43,7 @@ trait BtaNavLinksHttpParser extends Logging {
         case status =>
           PagerDutyHelper.logStatusCode("BtaNavLinksHttpParser", "BtaNavLinksReads", status)(RECEIVED_4XX_FROM_BTA, RECEIVED_5XX_FROM_BTA)
           logger.error(s"[BtaNavLinksReads][read] Received unexpected response when calling BTA for NavLinks" +
-            s", status code: $status and body: ${response.body}, returning None to continue gracefully")
+            s", status code: $status, returning None to continue gracefully")
           None
       }
   }
