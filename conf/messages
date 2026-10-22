@@ -74,6 +74,7 @@ calculation.p1 = This penalty applies if Income Tax has not been paid for 30 day
 calculation.p2 = It is made up of 2 parts:
 calculation.return.link = View penalties and appeals
 calculation.penalty.amount = Penalty amount:
+calculation.youOwe = You owe:
 calculation.amount.received = Amount received
 calculation.left.to.pay = Left to pay
 caption.date = {0} to {1} tax year
@@ -88,6 +89,7 @@ calculation.payment.deadline.pfa = The payment deadline for the extra amount was
 calculation.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
 
 calculation.yourPenaltyDetails = Your penalty details
+calculation.yourPaymentDetails = Your payment details
 calculation.penaltyDueDate.due.p = To avoid interest charges, you should pay this penalty by {0}.
 calculation.penaltyDueDate.overDue.p = This penalty is overdue. We are charging interest.
 calculation.table.caption.amountApplied = Amount penalty is applied to
@@ -134,7 +136,6 @@ calculation.calc.breathing.space = You are in Breathing Space. This penalty is p
 calculation.banner.breathing.space.your.in = You’re in
 calculation.banner.breathing.space = Breathing Space
 calculation.banner.breathing.space.paused = Penalties are paused and will not increase.
-
 
 calculation.calc2.how.we.work.penalty.amount = How we work out the penalty amount
 calculation.calc2.how.we.work.penalty.amount.p1 = We use a 10% yearly rate. This means the amount increases a small amount every day.
@@ -236,8 +237,6 @@ status.overdue = Overdue
 status.due = Due
 status.paid = Paid
 status.estimate = Estimate
-status.amountDue = £{0} due
-status.amountOverdue = £{0} overdue
 status.late = Late
 status.cancelled = Cancelled
 status.breathing.space = Paused

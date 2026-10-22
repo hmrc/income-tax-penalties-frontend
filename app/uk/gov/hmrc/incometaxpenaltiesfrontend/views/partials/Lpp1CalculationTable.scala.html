@@ -26,7 +26,8 @@
 
 
 @this(
-govukTable : GovukTable
+govukTable : GovukTable,
+h2: H2
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages)
@@ -41,7 +42,7 @@ govukTable : GovukTable
                 TableRow(),
                 TableRow(
                          content = Text(s"£${calculationData.formattedPenaltyAmount}"),
-                         format = Some("numeric"),
+                         format = Some("numeric")
                 )
             )
       }
@@ -55,8 +56,7 @@ govukTable : GovukTable
                 TableRow(),
                 TableRow(
                          content = Text(s"£${calculationData.formattedPenaltyAmountPaid}"),
-                         format = Some("numeric"),
-
+                         format = Some("numeric")
                 )
             )
       }
@@ -70,49 +70,57 @@ govukTable : GovukTable
                 TableRow(),
                 TableRow(
                          content = Text(s"£${calculationData.formattedPenaltyAmountOutstanding}"),
-                         format = Some("numeric"),
-                         classes = "govuk-table__header"
+                         format = Some("numeric")
                 )
             )
       }
 
+      @paymentDetailsRows = @{
+            val rows: Seq[Seq[TableRow]] = Seq(TotalTableRow, AmountPaidRow, StillToPayRow)
+            rows
+      }
+
+      @calculationRows = @{
+            val rows: Seq[Seq[TableRow]] = Seq(
+              Seq(
+                TableRow(
+                  content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
+                ),
+                TableRow(
+                  content = Text(s"${calculationData.llpLRCharge.daysOverdue}")
+                ),
+                TableRow(
+                  content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
+                  format = Some("numeric")
+                ),
+                TableRow(
+                  content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
+                  format = Some("numeric")
+                )
+              )
+            ) ++ calculationData.llpHRCharge.map { lppHRCharge =>
+              Seq(
+                TableRow(
+                  content = Text(s"£${lppHRCharge.formattedChargeAmount}")
+                ),
+                TableRow(
+                  content = Text(s"${lppHRCharge.daysOverdue}")
+                ),
+                TableRow(
+                  content = Text(s"${lppHRCharge.penaltyPercentage}%"),
+                  format = Some("numeric")
+                ),
+                TableRow(
+                  content = Text(s"£${lppHRCharge.formattedPenaltyAmount}"),
+                  format = Some("numeric")
+                )
+              )
+            } ++ Seq(TotalTableRow)
+            rows
+      }
+
       @govukTable(Table(
-          rows = Seq(
-            Seq(
-              TableRow(
-                content = Text(s"£${calculationData.llpLRCharge.formattedChargeAmount}")
-              ),
-              TableRow(
-                content = Text(s"${calculationData.llpLRCharge.daysOverdue}")
-              ),
-              TableRow(
-                content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
-                format = Some("numeric")
-              ),
-              TableRow(
-                content = Text(s"£${calculationData.llpLRCharge.formattedPenaltyAmount}"),
-                format = Some("numeric")
-              )
-            ),
-          ) ++ calculationData.llpHRCharge.map {lppHRCharge =>
-           Seq(
-              TableRow(
-                content = Text(s"£${lppHRCharge.formattedChargeAmount}")
-              ),
-              TableRow(
-                content = Text(s"${lppHRCharge.daysOverdue}")
-              ),
-              TableRow(
-                content = Text(s"${calculationData.llpLRCharge.penaltyPercentage}%"),
-                format = Some("numeric")
-              ),
-              TableRow(
-              content = Text(s"£${lppHRCharge.formattedPenaltyAmount}"),
-              format = Some("numeric")
-              )
-          )
-          } ++
-          (if(calculationData.isPartiallyPaid) Seq(TotalTableRow, AmountPaidRow, StillToPayRow) else Seq(TotalTableRow)),
+          rows = calculationRows,
            head = Some(Seq(
             HeadCell(
               content = Text(messages("calculation.table.caption.amountApplied"))
@@ -125,9 +133,17 @@ govukTable : GovukTable
               format = Some("numeric")
             ),
             HeadCell(
-              content = Text(messages(messages("calculation.table.caption.amount"))),
+              content = Text(messages("calculation.table.caption.amount")),
               format = Some("numeric")
             )
           )),
       ))
+
+      @if(calculationData.isPartiallyPaid) {
+        @h2(msg = "calculation.yourPaymentDetails", elmId = "paymentDetailsHeading", classes = Some("govuk-heading-m"))
+
+        @govukTable(Table(
+            rows = paymentDetailsRows
+        ))
+      }
 
