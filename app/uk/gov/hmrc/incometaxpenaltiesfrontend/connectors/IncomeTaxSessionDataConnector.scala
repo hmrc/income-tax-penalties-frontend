@@ -22,13 +22,13 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, StringContextOps}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.{IncomeTaxSessionDataHttpParser, UnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.IncomeTaxSessionDataHttpParser.GetSessionDataResponse
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IncomeTaxSessionDataConnector @Inject()(httpClient: HttpClientV2,
-                                              val appConfig: AppConfig) {
+                                              val appConfig: AppConfig) extends Logging {
 
   def getSessionData()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[GetSessionDataResponse] = {
 

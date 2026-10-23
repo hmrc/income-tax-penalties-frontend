@@ -20,17 +20,17 @@ import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.btaNavBar.NavContent
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
 
-trait BtaNavLinksHttpParser {
+trait BtaNavLinksHttpParser extends Logging {
 
   implicit object BtaNavLinksReads extends HttpReads[Option[NavContent]] {
     override def read(method: String, url: String, response: HttpResponse): Option[NavContent] =
       response.status match {
         case OK =>
-          logger.debug(s"[BtaNavLinksReads][read] Successful call to retrieve BTA Nav Links. Response: \n\n ${response.json}")
+          logger.debug(s"[BtaNavLinksReads][read] Successful call to retrieve BTA Nav Links.")
           response.json.validateOpt[NavContent] match {
             case JsSuccess(navLinks, _) =>
               navLinks
@@ -43,7 +43,7 @@ trait BtaNavLinksHttpParser {
         case status =>
           PagerDutyHelper.logStatusCode("BtaNavLinksHttpParser", "BtaNavLinksReads", status)(RECEIVED_4XX_FROM_BTA, RECEIVED_5XX_FROM_BTA)
           logger.error(s"[BtaNavLinksReads][read] Received unexpected response when calling BTA for NavLinks" +
-            s", status code: $status and body: ${response.body}, returning None to continue gracefully")
+            s", status code: $status, returning None to continue gracefully")
           None
       }
   }

@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.config
 
 import play.api.Configuration
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{EnableTimeMachineBanner, FeatureSwitching, UseStubForBackend, UseStubForMessageFrontend}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 

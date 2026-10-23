@@ -20,11 +20,11 @@ import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.messageCount.MessageCount
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys._
 
-object MessageCountHttpParser {
+object MessageCountHttpParser extends Logging {
 
   sealed trait MessagesCountFailure {
     val message: String
@@ -59,11 +59,11 @@ object MessageCountHttpParser {
               Left(MessagesCountResponseMalformed)
           }
         case BAD_REQUEST =>
-          logger.error(s"[GetMessageCount][read]: Bad request returned with reason: ${response.body}")
+          logger.error(s"[GetMessageCount][read]: Bad request returned")
           PagerDutyHelper.log("MessageCountHttpParser", "GetMessageCount", RECEIVED_4XX_FROM_MESSAGE_FRONTEND)
           Left(MessagesCountResponseBadRequest)
         case status =>
-          logger.error(s"[GetMessageCount][read]: Unexpected response, status $status returned with reason: ${response.body}")
+          logger.error(s"[GetMessageCount][read]: Unexpected response, status $status returned")
           PagerDutyHelper.logStatusCode("MessageCountHttpParser", "GetMessageCount", status)(RECEIVED_4XX_FROM_MESSAGE_FRONTEND, RECEIVED_5XX_FROM_MESSAGE_FRONTEND)
           Left(MessagesCountUnexpectedFailure(status))
       }

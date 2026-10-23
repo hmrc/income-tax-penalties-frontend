@@ -24,7 +24,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.MessageCountHttpParser.{GetMessageCountResponse, MessagesCountResponseBadRequest, MessagesCountResponseMalformed, MessagesCountUnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.{FeatureSwitching, UseStubForMessageFrontend}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.messageCount.MessageCount
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
@@ -32,6 +32,9 @@ import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 import scala.concurrent.ExecutionContext
 
 class MessageCountConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with FeatureSwitching {
+
+  // Capture logs from PagerDutyHelper, which is where the PagerDuty log lines are emitted from
+  val pagerDutyLogger: play.api.Logger = play.api.Logger(PagerDutyHelper.getClass)
 
   val connector: MessageCountConnector = app.injector.instanceOf[MessageCountConnector]
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
@@ -67,7 +70,7 @@ class MessageCountConnectorISpec extends ComponentSpecHelper with LogCapturing w
       "a 4xx is returned" in {
         when(GET, uri = s"/messages/count\\?read=No").thenReturn(status = BAD_REQUEST, body = Json.obj())
 
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result = await(connector.getMessageCount())
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_MESSAGE_FRONTEND.toString)) shouldBe true
@@ -79,7 +82,7 @@ class MessageCountConnectorISpec extends ComponentSpecHelper with LogCapturing w
       "a 5xx is returned" in {
         when(GET, uri = s"/messages/count\\?read=No").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
 
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result = await(connector.getMessageCount())
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_MESSAGE_FRONTEND.toString)) shouldBe true
