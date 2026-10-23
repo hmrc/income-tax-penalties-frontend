@@ -21,8 +21,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.BtaNavLinksHttpParser
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.btaNavBar.NavContent
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
-
+import play.api.Logging
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 

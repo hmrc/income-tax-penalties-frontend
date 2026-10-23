@@ -23,10 +23,9 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActio
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserComplianceInfoAuditModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ObligationDetail
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{AuditService, ComplianceService, TimelineBuilderService}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-
+import play.api.Logging
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 

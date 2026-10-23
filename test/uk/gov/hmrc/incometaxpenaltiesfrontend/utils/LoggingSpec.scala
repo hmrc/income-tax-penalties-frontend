@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.utils
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.Logging
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 class LoggingSpec extends AnyWordSpec with Matchers with LogCapturing {

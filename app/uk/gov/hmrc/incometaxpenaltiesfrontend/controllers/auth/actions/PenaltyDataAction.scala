@@ -21,7 +21,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.ErrorHandler
 import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.models.{AuthenticatedUserWithPenaltyData, CurrentUserRequest}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.PenaltiesService
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
+import play.api.Logging
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import javax.inject.{Inject, Singleton}

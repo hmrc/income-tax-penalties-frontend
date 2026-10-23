@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, StringContextOps}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.{IncomeTaxSessionDataHttpParser, UnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.IncomeTaxSessionDataHttpParser.GetSessionDataResponse
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
+import play.api.Logging
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

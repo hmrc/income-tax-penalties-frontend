@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
+import play.api.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import PagerDutyHelper.PagerDutyKeys._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.IF.IFToHIPPenaltyDetailsConverter

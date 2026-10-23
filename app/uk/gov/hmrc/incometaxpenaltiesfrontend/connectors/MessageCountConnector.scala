@@ -21,7 +21,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.MessageCountHttpParser.{GetMessageCountResponse, MessagesCountUnexpectedFailure}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logging
+import play.api.Logging
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
