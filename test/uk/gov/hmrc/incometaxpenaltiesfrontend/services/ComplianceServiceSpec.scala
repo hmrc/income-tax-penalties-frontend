@@ -28,15 +28,19 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.ComplianceDataParser.ComplianceDataUnexpectedFailure
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
+import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with MockFactory { this: TestSuite =>
+class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDataTestData with MockFactory with LogCapturing { this: TestSuite =>
 
   val mockPenaltiesConnector: PenaltiesConnector = mock[PenaltiesConnector]
   val nino = "AA123456A"
+
+  // Capture logs from ComplianceService itself, as this is a per-class logger (not a shared universal one)
+  val complianceServiceLogger: play.api.Logger = play.api.Logger(classOf[ComplianceService])
 
   class Setup {
     val service: ComplianceService = new ComplianceService(mockPenaltiesConnector)
@@ -82,6 +86,45 @@ class ComplianceServiceSpec extends AnyWordSpec with Matchers with ComplianceDat
       )(HeaderCarrier())))
 
       result.getMessage shouldBe "Upstream error"
+    }
+
+    "not log the user's NINO or any obligation identification reference (PII) on success" in new Setup {
+      (mockPenaltiesConnector.getComplianceData(_: String, _: LocalDate, _: LocalDate)(_: HeaderCarrier))
+        .expects(*, LocalDate.of(2020, 1, 1), LocalDate.of(2022, 1, 1), *)
+        .returning(Future.successful(Right(sampleCompliancePayload)))
+
+      withCaptureOfLoggingFrom(complianceServiceLogger) {
+        logs => {
+          await(service.getDESComplianceData(
+            nino = nino,
+            startDate = LocalDate.of(2020, 1, 1),
+            endDate = LocalDate.of(2022, 1, 1)
+          )(HeaderCarrier()))
+
+          logs.exists(_.getLevel.toString == "INFO") shouldBe true
+          logs.exists(_.getMessage.contains(nino)) shouldBe false
+          logs.exists(_.getMessage.contains(sampleCompliancePayload.identification.get.referenceNumber)) shouldBe false
+        }
+      }
+    }
+
+    "not log any obligation data (PII) on failure" in new Setup {
+      (mockPenaltiesConnector.getComplianceData(_: String, _: LocalDate, _: LocalDate)(_: HeaderCarrier))
+        .expects(*, LocalDate.of(2020, 1, 1), LocalDate.of(2022, 1, 1), *)
+        .returning(Future.successful(Left(ComplianceDataUnexpectedFailure(INTERNAL_SERVER_ERROR))))
+
+      withCaptureOfLoggingFrom(complianceServiceLogger) {
+        logs => {
+          await(service.getDESComplianceData(
+            nino = nino,
+            startDate = LocalDate.of(2020, 1, 1),
+            endDate = LocalDate.of(2022, 1, 1)
+          )(HeaderCarrier()))
+
+          logs.exists(_.getLevel.toString == "ERROR") shouldBe true
+          logs.exists(_.getMessage.contains(nino)) shouldBe false
+        }
+      }
     }
   }
   "calculateComplianceWindow" should {

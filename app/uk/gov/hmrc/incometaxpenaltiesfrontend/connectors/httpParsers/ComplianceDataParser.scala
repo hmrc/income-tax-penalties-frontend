@@ -20,11 +20,11 @@ import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import PagerDutyHelper.PagerDutyKeys._
 
-object ComplianceDataParser {
+object ComplianceDataParser extends Logging {
 
   sealed trait GetComplianceDataFailure {
     val message: String
@@ -45,7 +45,7 @@ object ComplianceDataParser {
     override def read(method: String, url: String, response: HttpResponse): ComplianceDataResponse = {
       response.status match {
         case OK =>
-          logger.debug(s"[ComplianceDataReads][read]: Successful call to retrieve Compliance Data${response.json}")
+          logger.debug(s"[ComplianceDataReads][read]: Successful call to retrieve Compliance Data")
           response.json.validate[ComplianceData](ComplianceData.format) match {
             case JsSuccess(compliancePayload, _) =>
               Right(compliancePayload)
@@ -60,18 +60,18 @@ object ComplianceDataParser {
 
         case NOT_FOUND =>
           logger.info(s"[ComplianceDataReads][read] - Received not found response from backend for API 1330 data." +
-            s" No data associated with VRN. Body: ${response.body}")
+            s" No data associated with VRN.")
           Left(ComplianceDataNoData)
 
         case BAD_REQUEST =>
           PagerDutyHelper.log("ComplianceDataReads", "read", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
-          logger.error(s"[ComplianceDataReads][read] - Failed to parse to model with response body: ${response.body} (Status: $BAD_REQUEST)")
+          logger.error(s"[ComplianceDataReads][read] - Failed to parse to model (Status: $BAD_REQUEST)")
           Left(ComplianceDataUnexpectedFailure(BAD_REQUEST))
 
         case status =>
           PagerDutyHelper.logStatusCode("ComplianceDataReads", "read", status)(RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
           logger.error(s"[ComplianceDataReads][read] Received unexpected response when calling backend for API 1330 data," +
-            s" status code: $status and body: ${response.body}")
+            s" status code: $status")
           Left(ComplianceDataUnexpectedFailure(status))
       }
     }

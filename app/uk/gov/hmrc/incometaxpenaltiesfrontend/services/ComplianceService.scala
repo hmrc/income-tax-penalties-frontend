@@ -21,13 +21,13 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.PenaltiesConnector
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ComplianceData
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.IncomeTaxSessionKeys
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 
 import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: ExecutionContext) {
+class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: ExecutionContext) extends Logging {
 
   def calculateComplianceWindow()(implicit request: Request[_]): Option[(LocalDate, LocalDate)] = {
     request.session.get(IncomeTaxSessionKeys.pocAchievementDate).map(LocalDate.parse) match {
@@ -47,7 +47,6 @@ class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: Ex
                            endDate: LocalDate)(implicit hc: HeaderCarrier): Future[Option[ComplianceData]] =
     connector.getComplianceData(nino, startDate, endDate).map {
       case Right(obligationData) =>
-        logger.debug(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data,  obligation data = $obligationData")
         logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")
         Some(obligationData)
       case Left(failure) =>

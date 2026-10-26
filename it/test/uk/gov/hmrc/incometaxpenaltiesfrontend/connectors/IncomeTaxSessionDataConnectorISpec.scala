@@ -24,7 +24,7 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers.{BadRequest, InvalidJson, UnexpectedFailure}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.featureswitch.core.config.FeatureSwitching
 import uk.gov.hmrc.incometaxpenaltiesfrontend.stubs.IncomeTaxSessionDataStub
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
@@ -32,6 +32,9 @@ import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 import scala.concurrent.ExecutionContext
 
 class IncomeTaxSessionDataConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with FeatureSwitching with IncomeTaxSessionDataStub{
+
+  // Capture logs from PagerDutyHelper, which is where the PagerDuty log lines are emitted from
+  val pagerDutyLogger: play.api.Logger = play.api.Logger(PagerDutyHelper.getClass)
 
   val connector: IncomeTaxSessionDataConnector = app.injector.instanceOf[IncomeTaxSessionDataConnector]
   override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
@@ -63,7 +66,7 @@ class IncomeTaxSessionDataConnectorISpec extends ComponentSpecHelper with LogCap
 
       "a 4xx is returned" in {
         when(GET, uri = "/income-tax-session-data").thenReturn(status = BAD_REQUEST, body = Json.obj())
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result = await(connector.getSessionData())
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_4XX_FROM_INCOME_TAX_SESSION_DATA.toString)) shouldBe true
@@ -74,7 +77,7 @@ class IncomeTaxSessionDataConnectorISpec extends ComponentSpecHelper with LogCap
 
       "a 5xx is returned" in {
         when(GET, uri = "/income-tax-session-data").thenReturn(status = INTERNAL_SERVER_ERROR, body = Json.obj())
-        withCaptureOfLoggingFrom(logger) {
+        withCaptureOfLoggingFrom(pagerDutyLogger) {
           logs => {
             val result = await(connector.getSessionData())
             logs.exists(_.getMessage.contains(PagerDutyKeys.RECEIVED_5XX_FROM_INCOME_TAX_SESSION_DATA.toString)) shouldBe true

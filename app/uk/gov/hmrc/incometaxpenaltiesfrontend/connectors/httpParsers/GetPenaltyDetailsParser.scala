@@ -19,13 +19,13 @@ package uk.gov.hmrc.incometaxpenaltiesfrontend.connectors.httpParsers
 import play.api.http.Status._
 import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import play.api.Logging
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import PagerDutyHelper.PagerDutyKeys._
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.IF.IFToHIPPenaltyDetailsConverter
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.{PenaltyDetails, PenaltySuccessResponse}
 
-object GetPenaltyDetailsParser {
+object GetPenaltyDetailsParser extends Logging {
 
   sealed trait GetPenaltyDetailsFailure {
     val message: String
@@ -86,12 +86,12 @@ object GetPenaltyDetailsParser {
           Right(PenaltyDetails(None, None, None, None))
 
         case BAD_REQUEST =>
-          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Bad request returned with reason: ${response.body}")
+          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Bad request returned")
           PagerDutyHelper.log("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", RECEIVED_4XX_FROM_PENALTIES_BACKEND)
           Left(GetPenaltyDetailsBadRequest)
 
         case status =>
-          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned with reason: ${response.body}")
+          logger.error(s"[GetPenaltyDetailsResponseReads][read]: Unexpected response, status $status returned")
           PagerDutyHelper.logStatusCode("PenaltiesConnectorParser", "GetPenaltyDetailsResponseReads", status)(
             RECEIVED_4XX_FROM_PENALTIES_BACKEND, RECEIVED_5XX_FROM_PENALTIES_BACKEND)
           Left(GetPenaltyDetailsUnexpectedFailure(status))

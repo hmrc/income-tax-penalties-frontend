@@ -24,12 +24,12 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActio
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserCalculationInfoAuditModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.penaltyDetails.lpp.{LPPDetails, LPPPenaltyCategoryEnum}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.AuditService
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.{FirstLatePaymentPenaltyCalculationData, SecondLatePaymentPenaltyCalculationData}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.Lpp1Supplement
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.Lpp2Supplement
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import play.api.Logging
 
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class SupplementaryCalculationController @Inject()(override val controllerCompon
                                                     lpp2Supplement: Lpp2Supplement,
                                                    authActions: AuthActions,
                                                    auditService: AuditService)
-                                                   (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport {
+                                                   (implicit appConfig: AppConfig, timeMachine: TimeMachine) extends FrontendBaseController with I18nSupport with Logging {
 
   private def matchesLPP2Supplement(lpp: LPPDetails, penaltyId: String): Boolean =
     (lpp.penaltyChargeReference.contains(penaltyId) || lpp.principalChargeReference == penaltyId) &&

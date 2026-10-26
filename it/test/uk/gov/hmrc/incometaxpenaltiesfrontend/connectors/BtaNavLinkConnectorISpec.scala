@@ -21,7 +21,7 @@ import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
+import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.PagerDutyHelper.PagerDutyKeys
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{ComponentSpecHelper, WiremockMethods}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
@@ -29,6 +29,9 @@ import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 import scala.concurrent.ExecutionContext
 
 class BtaNavLinkConnectorISpec extends ComponentSpecHelper with LogCapturing with WiremockMethods with BtaNavContentFixture {
+
+  // Capture logs from PagerDutyHelper, which is where the PagerDuty log lines are emitted from
+  val logger: play.api.Logger = play.api.Logger(PagerDutyHelper.getClass)
 
   val connector: BtaNavLinksConnector = app.injector.instanceOf[BtaNavLinksConnector]
 

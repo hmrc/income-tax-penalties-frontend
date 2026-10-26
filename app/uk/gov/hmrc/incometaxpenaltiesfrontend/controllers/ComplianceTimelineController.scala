@@ -23,10 +23,9 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.auth.actions.AuthActio
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.audit.UserComplianceInfoAuditModel
 import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.ObligationDetail
 import uk.gov.hmrc.incometaxpenaltiesfrontend.services.{AuditService, ComplianceService, TimelineBuilderService}
-import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.Logger.logger
 import uk.gov.hmrc.incometaxpenaltiesfrontend.views.html.ComplianceTimeline
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-
+import play.api.Logging
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
@@ -38,7 +37,7 @@ class ComplianceTimelineController @Inject()(override val controllerComponents: 
                                              complianceService: ComplianceService,
                                              auditService: AuditService,
                                              errorHandler: ErrorHandler
-                                            )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                            )(implicit appConfig: AppConfig, ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def complianceTimelinePage(isAgent: Boolean): Action[AnyContent] =
     authActions.asMTDUser(isAgent).async { implicit currentUserRequest =>
