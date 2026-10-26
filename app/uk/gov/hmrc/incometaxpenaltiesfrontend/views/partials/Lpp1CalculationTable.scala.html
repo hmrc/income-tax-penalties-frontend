@@ -27,57 +27,42 @@
 
 @this(
 govukTable : GovukTable,
+govukSummaryList: GovukSummaryList,
 h2: H2
 )
 
 @(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages)
 
       @TotalTableRow = @{
-            Seq(
-                TableRow(
-                         content = Text(messages("calculation.table.caption.total.penalty")),
-                         classes ="govuk-table__header"
-                ),
-                TableRow(),
-                TableRow(),
-                TableRow(
-                         content = Text(s"£${calculationData.formattedPenaltyAmount}"),
-                         format = Some("numeric")
-                )
-            )
-      }
-      @AmountPaidRow = @{
-             Seq(
-                 TableRow(
-                          content = Text(messages("calculation.table.amountPaid")),
-                          classes ="govuk-table__header"
-                ),
-                TableRow(),
-                TableRow(),
-                TableRow(
-                         content = Text(s"£${calculationData.formattedPenaltyAmountPaid}"),
-                         format = Some("numeric")
-                )
-            )
-      }
-      @StillToPayRow = @{
-            Seq(
-                TableRow(
-                         content = Text(messages("calculation.table.stillToPay")),
-                         classes ="govuk-table__header"
-                ),
-                TableRow(),
-                TableRow(),
-                TableRow(
-                         content = Text(s"£${calculationData.formattedPenaltyAmountOutstanding}"),
-                         format = Some("numeric")
-                )
-            )
+        Seq(
+          TableRow(
+            content = Text(messages("calculation.table.caption.total.penalty")),
+            classes = "govuk-table__header"
+          ),
+          TableRow(),
+          TableRow(),
+          TableRow(
+            content = Text(s"£${calculationData.formattedPenaltyAmount}"),
+            format = Some("numeric")
+          )
+        )
       }
 
       @paymentDetailsRows = @{
-            val rows: Seq[Seq[TableRow]] = Seq(TotalTableRow, AmountPaidRow, StillToPayRow)
-            rows
+        Seq(
+          SummaryListRow(
+            key = Key(content = Text(messages("calculation.table.caption.total.penalty"))),
+            value = Value(content = Text(s"£${calculationData.formattedPenaltyAmount}"), classes = "govuk-!-text-align-right")
+          ),
+          SummaryListRow(
+            key = Key(content = Text(messages("calculation.table.amountPaid"))),
+            value = Value(content = Text(s"£${calculationData.formattedPenaltyAmountPaid}"), classes = "govuk-!-text-align-right")
+          ),
+          SummaryListRow(
+            key = Key(content = Text(messages("calculation.table.stillToPay"))),
+            value = Value(content = Text(s"£${calculationData.formattedPenaltyAmountOutstanding}"), classes = "govuk-!-text-align-right")
+          )
+        )
       }
 
       @calculationRows = @{
@@ -142,8 +127,6 @@ h2: H2
       @if(calculationData.isPartiallyPaid) {
         @h2(msg = "calculation.yourPaymentDetails", elmId = "paymentDetailsHeading", classes = Some("govuk-heading-m"))
 
-        @govukTable(Table(
-            rows = paymentDetailsRows
-        ))
+        @govukSummaryList(SummaryList(rows = paymentDetailsRows))
       }
 

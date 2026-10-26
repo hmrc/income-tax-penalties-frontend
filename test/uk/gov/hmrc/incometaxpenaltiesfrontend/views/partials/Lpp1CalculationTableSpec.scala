@@ -43,8 +43,9 @@ class Lpp1CalculationTableSpec extends AnyWordSpec with Matchers with GuiceOneAp
         document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
       }
 
-      "render two tables" in {
-        document.select(".govuk-table").size() shouldBe 2
+      "render the payment details as a summary list" in {
+        document.select(".govuk-table").size() shouldBe 1
+        document.select(".govuk-summary-list").size() shouldBe 1
       }
 
       "render the main calculation table rows" in {
@@ -69,19 +70,23 @@ class Lpp1CalculationTableSpec extends AnyWordSpec with Matchers with GuiceOneAp
         mainTable.select("tbody tr").get(2).select("th,td").get(3).text() should include("120.00")
       }
 
-      "render the your payment details table rows" in {
-        val paymentDetailsTable = document.select(".govuk-table").get(1)
+      "render the your payment details summary list rows" in {
+        val paymentDetailsSummaryList = document.select(".govuk-summary-list").get(0)
 
         document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
 
-        paymentDetailsTable.select("tbody tr").get(0).select("th,td").get(0).text() should include("Total penalty")
-        paymentDetailsTable.select("tbody tr").get(0).select("th,td").get(3).text() should include("120.00")
+        paymentDetailsSummaryList.select(".govuk-summary-list__row").get(0).select(".govuk-summary-list__key").text() should include("Total penalty")
+        paymentDetailsSummaryList.select(".govuk-summary-list__row").get(0).select(".govuk-summary-list__value").text() should include("120.00")
 
-        paymentDetailsTable.select("tbody tr").get(1).select("th,td").get(0).text() should include("Amount paid")
-        paymentDetailsTable.select("tbody tr").get(1).select("th,td").get(3).text() should include("70.00")
+        paymentDetailsSummaryList.select(".govuk-summary-list__row").get(1).select(".govuk-summary-list__key").text() should include("Amount paid")
+        paymentDetailsSummaryList.select(".govuk-summary-list__row").get(1).select(".govuk-summary-list__value").text() should include("70.00")
 
-        paymentDetailsTable.select("tbody tr").get(2).select("th,td").get(0).text() should include("Still to pay")
-        paymentDetailsTable.select("tbody tr").get(2).select("th,td").get(3).text() should include("50.00")
+        paymentDetailsSummaryList.select(".govuk-summary-list__row").get(2).select(".govuk-summary-list__key").text() should include("Still to pay")
+        paymentDetailsSummaryList.select(".govuk-summary-list__row").get(2).select(".govuk-summary-list__value").text() should include("50.00")
+        paymentDetailsSummaryList.select(".govuk-summary-list__value").size() shouldBe 3
+        paymentDetailsSummaryList.select(".govuk-summary-list__value").get(0).hasClass("govuk-!-text-align-right") shouldBe true
+        paymentDetailsSummaryList.select(".govuk-summary-list__value").get(1).hasClass("govuk-!-text-align-right") shouldBe true
+        paymentDetailsSummaryList.select(".govuk-summary-list__value").get(2).hasClass("govuk-!-text-align-right") shouldBe true
       }
     }
 

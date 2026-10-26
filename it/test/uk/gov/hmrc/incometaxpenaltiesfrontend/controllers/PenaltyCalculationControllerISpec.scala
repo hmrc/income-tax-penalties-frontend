@@ -236,12 +236,14 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(0).text() shouldBe "Total penalty"
             document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(3).text() shouldBe "£120.00"
             document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(0).text() shouldBe "Total penalty"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(3).text() shouldBe "£120.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(5).select("td").get(0).text() shouldBe "Amount paid"
-            document.getElementsByClass("govuk-table__row").select("tr").get(5).select("td").get(3).text() shouldBe "£20.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(6).select("td").get(0).text() shouldBe "Still to pay"
-            document.getElementsByClass("govuk-table__row").select("tr").get(6).select("td").get(3).text() shouldBe "£100.00"
+            val paymentDetailsRows = document.select(".govuk-summary-list__row")
+            paymentDetailsRows.size() shouldBe 3
+            paymentDetailsRows.get(0).select(".govuk-summary-list__key").text() shouldBe "Total penalty"
+            paymentDetailsRows.get(0).select(".govuk-summary-list__value").text() shouldBe "£120.00"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__key").text() shouldBe "Amount paid"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__value").text() shouldBe "£20.00"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__key").text() shouldBe "Still to pay"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__value").text() shouldBe "£100.00"
           }
           
           
@@ -278,12 +280,14 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(0).text() shouldBe "Total penalty"
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(3).text() shouldBe "£60.00"
             document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
-            document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(0).text() shouldBe "Total penalty"
-            document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(3).text() shouldBe "£60.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(0).text() shouldBe "Amount paid"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(3).text() shouldBe "£10.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(5).select("td").get(0).text() shouldBe "Still to pay"
-            document.getElementsByClass("govuk-table__row").select("tr").get(5).select("td").get(3).text() shouldBe "£50.00"
+            val paymentDetailsRows = document.select(".govuk-summary-list__row")
+            paymentDetailsRows.size() shouldBe 3
+            paymentDetailsRows.get(0).select(".govuk-summary-list__key").text() shouldBe "Total penalty"
+            paymentDetailsRows.get(0).select(".govuk-summary-list__value").text() shouldBe "£60.00"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__key").text() shouldBe "Amount paid"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__value").text() shouldBe "£10.00"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__key").text() shouldBe "Still to pay"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__value").text() shouldBe "£50.00"
 
           }
 
