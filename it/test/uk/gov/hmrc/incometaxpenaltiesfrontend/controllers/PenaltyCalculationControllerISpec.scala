@@ -212,7 +212,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £120.00"
+            document.getElementById("youOwe").text() shouldBe "You owe: £100.00"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
@@ -235,10 +235,15 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(3).text() shouldBe "£60.00"
             document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(0).text() shouldBe "Total penalty"
             document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(3).text() shouldBe "£120.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(0).text() shouldBe "Amount paid"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(3).text() shouldBe "£20.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(5).select("td").get(0).text() shouldBe "Still to pay"
-            document.getElementsByClass("govuk-table__row").select("tr").get(5).select("td").get(3).text() shouldBe "£100.00"
+            document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
+            val paymentDetailsRows = document.select(".govuk-summary-list__row")
+            paymentDetailsRows.size() shouldBe 3
+            paymentDetailsRows.get(0).select(".govuk-summary-list__key").text() shouldBe "Total penalty"
+            paymentDetailsRows.get(0).select(".govuk-summary-list__value").text() shouldBe "£120.00"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__key").text() shouldBe "Amount paid"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__value").text() shouldBe "£20.00"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__key").text() shouldBe "Still to pay"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__value").text() shouldBe "£100.00"
           }
           
           
@@ -255,7 +260,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "First late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "First late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £60.00"
+            document.getElementById("youOwe").text() shouldBe "You owe: £50.00"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(firstLPPCalcData)} tax year was ${getDateString(firstLPPCalcData.payPenaltyBy)}."
             document.getElementsByClass("govuk-details__summary-text").text() shouldBe "How we work out the penalty amount"
@@ -274,10 +279,15 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getElementsByClass("govuk-table__row").select("tr").get(1).select("td").get(3).text() shouldBe "£60.00"
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(0).text() shouldBe "Total penalty"
             document.getElementsByClass("govuk-table__row").select("tr").get(2).select("td").get(3).text() shouldBe "£60.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(0).text() shouldBe "Amount paid"
-            document.getElementsByClass("govuk-table__row").select("tr").get(3).select("td").get(3).text() shouldBe "£10.00"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(0).text() shouldBe "Still to pay"
-            document.getElementsByClass("govuk-table__row").select("tr").get(4).select("td").get(3).text() shouldBe "£50.00"
+            document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
+            val paymentDetailsRows = document.select(".govuk-summary-list__row")
+            paymentDetailsRows.size() shouldBe 3
+            paymentDetailsRows.get(0).select(".govuk-summary-list__key").text() shouldBe "Total penalty"
+            paymentDetailsRows.get(0).select(".govuk-summary-list__value").text() shouldBe "£60.00"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__key").text() shouldBe "Amount paid"
+            paymentDetailsRows.get(1).select(".govuk-summary-list__value").text() shouldBe "£10.00"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__key").text() shouldBe "Still to pay"
+            paymentDetailsRows.get(2).select(".govuk-summary-list__value").text() shouldBe "£50.00"
 
           }
 
@@ -722,7 +732,7 @@ class PenaltyCalculationControllerISpec extends ControllerISpecHelper
             document.getServiceName.get(0).text() shouldBe "Manage your Self Assessment"
             document.title() shouldBe "Second late payment penalty calculation - Manage your Self Assessment - GOV.UK"
             document.getH1Elements.text() shouldBe "Second late payment penalty calculation"
-            document.getElementById("penaltyAmount").text() shouldBe "Penalty amount: £1,001.45"
+            document.getElementById("youOwe").text() shouldBe "You owe: £1,000.00"
             document.getElementById("chargeReference").text() shouldBe "Charge reference: PEN1234567"
             document.getElementById("paymentDeadline").text() shouldBe s"The payment deadline for the ${getTaxYearString(secondLPPCalcData)} tax year was ${getDateString(secondLPPCalcData.principalChargeDueDate)}."
             document.getElementById("missedDeadline").text() shouldBe "Because you missed this deadline by more than 30 days, you have been charged a second late payment penalty."

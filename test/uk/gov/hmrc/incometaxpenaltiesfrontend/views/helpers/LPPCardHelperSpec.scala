@@ -95,6 +95,34 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                       supplement = Some(false)
                     ))
                 }
+
+                "use the outstanding amount in the card title when the penalty is partially paid" in {
+
+                  val penalty1 = samplePaidLPP1.copy(
+                    penaltyAmountPaid = Some(500),
+                    penaltyAmountOutstanding = Some(BigDecimal(501.45))
+                  )
+
+                  mockPayPenaltyByRow(penalty1)(None)
+                  mockIncomeTaxPeriodRow(penalty1)(testTaxPeriodRow)
+                  mockIncomeTaxDueRow(penalty1)(testDueDateRow)
+                  mockIncomeTaxPaymentDateRow(penalty1)(testPaymentDateRow)
+                  mockAppealStatusSummaryRow(penalty1.appealStatus, penalty1.appealLevel, penalty1.previousRejection)(None)
+                  if(isBreathingSpace) {
+                    mockBreathingSpaceStatusRow()(testBreathingSpaceRow)
+                  } else {
+                    (tm.getCurrentDate _).expects().returning(LocalDate.of(2025, 1, 1)).once()
+                  }
+
+                  lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace).head.cardTitle shouldBe
+                    (if(penalty1.supplement.contains(true) && penalty1.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {
+                      messagesForLanguage.cardTitleSupplementaryPenaltyLPP2(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(BigDecimal(501.45)))
+                    } else if(penalty1.supplement.contains(true)) {
+                      messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(BigDecimal(501.45)))
+                    } else {
+                      messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(BigDecimal(501.45)))
+                    })
+                }
               }
 
               "is being appealed" should {
@@ -116,7 +144,7 @@ class LPPCardHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSui
                   lppSummaryListRowHelper.createLatePaymentPenaltyCards(Seq(penalty1 -> 1), isBreathingSpace) shouldBe
                     Seq(LatePaymentPenaltySummaryCard(
                       index = 1,
-                      cardTitle = if(penalty1.supplement.contains(true) && penalty1.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {messagesForLanguage.cardTitleSupplementaryPenaltyLPP2(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue))} else if(penalty1.supplement.contains(true)) {messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue))} else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.amountDue)),
+                      cardTitle = if(penalty1.supplement.contains(true) && penalty1.penaltyCategory == LPPPenaltyCategoryEnum.LPP2) {messagesForLanguage.cardTitleSupplementaryPenaltyLPP2(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.penaltyAmountOutstanding.getOrElse(penalty1.amountDue)))} else if(penalty1.supplement.contains(true)) {messagesForLanguage.cardTitleSupplementaryPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.penaltyAmountOutstanding.getOrElse(penalty1.amountDue)))} else messagesForLanguage.cardTitleFirstPenalty(CurrencyFormatter.parseBigDecimalTo2DecimalPlaces(penalty1.penaltyAmountOutstanding.getOrElse(penalty1.amountDue))),
                       cardRows = Seq(
                         testTaxPeriodRow,
                         testDueDateRow,

@@ -50,8 +50,11 @@
 
     <h1 class="govuk-heading-xl">@messages("calculation.first.h1")</h1>
 
-
-    <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
+    @if(calculationData.isPartiallyPaid) {
+        <p class="govuk-heading-m" id="youOwe">@messages("calculation.youOwe") £@calculationData.formattedPenaltyAmountOutstanding</p>
+    } else {
+        <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
+    }
 
     @calculationHelper.getPaymentDetails(calculationData).map { msg =>
      <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@msg</p>

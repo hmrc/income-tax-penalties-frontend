@@ -1,0 +1,103 @@
+{
+  "idType" : "NINO",
+  "idNumber" : "AA233330C",
+  "payload" : {
+    "success" : {
+      "processingDate" : "2025-04-05T10:15:10Z",
+      "penaltyData" : {
+        "totalisations" : {
+          "lspTotalValue" : 0,
+          "penalisedPrincipalTotal" : 0,
+          "lppPostedTotal" : 320.81,
+          "lppEstimatedTotal" : 0,
+          "totalAccountOverdue" : 0,
+          "totalAccountPostedInterest" : 0,
+          "totalAccountAccruingInterest" : 0
+        },
+        "lpp" : {
+          "manualLPPIndicator" : false,
+          "lppDetails" : [ {
+            "principalChargeReference" : "XJ002616061062",
+            "supplement" : false,
+            "penaltyStatus" : "P",
+            "penaltyAmountAccruing" : 0,
+            "penaltyAmountPosted" : 19.17,
+            "principalChargeBillingFrom" : "2024-04-06",
+            "principalChargeBillingTo" : "2025-04-05",
+            "principalChargeDueDate" : "2026-01-31",
+            "principalChargeDocNumber" : "DOC1",
+            "principalChargeMainTr" : "4720",
+            "principalChargeSubTr" : "SUB1",
+            "penaltyCategory" : "LPP2",
+            "penaltyAmountPaid" : 9.17,
+            "penaltyAmountOutstanding" : 10,
+            "lpp1LRCalculationAmt" : 5000,
+            "lpp1LRDays" : "15",
+            "lpp1LRPercentage" : 3,
+            "lpp1HRCalculationAmt" : 5000,
+            "lpp1HRDays" : "30",
+            "lpp1HRPercentage" : 3,
+            "lpp2Days" : "31",
+            "lpp2Percentage" : 10,
+            "penaltyChargeCreationDate" : "2026-03-03",
+            "penaltyChargeReference" : "XJ002616061062",
+            "penaltyChargeDueDate" : "2026-04-17",
+            "principalChargeLatestClearing" : "2026-03-16"
+          }, {
+            "principalChargeReference" : "XJ002616061062",
+            "supplement" : false,
+            "penaltyStatus" : "P",
+            "penaltyAmountAccruing" : 0,
+            "penaltyAmountPosted" : 300,
+            "principalChargeBillingFrom" : "2024-04-06",
+            "principalChargeBillingTo" : "2025-04-05",
+            "principalChargeDueDate" : "2026-01-31",
+            "principalChargeDocNumber" : "DOC1",
+            "principalChargeMainTr" : "4720",
+            "principalChargeSubTr" : "SUB1",
+            "penaltyCategory" : "LPP1",
+            "penaltyAmountPaid" : 100,
+            "penaltyAmountOutstanding" : 200,
+            "lpp1LRCalculationAmt" : 5000,
+            "lpp1LRDays" : "15",
+            "lpp1LRPercentage" : 3,
+            "lpp1HRCalculationAmt" : 5000,
+            "lpp1HRDays" : "30",
+            "lpp1HRPercentage" : 3,
+            "penaltyChargeCreationDate" : "2026-03-03",
+            "penaltyChargeReference" : "XJ002616061062",
+            "penaltyChargeDueDate" : "2026-04-04",
+            "principalChargeLatestClearing" : "2026-03-16"
+          }, {
+            "principalChargeReference" : "XJ002616061062",
+            "supplement" : true,
+            "penaltyStatus" : "P",
+            "penaltyAmountAccruing" : 0,
+            "penaltyAmountPosted" : 1.64,
+            "principalChargeBillingFrom" : "2024-04-06",
+            "principalChargeBillingTo" : "2025-04-05",
+            "principalChargeDueDate" : "2026-01-31",
+            "principalChargeDocNumber" : "DOC1",
+            "principalChargeMainTr" : "4720",
+            "principalChargeSubTr" : "SUB1",
+            "penaltyCategory" : "LPP2",
+            "penaltyAmountPaid" : 0.64,
+            "penaltyAmountOutstanding" : 1,
+            "lpp1LRCalculationAmt" : 5000,
+            "lpp1LRDays" : "15",
+            "lpp1LRPercentage" : 3,
+            "lpp1HRCalculationAmt" : 5000,
+            "lpp1HRDays" : "30",
+            "lpp1HRPercentage" : 3,
+            "lpp2Days" : "31",
+            "lpp2Percentage" : 10,
+            "penaltyChargeCreationDate" : "2026-03-20",
+            "penaltyChargeReference" : "XJ002616061062",
+            "penaltyChargeDueDate" : "2026-04-26",
+            "principalChargeLatestClearing" : "2026-03-25"
+          } ]
+        }
+      }
+    }
+  }
+}

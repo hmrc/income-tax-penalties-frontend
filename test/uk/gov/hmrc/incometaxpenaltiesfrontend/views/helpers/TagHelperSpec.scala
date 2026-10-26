@@ -162,7 +162,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     ), false, 2)
 
                     tag.classes shouldBe "govuk-tag--yellow"
-                    tag.content shouldBe Text(messagesForLanguage.amountDue("25.69"))
+                    tag.content shouldBe Text(messagesForLanguage.due)
                   }
 
                   "when left to pay amount has .00 as decimals, then don't show pence" in {
@@ -173,7 +173,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                     ), false, 2)
 
                     tag.classes shouldBe "govuk-tag--yellow"
-                    tag.content shouldBe Text(messagesForLanguage.amountDue("25.00"))
+                    tag.content shouldBe Text(messagesForLanguage.due)
                   }
                 }
               }
@@ -277,7 +277,7 @@ class TagHelperSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite
                 )
 
                 tag.classes shouldBe "govuk-tag--yellow"
-                tag.content shouldBe Text(messagesForLanguage.amountDue("501.45"))
+                tag.content shouldBe Text(messagesForLanguage.due)
               }
             }
           }
