@@ -48,7 +48,7 @@ class ComplianceService @Inject()(connector: PenaltiesConnector)(implicit ec: Ex
     connector.getComplianceData(nino, startDate, endDate).map {
       case Right(obligationData) =>
         logger.info(s"[ComplianceService][getDESComplianceData] - Successful call to get obligation data.")
-        Some(obligationData)
+        Some(obligationData.copy(obligationDetails = obligationData.obligationDetails.sortBy(_.inboundCorrespondenceFromDate)))
       case Left(failure) =>
         logger.error(s"[ComplianceService][getDESComplianceData] - Connector failure: ${failure.message}")
         logger.error("[ComplianceService][getDESComplianceData] - Failed to retrieve obligation data, returning None back to controller (renders ISE)")
