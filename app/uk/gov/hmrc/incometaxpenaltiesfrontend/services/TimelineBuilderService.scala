@@ -17,20 +17,26 @@
 package uk.gov.hmrc.incometaxpenaltiesfrontend.services
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum}
+import uk.gov.hmrc.incometaxpenaltiesfrontend.models.compliance.{ComplianceData, ComplianceStatusEnum, ObligationDetail}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.utils.{DateFormatter, TimeMachine}
 import uk.gov.hmrc.incometaxpenaltiesfrontend.viewModels.TimelineEvent
 
+import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 
 
 @Singleton
 class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFormatter {
 
+  private def dueDate(date: ObligationDetail): LocalDate = {
+    val due = date.inboundCorrespondenceDueDate
+    if(due.isBefore(date.inboundCorrespondenceToDate)) due.plusYears(1) else due
+  }
+
   def buildTimeline(complianceData: Option[ComplianceData])(implicit messages: Messages): Seq[TimelineEvent] =
     complianceData.fold(Seq.empty[TimelineEvent])(_.obligationDetails.filter(_.status == ComplianceStatusEnum.Open).map {
       data =>
-        val isReturnLate = data.inboundCorrespondenceDueDate.isBefore(timeMachine.getCurrentDate())
+        val isReturnLate = dueDate(data).isBefore(timeMachine.getCurrentDate())
         val isTaxYear = data.periodKey.contains("P0")
         // 17P0 signifies the tax return for 2017
         // 17P1 or 17G1 signifies the first quarter for 2017
@@ -43,7 +49,7 @@ class TimelineBuilderService @Inject()(timeMachine: TimeMachine) extends DateFor
           },
           spanContent = {
             val suffix = if (isReturnLate) "submission.due.now" else "send.by"
-            messages(s"compliance.timeline.$suffix", dateToString(data.inboundCorrespondenceDueDate))
+            messages(s"compliance.timeline.$suffix", dateToString(dueDate(data)))
           },
           tagContent = Option.when(isReturnLate)(messages("common.late"))
         )
