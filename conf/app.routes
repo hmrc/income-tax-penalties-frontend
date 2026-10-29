@@ -6,6 +6,7 @@ GET        /assets/*file                              controllers.Assets.version
 GET        /timed-out                                   uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SessionExpiredController.onPageLoad(isAgent: Boolean = false)
 GET        /agent-timed-out                             uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.SessionExpiredController.onPageLoad(isAgent: Boolean = true)
 GET        /unauthorised                                uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.UnauthorisedErrorController.onPageLoad(isAgent: Boolean = false)
+GET        /cannot-access-service                       uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.NotEnrolledController.onPageLoad(isAgent: Boolean = false)
 
 GET        /                                          uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage(isAgent:Boolean = false)
 GET        /agent                                     uk.gov.hmrc.incometaxpenaltiesfrontend.controllers.IndexController.homePage(isAgent:Boolean = true)
