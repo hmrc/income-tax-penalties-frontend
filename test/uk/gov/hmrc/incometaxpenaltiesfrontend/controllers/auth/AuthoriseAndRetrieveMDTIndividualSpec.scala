@@ -100,10 +100,10 @@ class AuthoriseAndRetrieveMDTIndividualSpec extends AnyWordSpec with should.Matc
     }
 
     "the user is not enrolled to MTD" should {
-      "handle the failure" in {
+      "redirect to not-enrolled page" in {
         mockAuthenticatedWithNoMTDEnrolment()
         val result = testAction.invokeBlock(FakeRequest(),block)
-        status(result) shouldBe INTERNAL_SERVER_ERROR
+        redirectLocation(result).get should include("/cannot-access-service")
       }
     }
 
