@@ -58,10 +58,8 @@ trait AuthoriseHelper {
         )
       case insufficientEnrolments: InsufficientEnrolments if !isAgent=>
         logger.warn(s"Insufficient enrolments: ${insufficientEnrolments.msg}")
-        //ToDo need create a not enrolled page
-        errorHandler.internalServerErrorTemplate.map(html =>
-          InternalServerError(html)
-        )
+        Future.successful(Redirect(routes.NotEnrolledController.onPageLoad()))
+
       case insufficientEnrolments: InsufficientEnrolments =>
         logger.warn(s"Insufficient enrolments: ${insufficientEnrolments.msg}")
         //ToDo need create agent not enrolled page

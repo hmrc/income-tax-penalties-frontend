@@ -69,6 +69,7 @@ class AuthoriseAndRetrieveAgent @Inject()(override val authConnector: AuthConnec
             Future.successful(
               Left(Redirect(routes.IndexController.homePage(isAgent = false))))
         }.recoverWith {
+          case ex: InsufficientEnrolments if ex.msg.contains("HMRC-AS-AGENT") => Future.successful(Left(Redirect(routes.NotEnrolledController.onPageLoad())))
           case authorisationException: AuthorisationException => handleAuthFailure(authorisationException, isAgent = true)
             (implicitly, implicitly, logger).map(Left(_))
         }
