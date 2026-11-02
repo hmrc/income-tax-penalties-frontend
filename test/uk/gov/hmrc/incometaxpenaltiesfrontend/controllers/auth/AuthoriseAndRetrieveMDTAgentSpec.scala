@@ -86,12 +86,12 @@ class AuthoriseAndRetrieveMDTAgentSpec extends AnyWordSpec with should.Matchers 
       }
 
       "does not have delegated MTDIT enrolment" should {
-        "return an error" in {
+        "redirect to invalid enrolment error page" in {
           mockAgentWithoutDelegatedEnrolment()
           mockAgentWithoutDelegatedEnrolment()
 
           val result = testAction.invokeBlock(authorisedAndEnrolledAgent, block)
-          status(result) shouldBe INTERNAL_SERVER_ERROR
+          redirectLocation(result).get should include("/cannot-access-service")
         }
       }
     }
