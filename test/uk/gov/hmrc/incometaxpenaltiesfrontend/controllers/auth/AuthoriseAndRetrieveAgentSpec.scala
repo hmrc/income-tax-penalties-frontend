@@ -71,7 +71,7 @@ class AuthoriseAndRetrieveAgentSpec extends AnyWordSpec with should.Matchers wit
       }
 
       "does not have a HMRC-AS_AGENT enrolment" should {
-        "redirect to not-enrolled page" in {
+        "redirect to invalid enrolment error page" in {
           mockAgentWithoutAgentEnrolment()
           val result = testAction.invokeBlock(FakeRequest(), block)
           redirectLocation(result).get should include("/cannot-access-service")
