@@ -31,12 +31,20 @@ govukSummaryList: GovukSummaryList,
 h2: H2
 )
 
-@(calculationData: FirstLatePaymentPenaltyCalculationData)(implicit messages: Messages)
+@(calculationData: FirstLatePaymentPenaltyCalculationData, isRevenueAmendment: Boolean)(implicit messages: Messages)
+
+    @penaltyTotalTableHeading: String = @{
+        if (isRevenueAmendment && calculationData.isEstimate) {
+            messages("calculation.table.caption.total.penalty.ra")
+        } else {
+            messages("calculation.table.caption.total.penalty")
+        }
+    }
 
       @TotalTableRow = @{
         Seq(
           TableRow(
-            content = Text(messages("calculation.table.caption.total.penalty")),
+            content = Text(penaltyTotalTableHeading),
             classes = "govuk-table__header"
           ),
           TableRow(),

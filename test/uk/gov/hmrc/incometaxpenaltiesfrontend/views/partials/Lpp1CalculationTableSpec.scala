@@ -37,7 +37,7 @@ class Lpp1CalculationTableSpec extends AnyWordSpec with Matchers with GuiceOneAp
         penaltyAmountPaid = Some(70),
         penaltyAmountOutstanding = Some(50)
       )
-      implicit val document: Document = asDocument(lpp1CalculationTable(calculationData))
+      implicit val document: Document = asDocument(lpp1CalculationTable(calculationData, isRevenueAmendment = false))
 
       "render the payment details heading" in {
         document.getElementById("paymentDetailsHeading").text() shouldBe "Your payment details"
@@ -93,7 +93,7 @@ class Lpp1CalculationTableSpec extends AnyWordSpec with Matchers with GuiceOneAp
     "the penalty is not partially paid" when {
       implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
       val calculationData = sampleFirstLPPCalcData(isEstimate = false)
-      implicit val document: Document = asDocument(lpp1CalculationTable(calculationData))
+      implicit val document: Document = asDocument(lpp1CalculationTable(calculationData, isRevenueAmendment = false))
 
       "not render the payment details heading" in {
         document.getElementById("paymentDetailsHeading") shouldBe null

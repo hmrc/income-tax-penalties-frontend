@@ -88,6 +88,20 @@ calculation.missedDeadline.lpp1.isPaid = Oherwydd eich bod wedi methu’r dyddia
 calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanegol oedd {0}.
 calculation.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
 
+calculation.penalty.amount.ra = Amcangyfrif o swm y gosb:
+calculation.payment.deadline.ra.tax.year = Mae’r Ffurflen Dreth ar gyfer blwyddyn dreth {0} i {1} wedi’i diwygio. Gwnaeth y diwygiadau hyn gynyddu swm y dreth sy’n ddyledus.
+calculation.payment.deadline.ra = Y dyddiad cau ar gyfer talu swm diwygiedig y dreth oedd {0}.
+calculation.yourPenaltyDetails.ra = Manylion eich cosb amcangyfrifedig
+calculation.table.caption.total.penalty.ra = Cosb amcangyfrifedig
+calculation.checkWhatYouOwe.link.ra = Gwirio’r hyn sydd arnoch a thalu
+calculation.penaltyDueDate.due.ra.p = Talwch erbyn {0} i atal llog rhag cael ei ychwanegu at eich cosb.
+calculation.penaltyDueDate.due.ra.p2 = Dysgwch ragor am
+calculation.penaltyDueDate.due.ra.p2.link = gyfraddau llog CThEF
+calculation.penaltyDueDate.overDue.ra.p = Mae llog yn cael ei godi ar wahân, ac nid yw’n cael ei gynnwys yn swm y gosb. Byddwch yn gweld unrhyw log sydd arnoch pan fyddwch yn
+calculation.penaltyDueDate.overDue.ra.p.link = gwirio’r hyn sydd arnoch ac yn ei dalu.
+calculation.penaltyDueDate.overDue.ra.p2 = Dysgwch ragor am
+calculation.penaltyDueDate.overDue.ra.p2.link = gyfraddau llog CThEF
+
 calculation.yourPenaltyDetails = Manylion eich cosb
 calculation.yourPaymentDetails = Eich manylion talu
 calculation.penaltyDueDate.due.p = Er mwyn osgoi gorfod talu llog, dylech dalu’r gosb erbyn {0}.
@@ -295,6 +309,10 @@ lpp.payPenaltyBy.key = Talu cosb erbyn
 lpp.incomeTaxPeriod.value.pfa = Swm ychwanegol sy’n ddyledus i Ffurflen Dreth ddiwygiedig ar gyfer blwyddyn dreth {0} i {1}
 lpp.incomeTaxDue.key.pfa = Swm ychwanegol sy’n ddyledus
 lpp.incomeTaxPaymentDate.key.pfa = Swm ychwanegol a dalwyd
+
+lpp.incomeTaxPeriod.value.ra = Amended Income Tax for {0} to {1} tax year (Welsh)
+lpp.incomeTaxDue.key.ra = Swm ychwanegol sy’n ddyledus
+lpp.incomeTaxPaymentDate.key.ra = Swm ychwanegol a dalwyd
 
 # supplementary Late Payment Penalty - Summary Row Key/Values
 # =============================================

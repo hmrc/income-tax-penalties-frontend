@@ -30,7 +30,15 @@
 @this(
       link: Link
 )
- @(calculationData : CalculationData, isAgent: Boolean)(implicit messages: Messages, appConfig: AppConfig)
+ @(calculationData : CalculationData, isAgent: Boolean, isRevenueAmendment: Boolean = false)(implicit messages: Messages, appConfig: AppConfig)
+
+@checkWhatYouOweLinkText: String = @{
+     if (isRevenueAmendment) {
+         messages("calculation.checkWhatYouOwe.link.ra")
+     } else {
+         messages("calculation.checkWhatYouOwe.link")
+     }
+ }
 
  @calculationData match {
      case _: FirstLatePaymentPenaltyCalculationData => {
@@ -40,10 +48,11 @@
                     messageKey = messages("calculation.return.link"),
                     id = Some("returnToIndex")
               )
-              @if(!calculationData.isPenaltyPaid) {
+              <!-- additional conditions to check if revenue amendment and penalty is overdue then not to display the link as it is already being displayed -->
+              @if((!calculationData.isPenaltyPaid || isRevenueAmendment && calculationData.isPenaltyOverdue) && !(!calculationData.isEstimate && isRevenueAmendment && calculationData.isPenaltyOverdue)) {
                   @link(
                       link = appConfig.checkWhatYouOweUrl(isAgent),
-                      messageKey = messages("calculation.checkWhatYouOwe.link"),
+                      messageKey = checkWhatYouOweLinkText,
                       id = Some("checkWhatYouOweLink")
                   )
               }
