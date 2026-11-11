@@ -89,7 +89,7 @@ calculation.payment.deadline.pfa = Y dyddiad cau ar gyfer talu’r swm ychwanego
 calculation.payment.deadline.pfa.tax.year = Mae’ch Ffurflen Dreth ar gyfer y flwyddyn dreth {0} i {1} wedi’i diwygio.
 
 calculation.penalty.amount.ra = Amcangyfrif o swm y gosb:
-calculation.payment.deadline.ra.tax.year = Mae’r Ffurflen Dreth ar gyfer blwyddyn dreth {0} i {1} wedi’i diwygio. Gwnaeth y diwygiadau hyn gynyddu swm y dreth sy’n ddyledus.
+calculation.payment.deadline.ra.tax.year = Mae’r Ffurflen Dreth ar gyfer blwyddyn dreth {0} i {1} wedi’i diwygio. Newidiodd hyn swm y dreth sy’n ddyledus.
 calculation.payment.deadline.ra = Y dyddiad cau ar gyfer talu swm diwygiedig y dreth oedd {0}.
 calculation.yourPenaltyDetails.ra = Manylion eich cosb amcangyfrifedig
 calculation.table.caption.total.penalty.ra = Cosb amcangyfrifedig

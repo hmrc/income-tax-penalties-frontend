@@ -89,7 +89,7 @@ calculation.payment.deadline.pfa = The payment deadline for the extra amount was
 calculation.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
 
 calculation.penalty.amount.ra = Estimated penalty amount:
-calculation.payment.deadline.ra.tax.year = The tax return for the {0} to {1} tax year has been amended. This increased the amount of tax owed.
+calculation.payment.deadline.ra.tax.year = The tax return for the {0} to {1} tax year has been amended. This changed the amount of tax owed.
 calculation.payment.deadline.ra = The deadline for the amended tax amount was {0}.
 calculation.yourPenaltyDetails.ra = Your estimated penalty details
 calculation.table.caption.total.penalty.ra = Estimated penalty
