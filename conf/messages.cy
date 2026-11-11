@@ -314,17 +314,7 @@ appealStatus.C.01 = Apêl wedi’i gwrthod
 appealStatus.C.02 = Penderfyniad wedi’i gadarnhau
 appealStatus.C.03 = Penderfyniad wedi’i gadarnhau
 
-# Expiry Reason
-# =============
-#TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
-expiryReason.APP = Appeal (Welsh)
-expiryReason.FAP = Adjustment (Welsh)
-expiryReason.ICR = Reversal (Welsh)
-expiryReason.MAN = Manual (Welsh)
-expiryReason.NAT = Natural expiration (Welsh)
-expiryReason.NLT = Submission on time (Welsh)
-expiryReason.POC = Compliance (Welsh)
-expiryReason.RES = Reset (Welsh)
+
 
 # Card Footer Links
 # =================

@@ -20,11 +20,11 @@ import uk.gov.hmrc.incometaxpenaltiesfrontend.models.btaNavBar.{NavContent, NavL
 
 trait BtaNavContentFixture {
 
-  val btaHomeLink: NavLink = NavLink(en = "Home", cy = "Home (Welsh)", url = "/home", alerts = Some(0))
-  val btaAccountLink: NavLink = NavLink(en = "Home", cy = "Home (Welsh)", url = "/home", alerts = Some(0))
-  val btaMessagesLink: NavLink = NavLink(en = "Home", cy = "Home (Welsh)", url = "/home", alerts = Some(3))
-  val btaHelpLink: NavLink = NavLink(en = "Home", cy = "Home (Welsh)", url = "/home", alerts = Some(0))
-  val btaFormsLink: NavLink = NavLink(en = "Home", cy = "Home (Welsh)", url = "/home", alerts = Some(1))
+  val btaHomeLink: NavLink = NavLink(en = "Home", cy = "Hafan", url = "/home", alerts = Some(0))
+  val btaAccountLink: NavLink = NavLink(en = "Home", cy = "Hafan", url = "/home", alerts = Some(0))
+  val btaMessagesLink: NavLink = NavLink(en = "Home", cy = "Hafan", url = "/home", alerts = Some(3))
+  val btaHelpLink: NavLink = NavLink(en = "Home", cy = "Hafan", url = "/home", alerts = Some(0))
+  val btaFormsLink: NavLink = NavLink(en = "Home", cy = "Hafan", url = "/home", alerts = Some(1))
 
   val btaNavContent: NavContent = NavContent(
     home = btaHomeLink,

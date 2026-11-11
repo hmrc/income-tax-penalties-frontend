@@ -314,17 +314,6 @@ appealStatus.C.01 = Appeal rejected
 appealStatus.C.02 = Decision upheld
 appealStatus.C.03 = Decision upheld
 
-# Expiry Reason
-# =============
-#TODO: Content for these need to be confirmed by Content Designer (these are placeholders)
-expiryReason.APP = Appeal
-expiryReason.FAP = Adjustment
-expiryReason.ICR = Reversal
-expiryReason.MAN = Manual
-expiryReason.NAT = Natural expiration
-expiryReason.NLT = Submission on time
-expiryReason.POC = Compliance
-expiryReason.RES = Reset
 
 # Card Footer Links
 # =================
