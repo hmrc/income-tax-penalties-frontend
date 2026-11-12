@@ -123,6 +123,7 @@ class LPPDetailsSpec extends AnyWordSpec with Matchers {
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
       supplement = Some(false),
+      chargeClassificationValue = None,
       metadata = lppMetadata
     )
   }

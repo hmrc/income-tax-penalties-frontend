@@ -88,6 +88,20 @@ calculation.missedDeadline.lpp1.isPaid = Because you missed this deadline, you w
 calculation.payment.deadline.pfa = The payment deadline for the extra amount was {0}.
 calculation.payment.deadline.pfa.tax.year = Your tax return for the {0} to {1} tax year has been amended.
 
+calculation.penalty.amount.ra = Estimated penalty amount:
+calculation.payment.deadline.ra.tax.year = The tax return for the {0} to {1} tax year has been amended. This changed the amount of tax owed.
+calculation.payment.deadline.ra = The deadline for the amended tax amount was {0}.
+calculation.yourPenaltyDetails.ra = Your estimated penalty details
+calculation.table.caption.total.penalty.ra = Estimated penalty
+calculation.checkWhatYouOwe.link.ra = Check what you owe and pay
+calculation.penaltyDueDate.due.ra.pay.by = Pay by {0} to stop interest from being added to your penalty.
+calculation.penaltyDueDate.due.ra.more.details = Find out more about
+calculation.penaltyDueDate.due.ra.more.details.link = HMRC interest rates
+calculation.penaltyDueDate.overDue.ra.interest.charged = Interest is charged separately and is not included in the penalty amount. You’ll see any interest due when you
+calculation.penaltyDueDate.overDue.ra.interest.charged.link = check what you owe and pay.
+calculation.penaltyDueDate.overDue.ra.more.details = Find out more about
+calculation.penaltyDueDate.overDue.ra.more.details.link = HMRC interest rates
+
 calculation.yourPenaltyDetails = Your penalty details
 calculation.yourPaymentDetails = Your payment details
 calculation.penaltyDueDate.due.p = To avoid interest charges, you should pay this penalty by {0}.
@@ -295,6 +309,10 @@ lpp.payPenaltyBy.key = Pay penalty by
 lpp.incomeTaxPeriod.value.pfa = Extra amount due to amended return for {0} to {1} tax year
 lpp.incomeTaxDue.key.pfa = Extra amount due
 lpp.incomeTaxPaymentDate.key.pfa = Extra amount paid
+
+lpp.incomeTaxPeriod.value.ra = Amended Income Tax for {0} to {1} tax year
+lpp.incomeTaxDue.key.ra = Extra amount due
+lpp.incomeTaxPaymentDate.key.ra = Extra amount paid
 
 # supplementary Late Payment Penalty - Summary Row Key/Values
 # =============================================

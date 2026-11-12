@@ -53,7 +53,13 @@
     @if(calculationData.isPartiallyPaid) {
         <p class="govuk-heading-m" id="youOwe">@messages("calculation.youOwe") £@calculationData.formattedPenaltyAmountOutstanding</p>
     } else {
-        <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
+        @if(calculationData.isRevenueAmendment && calculationData.isEstimate) {
+            <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount.ra")
+                £@calculationData.formattedPenaltyAmount</p>
+        } else {
+            <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount")
+                £@calculationData.formattedPenaltyAmount</p>
+        }
     }
 
     @calculationHelper.getPaymentDetails(calculationData).map { msg =>
@@ -78,14 +84,22 @@
         ))
     }
 
-    @if(calculationData.isPFA) {
-        <p class="govuk-body" id="taxYearAmended">
-        @messages("calculation.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
-        </p>
-
-        <p class="govuk-body" id="paymentDeadline">
-        @messages("calculation.payment.deadline.pfa", dateToString(calculationData.principalChargeDueDate))
-        </p>
+    @if(calculationData.isPFA || calculationData.isRevenueAmendment) {
+        @if(calculationData.isRevenueAmendment) {
+            <p class="govuk-body" id="taxYearAmended">
+                @messages("calculation.payment.deadline.ra.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+            </p>
+            <p class="govuk-body" id="paymentDeadline">
+                @messages("calculation.payment.deadline.ra", dateToString(calculationData.principalChargeDueDate))
+            </p>
+        } else {
+            <p class="govuk-body" id="taxYearAmended">
+                @messages("calculation.payment.deadline.pfa.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+            </p>
+            <p class="govuk-body" id="paymentDeadline">
+                @messages("calculation.payment.deadline.pfa", dateToString(calculationData.principalChargeDueDate))
+            </p>
+        }
     } else {
         <p class="govuk-body" id="paymentDeadline">
         @messages("calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
@@ -107,21 +121,44 @@
     
     @howWeWorkOutThePenaltyAmount(calculationData: FirstLatePaymentPenaltyCalculationData)
 
-    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes=Some("govuk-heading-m"))
+    @if(calculationData.isRevenueAmendment && calculationData.isEstimate) {
+        @h2(msg = "calculation.yourPenaltyDetails.ra", elmId = "penaltyDetailsHeading", classes = Some("govuk-heading-m"))
+    } else {
+        @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes = Some("govuk-heading-m"))
+    }
 
     @if(!calculationData.isEstimate && !calculationData.isPenaltyPaid) {
       @if(!calculationData.isPenaltyOverdue){
-        @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+
+          @if(calculationData.isRevenueAmendment) {
+              @p(messages("calculation.penaltyDueDate.due.ra.pay.by", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsDuePayBy"))
+              <p class="govuk-body" id="penaltyDetailsDueMoreDetails">
+                  @messages("calculation.penaltyDueDate.due.ra.more.details") <a href="@appConfig.hmrcInterestRatesUrl" target="_blank" class="govuk-link" rel="noopener noreferrer">@messages("calculation.penaltyDueDate.due.ra.more.details.link")</a> @messages("common.opensInNewTab").
+              </p>
+          } else {
+              @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+          }
+
       } else if(calculationData.isPenaltyOverdue) {
         @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
+
+        @if(calculationData.isRevenueAmendment) {
+            <p class="govuk-body" id="penaltyDetailsExtraTextOverdueInterestCharged">
+                @messages("calculation.penaltyDueDate.overDue.ra.interest.charged") <a href="@appConfig.checkWhatYouOweUrl(isAgent)" class="govuk-link">@messages("calculation.penaltyDueDate.overDue.ra.interest.charged.link")</a>
+            </p>
+            <p class="govuk-body" id="penaltyDetailsOverdueMoreDetails">
+                @messages("calculation.penaltyDueDate.overDue.ra.more.details") <a href="@appConfig.hmrcInterestRatesUrl" target="_blank" class="govuk-link" rel="noopener noreferrer">@messages("calculation.penaltyDueDate.overDue.ra.more.details.link")</a> @messages("common.opensInNewTab").
+            </p>
+        }
       }
+
     }
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         <p class="govuk-body" id="breathingSpaceExpired">@messages("calculation.breathingSpace.expired")</p>
     }
 
-    @lpp1CalculationTable(calculationData: FirstLatePaymentPenaltyCalculationData)
+    @lpp1CalculationTable(calculationData: FirstLatePaymentPenaltyCalculationData, calculationData.isRevenueAmendment: Boolean)
 
     @if(!calculationData.incomeTaxIsPaid) {
         <div class="govuk-!-margin-top-7" id="paymentPlanContent">
@@ -139,5 +176,5 @@
         </div>
     }
 
-   @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean)
+   @calculationFooterLinks(calculationData: FirstLatePaymentPenaltyCalculationData, isAgent: Boolean, calculationData.isRevenueAmendment: Boolean)
 }

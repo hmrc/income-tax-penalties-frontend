@@ -120,6 +120,8 @@ class AppConfig @Inject()(val config: Configuration, servicesConfig: ServicesCon
 
   val breathingSpaceGuidanceUrl: String = "https://www.gov.uk/options-for-dealing-with-your-debts/breathing-space"
 
+  val hmrcInterestRatesUrl: String = "https://www.gov.uk/government/publications/rates-and-allowances-hmrc-interest-rates-for-late-and-early-payments"
+
   // Service Navigation Links
   lazy val ptaFrontendBase: String = servicesConfig.getString("urls.personalTaxAccountBaseUrl")
   lazy val btaFrontendBase: String = servicesConfig.getString("urls.businessTaxAccountBaseUrl")
