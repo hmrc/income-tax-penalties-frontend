@@ -129,13 +129,14 @@
 
     @if(!calculationData.isEstimate && !calculationData.isPenaltyPaid) {
       @if(!calculationData.isPenaltyOverdue){
-        <!--@p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))-->
 
           @if(calculationData.isRevenueAmendment) {
               @p(messages("calculation.penaltyDueDate.due.ra.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraTextOverdueRA"))
               <p class="govuk-body" id="penaltyDetailsExtraTextOverdueRA2">
                   @messages("calculation.penaltyDueDate.due.ra.p2") <a href="@appConfig.hmrcInterestRatesUrl" target="_blank" class="govuk-link" rel="noopener noreferrer">@messages("calculation.penaltyDueDate.due.ra.p2.link")</a> @messages("common.opensInNewTab").
               </p>
+          } else {
+              @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
           }
 
       } else if(calculationData.isPenaltyOverdue) {
