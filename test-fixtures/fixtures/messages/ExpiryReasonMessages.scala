@@ -32,11 +32,11 @@ object ExpiryReasonMessages {
   object English extends Messages with En
 
   object Welsh extends Messages with Cy {
-    override val appeal = "Appeal (Welsh)"
-    override val adjustment = "Adjustment (Welsh)"
-    override val reversal = "Reversal (Welsh)"
-    override val manual = "Manual (Welsh)"
-    override val naturalExpiration = "Natural expiration (Welsh)"
-    override val submission = "Submission on time (Welsh)"
+    override val appeal = "Apêl"
+    override val adjustment = "Addasiad"
+    override val reversal = "Wedi gwrthdroi"
+    override val manual = "Â llaw"
+    override val naturalExpiration = "Dod i ben yn naturiol"
+    override val submission = "Cyflwynwyd mewn pryd"
   }
 }
