@@ -93,7 +93,6 @@ calculation.payment.deadline.ra.tax.year = The tax return for the {0} to {1} tax
 calculation.payment.deadline.ra = The deadline for the amended tax amount was {0}.
 calculation.yourPenaltyDetails.ra = Your estimated penalty details
 calculation.table.caption.total.penalty.ra = Estimated penalty
-calculation.checkWhatYouOwe.link.ra = Check what you owe and pay
 calculation.penaltyDueDate.due.ra.pay.by = Pay by {0} to stop interest from being added to your penalty.
 calculation.penaltyDueDate.due.ra.more.details = Find out more about
 calculation.penaltyDueDate.due.ra.more.details.link = HMRC interest rates
@@ -217,7 +216,7 @@ calculation.supplementary.second.still.to.pay = Still to pay
 calculation.supplementary.second.view.penalties.link = View penalties and appeals
 calculation.supplementary.second.check.what.you.owe.link = Check what you owe
 
-calculation.checkWhatYouOwe.link = Check what you owe
+calculation.checkWhatYouOwe.link = Check what you owe and pay
 
 compliance.timeline.individual.title = Actions you need to take to get your points removed
 compliance.timeline.individual.maximum.penalty.points = You have the maximum number of late submission penalty points. This means that your points can no longer expire.

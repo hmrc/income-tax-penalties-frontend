@@ -93,7 +93,6 @@ calculation.payment.deadline.ra.tax.year = Mae’r Ffurflen Dreth ar gyfer blwyd
 calculation.payment.deadline.ra = Y dyddiad cau ar gyfer talu swm diwygiedig y dreth oedd {0}.
 calculation.yourPenaltyDetails.ra = Manylion eich cosb amcangyfrifedig
 calculation.table.caption.total.penalty.ra = Cosb amcangyfrifedig
-calculation.checkWhatYouOwe.link.ra = Gwirio’r hyn sydd arnoch a thalu
 calculation.penaltyDueDate.due.ra.pay.by = Talwch erbyn {0} i atal llog rhag cael ei ychwanegu at eich cosb.
 calculation.penaltyDueDate.due.ra.more.details = Dysgwch ragor am
 calculation.penaltyDueDate.due.ra.more.details.link = gyfraddau llog CThEF
@@ -217,7 +216,7 @@ calculation.supplementary.second.still.to.pay = I’w dalu o hyd
 calculation.supplementary.second.view.penalties.link = Bwrw golwg dros gosbau ac apeliadau
 calculation.supplementary.second.check.what.you.owe.link = Gwirio’r hyn sydd arnoch
 
-calculation.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch
+calculation.checkWhatYouOwe.link = Gwirio’r hyn sydd arnoch a thalu
 
 compliance.timeline.individual.title = Y camau y mae angen i chi eu cymryd i gael eich pwyntiau wedi’u dileu
 compliance.timeline.individual.maximum.penalty.points = Mae gennych uchafswm nifer y pwyntiau cosb am gyflwyno’n hwyr. Mae hyn yn golygu na fydd yr opsiwn ar gael mwyach i ddod â’ch pwyntiau i ben.
