@@ -40,7 +40,6 @@
                     messageKey = messages("calculation.return.link"),
                     id = Some("returnToIndex")
               )
-              <!-- additional conditions to check if revenue amendment and penalty is overdue then not to display the link as it is already being displayed -->
               @if((!calculationData.isPenaltyPaid || isRevenueAmendment && calculationData.isPenaltyOverdue) && !(!calculationData.isEstimate && !calculationData.isPenaltyPaid && isRevenueAmendment && calculationData.isPenaltyOverdue)) {
                   @link(
                       link = appConfig.checkWhatYouOweUrl(isAgent),
