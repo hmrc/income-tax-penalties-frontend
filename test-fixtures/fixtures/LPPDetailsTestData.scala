@@ -60,6 +60,7 @@ trait LPPDetailsTestData {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
     supplement = Some(false),
+    chargeClassificationValue = None,
     metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4700",
       timeToPay = None
@@ -116,6 +117,7 @@ trait LPPDetailsTestData {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
     supplement = Some(false),
+    chargeClassificationValue = None,
     metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4700",
       principalChargeSubTr = None,
@@ -202,6 +204,7 @@ trait LPPDetailsTestData {
     principalChargeLatestClearing = None,
     vatOutstandingAmount = Some(BigDecimal(123.45)),
     supplement = Some(false),
+    chargeClassificationValue = None,
     metadata = LPPDetailsMetadata(
       principalChargeMainTr = "4787",
       None,

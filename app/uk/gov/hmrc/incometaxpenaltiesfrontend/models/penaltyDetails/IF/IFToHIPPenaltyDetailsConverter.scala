@@ -155,6 +155,7 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils {
       principalChargeLatestClearing <- (json \ "principalChargeLatestClearing").validateOpt[LocalDate]
       vatOutstandingAmount <- (json \ "vatOutstandingAmount").validateOpt[BigDecimal]
       supplement <- (json\"supplement").validateOpt[Boolean]
+      chargeClassificationValue <- (json \ "chargeClassificationValue").validateOpt[String]
       metadata <- Json.fromJson(json)(lppMetadataReads)
     } yield {
       LPPDetails(
@@ -184,6 +185,7 @@ object IFToHIPPenaltyDetailsConverter extends JsonUtils {
         principalChargeLatestClearing = principalChargeLatestClearing,
         vatOutstandingAmount = vatOutstandingAmount,
         supplement = supplement,
+        chargeClassificationValue = chargeClassificationValue,
         metadata = metadata
       )
     }

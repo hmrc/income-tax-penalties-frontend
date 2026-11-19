@@ -49,6 +49,7 @@ case class  LPPDetails(principalChargeReference: String,
                       principalChargeDueDate: LocalDate,
                       principalChargeLatestClearing: Option[LocalDate],
                       vatOutstandingAmount: Option[BigDecimal],
+                      chargeClassificationValue: Option[String],
                       metadata: LPPDetailsMetadata) extends Ordered[LPPDetails] {
 
   private val AppealInfoWithHighestAppealLevel: Option[AppealInformationType] = appealInformation.flatMap(_.maxByOption(_.appealLevel.map(_.id).getOrElse(-1)))
@@ -68,7 +69,14 @@ case class  LPPDetails(principalChargeReference: String,
   private val pfaPrincipleChargeMainTrs: Set[String] = Set("4915", "4911", "4913")
 
   val isPFA: Boolean = pfaPrincipleChargeMainTrs.contains(metadata.principalChargeMainTr)
-  val pfaSuffix: String = if (isPFA) ".pfa" else ""
+  val isRA: Boolean = chargeClassificationValue.contains("RA")
+  
+  val otherPenaltySuffix: String = (isPFA, isRA) match {
+    case (true, false) => ".pfa"
+    case (false, true) => ".ra"
+    case _ => ""
+  }
+  
   //TODO: Expect an API change to return a different name other than `vat` prefixed for the outstandingAmount
   val incomeTaxOutstandingAmountInPence: Int = vatOutstandingAmount.map(amount => (amount * 100).toInt).getOrElse(0)
 
@@ -146,7 +154,8 @@ object LPPDetails extends JsonUtils {
         principalChargeDueDate <- (json \ "principalChargeDueDate").validate[LocalDate]
         principalChargeLatestClearing <- (json \ "principalChargeLatestClearing").validateOpt[LocalDate]
         vatOutstandingAmount <- (json \ "vatOutstandingAmount").validateOpt[BigDecimal]
-        supplement <- (json\"supplement").validateOpt[Boolean]
+        supplement <- (json \ "supplement").validateOpt[Boolean]
+        chargeClassificationValue <- (json \ "chargeClassificationValue").validateOpt[String]
         metadata <- Json.fromJson(json)(LPPDetailsMetadata.format)
       } yield {
         LPPDetails(
@@ -176,6 +185,7 @@ object LPPDetails extends JsonUtils {
           principalChargeLatestClearing = principalChargeLatestClearing,
           vatOutstandingAmount = vatOutstandingAmount,
           supplement = supplement,
+          chargeClassificationValue = chargeClassificationValue,
           metadata = metadata
         )
       }
@@ -211,6 +221,7 @@ object LPPDetails extends JsonUtils {
         "principalChargeMainTr" -> o.metadata.principalChargeMainTr,
         "vatOutstandingAmount" -> o.vatOutstandingAmount,
         "supplement" -> o.supplement,
+        "chargeClassificationValue" -> o.chargeClassificationValue,
         "principalChargeDocNumber" -> o.metadata.principalChargeDocNumber,
         "principalChargeSubTr" -> o.metadata.principalChargeSubTr
       )

@@ -73,6 +73,48 @@ class CalculationFooterLinksSpec extends AnyWordSpec with Matchers with GuiceOne
               document.select("#checkWhatYouOweLink").isEmpty shouldBe true
             }
           }
+
+          "penalty is overdue, unpaid, and a revenue amendment" should {
+
+            "not render the footer link because it is rendered in the calculation content" in {
+              implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleFirstLPPCalcData(isPenaltyPaid = false, isEstimate = false, isOverdue = true)
+                .copy(chargeClassificationValue = Some("RA"))
+
+              val html = calculationFooterLinks(calculationData, isAgent, isRevenueAmendment = true)
+              val document = Jsoup.parse(html.toString)
+
+              document.select("#checkWhatYouOweLink").isEmpty shouldBe true
+            }
+          }
+
+          "penalty is overdue and paid for a revenue amendment" should {
+
+            "render the footer link as there is no inline link" in {
+              implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleFirstLPPCalcData(isPenaltyPaid = true, isEstimate = false, isOverdue = true)
+                .copy(chargeClassificationValue = Some("RA"))
+
+              val html = calculationFooterLinks(calculationData, isAgent, isRevenueAmendment = true)
+              val document = Jsoup.parse(html.toString)
+
+              document.select("#checkWhatYouOweLink").attr("href") shouldBe appConfig.checkWhatYouOweUrl(isAgent)
+            }
+          }
+
+          "penalty is overdue and an estimate for a revenue amendment" should {
+
+            "render the footer link as there is no inline link" in {
+              implicit val msgs: Messages = messagesApi.preferred(Seq(Lang("en")))
+              val calculationData = sampleFirstLPPCalcData(isPenaltyPaid = false, isEstimate = true, isOverdue = true)
+                .copy(chargeClassificationValue = Some("RA"))
+
+              val html = calculationFooterLinks(calculationData, isAgent, isRevenueAmendment = true)
+              val document = Jsoup.parse(html.toString)
+
+              document.select("#checkWhatYouOweLink").attr("href") shouldBe appConfig.checkWhatYouOweUrl(isAgent)
+            }
+          }
         }
 
         "rendering with SecondLatePaymentPenaltyCalculationData" when {

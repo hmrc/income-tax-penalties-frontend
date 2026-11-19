@@ -98,6 +98,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       penaltyAmountOutstanding = penaltyAmountOutstanding,
       penaltyAmountPaid = penaltyAmountPaid,
       isPartiallyPaid = isPartiallyPaid,
+      chargeClassificationValue = None,
       isIncomeTaxPartiallyPaid = isIncomeTaxPartiallyPaid
     )
   }
@@ -175,6 +176,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = if(firstLPPCalData.isPartiallyPaid) Some (firstLPPCalData.penaltyAmountOutstanding.getOrElse(BigDecimal(100))) else None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -226,6 +228,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = Some(true),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -277,6 +280,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -328,6 +332,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -383,6 +388,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -439,6 +445,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -491,6 +498,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = Some(true),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -543,6 +551,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -599,6 +608,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(
         principalChargeMainTr = "4700",
         timeToPay = None
@@ -668,6 +678,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
       supplement = None,
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)
     )
     val lpp2Details = LPPDetails(
@@ -697,6 +708,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = Some(true),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)
     )
     val lpp = LatePaymentPenalty(Some(Seq(lpp1Details, lpp2Details)))
@@ -744,6 +756,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
       supplement = Some(false),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)
     )
     val supplementLpp1 = LPPDetails(
@@ -773,6 +786,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (firstLPPCalData.incomeTaxIsPaid) Some(firstLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = Some(true),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)
     )
     val lpp = LatePaymentPenalty(Some(Seq(nonSupplementLpp1, supplementLpp1)))
@@ -820,6 +834,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = None,
       vatOutstandingAmount = None,
       supplement = Some(false),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)
     )
     val supplementLpp2 = LPPDetails(
@@ -849,6 +864,7 @@ trait PenaltiesDetailsTestData extends LSPDetailsTestData with LPPDetailsTestDat
       principalChargeLatestClearing = if (secondLPPCalData.incomeTaxIsPaid) Some(secondLPPCalData.payPenaltyBy) else None,
       vatOutstandingAmount = None,
       supplement = Some(true),
+      chargeClassificationValue = None,
       metadata = LPPDetailsMetadata(principalChargeMainTr = "4700", timeToPay = None)
     )
     val lpp = LatePaymentPenalty(Some(Seq(nonSupplementLpp2, supplementLpp2)))
