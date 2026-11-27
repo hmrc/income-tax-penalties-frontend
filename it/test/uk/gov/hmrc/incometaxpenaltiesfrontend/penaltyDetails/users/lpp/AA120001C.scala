@@ -23,9 +23,20 @@ object AA120001C extends UserDetailsData {
 
   override val nino: String = "AA120001C"
   override val expectedNumberOfLSPPenaltyCards: Int = 0
-  override val expectedNumberOfLPPPenaltyCards: Int = 1
+  override val expectedNumberOfLPPPenaltyCards: Int = 2
 
   def penaltyCard0ExpectedContent(card: Element): Unit = {
+    validatePenaltyCardTitle(card, expectedTitle = "Second late payment penalty: £2.19")
+    validateCardTag(card, expectedTag = "Estimate")
+    val cardRows = getCardsRows(card)
+    cardRows.size() shouldBe 3
+    validateSummary(cardRows.get(0), "Overdue charge", "Amended Income Tax for 2026 to 2027 tax year")
+    validateSummary(cardRows.get(1), "Extra amount due", "31 January 2028")
+    validateSummary(cardRows.get(2), "Extra amount paid", "Payment not yet received")
+    validateViewCalculationLink(card, 0, isSecondLPP = true)
+  }
+
+  def penaltyCard1ExpectedContent(card: Element): Unit = {
     validatePenaltyCardTitle(card, expectedTitle = "First late payment penalty: £60.00")
     validateCardTag(card, expectedTag = "Due")
     val cardRows = getCardsRows(card)
@@ -34,16 +45,17 @@ object AA120001C extends UserDetailsData {
     validateSummary(cardRows.get(1), "Overdue charge", "Amended Income Tax for 2025 to 2026 tax year")
     validateSummary(cardRows.get(2), "Extra amount due", "31 January 2027")
     validateSummary(cardRows.get(3), "Extra amount paid", "Payment not yet received")
-    validateViewCalculationLink(card, 0)
+    validateViewCalculationLink(card, 1)
     validateAppealLink(card.getElementsByClass("govuk-link").get(1))
   }
 
   override val expectedPenaltyCardsContent: Map[Int, Element => Unit] = Map(
-    0 -> penaltyCard0ExpectedContent
+    0 -> penaltyCard0ExpectedContent,
+    1 -> penaltyCard1ExpectedContent
   )
 
   override val expectedOverviewText: String =
-    "Overview Your account has a late payment penalty Check what you owe"
+    "Overview Your account has late payment penalties Check what you owe"
 
   override val timeMachineDate: String = "20/03/2027"
 }

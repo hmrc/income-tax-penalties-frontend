@@ -58,7 +58,7 @@
                    messageKey = messages("calculation.return.link"),
                    id = Some("returnToIndex")
                )
-               @if(!calculationData.isPenaltyPaid) {
+               @if((!calculationData.isPenaltyPaid || isRevenueAmendment && calculationData.isPenaltyOverdue) && !(!calculationData.isEstimate && !calculationData.isPenaltyPaid && isRevenueAmendment && calculationData.isPenaltyOverdue)) {
                    @link(
                        link = appConfig.checkWhatYouOweUrl(isAgent),
                        messageKey = messages("calculation.checkWhatYouOwe.link"),

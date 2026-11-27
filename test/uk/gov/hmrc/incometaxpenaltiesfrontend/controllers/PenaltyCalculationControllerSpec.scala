@@ -107,7 +107,7 @@ class PenaltyCalculationControllerSpec extends AnyWordSpec with Matchers with Mo
       .thenReturn(today)
     when(mockLpp1View.apply(any(), any(), any(), any(), any())(any(), any(), any()))
       .thenReturn(Html("lpp1"))
-    when(mockLpp2View.apply(any(), any(), any(), any(), any())(any(), any(), any()))
+    when(mockLpp2View.apply(any(), any(), any(), any(), any(), any())(any(), any(), any()))
       .thenReturn(Html("lpp2"))
   }
 

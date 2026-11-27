@@ -36,7 +36,7 @@
         calculationFooterLinks : CalculationFooterLinks,
         lpp2CalculationSummaryList : Lpp2CalculationSummaryList
 )
-@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]])(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, timeMachine: TimeMachine, inBreathingSpace: Boolean, breathingSpaceData: Option[Seq[BreathingSpace]], isRevenueAmendment: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @penaltyAmountDetails = {
     @p("calculation.calc2.how.we.work.penalty.amount.p1", elmId = Some("penaltyAmountDetailsP1"))
@@ -49,7 +49,6 @@
     </ol>
 }
 
-
 @main(pageTitle = messages(s"calculation.second.title"), backLinkEnabled = true, isAgent = isAgent) {
 
     <span class="govuk-caption-l" id="captionSpan">
@@ -61,7 +60,13 @@
     @if(calculationData.isPartiallyPaid) {
         <p class="govuk-heading-m" id="youOwe">@messages("calculation.youOwe") £@calculationData.formattedPenaltyAmountOutstanding</p>
     } else {
-        <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount") £@calculationData.formattedPenaltyAmount</p>
+        @if(isRevenueAmendment && calculationData.isEstimate) {
+            <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount.ra")
+                £@calculationData.formattedPenaltyAmount</p>
+        } else {
+            <p class="govuk-heading-m" id="penaltyAmount">@messages("calculation.penalty.amount")
+                £@calculationData.formattedPenaltyAmount</p>
+        }
     }
 
     @if(inBreathingSpace){
@@ -70,9 +75,9 @@
            id = Some("breathingSpaceMessage")
        ))
     }
-    
+
     <p class="govuk-body govuk-!-font-weight-bold" id="penaltyPaymentStatus">@calculationHelper.getPaymentDetails(calculationData)</p>
-    
+
     @if(!calculationData.isEstimate) {
         @calculationData.penaltyChargeReference.map{chargeRef =>
             <p class="govuk-body" id="chargeReference">
@@ -89,9 +94,18 @@
         }
     }
 
-    <p class="govuk-body" id="paymentDeadline">
-    @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
-    </p>
+    @if(isRevenueAmendment) {
+        <p class="govuk-body" id="paymentDeadlineTaxYear">
+           @messages(s"calculation.payment.deadline.ra.tax.year", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate))
+        </p>
+        <p class="govuk-body" id="paymentDeadline">
+            @messages(s"calculation.payment.deadline.ra", dateToString(calculationData.principalChargeDueDate))
+        </p>
+    } else {
+        <p class="govuk-body" id="paymentDeadline">
+            @messages(s"calculation.payment.deadline", dateToYearString(calculationData.taxPeriodStartDate), dateToYearString(calculationData.taxPeriodEndDate), dateToString(calculationData.principalChargeDueDate))
+        </p>
+    }
 
 
     @defining(calculationHelper.getMissedDeadlineAndDailyIncreaseMsgs(calculationData, timeMachine)) { msgs =>
@@ -117,14 +131,42 @@
         content = HtmlContent(penaltyAmountDetails)
     ))
 
-    @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes = Some("govuk-heading-m"))
+    @if(isRevenueAmendment && calculationData.isEstimate) {
+        @h2(msg = "calculation.yourPenaltyDetails.ra", elmId = "penaltyDetailsHeading", classes = Some("govuk-heading-m"))
+    } else {
+        @h2(msg = "calculation.yourPenaltyDetails", elmId = "penaltyDetailsHeading", classes = Some("govuk-heading-m"))
+    }
+
+
+
     @if(!calculationData.isEstimate && !calculationData.isPenaltyPaid) {
-        @if(!calculationData.isPenaltyOverdue) {
-            @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+        @if(!calculationData.isPenaltyOverdue){
+
+            @if(isRevenueAmendment) {
+                @p(messages("calculation.penaltyDueDate.due.ra.pay.by", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsDuePayBy"))
+                <p class="govuk-body" id="penaltyDetailsDueMoreDetails">
+                    @messages("calculation.penaltyDueDate.due.ra.more.details") <a href="@appConfig.hmrcInterestRatesUrl" target="_blank" class="govuk-link" rel="noopener noreferrer">@messages("calculation.penaltyDueDate.due.ra.more.details.link")</a> @messages("common.opensInNewTab").
+                </p>
+            } else {
+                @p(messages("calculation.penaltyDueDate.due.p", dateToString(calculationData.payPenaltyBy)), elmId = Some("penaltyDetailsExtraText"))
+            }
+
         } else if(calculationData.isPenaltyOverdue) {
         @p(messages("calculation.penaltyDueDate.overDue.p"), elmId = Some("penaltyDetailsExtraTextOverdue"))
+
+        @if(isRevenueAmendment) {
+            <p class="govuk-body" id="penaltyDetailsExtraTextOverdueInterestCharged">
+                @messages("calculation.penaltyDueDate.overDue.ra.interest.charged") <a href="@appConfig.checkWhatYouOweUrl(isAgent)" class="govuk-link">@messages("calculation.penaltyDueDate.overDue.ra.interest.charged.link")</a>
+            </p>
+            <p class="govuk-body" id="penaltyDetailsOverdueMoreDetails">
+                @messages("calculation.penaltyDueDate.overDue.ra.more.details") <a href="@appConfig.hmrcInterestRatesUrl" target="_blank" class="govuk-link" rel="noopener noreferrer">@messages("calculation.penaltyDueDate.overDue.ra.more.details.link")</a> @messages("common.opensInNewTab").
+            </p>
         }
+        }
+
     }
+
+
 
     @if(calculationHelper.isExpiredBreathingSpace(calculationData, breathingSpaceData, timeMachine)) {
         <p class="govuk-body" id="breathingSpaceExpired">@messages("calculation.calc2.breathingSpace.expired")</p>
@@ -150,6 +192,6 @@
         </div>
     }
 
-    @calculationFooterLinks(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean)
+    @calculationFooterLinks(calculationData: SecondLatePaymentPenaltyCalculationData, isAgent: Boolean, isRevenueAmendment: Boolean)
 
 }
